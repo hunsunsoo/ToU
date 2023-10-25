@@ -23,7 +23,7 @@ import {
 } from "./pages/Pages";
 import { ROUTES } from "./commons/Routes";
 import ShopperHeader from "./components/organisms/shopper/ShopperHeader";
-import { MobileGlobalStyle } from './commons/style/mobileStyle/MobileGlobalStyle';
+import { MobileGlobalStyle } from "./commons/style/mobileStyle/MobileGlobalStyle";
 
 const App = () => {
   return (
@@ -49,6 +49,7 @@ const App = () => {
           path={ROUTES.TRADER_URL}
           element={
             <TraderContainer>
+              <MobileGlobalStyle />
               <Routes>
                 <Route path={ROUTES.TRADER_LANDING} element={<T_LANDING />} />
                 <Route path={ROUTES.TRADER_MAIN} element={<T_MAIN />} />
