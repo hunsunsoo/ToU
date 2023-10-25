@@ -16,6 +16,11 @@ public class Worker {
     @Column(name = "worker_seq", unique = true, nullable = false)
     private Long workerSeq;
 
+    // 사업체 참조키
+    @ManyToOne
+    @JoinColumn(name = "company_seq")
+    private Company company;
+
     // 성명
     @Column(name = "worker_name", length = 50, nullable = false)
     private String workerName;
@@ -45,7 +50,12 @@ public class Worker {
     private String refreshToken;
 
     // 권한
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 20, nullable = false)
-    private String role;
+    private Role role;
+
+
+    public enum Role {
+        PRODUCER, OFFICIALS, SELLER, ADMIN
+    }
 }

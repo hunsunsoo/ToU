@@ -32,6 +32,7 @@ public class Company {
     @Column(name = "company_contact", length = 20, nullable = false)
     private String companyContact;
 
+    // 사업체 로고
     @Column(name = "logo_image", length = 200)
     private String logoImage;
 }
