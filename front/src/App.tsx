@@ -8,7 +8,7 @@ import {
   // T_GETLIST,
   // T_LANDING,
   // T_LOGIN,
-  // T_MAIN,
+  T_MAIN,
   // T_SECTION,
   // T_SIGN,
   // T_STATE,
@@ -32,7 +32,12 @@ const App1 = () => {
 };
 // 업체 모바일 (url/m)
 function App2() {
-  return <div className="App">App2</div>;
+  // return <div className="App">App2</div>;
+  return(
+    <Routes>
+      <Route path="/" element={<T_MAIN/>}/>
+    </Routes>
+  );
 }
 
 // 웹 (url)
