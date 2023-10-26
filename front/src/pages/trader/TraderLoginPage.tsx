@@ -1,9 +1,19 @@
-const TraderLoginPage = () => {
-    return (
-        <div>
-            사업자 시작하기 버튼 있는 페이지
-        </div>
-    )
-}
+import styled from "styled-components";
+import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 
-export default TraderLoginPage
+const TraderLoginPage = () => {
+  return (
+    <StyledMainPaddingContainer>
+      사업자 로그인 페이지
+    </StyledMainPaddingContainer>
+  );
+};
+
+export default TraderLoginPage;
+
+const StyledMainPaddingContainer = styled(MainPaddingContainer)`
+  background-color: #eff7ff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
