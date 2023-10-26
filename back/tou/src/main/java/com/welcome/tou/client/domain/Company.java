@@ -1,6 +1,7 @@
 package com.welcome.tou.client.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -37,4 +38,14 @@ public class Company {
     @ColumnDefault("'default.jpg'")
     @Column(name = "logo_image", length = 200)
     private String logoImage;
+
+
+    public static Company createCompany(String companyName, String registrationNumber, String companyLocation, String companyContact) {
+        Company company = new Company();
+        company.companyName = companyName;
+        company.registrationNumber = registrationNumber;
+        company.companyLocation = companyLocation;
+        company.companyContact = companyContact;
+        return company;
+    }
 }

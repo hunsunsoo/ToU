@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 public class CompanyCreateDto {
 
-    private Long companySeq;
     private String companyName;
     private String registrationNumber;
     private String companyLocation;
