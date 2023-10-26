@@ -46,6 +46,7 @@ public class Company {
         company.registrationNumber = registrationNumber;
         company.companyLocation = companyLocation;
         company.companyContact = companyContact;
+        company.logoImage = "default.jpg";
         return company;
     }
 }

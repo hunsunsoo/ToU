@@ -44,7 +44,7 @@ public class Branch {
 
 
     public enum BranchType {
-        PRODUCT, PROCESS, PACKAGING, SELL;
+        PRODUCT, PROCESS, PACKAGING, SELL
     }
 
 }
