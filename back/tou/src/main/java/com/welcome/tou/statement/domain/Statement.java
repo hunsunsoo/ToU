@@ -22,22 +22,22 @@ public class Statement {
 
     // 요청 실무자 참조키
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "worker_seq")
+    @JoinColumn(name = "req_worker_seq")
     private Worker reqWorker;
 
     // 응답 실무자 참조키
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "worker_seq")
+    @JoinColumn(name = "res_worker_seq")
     private Worker resWorker;
 
     // 공급 관할구역 참조키
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branch_seq", nullable = false)
+    @JoinColumn(name = "req_branch_seq", nullable = false)
     private Branch reqBranch;
 
     // 수급 관할구역 참조키
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branch_seq", nullable = false)
+    @JoinColumn(name = "res_branch_seq", nullable = false)
     private Branch resBranch;
 
     // 상태
