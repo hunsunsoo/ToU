@@ -1,9 +1,22 @@
-const ShopperItem = () => {
-    return (
-        <div>
-            생산, 입고, 가공 등 슬라이더로 보여줄 거
-        </div>
-    )
+import React from "react";
+import styled from "styled-components";
+
+interface ShopperItemProps {
+  content: string;
 }
 
-export default ShopperItem
+const ShopperItem: React.FC<ShopperItemProps> = ({ content }) => {
+  return (
+    <StyledDiv>
+      <h3>{content}</h3>
+    </StyledDiv>
+  );
+};
+
+export default ShopperItem;
+
+const StyledDiv = styled.div`
+  background-color: white;
+  width: 5rem;
+  height: 5rem;
+`;
