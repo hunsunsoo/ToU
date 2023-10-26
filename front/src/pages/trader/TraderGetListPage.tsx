@@ -1,8 +1,11 @@
+import TraderHeader from "../../components/organisms/trader/TraderHeader";
+
 const TraderGetListPage = () => {
     return (
-        <div>
-            거래 명세서 불러오기 페이지
-        </div>
+        <TraderHeader title='거래 명세서 불러오기' />
+        // <div>
+        //     거래 명세서 불러오기 페이지
+        // </div>
     );
 };
 

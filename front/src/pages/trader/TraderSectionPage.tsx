@@ -1,8 +1,8 @@
+import TraderHeader from "../../components/organisms/trader/TraderHeader";
+
 const TraderSectionPage = () => {
     return (
-        <div>
-            관할구역별 거래내역 조회 페이지
-        </div>
+        <TraderHeader title='거래 명세서 내역 조회'/>
     );
 };
 

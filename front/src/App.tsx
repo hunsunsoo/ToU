@@ -58,7 +58,7 @@ const App = () => {
                 <Route path={ROUTES.TRADER_CONFIRM} element={<T_CONFIRM />} />
                 <Route path={ROUTES.TRADER_CREATE} element={<T_CREATE />} />
                 <Route path={ROUTES.TRADER_GETLIST} element={<T_GETLIST />} />
-                <Route path={ROUTES.TRADER_SELECTION} element={<T_SECTION />} />
+                <Route path={ROUTES.TRADER_SECTION} element={<T_SECTION />} />
                 <Route path={ROUTES.TRADER_SIGN} element={<T_SIGN />} />
                 <Route path={ROUTES.TRADER_STATE} element={<T_STATE />} />
               </Routes>

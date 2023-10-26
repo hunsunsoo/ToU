@@ -1,8 +1,8 @@
+import TraderHeader from "../../components/organisms/trader/TraderHeader";
+
 const TraderCreatePage = () => {
     return (
-        <div>
-            거래명세서 생성 페이지
-        </div>
+        <TraderHeader title='거래 명세서 생성'/>
     );
 };
 
