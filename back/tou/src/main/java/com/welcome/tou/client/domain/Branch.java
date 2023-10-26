@@ -17,7 +17,7 @@ public class Branch {
     private Long BranchSeq;
 
     // 사업체 참조키
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_seq")
     private Company company;
 

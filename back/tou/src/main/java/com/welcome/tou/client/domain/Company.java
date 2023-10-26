@@ -3,6 +3,7 @@ package com.welcome.tou.client.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -33,6 +34,7 @@ public class Company {
     private String companyContact;
 
     // 사업체 로고
+    @ColumnDefault("'default.jpg'")
     @Column(name = "logo_image", length = 200)
     private String logoImage;
 }
