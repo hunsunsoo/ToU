@@ -19,13 +19,13 @@ const TraderHeader = (props: TraderHeaderProps) => {
   return (
     <StyledHeader>
         <BackIcon>
-            <AiOutlineLeft size = "25" onClick={() => { navigate(-1) }}/>
+            <AiOutlineLeft size = "30" onClick={() => { navigate(-1) }}/>
         </BackIcon>
         <StyledTitle>
             <p>{title}</p>
         </StyledTitle>
         <HomeIcon>
-            <AiOutlineHome size = "25" onClick={() => {navigate('/m/main')}}/>
+            <AiOutlineHome size = "30" onClick={() => {navigate('/m/main')}}/>
         </HomeIcon>
     </StyledHeader>
   )
@@ -39,8 +39,8 @@ const StyledHeader = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 3%;
-    margin-bottom: 3%;
+    margin-top: 4%;
+    border-bottom: 1px solid #000000;
 `;
 
 const BackIcon = styled.div`
@@ -50,7 +50,7 @@ const BackIcon = styled.div`
   const StyledTitle = styled.div`
     text-align: center;
     width: 100%;
-    font-size: 22px;
+    font-size: 25px;
     font-weight: bold;
     margin: 0 0 0 0;
 `
