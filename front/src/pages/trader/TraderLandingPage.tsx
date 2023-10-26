@@ -12,7 +12,7 @@ const TraderLandingPage = () => {
       </StyledImages>
     </StyledMainPaddingContainer>
   );
-};
+}; 
 
 export default TraderLandingPage;
 
