@@ -15,3 +15,14 @@ spring:
         show_sql: true
     hibernate:
       ddl-auto: update
+
+  jwt:
+    secretKey: ${JWT_SECRET_KEY}
+
+    access:
+      expiration: 3600000
+      header: Authorization
+
+    refresh:
+      expiration: 1209600000
+      header: Authorization-refresh
