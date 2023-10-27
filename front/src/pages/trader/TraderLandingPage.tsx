@@ -17,7 +17,8 @@ const TraderLandingPage = () => {
 export default TraderLandingPage;
 
 const StyledMainPaddingContainer = styled(MainPaddingContainer)`
-  background-color: #eff7ff;
+  /* background-color: #eff7ff; */
+  background-image: linear-gradient(148deg, #E7FFDE 20.94%, #90CAFF 88.16%);
   height: 100vh;
   display: flex;
   flex-direction: column;

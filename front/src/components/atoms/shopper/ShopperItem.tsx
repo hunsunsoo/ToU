@@ -8,7 +8,7 @@ interface ShopperItemProps {
 const ShopperItem: React.FC<ShopperItemProps> = ({ content }) => {
   return (
     <StyledDiv>
-      <h3>{content}</h3>
+      {content}
     </StyledDiv>
   );
 };
@@ -17,6 +17,9 @@ export default ShopperItem;
 
 const StyledDiv = styled.div`
   background-color: white;
-  width: 5rem;
-  height: 5rem;
+  width: 100%;
+  height: 7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

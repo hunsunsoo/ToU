@@ -57,7 +57,7 @@ const App = () => {
                 <Route path={ROUTES.TRADER_CONFIRM} element={<T_CONFIRM />} />
                 <Route path={ROUTES.TRADER_CREATE} element={<T_CREATE />} />
                 <Route path={ROUTES.TRADER_GETLIST} element={<T_GETLIST />} />
-                <Route path={ROUTES.TRADER_SELECTION} element={<T_SECTION />} />
+                <Route path={ROUTES.TRADER_SECTION} element={<T_SECTION />} />
                 <Route path={ROUTES.TRADER_SIGN} element={<T_SIGN />} />
                 <Route path={ROUTES.TRADER_STATE} element={<T_STATE />} />
               </Routes>
@@ -85,7 +85,14 @@ export default App;
 
 const ShopperContainer = styled.div`
   background-color: #eff7ff;
+  /* background-image: linear-gradient(
+    172deg,
+    #cfe7ff 48.53%,
+    rgba(74, 168, 255, 0.89) 98.64%
+  ); */
+
   height: 100vh;
+  overflow: hidden;
 `;
 
 const TraderContainer = styled.div``;
