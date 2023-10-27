@@ -6,6 +6,7 @@ export const useScroll = (throttleInterval = 0) => {
 
   useEffect(() => {
     window.addEventListener('scroll', onScroll, { passive: true })
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

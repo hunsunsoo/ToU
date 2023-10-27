@@ -5,8 +5,8 @@ import { type Cities } from '.'
  * @value [a, b] 스크롤 위치 a ~ b일 때까지 카메라가 해당 도시에 위치.
  */
 export const citiesScrollMap: Record<Cities, [number, number]> = {
-  Copenhagen: [1000, 2200],
-  Iceland: [2700, 3900],
-  Seoul: [4500, 5700],
-  'New York': [6500, 7000],
+  생산: [0, 300],
+  입고: [300, 600],
+  가공: [600, 900],
+  판매: [900, 1200],
 }

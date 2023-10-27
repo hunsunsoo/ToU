@@ -91,8 +91,8 @@ const ShopperContainer = styled.div`
     rgba(74, 168, 255, 0.89) 98.64%
   ); */
 
-  height: 100vh;
-  overflow: hidden;
+  height: 3000px;
+  /* overflow: hidden; */
 `;
 
 const TraderContainer = styled.div``;
