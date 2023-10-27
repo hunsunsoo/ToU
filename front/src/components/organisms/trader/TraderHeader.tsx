@@ -50,7 +50,7 @@ const BackIcon = styled.div`
   const StyledTitle = styled.div`
     text-align: center;
     width: 100%;
-    font-size: 25px;
+    font-size: 26px;
     font-weight: bold;
     margin: 0 0 0 0;
 `

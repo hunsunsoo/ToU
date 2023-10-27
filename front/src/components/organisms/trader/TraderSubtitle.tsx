@@ -18,11 +18,13 @@ const TraderSubtitle = (props: TraderSubtitleProps) => {
 export default TraderSubtitle;
 
 const StyledSubtitle = styled.div`
-    height: 4vh;
+    height: 6vh;
     width: 100%;
     background-color: #F0F0F0;
+    font-size: 20px;
+    /* font-weight: 500; */
     text-align: left;
-    padding-left: 15px; 
+    padding-left: 20px; 
     display: flex;
     align-items: center;
 `
