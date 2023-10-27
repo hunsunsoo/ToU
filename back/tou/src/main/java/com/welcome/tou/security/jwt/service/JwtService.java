@@ -3,6 +3,7 @@ package com.welcome.tou.security.jwt.service;
 import com.welcome.tou.client.domain.Worker;
 import com.welcome.tou.client.domain.WorkerRepository;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,7 +58,8 @@ public class JwtService {
         Date now = new Date();
 
         Claims claims = Jwts.claims();
-        claims.setIssuedAt(now)
+        claims.setSubject(worker.getLoginId())
+                .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + accessTokenExpirationPeriod));
 
         claims.put("workerName", worker.getWorkerName()); // custom
@@ -83,6 +85,12 @@ public class JwtService {
 
     public String getRefreshToken(HttpServletRequest request) {
         return request.getHeader("RefreshToken");
+    }
+
+    public Long getWorkerId(String token) {
+        JwtParser parser = Jwts.parserBuilder().setSigningKey(getSigningKey(secretKey)).build();
+        Long workerId = Long.parseLong(parser.parseClaimsJws(token).getBody().getSubject());
+        return workerId;
     }
 
 
