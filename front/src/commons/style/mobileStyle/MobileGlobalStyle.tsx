@@ -14,28 +14,4 @@ export const MobileGlobalStyle = createGlobalStyle`
     font-style: normal;
     }
 
-
-    /* 스크롤바 */
-    ::-webkit-scrollbar{
-        width: 8px;
-    }
-
-    /* 스크롤바 막대 설정*/
-    ::-webkit-scrollbar-thumb{
-        background: linear-gradient(#fff, #ffe498);
-        border-radius: 12px; 
-    }
-    /* 스크롤바 뒷 배경 설정*/
-    ::-webkit-scrollbar-track{
-        border-radius: 12px; 
-        background-color: rgba(0,0,0,0.5);
-        overflow: hidden;
-    }
-    .slick-list {
-        margin-right: -24px;
-    }
- 
-    .slick-slide {
-        padding-right: 24px;
-    }
 `;

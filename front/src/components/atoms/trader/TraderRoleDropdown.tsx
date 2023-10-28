@@ -37,6 +37,7 @@ const DropdownContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  margin: 25px 0 25px 0;
 `;
 
 const DropdownButton = styled.button`
@@ -55,9 +56,9 @@ const DropdownList = styled.ul`
  font-size: 24px;
   position: absolute;
   top: 100%;
-  width: fit-content; // 추가
-  left: 50%; // 추가
-  transform: translateX(-50%); // 추가
+  width: fit-content;
+  left: 50%;
+  transform: translateX(-50%);
   border: 1px solid #ccc;
   border-radius: 4px;
   list-style: none;

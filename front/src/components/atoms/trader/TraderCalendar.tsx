@@ -58,10 +58,11 @@ export default TraderCalendar;
 
 const CalendarContainer = styled.div`
   position: relative;
+  margin-top: 10px;
 `;
 
 const DropdownButton = styled.button`
-  width: 250px;
+  width: 240px;
   height: 48px;
   border: 0.8px solid var(--festie-gray-600, #949494);
   border-radius: 10px;

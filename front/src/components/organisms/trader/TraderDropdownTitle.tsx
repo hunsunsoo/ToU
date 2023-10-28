@@ -1,21 +1,21 @@
 import React from 'react'
 import styled from "styled-components";
-import TraderUnitInputBox from '../../molecules/trader/TraderUnitInputBox';
+import TraderDropdown from '../../atoms/trader/TraderDropdown';
 
 interface TraderUnitInputTitleProps {
   inputTitle: string;
 }
 
-const TraderUnitInputTitle = ({ inputTitle, ...props }: TraderUnitInputTitleProps) => {
+const TraderDropdownTitle = ({ inputTitle, ...props }: TraderUnitInputTitleProps) => {
   return (
     <Container>
       <InputTitle>{inputTitle}</InputTitle>
-      <TraderUnitInputBox {...props} />
+      <TraderDropdown {...props} />
     </Container>
   );
 };
 
-export default TraderUnitInputTitle;
+export default TraderDropdownTitle;
 
 const Container = styled.div`
     width: 100%;
@@ -23,7 +23,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    margin: 20px 0 20px 0;
+    margin: 30px 0 30px 0;
 `;
 
 const InputTitle = styled.span`

@@ -18,7 +18,7 @@ const TraderSubtitle = (props: TraderSubtitleProps) => {
 export default TraderSubtitle;
 
 const StyledSubtitle = styled.div`
-    height: 6vh;
+    height: 5vh;
     width: 100%;
     background-color: #F0F0F0;
     font-size: 20px;

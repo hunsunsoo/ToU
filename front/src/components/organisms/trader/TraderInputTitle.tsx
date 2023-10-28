@@ -24,6 +24,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-between;
     gap: 10px;
+    margin: 25px 0 25px 0;
 `;
 
 const InputTitle = styled.span`

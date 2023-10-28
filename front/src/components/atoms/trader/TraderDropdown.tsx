@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 
-const options = ["kg", "개"];
+const options = ["1", "2", "3", "4", "5", "6"];
 
-const TraderUnitDropdown: React.FC = () => {
+const TraderDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
@@ -34,16 +34,15 @@ const TraderUnitDropdown: React.FC = () => {
 
 const DropdownContainer = styled.div`
   position: relative;
-  margin-left: 10px;
 `;
 
 const DropdownButton = styled.button`
   height: 45px;
-  width: 90px;
+  width: 240px;
   padding: 10px 15px;
   border: 0.8px solid var(--festie-gray-600, #949494);
   border-radius: 10px;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -52,13 +51,11 @@ const DropdownButton = styled.button`
 `;
 
 const DropdownList = styled.ul`
-  font-size: 16px;
+ font-size: 16px;
   position: absolute;
   top: 100%;
-  width: 90px;
-  /* width: fit-content; // 추가 */
-  /* left: 50%; // 추가
-  transform: translateX(-50%); // 추가 */
+  width: 240px;
+    /* width: fit-content; // 추가 */
   border: 1px solid #ccc;
   border-radius: 4px;
   list-style: none;
@@ -77,4 +74,4 @@ const DropdownListItem = styled.li`
   }
 `;
 
-export default TraderUnitDropdown;
+export default TraderDropdown;

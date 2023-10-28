@@ -33,13 +33,13 @@ type InputColorStyle = {
 const InputStyles: Record<InputSize, InputStyle> = {
   "X-Large": {
     height: "120px",
-    width: "250px",
+    width: "240px",
     fontSize: "16px",
     borderRadius: "10px",
   },
   Large: {
     height: "45px",
-    width: "250px",
+    width: "240px",
     fontSize: "16px",
     borderRadius: "10px",
   },
@@ -51,7 +51,7 @@ const InputStyles: Record<InputSize, InputStyle> = {
   },
   Small: {
     height: "45px",
-    width: "150px",
+    width: "140px",
     fontSize: "16px",
     borderRadius: "10px",
   },

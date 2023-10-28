@@ -1,5 +1,6 @@
-import TraderBtn from "../../components/atoms/trader/TraderBtn"
 import { useNavigate } from "react-router-dom";
+
+import TraderBtn from "../../components/atoms/trader/TraderBtn"
 
 const TraderMainPage = () => {
 

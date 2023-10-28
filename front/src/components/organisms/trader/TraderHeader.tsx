@@ -41,13 +41,14 @@ const StyledHeader = styled.div`
     justify-content: space-between;
     margin-top: 4%;
     border-bottom: 1px solid #000000;
+    /* position: fixed; */
 `;
 
 const BackIcon = styled.div`
     margin-left: 20px;
 `
 
-  const StyledTitle = styled.div`
+const StyledTitle = styled.div`
     text-align: center;
     width: 100%;
     font-size: 26px;
