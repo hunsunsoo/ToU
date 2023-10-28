@@ -4,6 +4,10 @@ import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import TraderInputTitle from "../../components/organisms/trader/TraderInputTitle";
 import TraderInfoTitle from "../../components/organisms/trader/TraderInfoTitle";
 import TraderCalendarTitle from '../../components/organisms/trader/TraderCalendarTitle';
+import TraderRoleDropdown from "../../components/organisms/trader/TraderRoleDropdown";
+import TraderUnitDropdown from "../../components/atoms/trader/TraderUnitDropdown";
+import TraderUnitInputBox from "../../components/molecules/trader/TraderUnitInputBox";
+import TraderUnitInputTitle from "../../components/organisms/trader/TraderUnitInputTitle";
 
 const TraderCreatePage = () => {
 
@@ -21,6 +25,10 @@ const TraderCreatePage = () => {
         <TraderInputTitle inputTitle="금액" size="Large" />
         <TraderInputTitle inputTitle="비고" size="X-Large" />
         <TraderCalendarTitle/>
+        <TraderRoleDropdown/>
+        <TraderUnitDropdown/>
+        <TraderUnitInputBox/>
+        <TraderUnitInputTitle inputTitle="수량"/>
      </MainPaddingContainer>
     </>
   );

@@ -18,7 +18,7 @@ interface CalendarWrapperProps {
 }
 
 const TraderCalendar: React.FC<TraderCalendarProps> = ({ onChange, value }) => {
-  const [nowDate, setNowDate] = useState<string>("날짜");
+  const [nowDate, setNowDate] = useState<string>("거래일자를 등록하세요");
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleToggleCalendar = () => {
@@ -64,7 +64,7 @@ const DropdownButton = styled.button`
   width: 250px;
   height: 48px;
   border: 0.8px solid var(--festie-gray-600, #949494);
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 0px 12px;
   color: var(--festie-gray-800, #3a3a3a);
   font-family: SUIT Variable;
@@ -80,15 +80,15 @@ const DropdownButton = styled.button`
   background-size: 12px;
   display: flex;
   align-items: center;
-  justify-content: space-between; // 이 부분은 아이콘을 오른쪽 끝으로 보내려면 추가
-  padding-right: 10px; // 아이콘과 오른쪽 패딩 간격 조절
-
+  justify-content: space-between;
+  padding-right: 10px;
 `;
 
 const CalendarWrapper = styled.div<CalendarWrapperProps>`
-  z-index: 11;
+  z-index: 10;
   position: absolute;
   top: 100%;
   right: 0;
   display: ${(props) => (props.isOpen ? "block" : "none")};
 `;
+

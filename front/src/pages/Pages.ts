@@ -8,6 +8,7 @@ export { default as T_LOGIN } from './trader/TraderLoginPage';
 export { default as T_MAIN } from './trader/TraderMainPage';
 export { default as T_CONFIRM } from './trader/TraderConfirmPage';
 export { default as T_CREATE } from './trader/TraderCreatePage';
+export { default as T_CREATEITEM } from './trader/TraderCreatePage';
 export { default as T_GETLIST } from './trader/TraderGetListPage';
 export { default as T_SECTION } from './trader/TraderSectionPage';
 export { default as T_SIGN } from './trader/TraderSignPage';

@@ -13,7 +13,7 @@ const TraderCalendarTitle = () => {
 
   return (
     <Container>
-      <InputTitle>날짜</InputTitle>
+      <InputTitle>거래 일자</InputTitle>
       <TraderCalendar onChange={handleDateChange} value={selectedDate} />
     </Container>
   );

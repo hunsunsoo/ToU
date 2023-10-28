@@ -35,25 +35,25 @@ const InputStyles: Record<InputSize, InputStyle> = {
     height: "120px",
     width: "250px",
     fontSize: "16px",
-    borderRadius: "6px",
+    borderRadius: "10px",
   },
   Large: {
-    height: "48px",
+    height: "45px",
     width: "250px",
     fontSize: "16px",
-    borderRadius: "6px",
+    borderRadius: "10px",
   },
   Medium: {
-    height: "35px",
+    height: "45px",
     width: "200px",
     fontSize: "16px",
-    borderRadius: "",
+    borderRadius: "10px",
   },
   Small: {
-    height: "35px",
+    height: "45px",
     width: "150px",
     fontSize: "16px",
-    borderRadius: "6px",
+    borderRadius: "10px",
   },
 };
 
@@ -63,7 +63,7 @@ const InputColors: Record<InputColor, InputColorStyle> = {
     backgroundColor: "transparent",
     color: "#000",
     placeholderColor: "#797979",
-    boxShadow: "0px 0px 12px 0px rgba(0, 0, 0, 0.70)",
+    boxShadow: "0px 0px 4px 0px rgba(0, 0, 0, 0.70)",
   },
 };
 
