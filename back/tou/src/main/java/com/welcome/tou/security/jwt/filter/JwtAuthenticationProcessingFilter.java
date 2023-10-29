@@ -24,7 +24,7 @@ import java.util.Optional;
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK_URL = "/login";
+    private static final String NO_CHECK_URL = "/api/client/login";
 
     private final JwtService jwtService;
     private final WorkerRepository workerRepository;
@@ -34,23 +34,32 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        // 로그인 요청에 대해서는 다음 필터 호출
         if (request.getRequestURI().equals(NO_CHECK_URL)) {
             filterChain.doFilter(request, response);
             return;
         }
 
+        // 요청에서 토큰 추출
         String accessToken = jwtService.getAccessToken(request);
         String refreshToken = jwtService.getRefreshToken(request);
+
+
 
         if(accessToken != null && jwtService.isTokenValid(accessToken)) {
             Long workerId = jwtService.getWorkerId(accessToken);
 
             Optional<Worker> myWorker = workerRepository.findById(workerId);
             myWorker.ifPresent(this::saveAuthentication);
+            log.info("맞았을때");
             filterChain.doFilter(request, response);
+            return;
         }
+        log.info("틀렸을때");
+        filterChain.doFilter(request, response);
     }
 
+    // 토큰 인증 이후 SecurityContextHolder에 담아 권한처리
     public void saveAuthentication(Worker worker) {
         String password = worker.getPassword();
 
