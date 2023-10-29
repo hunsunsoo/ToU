@@ -7,6 +7,7 @@ const EarthComponent = ({ radius }: { radius: number }) => {
     <>
       <mesh>
         <sphereGeometry args={[radius, 32, 32]} />
+        <meshBasicMaterial color="#ccc" />
         <CoastLine radius={radius} />
         <Pins radius={radius} />
       </mesh>

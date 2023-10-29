@@ -1,7 +1,7 @@
 import SingleCoastLine from "./singleCoastLine";
 import { normalizeCoordinates } from "./../../../../utils/normalizeCoordinates";
 
-import coastLineData from "../../../../assets/coastline_small.json"
+import coastLineData from "../../../../assets/coastline_small.json";
 
 export default function CoastLine({ radius }: { radius: number }) {
   const coordinatesList = coastLineData.features.map((data) =>
@@ -12,12 +12,22 @@ export default function CoastLine({ radius }: { radius: number }) {
     <>
       {coordinatesList.map((coordinates, index) => {
         return (
-          <SingleCoastLine
-            coordinates={coordinates}
-            material={{ color: "black" }}
-            radius={radius}
-            key={index}
-          />
+          <>
+            {/* 해안선 내부의 색상 */}
+            <SingleCoastLine
+              coordinates={coordinates}
+              material={{ color: "black", linewidth: 1 }}
+              radius={radius}
+              key={index}
+            />
+            {/* 해안선 외부의 색상 */}
+            <SingleCoastLine
+              coordinates={coordinates}
+              material={{ color: "gray", linewidth: 5 }}
+              radius={radius + 0.01}
+              key={`bold-${index}`}
+            />
+          </>
         );
       })}
     </>
