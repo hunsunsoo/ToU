@@ -1,7 +1,6 @@
 package com.welcome.tou.security.jwt.service;
 
 import com.welcome.tou.client.domain.Worker;
-import com.welcome.tou.client.domain.WorkerRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -11,7 +10,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -20,11 +19,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
-@Service
+@Service("JwtService")
 @RequiredArgsConstructor
 @Getter
 @Slf4j
-@PropertySource("classpath:application.yml")
 public class JwtService {
 
     @Value("${jwt.secretKey}")
@@ -43,9 +41,7 @@ public class JwtService {
     private String refreshHeader;
 
 
-    private final WorkerRepository workerRepository;
-
-    //키 생성
+    // 키 생성
     private static Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         SecretKey key = new SecretKeySpec(keyBytes, "HmacSHA256");
@@ -58,7 +54,7 @@ public class JwtService {
         Date now = new Date();
 
         Claims claims = Jwts.claims();
-        claims.setSubject(worker.getLoginId())
+        claims.setSubject(String.valueOf(worker.getWorkerSeq()))
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + accessTokenExpirationPeriod));
 
@@ -80,7 +76,13 @@ public class JwtService {
 
     // 헤더에서 토큰 추출
     public String getAccessToken(HttpServletRequest request) {
-        return request.getHeader("AccessToken");
+        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            // 토큰 없을 때 처리
+        }
+
+        return authorization.split(" ")[1];
     }
 
     public String getRefreshToken(HttpServletRequest request) {
@@ -106,6 +108,7 @@ public class JwtService {
 
             return !claims.getExpiration().before(new Date());
         } catch (Exception e) {
+            log.error("유효하지 않은 토큰입니다. {}", e.getMessage());
             return false;
         }
     }
