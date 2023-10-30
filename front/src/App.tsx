@@ -19,17 +19,19 @@ import {
   T_SECTION,
   T_SIGN,
   T_STATE,
-  // O_CREATE,
-  // O_DETAIL,
   // O_EDIT,
-  // O_LOGIN,
+  O_LOGIN,
   O_MAIN,
-  // O_MANAGE,
-  // O_NOTICE
+  O_CREATE,
+  O_DETAIL,
+  O_MANAGE,
+  O_STOCK,
+  O_NOTICE
 } from "./pages/Pages";
 import { ROUTES } from "./commons/Routes";
 import ShopperHeader from "./components/organisms/shopper/ShopperHeader";
 import { MobileGlobalStyle } from "./commons/style/mobileStyle/MobileGlobalStyle";
+import OfficerHeader from "./components/organisms/officer/OfficerHeader";
 
 interface ShopperContainerProps {
   isMain: boolean;
@@ -81,8 +83,15 @@ const RoutesContainer = () => {
         path="/"
         element={
           <OfficerContainer>
+            <OfficerHeader/>
             <Routes>
+              <Route path={ROUTES.OFFICER_LOGIN} element={<O_LOGIN />} />
               <Route path={ROUTES.OFFICER_MAIN} element={<O_MAIN />} />
+              <Route path={ROUTES.OFFICER_CREATE} element={<O_CREATE />} />
+              <Route path={ROUTES.OFFICER_MANAGE} element={<O_MANAGE />} />
+              <Route path={ROUTES.OFFICER_STOCK} element={<O_STOCK />} />
+              <Route path={ROUTES.OFFICER_NOTICE} element={<O_NOTICE />} />
+              <Route path={ROUTES.OFFICER_DETAIL} element={<O_DETAIL />} />
             </Routes>
           </OfficerContainer>
         }
