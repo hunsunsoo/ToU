@@ -18,5 +18,12 @@ export const ROUTES = {
   TRADER_STATE: "state",
 
   // Officer
-  OFFICER_MAIN: "/",
+  OFFICER_URL: "/*",
+  OFFICER_LOGIN: "login",
+  OFFICER_MAIN: "",
+  OFFICER_CREATE: "/create",
+  OFFICER_DETAIL: "/detail",
+  OFFICER_MANAGE: "/manage",
+  OFFICER_STOCK: "/stock",
+  OFFICER_NOTICE: "/notice",
 };
