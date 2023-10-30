@@ -13,14 +13,14 @@ pipeline {
 stages {
     stage('prepare') {
         steps {
-            dir('FrontEnd'){
+            dir('front'){
                 sh 'npm install'
             }
         }
     }
     stage('build') {
         steps {
-            dir('FrontEnd'){
+            dir('front'){
                 sh 'npm run build'
                 sh '''
                 echo 'Docker image build'
@@ -31,7 +31,7 @@ stages {
     }
     stage('Deploy') {
             steps {
-                dir('FrontEnd'){
+                dir('front'){
                     script {
                         try {
                             sh 'docker stop TouFront'
