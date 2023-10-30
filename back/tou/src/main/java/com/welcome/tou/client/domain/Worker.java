@@ -46,7 +46,7 @@ public class Worker {
     private String biometrics;
 
     // 리프레시 토큰
-    @Column(name = "refresh_token", nullable = false)
+    @Column(name = "refresh_token")
     private String refreshToken;
 
     // 권한
@@ -57,5 +57,9 @@ public class Worker {
 
     public enum Role {
         PRODUCER, OFFICIALS, SELLER, ADMIN
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
