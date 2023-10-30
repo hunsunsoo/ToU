@@ -19,5 +19,6 @@ export { default as O_LOGIN } from './officer/OfficerLoginPage';
 export { default as O_CREATE } from './officer/OfficerCreatePage';
 export { default as O_DETAIL } from './officer/OfficerDetailPage';
 export { default as O_MANAGE } from './officer/OfficerManagePage';
+export { default as O_STOCK } from './officer/OfficerStockPage';
 export { default as O_NOTICE } from './officer/OfficerNoticePage';
 export { default as O_EDIT } from './officer/OfficerEditPage';
