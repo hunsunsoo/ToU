@@ -27,11 +27,11 @@ const OfficerSideBar = () => {
     </CompInfo>
     <p>로그인 한 사용자 이름</p>
     <Line />
-    <ListBtn onClick={() => navigate("/")}>메인페이지</ListBtn>
-    <ListBtn onClick={() => navigate("/create")}>거래명세서 생성</ListBtn>
-    <ListBtn onClick={() => navigate("/manage")}>거래명세서 관리</ListBtn>
-    <ListBtn onClick={() => navigate("/stock")}>공정/재고 관리</ListBtn>
-    <ListBtn onClick={() => navigate("/notice")}>공지사항 및 문의</ListBtn>
+    <ListBtn onClick={() => navigate(ROUTES.OFFICER_MAIN)}>메인페이지</ListBtn>
+    <ListBtn onClick={() => navigate(ROUTES.OFFICER_CREATE)}>거래명세서 생성</ListBtn>
+    <ListBtn onClick={() => navigate(ROUTES.OFFICER_MANAGE)}>거래명세서 관리</ListBtn>
+    <ListBtn onClick={() => navigate(ROUTES.OFFICER_STOCK)}>공정/재고 관리</ListBtn>
+    <ListBtn onClick={() => navigate(ROUTES.OFFICER_NOTICE)}>공지사항 및 문의</ListBtn>
     <ListBtn>개인정보 수정</ListBtn>
   </SidebarContainer>
   )
