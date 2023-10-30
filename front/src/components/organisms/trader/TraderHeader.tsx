@@ -41,6 +41,7 @@ const StyledHeader = styled.div`
     justify-content: space-between;
     margin-top: 4%;
     border-bottom: 1px solid #000000;
+    background-color: #fff;
     /* position: fixed; */
 `;
 

@@ -14,20 +14,20 @@ interface TraderCalendarProps {
 }
 
 interface CalendarWrapperProps {
-  isOpen: boolean;
+  OpenYN: boolean;
 }
 
 const TraderCalendar: React.FC<TraderCalendarProps> = ({ onChange, value }) => {
   const [nowDate, setNowDate] = useState<string>("거래일자를 등록하세요");
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [OpenYN, setOpenYN] = useState<boolean>(false);
 
   const handleToggleCalendar = () => {
-    setIsOpen(!isOpen);
+    setOpenYN(!OpenYN);
   };
 
   const handleDateChange = (selectedDate: any) => {
     onChange(selectedDate);
-    setIsOpen(false);
+    setOpenYN(false);
     if (Array.isArray(selectedDate)) {
       setNowDate(moment(selectedDate[0] as Date).format("YYYY년 MM월 DD일"));
     } else {
@@ -43,7 +43,7 @@ const TraderCalendar: React.FC<TraderCalendarProps> = ({ onChange, value }) => {
           <BiCalendarCheck size = "24"/>
         </DropdownButton>
       </label>
-      <CalendarWrapper isOpen={isOpen}>
+      <CalendarWrapper OpenYN={OpenYN}>
         <Calendar
           onChange={handleDateChange}
           value={value}
@@ -90,6 +90,6 @@ const CalendarWrapper = styled.div<CalendarWrapperProps>`
   position: absolute;
   top: 100%;
   right: 0;
-  display: ${(props) => (props.isOpen ? "block" : "none")};
+  display: ${(props) => (props.OpenYN ? "block" : "none")};
 `;
 

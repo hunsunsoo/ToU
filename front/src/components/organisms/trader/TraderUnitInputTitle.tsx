@@ -4,13 +4,15 @@ import TraderUnitInputBox from '../../molecules/trader/TraderUnitInputBox';
 
 interface TraderUnitInputTitleProps {
   inputTitle: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TraderUnitInputTitle = ({ inputTitle, ...props }: TraderUnitInputTitleProps) => {
+const TraderUnitInputTitle = ({inputTitle, value, onChange, ...props }: TraderUnitInputTitleProps) => {
   return (
     <Container>
       <InputTitle>{inputTitle}</InputTitle>
-      <TraderUnitInputBox {...props} />
+      <TraderUnitInputBox value={value} onChange={onChange} {...props} />
     </Container>
   );
 };

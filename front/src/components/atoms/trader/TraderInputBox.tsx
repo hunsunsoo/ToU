@@ -7,6 +7,7 @@ interface InputProps {
   placeholder?: string;
   type?: "text" | "number";
   value?: string | number;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }

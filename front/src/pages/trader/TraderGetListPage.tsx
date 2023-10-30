@@ -1,4 +1,4 @@
-import TraderSubtitle from "../../components/organisms/trader/TraderSubtitle";
+import TraderSubtitle from "../../components/atoms/trader/TraderSubtitle";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 const TraderGetListPage = () => {

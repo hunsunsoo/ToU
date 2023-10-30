@@ -22,6 +22,7 @@ const TraderCalendarTitle = () => {
 export default TraderCalendarTitle;
 
 const Container = styled.div`
+  padding-top:10px;
   width: 100%;
   display: flex;
   align-items: center;

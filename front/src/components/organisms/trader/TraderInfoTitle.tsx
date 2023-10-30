@@ -22,6 +22,6 @@ const StyledInfoHeader = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    /* padding-bottom: px; */
     border-bottom: 1px solid var(--festie-gray-600, #949494);
 `;

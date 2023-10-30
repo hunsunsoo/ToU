@@ -66,7 +66,7 @@ const DropdownList = styled.ul`
   padding: 0;
   background-color: white;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 2;
+  z-index: 1;
 `;
 
 const DropdownListItem = styled.li`

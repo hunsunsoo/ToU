@@ -6,11 +6,12 @@ interface ButtonProps {
   color: ButtonColor;
   onClick?: () => void;
   children: ReactNode;
+  disabled?: boolean; // 추가
 }
 
-type ButtonSize = "X-Large" | "Large" | "LargeR2" | "LargeL1" | "Medium" | "Small";
+type ButtonSize = "X-Large" | "Large" | "LargeR2" | "LargeL1" | "X-Medium" | "Medium"  | "Small";
 
-type ButtonColor = "Blue" | "Grey" | "White" | "Sky";
+type ButtonColor = "Blue" | "Grey" | "White" | "Sky" |"Transparent";
 
 //사이즈, 마진, 폰트
 type ButtonStyle = {
@@ -18,6 +19,7 @@ type ButtonStyle = {
   width: string;
   weight: string;
   fontSize: string;
+  fontWeight: string;
   borderRadius?: string;
 };
 
@@ -35,13 +37,15 @@ const ButtonStyles: Record<ButtonSize, ButtonStyle> = {
     width:"180px",
     weight: "Bold",
     fontSize: "24px",
+    fontWeight:"",
     // borderRadius: "",
   },
   Large: {
-    height: "60px",
+    height: "70px",
     width:"100%",
     weight: "",
-    fontSize: "24px",
+    fontSize: "30px",
+    fontWeight:"",
     borderRadius: "",
   },
   LargeR2: {
@@ -49,6 +53,7 @@ const ButtonStyles: Record<ButtonSize, ButtonStyle> = {
     width:"65%",
     weight: "",
     fontSize: "24px",
+    fontWeight:"",
     borderRadius: "",
   },
   LargeL1: {
@@ -56,6 +61,15 @@ const ButtonStyles: Record<ButtonSize, ButtonStyle> = {
     width:"35%",
     weight: "",
     fontSize: "24px",
+    fontWeight:"",
+    borderRadius: "",
+  },
+  "X-Medium":{
+    height: "44px",
+    width:"150px",
+    weight: "",
+    fontSize: "24px",
+    fontWeight:"",
     borderRadius: "",
   },
   Medium: {
@@ -63,14 +77,16 @@ const ButtonStyles: Record<ButtonSize, ButtonStyle> = {
     width:"60px",
     weight: "",
     fontSize: "16px",
+    fontWeight:"",
     borderRadius: "",
   },
   Small: {
     height: "40px",
-    width:"60px",
+    width:"75px",
     weight: "",
-    fontSize: "16px",
-    borderRadius: "10px",
+    fontSize: "19px",
+    fontWeight: "bold",
+    borderRadius: "12px",
   },
 };
 
@@ -86,30 +102,36 @@ const ButtonColors: Record<ButtonColor, ButtonColorStyle> = {
   White: {
     backgroundColor: "#FFFFFF",
     color: "#000000",
-    border: "1px solid #000",
-    boxShadow: "0px 1px 1px 0px rgba(0, 0, 0, 0.25)",
+    border: "0.8px solid var(--festie-gray-600, #949494)",
+    boxShadow: "0px 1px 1px 0px rgba(32, 32, 32, 0.5)",
   },
   Sky: {
     backgroundColor: "#EAF6FF",
     color: "#000000",
     boxShadow: "0px 5px 5px 0px rgba(0, 0, 0, 0.25)",
   },
+  Transparent: {
+    backgroundColor: "transparent",
+    color: "#000000",
+  }
 };
 
 const StyledButton = styled.button<ButtonProps>`
   width: ${(props) => ButtonStyles[props.size].width};
   height: ${(props) => ButtonStyles[props.size].height};
   font-size: ${(props) => ButtonStyles[props.size].fontSize};
+  font-weight: ${(props) => ButtonStyles[props.size].fontWeight};
   border-radius: ${(props) => ButtonStyles[props.size]?.borderRadius ?? "12px"};
   background-color: ${(props) => ButtonColors[props.color].backgroundColor};
   border: ${(props) => ButtonColors[props.color]?.border ?? "none"};
   color: ${(props) => ButtonColors[props.color]?.color ?? "#000"};
-  cursor: pointer;
+  box-shadow: ${(props) => ButtonColors[props.color]?.boxShadow ?? "#000"};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 `;
 
-const TraderBtn = ({ size, color, onClick, children }: ButtonProps) => {
+const TraderBtn = ({ size, color, onClick, children, disabled }: ButtonProps) => {
   return (
-    <StyledButton size={size} color={color} onClick={onClick}>
+    <StyledButton size={size} color={color} onClick={onClick} disabled={disabled}>
       {children}
     </StyledButton>
   );
@@ -142,5 +164,8 @@ export default TraderBtn;
 </TraderBtn>
 <TraderBtn size="Small" color="White">
     저장
+</TraderBtn>
+<TraderBtn size="X-Medium" color="Transparent">
+    품목 추가
 </TraderBtn>
 </div> */}
