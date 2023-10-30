@@ -12,7 +12,7 @@ export const ROUTES = {
   TRADER_CONFIRM: "confirm",
   TRADER_CREATE: "create",
   TRADER_GETLIST: "list",
-  TRADER_SELECTION: "selection",
+  TRADER_SECTION: "section",
   TRADER_SIGN: "sign",
   TRADER_STATE: "state",
 

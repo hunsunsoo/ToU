@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="130" height="130">
+    <defs>
+        <linearGradient id="b">
+            <stop offset="0" stop-color="#3771c8"/>
+            <stop offset="1" stop-color="#60f" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="a">
+            <stop offset="0" stop-color="#fd5"/>
+            <stop offset=".1" stop-color="#fd5"/>
+            <stop offset=".5" stop-color="#f55"/>
+            <stop offset="1" stop-color="#c837ab"/>
+        </linearGradient>
+        <radialGradient cx="158.429" cy="583.076" r="65" fx="158.429" fy="583.076" id="c" xlink:href="#a"
+                        gradientUnits="userSpaceOnUse"
+                        gradientTransform="matrix(0 -1.53846 1.53846 0 -852.112 836.813)"/>
+        <radialGradient cx="149.929" cy="453.076" r="65" fx="149.929" fy="453.076" id="d" xlink:href="#b"
+                        gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 1 -1.38462 0 657.265 303.148)"/>
+    </defs>
+    <g transform="translate(.07 -453.076)">
+        <rect width="130" height="130" ry="30" x="-.071" y="453.076" fill="url(#c)"/>
+        <rect width="130" height="130" ry="30" x="-.071" y="453.076" fill="url(#d)"/>
+        <path d="M44.93 470.076c-15.513 0-28 12.488-28 28v40c0 15.512 12.487 28 28 28h40c15.51 0 28-12.488 28-28v-40c0-15.512-12.49-28-28-28h-40zm-1 9h42c9.97 0 18 8.028 18 18v42c0 9.972-8.03 18-18 18h-42c-9.973 0-18-8.028-18-18v-42c0-9.972 8.027-18 18-18zm46.5 8c-3.04 0-5.5 2.463-5.5 5.5 0 3.038 2.46 5.5 5.5 5.5 3.036 0 5.5-2.462 5.5-5.5 0-3.037-2.464-5.5-5.5-5.5zm-25.5 6c-13.81 0-25 11.193-25 25 0 13.808 11.19 25 25 25 13.806 0 25-11.192 25-25 0-13.807-11.194-25-25-25zm0 9c8.835 0 16 7.164 16 16 0 8.837-7.165 16-16 16-8.838 0-16-7.163-16-16 0-8.836 7.162-16 16-16z"
+              fill="#fff"/>
+    </g>
+</svg>
