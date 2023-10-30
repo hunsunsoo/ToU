@@ -80,7 +80,7 @@ const RoutesContainer = () => {
 
       {/* 웹 (url) */}
       <Route
-        path="/"
+        path={ROUTES.OFFICER_URL}
         element={
           <OfficerContainer>
             <OfficerHeader/>

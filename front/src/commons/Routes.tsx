@@ -19,8 +19,8 @@ export const ROUTES = {
 
   // Officer
   OFFICER_URL: "/*",
-  OFFICER_LOGIN: "login",
-  OFFICER_MAIN: "",
+  OFFICER_LOGIN: "/login",
+  OFFICER_MAIN: "/main",
   OFFICER_CREATE: "/create",
   OFFICER_DETAIL: "/detail",
   OFFICER_MANAGE: "/manage",
