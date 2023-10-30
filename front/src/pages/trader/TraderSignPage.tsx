@@ -1,8 +1,8 @@
+import TraderHeader from "../../components/organisms/trader/TraderHeader";
+
 const TraderSignPage = () => {
     return (
-        <div>
-            거래명세서 나오고 서명하는 페이지
-        </div>
+        <TraderHeader title='거래 명세서 서명'/>
     );
 };
 
