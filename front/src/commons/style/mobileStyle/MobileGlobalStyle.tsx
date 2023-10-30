@@ -13,5 +13,4 @@ export const MobileGlobalStyle = createGlobalStyle`
     font-weight: 400;
     font-style: normal;
     }
-
 `;

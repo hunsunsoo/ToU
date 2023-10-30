@@ -1,28 +1,39 @@
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import Slider from "react-slick";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
+import styled from "styled-components";
 import ShopperItem from "../../atoms/shopper/ShopperItem";
+import { citiesScrollMap } from "../../../constants";
+import type { Cities } from "../../../constants";
+
+const isCity = (content: string): content is Cities => {
+  if (Object.keys(citiesScrollMap).includes(content)) return true;
+  return false;
+};
 
 const ShopperItemList = () => {
-  const settings = {
-    className: "center",
-    centerMode: true,
-    slidesToShow: 3,
-    speed: 500,
-    autoplay: true, // 자동 재생 활성화
-    focusOnSelect: true, // 선택된 슬라이드에 포커스 (선택 시 중앙으로 이동)
-  };
-
   return (
-    <div>
-      <Slider {...settings}>
-        <ShopperItem content="생산" />
-        <ShopperItem content="입고" />
-        <ShopperItem content="가공" />
-        <ShopperItem content="판매" />
-      </Slider>
-    </div>
+    <StyledDiv>
+      {Object.keys(citiesScrollMap).map((content) => {
+        if (!isCity(content)) return null;
+        return (
+          <ShopperItem
+            content={content}
+            scrollStart={citiesScrollMap[content][0]}
+            scrollHeight={800}
+            key={content}
+          />
+        );
+      })}
+    </StyledDiv>
   );
 };
 
 export default ShopperItemList;
+
+const StyledDiv = styled.div`
+  display: flex;
+  /* width: 100%; */
+  /* position: fixed; */
+  /* bottom: 20px; */
+`;

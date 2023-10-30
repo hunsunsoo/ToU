@@ -24,3 +24,7 @@ const StyledImage = styled.img`
   width: 2rem;
   height: auto;
 `;
+
+// const StyledMainPaddingContainer = styled(MainPaddingContainer)`
+//   height: calc(100vh - 57px);
+// `
