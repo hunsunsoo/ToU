@@ -21,7 +21,7 @@ stages {
     stage('build') {
         steps {
             dir('front'){
-                sh 'npm run build'
+                sh 'CI=false npm run build'
                 sh '''
                 echo 'Docker image build'
                 docker build --no-cache -t $TAG .
