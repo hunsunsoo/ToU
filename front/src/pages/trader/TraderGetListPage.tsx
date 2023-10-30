@@ -1,9 +1,19 @@
+import TraderSubtitle from "../../components/atoms/trader/TraderSubtitle";
+import TraderHeader from "../../components/organisms/trader/TraderHeader";
+import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 const TraderGetListPage = () => {
-    return (
-        <div>
-            거래 명세서 불러오기 페이지
-        </div>
-    );
+  return (
+    <>
+      <header>
+        <TraderHeader title="거래 명세서 불러오기" />
+        <TraderSubtitle subtitle="거래 명세서 불러오기" />
+      </header>
+      <MainPaddingContainer>
+        아
+
+      </MainPaddingContainer>
+    </>
+  );
 };
 
 export default TraderGetListPage;

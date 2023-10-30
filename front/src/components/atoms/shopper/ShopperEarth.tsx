@@ -1,9 +1,30 @@
-const ShopperEarth = () => {
-    return (
-        <div>
-            three js 로 들어갈 지구 컴포넌트
-        </div>
-    )
-}
+// import { useThree } from "@react-three/fiber";
+// import { useRotateCameraOnScroll } from "../../../hooks";
+// import { Earth } from "./Earth";
+// import { OrbitControls } from "@react-three/drei";
+// import { scrollCameraPositionMap, EARTH_RADIUS } from "@/constants";
 
-export default ShopperEarth
+const ShopperEarth = () => {
+//   const { camera } = useThree();
+
+//   const { setCameraPositions } = useRotateCameraOnScroll(
+//     { x: 0, y: 0, z: 4 },
+//     camera
+//   );
+
+//   setCameraPositions(scrollCameraPositionMap);
+
+  return (
+    <>
+      {/* <Earth radius={EARTH_RADIUS} /> */}
+      {/* <OrbitControls
+        enableZoom={false}
+        enableDamping={false}
+        enablePan={false}
+        enableRotate={false}
+      /> */}
+    </>
+  );
+};
+
+export default ShopperEarth;
