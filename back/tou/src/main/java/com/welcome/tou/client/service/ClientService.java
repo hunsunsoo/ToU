@@ -7,6 +7,7 @@ import com.welcome.tou.client.domain.WorkerRepository;
 import com.welcome.tou.client.dto.request.CompanyCreateDto;
 import com.welcome.tou.client.dto.request.LoginRequestDto;
 import com.welcome.tou.client.dto.response.LoginResponseDto;
+import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.common.utils.ResultTemplate;
 import com.welcome.tou.security.jwt.service.JwtService;
 
@@ -34,7 +35,7 @@ public class ClientService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public ResultTemplate login(LoginRequestDto request) {
+    public ResultTemplate<?> login(LoginRequestDto request) {
         Worker worker = workerRepository.findByLoginId(request.getLoginId())
                 .orElseThrow(() -> new NoSuchElementException("Worker Not Found"));
 
@@ -60,9 +61,9 @@ public class ClientService {
     }
 
     @Transactional
-    public ResultTemplate addCompany(CompanyCreateDto request) {
+    public ResultTemplate<?> addCompany(CompanyCreateDto request) {
         Company newCompany = Company.createCompany(request.getCompanyName(), request.getRegistrationNumber(), request.getCompanyLocation(), request.getCompanyContact());
-        log.info("토큰이 틀렸는데 여기오긴함?");
+
         companyRepository.save(newCompany);
         return ResultTemplate.builder().status(200).data("success").build();
     }
