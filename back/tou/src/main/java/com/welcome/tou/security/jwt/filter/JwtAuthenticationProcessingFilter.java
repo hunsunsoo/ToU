@@ -45,17 +45,15 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         String refreshToken = jwtService.getRefreshToken(request);
 
 
-
         if(accessToken != null && jwtService.isTokenValid(accessToken)) {
             Long workerId = jwtService.getWorkerId(accessToken);
 
             Optional<Worker> myWorker = workerRepository.findById(workerId);
             myWorker.ifPresent(this::saveAuthentication);
-            log.info("맞았을때");
             filterChain.doFilter(request, response);
             return;
         }
-        log.info("틀렸을때");
+
         filterChain.doFilter(request, response);
     }
 
