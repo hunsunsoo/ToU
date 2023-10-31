@@ -30,4 +30,12 @@ public class Product {
     @Column(name = "product_weight", nullable = false)
     private Double productWeight;
 
+    public static Product createProduct(Company company, String productName, Double productWeight) {
+        Product product = new Product();
+        product.company = company;
+        product.productName = productName;
+        product.productWeight = productWeight;
+        return product;
+    }
+
 }
