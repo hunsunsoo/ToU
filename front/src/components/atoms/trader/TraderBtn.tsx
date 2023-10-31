@@ -9,7 +9,7 @@ interface ButtonProps {
   disabled?: boolean; // 추가
 }
 
-type ButtonSize = "X-Large" | "Large" | "LargeR2" | "LargeL1" | "X-Medium" | "Medium"  | "Small";
+type ButtonSize = "Main" | "Large" | "LargeR2" | "LargeL1" | "X-Medium" | "Medium"  | "Small";
 
 type ButtonColor = "Blue" | "Grey" | "White" | "Sky" |"Transparent";
 
@@ -32,13 +32,12 @@ type ButtonColorStyle = {
 };
 
 const ButtonStyles: Record<ButtonSize, ButtonStyle> = {
-  "X-Large": {
-    height: "220px",
-    width:"180px",
+  "Main": {
+    height: "3.5rem",
+    width:"100%",
     weight: "Bold",
-    fontSize: "24px",
+    fontSize: "1rem",
     fontWeight:"",
-    // borderRadius: "",
   },
   Large: {
     height: "70px",
@@ -102,8 +101,8 @@ const ButtonColors: Record<ButtonColor, ButtonColorStyle> = {
   White: {
     backgroundColor: "#FFFFFF",
     color: "#000000",
-    border: "0.8px solid var(--festie-gray-600, #949494)",
-    boxShadow: "0px 1px 1px 0px rgba(32, 32, 32, 0.5)",
+    border: "0.8px solid var(--festie-gray-600, #ffffff)",
+    boxShadow: "3px 3px 10px 0px rgba(0, 0, 0, 0.3)",
   },
   Sky: {
     backgroundColor: "#EAF6FF",

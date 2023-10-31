@@ -39,7 +39,7 @@ const StyledHeader = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 4%;
+    /* margin-top: 4%; */
     border-bottom: 1px solid #000000;
     background-color: #fff;
     /* position: fixed; */
