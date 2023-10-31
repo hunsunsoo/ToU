@@ -46,12 +46,13 @@ const TraderCreateItemPage: React.FC = () => {
   }, [items]);
 
   useEffect(() => {
-    const allValid = items.length > 0 && items.every(
-      (item) => item.unit && item.price && item.amount && item.note
-    );
+    const allValid =
+      items.length > 0 &&
+      items.every(
+        (item) => item.unit && item.price && item.amount && item.note
+      );
     setShowNextButton(allValid);
   }, [items]);
-
 
   const handleInputChange = (
     index: number,
@@ -81,9 +82,9 @@ const TraderCreateItemPage: React.FC = () => {
   const removeItem = (index: number) => {
     setItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
-  
+
   return (
-    <StyledDiv>
+    <StyledContainer>
       <StyledHeader>
         <TraderHeader title="거래 명세서 생성" />
         <TraderSubtitle subtitle="거래 품목 등록" />
@@ -131,7 +132,11 @@ const TraderCreateItemPage: React.FC = () => {
                 }
               />
               <StyledDeleteItem>
-                <TraderBtn size="Small" color="White" onClick={() => removeItem(index)}>
+                <TraderBtn
+                  size="Small"
+                  color="White"
+                  onClick={() => removeItem(index)}
+                >
                   삭제
                 </TraderBtn>
               </StyledDeleteItem>
@@ -156,31 +161,29 @@ const TraderCreateItemPage: React.FC = () => {
           다음
         </TraderBtn>
       </StyledFooter>
-    </StyledDiv>
+    </StyledContainer>
   );
 };
 
 export default TraderCreateItemPage;
 
-const StyledHeader = styled.div`
-  width: 100%;
-  position: fixed;
-  top: 0;
-  z-index: 12;
-`;
-const StyledDiv = styled.div`
+const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const StyledBody = styled.div`
-  padding-top: 60px;
-  padding-bottom: 70px;
+const StyledHeader = styled.div`
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 12;
 `;
+
+const StyledBody = styled.div``;
 
 const StyledFooter = styled.div`
   width: 100%;
-  position: fixed;
+  position: sticky;
   bottom: 0;
 `;
 
@@ -218,4 +221,4 @@ const StyledTraderInputTitle = styled(TraderInputTitle)`
     align-items: flex-start;
     margin: 0;
   }
-`
+`;
