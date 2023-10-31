@@ -79,6 +79,7 @@ const StyledContainer = styled.div`
 const StyledHeader = styled.div`
   width: 100%;
 `;
+
 const StyledBody = styled.div``;
 
 const StyledFooter = styled.div`
