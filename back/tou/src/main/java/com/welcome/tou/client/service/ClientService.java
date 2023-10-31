@@ -7,6 +7,7 @@ import com.welcome.tou.client.domain.WorkerRepository;
 import com.welcome.tou.client.dto.request.CompanyCreateDto;
 import com.welcome.tou.client.dto.request.LoginRequestDto;
 import com.welcome.tou.client.dto.response.LoginResponseDto;
+import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.common.utils.ResultTemplate;
 import com.welcome.tou.security.jwt.service.JwtService;
@@ -37,13 +38,12 @@ public class ClientService {
     @Transactional
     public ResultTemplate<?> login(LoginRequestDto request) {
         Worker worker = workerRepository.findByLoginId(request.getLoginId())
-                .orElseThrow(() -> new NoSuchElementException("Worker Not Found"));
+                .orElseThrow(() -> new NoSuchElementException("해당하는 유저를 찾을 수 없습니다."));
 
-        boolean matches = passwordEncoder.matches(worker.getPassword(), request.getPassword());
+        boolean matches = passwordEncoder.matches(request.getPassword(), worker.getPassword());
 
         if (!matches) {
-            // 일치하지 않을 때 던질거
-            // throw new
+             throw new MismatchException(MismatchException.PASSWORD_MISMATCH);
         }
 
         String accessToken = jwtService.createAccessToken(worker);
