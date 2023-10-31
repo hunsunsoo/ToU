@@ -9,9 +9,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Builder
 @Data
-public class ProductCreateRequestDto {
+public class StockCreateByProducerRequestDto {
 
     private Long branchSeq;
-    private String productName;
-    private Double productWeight;
+    private String stockName;
+    private Double stockQuantity;
+    private String stockUnit;
+    private Long stockPrice;
+
 }
