@@ -58,7 +58,7 @@ export default TraderCalendar;
 
 const CalendarContainer = styled.div`
   position: relative;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 `;
 
 const DropdownButton = styled.button`
@@ -69,7 +69,7 @@ const DropdownButton = styled.button`
   padding: 0px 12px;
   color: var(--festie-gray-800, #3a3a3a);
   font-family: SUIT Variable;
-  font-size: 16px;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 500;
   line-height: 140%;

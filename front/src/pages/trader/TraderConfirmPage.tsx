@@ -25,7 +25,7 @@ const TraderConfirmPage = () => {
           <TraderInfoTitle infoTitle="인수자 정보" />
           {/* <TraderInputTitle inputTitle="업체명" size="Large" value={companyName} onChange={(e) => setCompanyName(e.target.value)} /> */}
           <TraderDropdownTitle inputTitle="관할 구역" />
-          <TraderDropdownTitle inputTitle="안수자" />
+          <TraderDropdownTitle inputTitle="인수자" />
           <TraderInfoTitle infoTitle="거래 일자 등록" />
           <TraderCalendarTitle />
         </MainPaddingContainer>
@@ -35,7 +35,7 @@ const TraderConfirmPage = () => {
           size="Large"
           color="Blue"
           onClick={() => {
-            navigate("/m/create/item");
+            navigate("/m/create/sign");
           }}
         >
           다음

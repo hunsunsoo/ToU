@@ -31,6 +31,6 @@ const Container = styled.div`
 `;
 
 const InputTitle = styled.span`
-  margin-left: 10px;
-  font-size: 20px;
+  /* margin-left: 10px; */
+  font-size: 1.3rem;
 `;
