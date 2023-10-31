@@ -10,7 +10,7 @@ const TraderSubtitle = (props: TraderSubtitleProps) => {
 
     return (
         <StyledSubtitle>
-            <div>{subTitle}</div>
+            <StyledSpan>{subTitle}</StyledSpan>
         </StyledSubtitle>
     );
 };
@@ -24,8 +24,12 @@ const StyledSubtitle = styled.div`
     font-size: 20px;
     /* font-weight: 500; */
     text-align: left;
-    padding-left: 20px; 
+    /* padding-left: 20px;  */
     display: flex;
     align-items: center;
     /* border-bottom: 0.8px solid var(--festie-gray-600, #949494); */
+`
+
+const StyledSpan = styled.span`
+    margin-left: 1rem;
 `
