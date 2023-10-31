@@ -45,10 +45,10 @@ public class Branch {
     private BranchType branchType;
 
     // 위도, 경도
-    @Column(name = "latitude", nullable = false)
+    @Column(name = "latitude", nullable = false, precision = 18, scale = 10)
     private BigDecimal latitude;
 
-    @Column(name = "longitude", nullable = false)
+    @Column(name = "longitude", nullable = false, precision = 18, scale = 10)
     private BigDecimal longitude;
 
 
