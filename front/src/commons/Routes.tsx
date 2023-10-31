@@ -17,13 +17,13 @@ export const ROUTES = {
   TRADER_SIGN: "sign",
   TRADER_STATE: "state",
 
-  // Officer
-  OFFICER_URL: "/*",
-  OFFICER_LOGIN: "/login",
-  OFFICER_MAIN: "/main",
-  OFFICER_CREATE: "/create",
-  OFFICER_DETAIL: "/detail",
-  OFFICER_MANAGE: "/manage",
-  OFFICER_STOCK: "/stock",
-  OFFICER_NOTICE: "/notice",
+// Officer
+OFFICER_URL: "/*",
+OFFICER_LOGIN: "/login",
+OFFICER_MAIN: "/main",
+OFFICER_CREATE: "/create",
+OFFICER_DETAIL: "/detail",
+OFFICER_MANAGE: "/manage",
+OFFICER_STOCK: "/stock",
+OFFICER_NOTICE: "/notice",
 };
