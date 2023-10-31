@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -41,6 +43,13 @@ public class Branch {
     @Enumerated(EnumType.STRING)
     @Column(name = "branch_type", length = 20, nullable = false)
     private BranchType branchType;
+
+    // 위도, 경도
+    @Column(name = "latitude", nullable = false)
+    private BigDecimal latitude;
+
+    @Column(name = "longitude", nullable = false)
+    private BigDecimal longitude;
 
 
     public enum BranchType {
