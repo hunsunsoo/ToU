@@ -17,7 +17,6 @@ export const ROUTES = {
   TRADER_SIGN: "sign",
   TRADER_STATE: "state",
 
-  // Officer
 // Officer
 OFFICER_URL: "/*",
 OFFICER_LOGIN: "/login",
