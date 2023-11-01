@@ -23,6 +23,14 @@ public class DashStockResponseDto {
 
     public static DashStockResponseDto from(Stock stock){
         DashStockResponseDto response = new DashStockResponseDto();
+        response.stockName = stock.getStockName();
+        response.fromBranchName = stock.getFromBranch().getBranchName();
+        response.fromCompanyName = stock.getFromBranch().getCompany().getCompanyName();
+        response.stockDate = stock.getStockDate();
+        response.stockPrice = stock.getStockPrice();
+        response.stockQuantity = stock.getStockQuantity();
+        response.stockUnit = stock.getStockUnit();
+
         return response;
     }
 }

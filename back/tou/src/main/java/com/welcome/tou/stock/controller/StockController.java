@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.xml.transform.Result;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/stock")
@@ -33,6 +35,16 @@ public class StockController {
     @GetMapping("/worker/product/list/{branchSeq}")
     public ResultTemplate getProductList(@PathVariable Long branchSeq){
         return stockService.getProductList(branchSeq);
+    }
+
+    @GetMapping("/worker/dash/list/{branchSeq}")
+    public ResultTemplate getDashStockList(@PathVariable Long branchSeq){
+        return stockService.getDashStockList(branchSeq);
+    }
+
+    @GetMapping("/worker/{branchSeq}/receiving/price")
+    public ResultTemplate getDashGraphStockList(@PathVariable Long branchSeq){
+        return stockService.getStockPriceGraphList(branchSeq);
     }
 
     @PostMapping("/worker/product")
