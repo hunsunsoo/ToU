@@ -1,6 +1,7 @@
 package com.welcome.tou.statement.controller;
 
 import com.welcome.tou.common.utils.ResultTemplate;
+import com.welcome.tou.statement.dto.request.SignStatementRequestDto;
 import com.welcome.tou.statement.dto.request.StatementCreateRequestDto;
 import com.welcome.tou.statement.service.StatementService;
 import lombok.AllArgsConstructor;
@@ -21,5 +22,11 @@ public class StatementController {
     @PostMapping("/worker")
     public ResultTemplate<?> addStatement(@RequestBody StatementCreateRequestDto request) {
         return statementService.addStatement(request);
+    }
+
+    @PostMapping("/worker/sign")
+    public ResultTemplate<?> signStatement(@RequestBody SignStatementRequestDto request,
+                                           @AuthenticationPrincipal UserDetails worker) {
+        return statementService.signStatement(request, worker);
     }
 }
