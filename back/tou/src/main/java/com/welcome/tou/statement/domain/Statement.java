@@ -49,13 +49,17 @@ public class Statement {
     @Column(name = "block_seq")
     private String blockSeq;
 
-    // 신청일시
-    @Column(name = "req_date", nullable = false)
-    private LocalDateTime reqDate;
+    // 생성일시
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
 
-    // 거래일시
-    @Column(name = "trade_date")
+    // 거래예정일시
+    @Column(name = "trade_date", nullable = false)
     private LocalDateTime tradeDate;
+
+    // 신청일시
+    @Column(name = "req_date")
+    private LocalDateTime reqDate;
 
     // 응답일시
     @Column(name = "res_date")
@@ -64,5 +68,15 @@ public class Statement {
 
     public enum StatementStatus {
         PREPARING, WAITING, COMPLETION, REFUSAL, DELETE
+    }
+
+    public static Statement createStatement(Branch reqBranch, Branch resBranch, StatementStatus status, LocalDateTime tradeDate) {
+        Statement statement = new Statement();
+        statement.reqBranch = reqBranch;
+        statement.resBranch = resBranch;
+        statement.statementStatus = status;
+        statement.createdDate = LocalDateTime.now();
+        statement.tradeDate = tradeDate;
+        return statement;
     }
 }
