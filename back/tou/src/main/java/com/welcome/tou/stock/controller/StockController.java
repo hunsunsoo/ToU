@@ -24,12 +24,16 @@ public class StockController {
 
     private final StockService stockService;
 
-
     @GetMapping("/officials/list/in/{branchSeq}")
     public ResultTemplate getStockList(@PathVariable Long branchSeq){
         return stockService.getStockList(branchSeq);
     }
 
+
+    @GetMapping("/worker/product/list/{branchSeq}")
+    public ResultTemplate getProductList(@PathVariable Long branchSeq){
+        return stockService.getProductList(branchSeq);
+    }
 
     @PostMapping("/worker/product")
     public ResultTemplate<?> addProduct(@RequestBody ProductCreateRequestDto request,
@@ -41,5 +45,7 @@ public class StockController {
     public ResultTemplate<?> addStockByProducer(@RequestBody StockCreateByProducerRequestDto request) {
         return stockService.addStockByProducer(request);
     }
+
+
 
 }

@@ -1,6 +1,8 @@
 package com.welcome.tou.stock.service;
 
 
+import com.welcome.tou.stock.dto.response.ProductListResponseDto;
+import com.welcome.tou.stock.dto.response.ProductResponseDto;
 import com.welcome.tou.stock.dto.response.StockListResponseDto;
 import com.welcome.tou.stock.dto.response.StockResponseDto;
 import org.springframework.http.HttpStatus;
@@ -32,7 +34,9 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class StockService {
-
+    private final ProductRepository productRepository;
+    private final WorkerRepository workerRepository;
+    private final BranchRepository branchRepository;
     private final StockRepository stockRepository;
 
     public ResultTemplate getStockList(Long branchSeq){
@@ -45,10 +49,17 @@ public class StockService {
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
-    private final ProductRepository productRepository;
-    private final WorkerRepository workerRepository;
-    private final BranchRepository branchRepository;
-    private final StockRepository stockRepository;
+
+    public ResultTemplate getProductList(Long branchSeq){
+        List<Product> list = productRepository.findByBranch(branchSeq);
+
+        ProductListResponseDto response = ProductListResponseDto.builder().productList(list.stream().map(product -> {
+            return ProductResponseDto.builder().productSeq(product.getProductSeq()).productName(product.getProductName()).build();
+        }).collect(Collectors.toList())).build();
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
 
     @Transactional
     public ResultTemplate<?> addProduct(ProductCreateRequestDto request, UserDetails worker) {
