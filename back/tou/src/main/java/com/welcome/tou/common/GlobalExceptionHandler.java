@@ -1,5 +1,6 @@
 package com.welcome.tou.common;
 
+import com.welcome.tou.common.exception.InvalidTradeException;
 import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.common.utils.ResultTemplate;
@@ -20,7 +21,7 @@ public class GlobalExceptionHandler {
 //        return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
 //    }
 
-    @ExceptionHandler({NotFoundException.class,MismatchException.class, NoSuchElementException.class})
+    @ExceptionHandler({NotFoundException.class,MismatchException.class, NoSuchElementException.class, InvalidTradeException.class})
     public ResultTemplate<?> handlerBadRequestExceptions(Exception e) {
         log.error("error",e);
         return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();

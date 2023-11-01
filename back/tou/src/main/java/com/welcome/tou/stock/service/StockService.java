@@ -132,6 +132,7 @@ public class StockService {
 
         Stock newStock = Stock.createStock(
                 branch,
+                branch,
                 request.getStockName(),
                 branch.getChannelCode(),
                 request.getStockQuantity(),

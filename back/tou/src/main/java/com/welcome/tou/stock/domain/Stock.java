@@ -75,6 +75,7 @@ public class Stock {
 
     public static Stock createStock(
                                     Branch branch,
+                                    Branch fromBranch,
                                     String stockName,
                                     String stockCode,
                                     Double stockQuantity,
@@ -85,6 +86,7 @@ public class Stock {
                                     UseStatus useStatus) {
         Stock stock = new Stock();
         stock.branch = branch;
+        stock.fromBranch = fromBranch;
         stock.stockName = stockName;
         stock.stockCode = stockCode;
         stock.stockQuantity = stockQuantity;
