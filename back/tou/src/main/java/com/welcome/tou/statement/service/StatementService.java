@@ -5,6 +5,7 @@ import com.welcome.tou.client.domain.BranchRepository;
 import com.welcome.tou.client.domain.Worker;
 import com.welcome.tou.client.domain.WorkerRepository;
 import com.welcome.tou.common.exception.InvalidTradeException;
+import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.utils.ResultTemplate;
 import com.welcome.tou.statement.domain.Item;
 import com.welcome.tou.statement.domain.ItemRepository;
@@ -20,7 +21,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -64,17 +64,50 @@ public class StatementService {
     }
 
 
+    // 거래명세서 서명
     @Transactional
     public ResultTemplate<?> signStatement(SignStatementRequestDto request, UserDetails worker) {
         Statement statement = statementRepository.findById(request.getStatementSeq())
                 .orElseThrow(() -> new NoSuchElementException("해당 거래가 존재하지 않습니다."));
 
         Long workerSeq = Long.parseLong(worker.getUsername());
-        Worker reqWorker = workerRepository.findById(workerSeq)
+        Worker myWorker = workerRepository.findById(workerSeq)
                 .orElseThrow(() -> new NoSuchElementException("요청 유저를 찾을 수 없습니다."));
 
+        if(request.getType().equals("SELL")) {
+            if(!statement.getStatementStatus().name().equals("PREPARING")){
+                throw new InvalidTradeException(InvalidTradeException.NOT_SIGNING_PROCEDURE);
+            }
 
-        return ResultTemplate.builder().status(200).data("success").build();
+            Branch myBranch = branchRepository.findById(statement.getReqBranch().getBranchSeq())
+                    .orElseThrow(() -> new NoSuchElementException("해당 업체가 존재하지 않습니다."));
+
+            if(myBranch.getCompany() != myWorker.getCompany()){
+                throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
+            }
+
+            statement.updateStatementSignFromReq(myWorker);
+            statementRepository.save(statement);
+
+        } else if(request.getType().equals("BUY")) {
+            if(!statement.getStatementStatus().name().equals("WAITING")){
+                throw new InvalidTradeException(InvalidTradeException.NOT_SIGNING_PROCEDURE);
+            }
+
+            Branch myBranch = branchRepository.findById(statement.getResBranch().getBranchSeq())
+                    .orElseThrow(() -> new NoSuchElementException("해당 업체가 존재하지 않습니다."));
+
+            if(myBranch.getCompany() != myWorker.getCompany()){
+                throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
+            }
+
+            statement.updateStatementSignFromRes(myWorker);
+            statementRepository.save(statement);
+
+            // 재고 쌓여야 함
+        }
+
+        return ResultTemplate.builder().status(200).data("서명이 완료되었습니다.").build();
 
     }
 

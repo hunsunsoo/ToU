@@ -12,5 +12,6 @@ import lombok.RequiredArgsConstructor;
 public class SignStatementRequestDto {
 
     private Long statementSeq;
+    private String type;
 
 }
