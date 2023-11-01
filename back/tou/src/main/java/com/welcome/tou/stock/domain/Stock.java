@@ -19,10 +19,6 @@ public class Stock {
     @Column(name = "stock_seq", unique = true, nullable = false)
     private Long stockSeq;
 
-    // 상품 참조키
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_seq")
-    private Product product;
 
     // 관할구역 참조키
     @ManyToOne(fetch = FetchType.LAZY)
@@ -70,5 +66,29 @@ public class Stock {
 
     public enum UseStatus {
         USED, UNUSED
+    }
+
+    public static Stock createStock(
+                                    Branch branch,
+                                    String stockName,
+                                    String stockCode,
+                                    Double stockQuantity,
+                                    String stockUnit,
+                                    LocalDateTime stockDate,
+                                    Long stockPrice,
+                                    InOutStatus inOutStatus,
+                                    UseStatus useStatus) {
+        Stock stock = new Stock();
+        stock.branch = branch;
+        stock.stockName = stockName;
+        stock.stockCode = stockCode;
+        stock.stockQuantity = stockQuantity;
+        stock.stockUnit = stockUnit;
+        stock.stockDate = stockDate;
+        stock.stockPrice = stockPrice;
+        stock.inOutStatus = inOutStatus;
+        stock.useStatus = useStatus;
+        return stock;
+
     }
 }

@@ -1,6 +1,6 @@
 package com.welcome.tou.stock.domain;
 
-import com.welcome.tou.client.domain.Company;
+import com.welcome.tou.client.domain.Branch;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,10 +17,10 @@ public class Product {
     @Column(name = "product_seq", unique = true, nullable = false)
     private Long productSeq;
 
-    // 사업체 참조키
+    // 관할구역 참조키
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_seq")
-    private Company company;
+    @JoinColumn(name = "branch_seq")
+    private Branch branch;
 
     // 상품명
     @Column(name = "product_name", length = 30, nullable = false)
@@ -29,5 +29,13 @@ public class Product {
     // 중량
     @Column(name = "product_weight", nullable = false)
     private Double productWeight;
+
+    public static Product createProduct(Branch branch, String productName, Double productWeight) {
+        Product product = new Product();
+        product.branch = branch;
+        product.productName = productName;
+        product.productWeight = productWeight;
+        return product;
+    }
 
 }

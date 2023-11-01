@@ -62,7 +62,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         String password = worker.getPassword();
 
         UserDetails userDetailsWorker = org.springframework.security.core.userdetails.User.builder()
-                .username(worker.getWorkerName())
+                .username(String.valueOf(worker.getWorkerSeq()))
                 .password(password)
                 .roles(worker.getRole().name())
                 .build();

@@ -17,4 +17,5 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
                    +"and s.useStatus = 'UNUSED'")
     List<Stock> findStockByBranchAndInOutStatusAndUseStatus(@Param("branchSeq") Long branchSeq);
 
+
 }
