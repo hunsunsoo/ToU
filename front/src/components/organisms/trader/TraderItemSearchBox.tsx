@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/sharp-light-svg-icons";
 
-const TraderSearchBox = () => {
+const TraderItemSearchBox = () => {
   return (
     <StyledContainer>
-      <SearchLabel>업체명</SearchLabel>
+      <SearchLabel>품목명</SearchLabel>
       <StyledDiv>
-        <SearchInput placeholder="검색어를 입력하세요" />
+        <SearchInput placeholder=" 품목을 입력하세요" />
         <SearchButton>
         <FontAwesomeIcon icon={faMagnifyingGlass} />
         </SearchButton>
@@ -17,7 +17,7 @@ const TraderSearchBox = () => {
   );
 };
 
-export default TraderSearchBox;
+export default TraderItemSearchBox;
 
 const StyledContainer = styled.div`
   width: 100%;
