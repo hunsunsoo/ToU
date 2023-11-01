@@ -14,7 +14,7 @@ public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "branch_seq", unique = true, nullable = false)
-    private Long BranchSeq;
+    private Long branchSeq;
 
     // 사업체 참조키
     @ManyToOne(fetch = FetchType.LAZY)
