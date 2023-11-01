@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DATA_SOURCE_URL}
+    username: ${DATA_SOURCE_USERNAME}
+    password: ${DATA_SOURCE_PASSWORD}
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    hibernate:
+      ddl-auto: update
+
+jwt:
+  secretKey: ${JWT_SECRET_KEY}
+
+  access:
+    expiration: 3600000
+    header: Authorization
+
+  refresh:
+    expiration: 1209600000
+    header: Authorization-refresh
