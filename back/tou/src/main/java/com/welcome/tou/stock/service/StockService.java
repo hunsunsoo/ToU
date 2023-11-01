@@ -1,12 +1,11 @@
 package com.welcome.tou.stock.service;
 
 
-import com.welcome.tou.stock.dto.response.ProductListResponseDto;
-import com.welcome.tou.stock.dto.response.ProductResponseDto;
-import com.welcome.tou.stock.dto.response.StockListResponseDto;
-import com.welcome.tou.stock.dto.response.StockResponseDto;
+import com.welcome.tou.common.exception.NotFoundException;
+import com.welcome.tou.stock.dto.response.*;
 import org.springframework.http.HttpStatus;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
@@ -39,18 +39,25 @@ public class StockService {
     private final BranchRepository branchRepository;
     private final StockRepository stockRepository;
 
-    public ResultTemplate getStockList(Long branchSeq){
 
+    public ResultTemplate getStockList(Long branchSeq) {
+
+        Branch branch = branchRepository.findById(branchSeq).orElseThrow(()->{
+            throw new NotFoundException(NotFoundException.BRANCH_NOT_FOUND);
+        });
         List<Stock> list = stockRepository.findStockByBranchAndInOutStatusAndUseStatus(branchSeq);
 
         StockListResponseDto response = StockListResponseDto.from(list.stream().map(stock -> {
-           return StockResponseDto.from(stock);
+            return StockResponseDto.from(stock);
         }).collect(Collectors.toList()));
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
-    public ResultTemplate getProductList(Long branchSeq){
+    public ResultTemplate getProductList(Long branchSeq) {
+        Branch branch = branchRepository.findById(branchSeq).orElseThrow(()->{
+            throw new NotFoundException(NotFoundException.BRANCH_NOT_FOUND);
+        });
         List<Product> list = productRepository.findByBranch(branchSeq);
 
         ProductListResponseDto response = ProductListResponseDto.builder().productList(list.stream().map(product -> {
@@ -58,6 +65,47 @@ public class StockService {
         }).collect(Collectors.toList())).build();
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getDashStockList(Long branchSeq) {
+        Branch branch = branchRepository.findById(branchSeq).orElseThrow(()->{
+            throw new NotFoundException(NotFoundException.BRANCH_NOT_FOUND);
+        });
+
+        List<Stock> list = stockRepository.findByBranchLimit5(branchSeq);
+
+        DashStockListResponseDto response = DashStockListResponseDto.builder().stockList(
+                list.stream().map(stock -> {
+                    return DashStockResponseDto.from(stock);
+                }).collect(Collectors.toList())).build();
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getStockPriceGraphList(Long branchSeq) {
+
+        Branch branch = branchRepository.findById(branchSeq).orElseThrow(()->{
+            throw new NotFoundException(NotFoundException.BRANCH_NOT_FOUND);
+        });
+
+        List<Stock> list = stockRepository.findDistinctByBranch(branchSeq);
+
+        //1번째 스트림 : product가 들어있는 list 돌며 이름이 동일한 stock List찾기
+        //2번째 스트림 : stockList 돌면서 priceList 만들기
+        //만든 priceList와 productName을 조합하여 ResponseDto생성
+        List<StockPriceListResponseDto> stockList = list.stream().map(st -> {
+                    List<StockPriceResponseDto> priceList = stockRepository.findByStockName(st.getStockName()).stream().map(stock -> {
+                        return StockPriceResponseDto.from(stock);
+                    }).collect(Collectors.toList());
+                    return StockPriceListResponseDto.builder().stockName(st.getStockName()).priceList(priceList).build();
+                }).sorted(Comparator.comparingInt((StockPriceListResponseDto dto) -> dto.getPriceList().size()).reversed())
+                .limit(4)
+                .collect(Collectors.toList());
+
+        StockPriceGraphListResponseDto response = StockPriceGraphListResponseDto.builder().stockList(stockList).build();
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(stockList).build();
+
     }
 
 
