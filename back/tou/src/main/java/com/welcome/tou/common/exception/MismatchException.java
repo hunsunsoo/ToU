@@ -6,6 +6,8 @@ public class MismatchException extends RuntimeException {
 
     public static final String WORKER_AND_BRANCH_MISMATCH = "해당 사업체의 실무자가 아닙니다.";
 
+    public static final String STOCK_IS_NOT_IN_BRANCH = "해당 지점의 재고가 아닙니다.";
+
     public MismatchException(String message){
         super(message);
     }

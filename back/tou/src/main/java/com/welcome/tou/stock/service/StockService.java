@@ -1,7 +1,9 @@
 package com.welcome.tou.stock.service;
 
 
+import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
+import com.welcome.tou.stock.dto.request.StockCreateByOfficialsRequestDto;
 import com.welcome.tou.stock.dto.response.*;
 import org.springframework.http.HttpStatus;
 
@@ -124,10 +126,18 @@ public class StockService {
     }
 
     @Transactional
-    public ResultTemplate<?> addStockByProducer(StockCreateByProducerRequestDto request) {
+    public ResultTemplate<?> addStockByProducer(StockCreateByProducerRequestDto request, UserDetails worker) {
 
         Branch branch = branchRepository.findById(request.getBranchSeq())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
+
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        if(branch.getCompany() != reqWorker.getCompany()) {
+            throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
+        }
 
         Stock newStock = Stock.createStock(
                 branch,
@@ -146,4 +156,42 @@ public class StockService {
         return ResultTemplate.builder().status(200).data("재고 추가 완료").build();
     }
 
+    @Transactional
+    public ResultTemplate<?> addStockByOfiicials(StockCreateByOfficialsRequestDto request, UserDetails worker){
+        Branch branch = branchRepository.findById(request.getBranchSeq())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
+
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        if(branch.getCompany() != reqWorker.getCompany()) {
+            throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
+        }
+
+        Stock beforeStock = stockRepository.findById(request.getBeforeStockSeq())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.STOCK_NOT_FOUND));
+
+        if(branch != beforeStock.getBranch()){
+            throw new MismatchException(MismatchException.STOCK_IS_NOT_IN_BRANCH);
+        }
+
+        beforeStock.updateUseStatus(Stock.UseStatus.USED);
+        stockRepository.save(beforeStock);
+
+        Stock newStock = Stock.createStock(beforeStock.getBranch(),
+                beforeStock.getFromBranch(),
+                request.getNewStockName(),
+                beforeStock.getStockCode(),
+                request.getNewStockQuantity(),
+                request.getNewStockUnit(),
+                LocalDateTime.now(),
+                request.getNewStockPrice(),
+                Stock.InOutStatus.OUT,
+                Stock.UseStatus.UNUSED);
+
+        stockRepository.save(newStock);
+
+        return ResultTemplate.builder().status(200).data("공정 처리가 완료되었습니다.").build();
+    }
 }
