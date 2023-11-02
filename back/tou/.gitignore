@@ -8,7 +8,6 @@ build/
 !**/src/test/**/build/
 
 ### env ###
-application.yml
 application.properties
 .env
 
