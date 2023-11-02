@@ -21,12 +21,14 @@ import com.welcome.tou.stock.domain.StockRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -43,7 +45,7 @@ public class StatementService {
     private final WorkerRepository workerRepository;
 
 
-    public ResultTemplate getTradeCountList( UserDetails worker, Long branchSeq) {
+    public ResultTemplate getTradeCountList(UserDetails worker, Long branchSeq) {
         Long workerSeq = Long.parseLong(worker.getUsername());
         Worker reqWorker = workerRepository.findById(workerSeq)
                 .orElseThrow(() -> new NoSuchElementException("요청 유저를 찾을 수 없습니다."));
@@ -51,6 +53,10 @@ public class StatementService {
         Branch branch = branchRepository.findById(branchSeq).orElseThrow(() -> {
             throw new NotFoundException(NotFoundException.BRANCH_NOT_FOUND);
         });
+
+        if(reqWorker.getCompany().getCompanySeq() != branch.getCompany().getCompanySeq()){
+            throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
+        }
 
         List<BranchTradeCountResponseDto> response;
         if (reqWorker.getRole().equals(Worker.Role.SELLER)) {
@@ -67,26 +73,44 @@ public class StatementService {
 
     }
 
-    public ResultTemplate getStatementDetail(Long statementSeq){
+    public ResultTemplate getStatementDetail(UserDetails worker, Long statementSeq) {
 
-        Statement statement = statementRepository.findById(statementSeq).orElseThrow(()->{
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker myWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Statement statement = statementRepository.findById(statementSeq).orElseThrow(() -> {
             throw new NotFoundException(NotFoundException.STATEMENT_NOT_FOUND);
         });
 
-
         Double totalPrice = 0.0;
+        StatementReqInfoResponseDto reqInfo;
+        StatementResInfoResponseDto resInfo;
+        if (statement.getStatementStatus().equals(Statement.StatementStatus.WAITING)){
+            reqInfo = null;
+            resInfo = null;
 
-        StatementReqInfoResponseDto reqInfo = StatementReqInfoResponseDto.from(statement);
-        StatementResInfoResponseDto resInfo = StatementResInfoResponseDto.from(statement);
+        }else if(statement.getStatementStatus().equals(Statement.StatementStatus.PREPARING)) {
+            reqInfo = StatementReqInfoResponseDto.from(statement);
+            resInfo = null;
+        }else {
+            reqInfo = StatementReqInfoResponseDto.from(statement);
+            resInfo = StatementResInfoResponseDto.from(statement);
+        }
+
+        if(!((reqInfo!=null && reqInfo.getCompanySeq() == myWorker.getCompany().getCompanySeq()) ||
+           (resInfo!=null && resInfo.getCompanySeq() == myWorker.getCompany().getCompanySeq()))){
+            throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
+        }
+
 
         List<ItemResponseDto> itemList = statement.getItems().stream().map(item -> {
             return ItemResponseDto.from(item);
         }).collect(Collectors.toList());
 
-        for(ItemResponseDto item : itemList){
+        for (ItemResponseDto item : itemList) {
             totalPrice += item.getStockTotalPrice();
         }
-
 
 
         StatementDetailResponseDto responseDto = StatementDetailResponseDto.builder().reqInfo(reqInfo).resInfo(resInfo).
@@ -104,7 +128,7 @@ public class StatementService {
         Branch resBranch = branchRepository.findById(request.getResponseBranch())
                 .orElseThrow(() -> new NotFoundException("수급 관할 구역이" + NotFoundException.BRANCH_NOT_FOUND));
 
-        if(reqBranch == resBranch){
+        if (reqBranch == resBranch) {
             throw new InvalidTradeException(InvalidTradeException.CANT_SAME_BRANCH);
         }
 
@@ -134,30 +158,30 @@ public class StatementService {
         Worker myWorker = workerRepository.findById(workerSeq)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
-        if(request.getType().equals("SELL")) {
-            if(!statement.getStatementStatus().name().equals("PREPARING")){
+        if (request.getType().equals("SELL")) {
+            if (!statement.getStatementStatus().name().equals("PREPARING")) {
                 throw new InvalidTradeException(InvalidTradeException.NOT_SIGNING_PROCEDURE);
             }
 
             Branch myBranch = branchRepository.findById(statement.getReqBranch().getBranchSeq())
                     .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
 
-            if(myBranch.getCompany() != myWorker.getCompany()){
+            if (myBranch.getCompany() != myWorker.getCompany()) {
                 throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
             }
 
             statement.updateStatementSignFromReq(myWorker);
             statementRepository.save(statement);
 
-        } else if(request.getType().equals("BUY")) {
-            if(!statement.getStatementStatus().name().equals("WAITING")){
+        } else if (request.getType().equals("BUY")) {
+            if (!statement.getStatementStatus().name().equals("WAITING")) {
                 throw new InvalidTradeException(InvalidTradeException.NOT_SIGNING_PROCEDURE);
             }
 
             Branch myBranch = branchRepository.findById(statement.getResBranch().getBranchSeq())
                     .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
 
-            if(myBranch.getCompany() != myWorker.getCompany()){
+            if (myBranch.getCompany() != myWorker.getCompany()) {
                 throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
             }
 
@@ -182,11 +206,11 @@ public class StatementService {
         Branch myBranch = branchRepository.findById(statement.getResBranch().getBranchSeq())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
 
-        if(myBranch.getCompany() != myWorker.getCompany()){
+        if (myBranch.getCompany() != myWorker.getCompany()) {
             throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
         }
 
-        if(statement.getStatementStatus() != Statement.StatementStatus.WAITING){
+        if (statement.getStatementStatus() != Statement.StatementStatus.WAITING) {
             throw new InvalidTradeException(InvalidTradeException.NOT_REFUSING_PROCEDURE);
         }
 
@@ -204,8 +228,8 @@ public class StatementService {
         Branch branch = statement.getResBranch();
         Branch fromBranch = statement.getReqBranch();
 
-        for(Stock st: stocks) {
-            if(!(st.getInOutStatus() == Stock.InOutStatus.OUT) || !(st.getUseStatus() == Stock.UseStatus.UNUSED)) {
+        for (Stock st : stocks) {
+            if (!(st.getInOutStatus() == Stock.InOutStatus.OUT) || !(st.getUseStatus() == Stock.UseStatus.UNUSED)) {
                 throw new InvalidTradeException(InvalidTradeException.INVALID_STOCK_FOR_TRADE);
             }
 
