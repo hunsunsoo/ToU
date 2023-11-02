@@ -1,5 +1,6 @@
 package com.welcome.tou.common;
 
+import com.welcome.tou.common.exception.InvalidTradeException;
 import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.common.utils.ResultTemplate;
@@ -14,15 +15,9 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-//    @ExceptionHandler()
-//    public ResultTemplate<?> handlerUnauthorizedException(Exception e) {
-//        log.error("error", e);
-//        return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
-//    }
-
-    @ExceptionHandler({NotFoundException.class,MismatchException.class, NoSuchElementException.class})
+    @ExceptionHandler({NotFoundException.class, MismatchException.class, InvalidTradeException.class})
     public ResultTemplate<?> handlerBadRequestExceptions(Exception e) {
-        log.error("error",e);
+        log.error("error", e);
         return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
     }
 }

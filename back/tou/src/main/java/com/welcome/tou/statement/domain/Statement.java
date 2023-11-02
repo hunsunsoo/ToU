@@ -84,4 +84,20 @@ public class Statement {
         statement.tradeDate = tradeDate;
         return statement;
     }
+
+    public void updateStatementSignFromReq(Worker reqWorker) {
+        this.reqWorker = reqWorker;
+        this.statementStatus = StatementStatus.WAITING;
+        this.reqDate = LocalDateTime.now();
+    }
+
+    public void updateStatementSignFromRes(Worker resWorker) {
+        this.resWorker = resWorker;
+        this.statementStatus = StatementStatus.COMPLETION;
+        this.resDate = LocalDateTime.now();
+    }
+
+    public void updateStatementStatus(StatementStatus statementStatus) {
+        this.statementStatus = statementStatus;
+    }
 }
