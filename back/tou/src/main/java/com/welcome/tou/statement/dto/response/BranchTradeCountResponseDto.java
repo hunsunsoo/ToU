@@ -8,11 +8,15 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class BranchTradeCountResponseDto {
 
     private String branchName;
-    private int branchTradeCount;
+    private Long branchTradeCount;
+
+    public BranchTradeCountResponseDto(String branchName, Long branchTradeCount) {
+        this.branchName = branchName;
+        this.branchTradeCount = branchTradeCount;
+    }
 
 
 }
