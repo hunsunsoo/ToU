@@ -12,7 +12,7 @@ import TraderInputTitle from "../../components/organisms/trader/TraderInputTitle
 import TraderInfoTitle from "../../components/organisms/trader/TraderInfoTitle";
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import TraderItemSearchBox from "../../components/organisms/trader/TraderItemSearchBox";
-import TraderTable from "../../components/organisms/trader/TraderTable";
+import TraderConfirmTable from "../../components/organisms/trader/TraderConfirmTable";
 
 const TraderConfirmPage = () => {
   const navigate = useNavigate();
@@ -20,27 +20,20 @@ const TraderConfirmPage = () => {
   const [companyName, setCompanyName] = useState("");
   const [section, setSection] = useState("");
   const [managerName, setManagerName] = useState("");
-  const trashIcon = <FontAwesomeIcon icon={faTrashCan} />
- 
-  //표에 들어갈 데이터 값, //표 속성
-  const tableData = [
-    ['키조개', '10', '1000', trashIcon],
-    ['키조개', '20', '2000', trashIcon],
-    ['키조개', '30', '3000', trashIcon],
-  ];
-  const subheaders = ['품목', '수량', '단가', ''];
-  const widths = ['35%', '30%', '30%', '5%'];
-  const height = '100px';
-  //
-
   const [disabled, setDisabled] = useState(true);
   const [icon, setIcon] = useState(faPenToSquare);
-
+  const [tableIcon, setTableIcon] = useState(faPenToSquare);
+  const [isEditable, setIsEditable] = useState(false);
+  
   const handleIconClick = () => {
     setDisabled(!disabled);
     setIcon(disabled ? faCheck : faPenToSquare);
   };
-
+  
+  const handleItemIconClick = () => {
+    setIsEditable(!isEditable);
+    setTableIcon(isEditable ? faPenToSquare : faCheck);
+  };
 
   return (
     <StyledContainer>
@@ -86,14 +79,15 @@ const TraderConfirmPage = () => {
             <TraderInfoTitle infoTitle="품목 정보" />
             <StyledSpan>
               <FontAwesomeIcon
-                icon={faPenToSquare}
+                icon={tableIcon}
                 size="xl"
                 style={{ color: "#000000" }}
+                onClick= {handleItemIconClick}
               />
             </StyledSpan>
           </StyledInfoTitle>
           <TraderItemSearchBox/>
-          <TraderTable subheaders={subheaders} rows={tableData} widths={widths} height={height}/>
+          <TraderConfirmTable isEditable={isEditable}/>
         </MainPaddingContainer>
       </StyledBody>
       <StyledFooter>
