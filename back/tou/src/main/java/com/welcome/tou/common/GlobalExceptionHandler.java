@@ -15,15 +15,9 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-//    @ExceptionHandler()
-//    public ResultTemplate<?> handlerUnauthorizedException(Exception e) {
-//        log.error("error", e);
-//        return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
-//    }
-
-    @ExceptionHandler({NotFoundException.class,MismatchException.class, NoSuchElementException.class, InvalidTradeException.class})
+    @ExceptionHandler({NotFoundException.class, MismatchException.class, InvalidTradeException.class})
     public ResultTemplate<?> handlerBadRequestExceptions(Exception e) {
-        log.error("error",e);
+        log.error("error", e);
         return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
     }
 }
