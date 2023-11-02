@@ -1,7 +1,10 @@
 spring:
+  profiles:
+    include: secret
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://${DATA_SOURCE_DOMAIN}${DATA_SOURCE_PORT}/${DATA_SOURCE_SCHEMA}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8"
+    url: jdbc:mysql://${DATA_SOURCE_DOMAIN}:${DATA_SOURCE_PORT}/${DATA_SOURCE_SCHEMA}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DATA_SOURCE_USERNAME}
     password: ${DATA_SOURCE_PASSWORD}
 
