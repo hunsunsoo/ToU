@@ -140,7 +140,7 @@ public class StockService {
                 LocalDateTime.now(),
                 request.getStockPrice(),
                 Stock.InOutStatus.OUT,
-                Stock.UseStatus.USED);
+                Stock.UseStatus.UNUSED);
 
         stockRepository.save(newStock);
 

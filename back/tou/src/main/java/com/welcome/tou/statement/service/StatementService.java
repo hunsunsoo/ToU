@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -104,11 +105,43 @@ public class StatementService {
             statement.updateStatementSignFromRes(myWorker);
             statementRepository.save(statement);
 
-            // 재고 쌓여야 함
+            adjustStockBaseOnStatement(statement);
         }
 
         return ResultTemplate.builder().status(200).data("서명이 완료되었습니다.").build();
 
+    }
+
+
+    public void adjustStockBaseOnStatement(Statement statement) {
+        Long statementSeq = statement.getStatementSeq();
+        List<Stock> stocks = itemRepository.findStockByStatementSeq(statementSeq);
+
+        Branch branch = statement.getResBranch();
+        Branch fromBranch = statement.getReqBranch();
+
+        for(Stock st: stocks) {
+            if(!(st.getInOutStatus() == Stock.InOutStatus.OUT) || !(st.getUseStatus() == Stock.UseStatus.UNUSED)) {
+                throw new InvalidTradeException(InvalidTradeException.INVALID_STOCK_FOR_TRADE);
+            }
+
+            st.updateUseStatus(Stock.UseStatus.USED);
+            stockRepository.save(st);
+
+            Stock newStock = Stock.createStock(
+                    branch,
+                    fromBranch,
+                    st.getStockName(),
+                    st.getStockCode() + branch.getChannelCode(),
+                    st.getStockQuantity(),
+                    st.getStockUnit(),
+                    statement.getResDate(),
+                    st.getStockPrice(),
+                    Stock.InOutStatus.IN,
+                    Stock.UseStatus.UNUSED);
+
+            stockRepository.save(newStock);
+        }
     }
 
 }

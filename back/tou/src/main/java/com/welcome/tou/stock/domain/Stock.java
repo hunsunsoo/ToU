@@ -98,4 +98,8 @@ public class Stock {
         return stock;
 
     }
+
+    public void updateUseStatus(UseStatus useStatus) {
+        this.useStatus = useStatus;
+    }
 }
