@@ -1,13 +1,16 @@
+import { useState } from 'react';
 import { styled } from "styled-components";
 import { BiSolidUser, BiSolidLockAlt } from 'react-icons/bi';
+import { UseAuth } from "../../commons/UseAuth";
 
 // import OfficerHeader from "../../components/organisms/officer/OfficerHeader";
 import OfficerBtn from "../../components/atoms/officer/OfficerBtn";
 
 const OfficerLoginPage = () => {
-  const onClick = () => {
+  const { login } = UseAuth();
 
-  }
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <MainDiv>
@@ -21,19 +24,26 @@ const OfficerLoginPage = () => {
             <BiSolidUser color="#666666" size={"30px"} style={{marginRight: "15px"}}/>
             <TextDiv> I D</TextDiv>
           </LoginIconDIv>
-          <StyleInput/>
+          <StyleInput
+            value={id}
+            onChange={(e) => setId(e.target.value)}
+          />
         </LoginDiv>
         <LoginDiv>
           <LoginIconDIv>
             <BiSolidLockAlt color="#666666" size={"30px"} style={{marginRight: "15px"}}/>
             <TextDiv>PW</TextDiv>
           </LoginIconDIv>
-          <StyleInput/>
+          <StyleInput
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </LoginDiv>
         <LoginBtnDiv>
           <OfficerBtn
             isImg={false}
-            onClick={onClick}>
+            onClick={() => login(id, password)}>
             로그인
           </OfficerBtn>
         </LoginBtnDiv>
