@@ -14,24 +14,29 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StatementReqInfoResponseDto {
 
+
+    private Long companySeq;
     private String companyName;
     private String registrationNumber;
     private String branchName;
     private String branchLocation;
     private String branchContact;
     private Branch.BranchType branchType;
+    private Long workerSeq;
     private String workerName;
 
     public static StatementReqInfoResponseDto from(Statement statement){
         StatementReqInfoResponseDto response = new StatementReqInfoResponseDto();
 
         Company company = statement.getReqBranch().getCompany();
+        response.companySeq = company.getCompanySeq();
         response.companyName = company.getCompanyName();
         response.registrationNumber = company.getRegistrationNumber();
         response.branchName = statement.getReqBranch().getBranchName();
         response.branchLocation = statement.getReqBranch().getBranchLocation();
         response.branchContact = statement.getReqBranch().getBranchContact();
         response.branchType = statement.getReqBranch().getBranchType();
+        response.workerSeq = statement.getReqWorker().getWorkerSeq();
         response.workerName = statement.getReqWorker().getWorkerName();
 
         return response;

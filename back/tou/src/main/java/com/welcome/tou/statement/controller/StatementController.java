@@ -23,8 +23,8 @@ public class StatementController {
     }
 
     @GetMapping("/worker/detail/{statementSeq}")
-    public ResultTemplate getStatementDetail(@PathVariable Long statementSeq){
-        return statementService.getStatementDetail(statementSeq);
+    public ResultTemplate getStatementDetail(@AuthenticationPrincipal UserDetails worker, @PathVariable Long statementSeq){
+        return statementService.getStatementDetail(worker, statementSeq);
     }
 
 
