@@ -11,6 +11,7 @@ import com.welcome.tou.statement.domain.Item;
 import com.welcome.tou.statement.domain.ItemRepository;
 import com.welcome.tou.statement.domain.Statement;
 import com.welcome.tou.statement.domain.StatementRepository;
+import com.welcome.tou.statement.dto.request.RefuseStatementRequestDto;
 import com.welcome.tou.statement.dto.request.SignStatementRequestDto;
 import com.welcome.tou.statement.dto.request.StatementCreateRequestDto;
 import com.welcome.tou.stock.domain.Stock;
@@ -110,6 +111,20 @@ public class StatementService {
 
         return ResultTemplate.builder().status(200).data("서명이 완료되었습니다.").build();
 
+    }
+
+    public ResultTemplate<?> refuseStatement(RefuseStatementRequestDto request, UserDetails worker) {
+        Statement statement = statementRepository.findById(request.getStatementSeq())
+                .orElseThrow(() -> new NoSuchElementException("해당 거래가 존재하지 않습니다."));
+
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker myWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NoSuchElementException("요청 유저를 찾을 수 없습니다."));
+
+        statement.updateStatementStatus(Statement.StatementStatus.REFUSAL);
+        statementRepository.save(statement);
+
+        return ResultTemplate.builder().status(200).data("해당 거래를 거절하였습니다.").build();
     }
 
 

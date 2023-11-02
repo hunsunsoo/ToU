@@ -91,4 +91,8 @@ public class Statement {
         this.statementStatus = StatementStatus.COMPLETION;
         this.resDate = LocalDateTime.now();
     }
+
+    public void updateStatementStatus(StatementStatus statementStatus) {
+        this.statementStatus = statementStatus;
+    }
 }
