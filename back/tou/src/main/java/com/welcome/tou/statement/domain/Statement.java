@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -64,6 +65,10 @@ public class Statement {
     // 응답일시
     @Column(name = "res_date")
     private LocalDateTime resDate;
+
+    //품목 목록
+    @OneToMany(mappedBy = "statement", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Item> items;
 
 
     public enum StatementStatus {

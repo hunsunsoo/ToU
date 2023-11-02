@@ -6,10 +6,7 @@ import com.welcome.tou.statement.service.StatementService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -18,8 +15,22 @@ public class StatementController {
 
     private final StatementService statementService;
 
+    @GetMapping("/worker/{branchSeq}/trade/count")
+    public ResultTemplate getTradeCountList(@AuthenticationPrincipal UserDetails worker, @PathVariable Long branchSeq){
+        return statementService.getTradeCountList(worker, branchSeq);
+    }
+
+    @GetMapping("/worker/detail/{statementSeq}")
+    public ResultTemplate getStatementDetail(@PathVariable Long statementSeq){
+        return statementService.getStatementDetail(statementSeq);
+    }
+
+
     @PostMapping("/worker")
     public ResultTemplate<?> addStatement(@RequestBody StatementCreateRequestDto request) {
         return statementService.addStatement(request);
     }
+
+
+
 }

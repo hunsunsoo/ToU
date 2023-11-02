@@ -20,7 +20,7 @@ jwt:
   secretKey: ${JWT_SECRET_KEY}
 
   access:
-    expiration: 3600000
+    expiration: 360000000
     header: Authorization
 
   refresh:
