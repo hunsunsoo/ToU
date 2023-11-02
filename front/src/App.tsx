@@ -1,3 +1,4 @@
+import { RecoilRoot } from "recoil";
 import {
   BrowserRouter as Router,
   Routes,
@@ -33,11 +34,16 @@ import ShopperHeader from "./components/organisms/shopper/ShopperHeader";
 import { MobileGlobalStyle } from "./commons/style/mobileStyle/MobileGlobalStyle";
 import OfficerHeader from "./components/organisms/officer/OfficerHeader";
 
+import { useRecoilValue } from 'recoil';
+import { UserInfoState } from './store/State';
+
+
 interface ShopperContainerProps {
   isMain: boolean;
 }
 
 const RoutesContainer = () => {
+
   const location = useLocation();
   console.log(location.pathname);
   return (
@@ -82,18 +88,26 @@ const RoutesContainer = () => {
       <Route
         path={ROUTES.OFFICER_URL}
         element={
-          <OfficerContainer>
-            <OfficerHeader/>
-            <Routes>
-              <Route path={ROUTES.OFFICER_LOGIN} element={<O_LOGIN />} />
-              <Route path={ROUTES.OFFICER_MAIN} element={<O_MAIN />} />
-              <Route path={ROUTES.OFFICER_CREATE} element={<O_CREATE />} />
-              <Route path={ROUTES.OFFICER_MANAGE} element={<O_MANAGE />} />
-              <Route path={ROUTES.OFFICER_STOCK} element={<O_STOCK />} />
-              <Route path={ROUTES.OFFICER_NOTICE} element={<O_NOTICE />} />
-              <Route path={ROUTES.OFFICER_DETAIL} element={<O_DETAIL />} />
-            </Routes>
-          </OfficerContainer>
+          useRecoilValue(UserInfoState).accessToken != null ? (
+            <OfficerContainer>
+              <OfficerHeader/>
+              <Routes>
+                <Route path={ROUTES.OFFICER_MAIN} element={<O_MAIN />} />
+                <Route path={ROUTES.OFFICER_CREATE} element={<O_CREATE />} />
+                <Route path={ROUTES.OFFICER_MANAGE} element={<O_MANAGE />} />
+                <Route path={ROUTES.OFFICER_STOCK} element={<O_STOCK />} />
+                <Route path={ROUTES.OFFICER_NOTICE} element={<O_NOTICE />} />
+                <Route path={ROUTES.OFFICER_DETAIL} element={<O_DETAIL />} />
+              </Routes>
+            </OfficerContainer>
+          ) : (
+            <OfficerContainer>
+              <OfficerHeader/>
+              <Routes>
+                <Route path={ROUTES.OFFICER_LOGIN} element={<O_LOGIN />} />
+              </Routes>
+            </OfficerContainer>
+          )
         }
       />
     </Routes>
@@ -102,9 +116,11 @@ const RoutesContainer = () => {
 
 const App = () => {
   return (
-    <Router>
-      <RoutesContainer />
-    </Router>
+    <RecoilRoot>
+      <Router>
+        <RoutesContainer />
+      </Router>
+    </RecoilRoot>
   );
 };
 
