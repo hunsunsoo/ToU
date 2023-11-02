@@ -37,12 +37,12 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .anyRequest().permitAll();
-//                .requestMatchers("/api/client/login").permitAll()
-//                .requestMatchers("/api/client/company").hasRole("SELLER")
-//                .anyRequest().authenticated();
-//                .and()
-//                .addFilterBefore(new JwtAuthenticationProcessingFilter(jwtService, workerRepository), UsernamePasswordAuthenticationFilter.class);
+//                .anyRequest().permitAll();
+                .requestMatchers("/api/client/login").permitAll()
+                .requestMatchers("/api/client/company").hasRole("SELLER")
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(new JwtAuthenticationProcessingFilter(jwtService, workerRepository), UsernamePasswordAuthenticationFilter.class);
 
         return http.getOrBuild();
     }
