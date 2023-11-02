@@ -121,6 +121,17 @@ public class StatementService {
         Worker myWorker = workerRepository.findById(workerSeq)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
+        Branch myBranch = branchRepository.findById(statement.getResBranch().getBranchSeq())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
+
+        if(myBranch.getCompany() != myWorker.getCompany()){
+            throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
+        }
+
+        if(statement.getStatementStatus() != Statement.StatementStatus.WAITING){
+            throw new InvalidTradeException(InvalidTradeException.NOT_REFUSING_PROCEDURE);
+        }
+
         statement.updateStatementStatus(Statement.StatementStatus.REFUSAL);
         statementRepository.save(statement);
 
