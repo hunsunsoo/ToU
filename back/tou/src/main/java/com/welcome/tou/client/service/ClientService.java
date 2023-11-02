@@ -19,8 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
-
 @DependsOn("JwtService")
 @Slf4j
 @Service
@@ -38,7 +36,7 @@ public class ClientService {
     @Transactional
     public ResultTemplate<?> login(LoginRequestDto request) {
         Worker worker = workerRepository.findByLoginId(request.getLoginId())
-                .orElseThrow(() -> new NoSuchElementException("해당하는 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
         boolean matches = passwordEncoder.matches(request.getPassword(), worker.getPassword());
 

@@ -6,6 +6,7 @@ import com.welcome.tou.client.domain.Worker;
 import com.welcome.tou.client.domain.WorkerRepository;
 import com.welcome.tou.common.exception.InvalidTradeException;
 import com.welcome.tou.common.exception.MismatchException;
+import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.common.utils.ResultTemplate;
 import com.welcome.tou.statement.domain.Item;
 import com.welcome.tou.statement.domain.ItemRepository;
@@ -23,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -41,10 +41,10 @@ public class StatementService {
     @Transactional
     public ResultTemplate<?> addStatement(StatementCreateRequestDto request) {
         Branch reqBranch = branchRepository.findById(request.getRequestBranch())
-                .orElseThrow(() -> new NoSuchElementException("요청 업체를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
 
         Branch resBranch = branchRepository.findById(request.getResponseBranch())
-                .orElseThrow(() -> new NoSuchElementException("상대 업체를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("수급 관할 구역이" + NotFoundException.BRANCH_NOT_FOUND));
 
         if(reqBranch == resBranch){
             throw new InvalidTradeException(InvalidTradeException.CANT_SAME_BRANCH);
@@ -55,7 +55,7 @@ public class StatementService {
 
         for(int i=0; i<request.getItems().size(); i++){
             Stock stock = stockRepository.findById(request.getItems().get(i))
-                    .orElseThrow(() -> new NoSuchElementException("재고를 찾을 수 없습니다."));
+                    .orElseThrow(() -> new NotFoundException(NotFoundException.STOCK_NOT_FOUND));
             Item newItem = Item.createItem(newStatement, stock);
             itemRepository.save(newItem);
         }
@@ -70,11 +70,11 @@ public class StatementService {
     @Transactional
     public ResultTemplate<?> signStatement(SignStatementRequestDto request, UserDetails worker) {
         Statement statement = statementRepository.findById(request.getStatementSeq())
-                .orElseThrow(() -> new NoSuchElementException("해당 거래가 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(NotFoundException.STATEMENT_NOT_FOUND));
 
         Long workerSeq = Long.parseLong(worker.getUsername());
         Worker myWorker = workerRepository.findById(workerSeq)
-                .orElseThrow(() -> new NoSuchElementException("요청 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
         if(request.getType().equals("SELL")) {
             if(!statement.getStatementStatus().name().equals("PREPARING")){
@@ -82,7 +82,7 @@ public class StatementService {
             }
 
             Branch myBranch = branchRepository.findById(statement.getReqBranch().getBranchSeq())
-                    .orElseThrow(() -> new NoSuchElementException("해당 업체가 존재하지 않습니다."));
+                    .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
 
             if(myBranch.getCompany() != myWorker.getCompany()){
                 throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
@@ -97,7 +97,7 @@ public class StatementService {
             }
 
             Branch myBranch = branchRepository.findById(statement.getResBranch().getBranchSeq())
-                    .orElseThrow(() -> new NoSuchElementException("해당 업체가 존재하지 않습니다."));
+                    .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
 
             if(myBranch.getCompany() != myWorker.getCompany()){
                 throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
@@ -115,11 +115,11 @@ public class StatementService {
 
     public ResultTemplate<?> refuseStatement(RefuseStatementRequestDto request, UserDetails worker) {
         Statement statement = statementRepository.findById(request.getStatementSeq())
-                .orElseThrow(() -> new NoSuchElementException("해당 거래가 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(NotFoundException.STATEMENT_NOT_FOUND));
 
         Long workerSeq = Long.parseLong(worker.getUsername());
         Worker myWorker = workerRepository.findById(workerSeq)
-                .orElseThrow(() -> new NoSuchElementException("요청 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
         statement.updateStatementStatus(Statement.StatementStatus.REFUSAL);
         statementRepository.save(statement);

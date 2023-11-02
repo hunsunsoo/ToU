@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -113,10 +112,10 @@ public class StockService {
     public ResultTemplate<?> addProduct(ProductCreateRequestDto request, UserDetails worker) {
         Long workerSeq = Long.parseLong(worker.getUsername());
         Worker reqWorker = workerRepository.findById(workerSeq)
-                .orElseThrow(() -> new NoSuchElementException("요청 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
         Branch branch = branchRepository.findById(request.getBranchSeq())
-                .orElseThrow(() -> new NoSuchElementException("요청 업체를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
 
         Product newProduct = Product.createProduct(branch, request.getProductName(), request.getProductWeight());
         productRepository.save(newProduct);
@@ -128,7 +127,7 @@ public class StockService {
     public ResultTemplate<?> addStockByProducer(StockCreateByProducerRequestDto request) {
 
         Branch branch = branchRepository.findById(request.getBranchSeq())
-                .orElseThrow(() -> new NoSuchElementException("요청 업체를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
 
         Stock newStock = Stock.createStock(
                 branch,
