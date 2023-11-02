@@ -16,7 +16,7 @@ const TraderStateFilter = () => {
   return (
     <StyledContainer>
       <TraderStateDropdown onSortChange={handleSortChange} />
-      <TraderSignCheck />
+      <TraderSignCheck label="서명 필요만 보기" />
     </StyledContainer>
   );
 };
