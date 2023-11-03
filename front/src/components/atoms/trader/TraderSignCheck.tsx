@@ -49,4 +49,4 @@ const StyledIcon = styled.span`
 
 // 사용 예시
 // <TraderSignCheck label="서명 필요만 보기" />
-// <TraderSignCheck label="내 관할구역만 보기" />
+// <TraderSignCheck label="내 담당 명세만 보기" />
