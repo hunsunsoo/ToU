@@ -51,3 +51,4 @@ public class EnrollAdmin {
 		System.out.println("Successfully enrolled user \"admin\" and imported it into the wallet");
 	}
 }
+
