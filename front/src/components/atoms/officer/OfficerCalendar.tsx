@@ -22,6 +22,7 @@ const OfficerCalendar = () => {
 export default OfficerCalendar;
 
 const CalendarDiv = styled.div`
+  height: 82%;
   border: 1px solid black;
   border-radius: 30px;
   margin: 20px 0 20px 20px;

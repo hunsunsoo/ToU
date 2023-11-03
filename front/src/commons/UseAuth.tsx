@@ -3,7 +3,7 @@ import { authAxios } from "../components/api/customAxios";
 import {
   UserInfoState,
 } from "../store/State";
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 export function UseAuth() {
   const userInfo = useRecoilValue(UserInfoState);
@@ -26,21 +26,28 @@ export function UseAuth() {
 }, [accessToken, setUserInfo]);
 
 const login = async (id: string, password: string) => {
-  const body = {
-    loginId: id,
-    password: password,
+  try {
+    const body = {
+      loginId: id,
+      password: password,
+    };
+
+    const res = await authAxios.post("/client/login", body);
+    
+    setUserInfo(() => ({
+      accessToken: res.data.data.accessToken,
+      workerSeq: res.data.data.worker.workerSeq,
+      workerName: res.data.data.worker.workerName,
+      workerRole: res.data.data.worker.role,
+      selectedBranch: res.data.data.branches[0], // 여기서는 첫 번째 branch를 선택
+      branchList: res.data.data.branches,
+      companySeq: res.data.data.company.companySeq,
+      companyName: res.data.data.company.companyName,
+    }));
+
+  } catch (error) {
+    console.log(error);
   }
-  authAxios.post("/client/login", body)
-    .then((res) => {
-      setUserInfo((prevUserInfo) => ({
-        ...prevUserInfo,
-        accessToken: res.data.data.accessToken,
-      }));
-      console.log(res);
-    })
-    .catch((res) => {
-      console.log(res);
-    });
 };
   
 return { login };
