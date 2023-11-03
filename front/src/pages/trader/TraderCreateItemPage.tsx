@@ -162,7 +162,7 @@ const TraderCreateItemPage: React.FC = () => {
         <TraderBtn
           size="Large"
           color={showNextButton ? "Blue" : "Grey"}
-          onClick={() => handleItemClick(2)}
+          onClick={() => handleItemClick(2)} // 여기 billId 받아야 함
           disabled={!showNextButton}
         >
           다음
@@ -179,7 +179,6 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
 `;
 
 const StyledHeader = styled.div`
@@ -218,6 +217,7 @@ const StyledInfoTitle = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
 const StyledSpan = styled.span`
   display: inline-flex;
   align-items: center;
