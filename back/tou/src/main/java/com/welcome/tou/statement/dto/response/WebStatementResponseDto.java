@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,19 +21,25 @@ public class WebStatementResponseDto {
     private String companyName;
     private String workerName;
     private String itemName;
-    private Double totalPrice;
+    private String totalPrice;
     private LocalDateTime tradeDate;
     private Statement.StatementStatus statementStatus;
 
 
-    public static WebStatementResponseDto from(Statement statement, Double totalPrice){
+    public static WebStatementResponseDto from(Statement statement, String totalPrice) {
         WebStatementResponseDto response = new WebStatementResponseDto();
         response.statementSeq = statement.getStatementSeq();
         response.companyName = statement.getResBranch().getCompany().getCompanyName();
         response.workerName = statement.getReqWorker().getWorkerName();
         List<Item> items = statement.getItems();
-        response.itemName = items.get(items.size()-1)+"외 "+(items.size()-1)+"건";
-        response.totalPrice = totalPrice;
+        if (items.size() != 0) {
+            response.itemName = items.get(items.size() - 1).getStock().getStockName() + " 외" + (items.size() - 1) + "건";
+            response.totalPrice = totalPrice;
+        } else {
+            response.itemName = "목록 없음";
+            response.totalPrice = "0";
+        }
+
         response.tradeDate = statement.getTradeDate();
         response.statementStatus = statement.getStatementStatus();
 
