@@ -18,7 +18,10 @@ interface CalendarWrapperProps {
 }
 
 const TraderCalendar: React.FC<TraderCalendarProps> = ({ onChange, value }) => {
-  const [nowDate, setNowDate] = useState<string>("거래일자를 등록하세요");
+  const today = new Date();
+  const formattedDate = `${today.getFullYear()}년 ${String(today.getMonth() + 1).padStart(2, '0')}월 ${String(today.getDate()).padStart(2, '0')}일`;
+
+  const [nowDate, setNowDate] = useState<string>(formattedDate);
   const [OpenYN, setOpenYN] = useState<boolean>(false);
 
   const handleToggleCalendar = () => {
