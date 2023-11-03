@@ -176,35 +176,23 @@ function FormComponent() {
 export default FormComponent;
 
 const Styles = styled.div`
-  padding: 1rem;
 
   table {
     border-spacing: 0;
-    border: 1px solid black;
+    border-collapse: collapse;
     width: 100%;
 
-    th {
-      margin: 0;
+    th, td {
       padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-      background-color: #eaeaea; // 헤더의 배경색을 회색으로 변경
+      border: 1px solid black; // 모든 셀에 테두리를 적용
+    }
 
-      :last-child {
-        border-right: 0;
-      }
+    th {
+      background-color: #eaeaea; // 헤더의 배경색을 회색으로 변경
     }
 
     td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
       background-color: white; // 아이템의 배경색을 흰색으로 변경
-
-      :last-child {
-        border-right: 0;
-      }
     }
   }
 `;

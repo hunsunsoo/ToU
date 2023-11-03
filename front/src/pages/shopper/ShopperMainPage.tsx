@@ -1,30 +1,30 @@
 import { styled } from "styled-components";
 import { Canvas } from "@react-three/fiber";
+
 import { MainPaddingContainer } from "./../../commons/style/mobileStyle/MobileLayoutStyle";
-// import ShopperEarth from "../../components/atoms/shopper/ShopperEarth";
 import { EarthCanvas } from "./../../components/EarthCanvas/index";
-import { OrbitControls } from "@react-three/drei";
 
 import ShopperTitle from "../../components/atoms/shopper/ShopperTitle";
 import ShopperItemList from "../../components/organisms/shopper/ShopperItemList";
 
 const ShopperMainPage = () => {
   return (
-    // <StyledDiv>
       <StyledMainPaddingContainer>
         <ShopperTitle />
 
-        <Canvas camera={{ fov: 45, near: 0.1, far: 1000, position: [0, 0, 0] }}>
-          {/* <ShopperEarth /> */}
-          <pointLight position={[0, 0, 3]} />
-          <EarthCanvas />
-          {/* OrbitControls: 클릭해서 지구본 뺑뻉 돌릴 수 있음 */}
-          {/* <OrbitControls /> */}
-        </Canvas>
+        <ContentContainer>
+          <CanvasContainer>
+            <Canvas camera={{ fov: 45, near: 0.1, far: 1000, position: [0, 0, 0] }}>
+              <EarthCanvas />
+            </Canvas>
+          </CanvasContainer>
+          
+          <ShopperItemListContainer>
+            <ShopperItemList />
+          </ShopperItemListContainer>
+        </ContentContainer>
 
-        <ShopperItemList />
       </StyledMainPaddingContainer>
-    // </StyledDiv>
   );
 };
 
@@ -32,12 +32,33 @@ export default ShopperMainPage;
 
 const StyledMainPaddingContainer = styled(MainPaddingContainer)`
   display: flex;
-  flex-direction: column; // 세로 정렬
-  height: calc(100vh - 45px); // 전체 세로 높이 - header 높이
+  flex-direction: column;
+  height: calc(100vh - 45px);
   width: 100%;
   position: fixed;
 `;
 
-// const StyledDiv = styled.div`
-//   position: fixed;
-// `;
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+`;
+
+const CanvasContainer = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+`;
+
+const ShopperItemListContainer = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.8);  // 배경 색상 (선택사항)
+  max-height: 150px;  // 원하는 높이 설정
+  overflow-y: auto;
+  z-index: 1;  // 필요하면 z-index를 조절해주세요
+`;

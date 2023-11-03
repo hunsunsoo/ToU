@@ -1,28 +1,36 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { BiChevronDown, BiChevronUp } from "react-icons/bi";
+
+interface Props {
+  setSelectedRole: (role: string) => void;
+}
 
 const options = ["전체", "공급", "수급"];
 
-const TraderRoleDropdown: React.FC = () => {
+const TraderRoleDropdown: React.FC<Props> = ({ setSelectedRole }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [selectedOption, setSelectedOption] = useState<string>(options[0]);
+
+  const handleOptionClick = (option: string) => {
+    setSelectedOption(option);
+    setSelectedRole(option);
+    setIsOpen(false);
+  };
 
   return (
     <DropdownContainer>
       <DropdownButton onClick={() => setIsOpen(!isOpen)}>
         {selectedOption}
-        {isOpen ? <BiChevronUp  size = "30"/> : <BiChevronDown  size = "30"/>}
+        {isOpen ? <BiChevronUp size="30" /> : <BiChevronDown size="30" />}
       </DropdownButton>
       {isOpen && (
         <DropdownList>
           {options.map((option) => (
-            <DropdownListItem 
-              key={option} 
-              onClick={() => {
-                setSelectedOption(option);
-                setIsOpen(false);
-              }}>
+            <DropdownListItem
+              key={option}
+              onClick={() => handleOptionClick(option)}
+            >
               {option}
             </DropdownListItem>
           ))}
@@ -32,12 +40,14 @@ const TraderRoleDropdown: React.FC = () => {
   );
 };
 
+export default TraderRoleDropdown;
+
 const DropdownContainer = styled.div`
   position: relative;
   width: 100%;
   display: flex;
   justify-content: center;
-  margin: 25px 0 25px 0;
+  margin-top: 1rem;
 `;
 
 const DropdownButton = styled.button`
@@ -53,7 +63,7 @@ const DropdownButton = styled.button`
 `;
 
 const DropdownList = styled.ul`
- font-size: 24px;
+  font-size: 24px;
   position: absolute;
   top: 100%;
   width: fit-content;
@@ -65,7 +75,7 @@ const DropdownList = styled.ul`
   margin: 0;
   padding: 0;
   background-color: white;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 2;
 `;
 
@@ -76,5 +86,3 @@ const DropdownListItem = styled.li`
     background-color: #f7f7f7;
   }
 `;
-
-export default TraderRoleDropdown;
