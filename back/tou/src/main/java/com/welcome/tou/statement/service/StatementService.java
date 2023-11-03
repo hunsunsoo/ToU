@@ -127,6 +127,8 @@ public class StatementService {
                                                                 String otherWorkerName, Boolean isMine, UserDetails worker, LocalDate startDate, LocalDate endDate,
                                                                 Statement.StatementStatus status, String productName) {
 
+
+        log.info("endDate :{}",endDate);
         //관할구역 예외관리
         Branch reqBranch = branchRepository.findById(branchSeq)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
@@ -163,8 +165,6 @@ public class StatementService {
         if (endPage > list.getTotalPages()) {
             endPage = list.getTotalPages();
         }
-
-
         int pre;
         int prevPageGroupEnd = startPage - 1; // 이전 페이지 그룹의 마지막 페이지
         if (prevPageGroupEnd >= 1) {
@@ -184,6 +184,8 @@ public class StatementService {
         int start = (currentPage - 1) * list.getSize() + 1; // 시작 글 번호
 
 
+        if(page> list.getTotalPages())
+            throw new BadRequestException(BadRequestException.OVER_PAGE_REQUEST);
         List<WebStatementResponseDto> statementList = list.getContent()
                 .stream()
                 .map(statement -> {

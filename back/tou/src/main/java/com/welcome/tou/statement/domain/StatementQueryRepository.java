@@ -4,6 +4,7 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static com.welcome.tou.statement.domain.QStatement.statement;
-
+@Slf4j
 @Repository
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -27,6 +28,8 @@ public class StatementQueryRepository {
             String otherWorkerName, Boolean isMine, Long workerSeq, LocalDate startDate, LocalDate endDate,
             Statement.StatementStatus status, String productName){
         QStatement statement = QStatement.statement;
+
+        log.info("endDate of querydsl :{} ", endDate);
 
         QueryResults<Statement> results = queryFactory.selectFrom(statement)
                 .where(
@@ -100,7 +103,8 @@ public class StatementQueryRepository {
     private BooleanExpression dateTo(LocalDate endDate) {
 
         if (endDate != null) {
-            LocalDateTime endDateTime = endDate.atTime(23, 59, 59, 999999999); // endDate의 종료 시간
+            LocalDateTime endDateTime = endDate.atTime(23, 59, 59, 9999999); // endDate의 종료 시간
+            log.info("endDateTime in querydsl : {}", endDateTime);
             return statement.tradeDate.loe(endDateTime);
         } else {
             return null;
