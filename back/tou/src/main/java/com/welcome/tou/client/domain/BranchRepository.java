@@ -11,4 +11,5 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
     @Query("select b from Branch b "
            +"where b.company.companySeq = :companySeq")
     List<Branch> findByCompanySeq(@Param("companySeq") Long companySeq);
+
 }
