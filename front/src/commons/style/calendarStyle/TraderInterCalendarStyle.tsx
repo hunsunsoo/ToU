@@ -1,16 +1,16 @@
 import styled from "styled-components";
 
 
-interface CalendarWrapperProps {
-    OpenYN: boolean;
+interface InterCalendarWrapperProps {
+    OpenYN2: boolean;
   }
   
-export const CalendarWrapper = styled.div<CalendarWrapperProps>`
+export const InterCalendarWrapper = styled.div<InterCalendarWrapperProps>`
   z-index: 10;
   position: absolute;
   top: 100%;
   right: 0;
-  display: ${(props) => (props.OpenYN ? "block" : "none")};
+  display: ${(props) => (props.OpenYN2 ? "block" : "none")};
 
   .react-calendar {
     width: 21.875rem;
@@ -117,7 +117,6 @@ export const CalendarWrapper = styled.div<CalendarWrapperProps>`
     background: none;
     text-align: center;
     line-height: 16px;
-    font: inherit;
     font-size: 0.9em;
     font-weight: bold;
   }
@@ -125,10 +124,10 @@ export const CalendarWrapper = styled.div<CalendarWrapperProps>`
   .react-calendar__tile:disabled {
     background-color: #f0f0f0;
   }
-
+//마우스 올라간 스타일
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
-    background-color: #e6e6e6;
+    background-color: #2d8cec;
   }
 
   .react-calendar__tile--now {
@@ -144,31 +143,28 @@ export const CalendarWrapper = styled.div<CalendarWrapperProps>`
     background: #76baff;
   }
 
+  .react-calendar__tile--rangeStart,
+  .react-calendar__tile--rangeEnd {
+    background-color:#ffa9a9;
+  }
+
   .react-calendar__tile--hasActive:enabled:hover,
   .react-calendar__tile--hasActive:enabled:focus {
     background: #a9d4ff;
   }
-
+  //선택된 구간 전체
   .react-calendar__tile--active {
-    background: #006edc;
+    background: #91cdfe;
     color: white;
   }
 
   .react-calendar__tile--active:enabled:hover,
   .react-calendar__tile--active:enabled:focus {
-    background: #1087ff;
+    background: #2d8cec;
   }
-
-  .react-calendar__tile--rangeStart,
-  .react-calendar__tile--rangeEnd {
-    border-radius: 1rem;
-    background-color:#a9d4ff;
-    color: #ffffff;
-  }
-
-
+ // 호버링 될때 선택된 구간
   .react-calendar--selectRange .react-calendar__tile--hover {
-    background-color: #e6e6e6;
+    background-color: #cde8ff;
   }
 `;
 
