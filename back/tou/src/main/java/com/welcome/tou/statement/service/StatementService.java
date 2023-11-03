@@ -8,10 +8,7 @@ import com.welcome.tou.common.exception.InvalidTradeException;
 import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.common.utils.ResultTemplate;
-import com.welcome.tou.statement.domain.Item;
-import com.welcome.tou.statement.domain.ItemRepository;
-import com.welcome.tou.statement.domain.Statement;
-import com.welcome.tou.statement.domain.StatementRepository;
+import com.welcome.tou.statement.domain.*;
 import com.welcome.tou.statement.dto.request.RefuseStatementRequestDto;
 import com.welcome.tou.statement.dto.request.SignStatementRequestDto;
 import com.welcome.tou.statement.dto.request.StatementCreateRequestDto;
@@ -20,15 +17,18 @@ import com.welcome.tou.stock.domain.Stock;
 import com.welcome.tou.stock.domain.StockRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -43,6 +43,7 @@ public class StatementService {
     private final BranchRepository branchRepository;
     private final StockRepository stockRepository;
     private final WorkerRepository workerRepository;
+    private final StatementQueryRepository statementQueryRepository;
 
 
     public ResultTemplate getTradeCountList(UserDetails worker, Long branchSeq) {
@@ -54,7 +55,7 @@ public class StatementService {
             throw new NotFoundException(NotFoundException.BRANCH_NOT_FOUND);
         });
 
-        if(reqWorker.getCompany().getCompanySeq() != branch.getCompany().getCompanySeq()){
+        if (reqWorker.getCompany().getCompanySeq() != branch.getCompany().getCompanySeq()) {
             throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
         }
 
@@ -86,20 +87,20 @@ public class StatementService {
         Double totalPrice = 0.0;
         StatementReqInfoResponseDto reqInfo;
         StatementResInfoResponseDto resInfo;
-        if (statement.getStatementStatus().equals(Statement.StatementStatus.WAITING)){
+        if (statement.getStatementStatus().equals(Statement.StatementStatus.WAITING)) {
             reqInfo = null;
             resInfo = null;
 
-        }else if(statement.getStatementStatus().equals(Statement.StatementStatus.PREPARING)) {
+        } else if (statement.getStatementStatus().equals(Statement.StatementStatus.PREPARING)) {
             reqInfo = StatementReqInfoResponseDto.from(statement);
             resInfo = null;
-        }else {
+        } else {
             reqInfo = StatementReqInfoResponseDto.from(statement);
             resInfo = StatementResInfoResponseDto.from(statement);
         }
 
-        if(!((reqInfo!=null && reqInfo.getCompanySeq() == myWorker.getCompany().getCompanySeq()) ||
-           (resInfo!=null && resInfo.getCompanySeq() == myWorker.getCompany().getCompanySeq()))){
+        if (!((reqInfo != null && reqInfo.getCompanySeq() == myWorker.getCompany().getCompanySeq()) ||
+              (resInfo != null && resInfo.getCompanySeq() == myWorker.getCompany().getCompanySeq()))) {
             throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
         }
 
@@ -119,6 +120,35 @@ public class StatementService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(responseDto).build();
     }
 
+    public ResultTemplate getStatementListByFilterAndPagination(int page, LocalDateTime startDate,
+                                                                LocalDateTime endDate, Long companySeq,
+                                                                Long productSeq,
+                                                                Statement.StatementStatus status) {
+
+        PageRequest pageable = PageRequest.of(page, 5,
+                Sort.by("statementSeq").ascending());
+        Page<Statement> list = statementQueryRepository.findWithFilteringAndPagination(pageable, companySeq, status);
+
+
+        List<WebStatementResponseDto> response = list.getContent()
+                .stream()
+                .map(statement -> {
+                    AtomicReference<Double> price = new AtomicReference<>(0.0);
+
+                    statement.getItems().forEach(item -> {
+                        double itemTotalPrice = item.getStock().getStockPrice() * item.getStock().getStockQuantity();
+                        price.updateAndGet(v -> v + itemTotalPrice);
+                    });
+                    return WebStatementResponseDto.from(statement, new DecimalFormat("#,###.00").format(price.get()));
+                })
+                .collect(Collectors.toList());
+
+        return ResultTemplate.builder()
+                .status(HttpStatus.OK.value())
+                .data(response)
+                .build();
+
+    }
 
 
     // 거래 최초 등록
