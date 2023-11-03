@@ -1,6 +1,7 @@
 package com.welcome.tou.statement.controller;
 
 import com.welcome.tou.common.utils.ResultTemplate;
+import com.welcome.tou.statement.domain.Statement;
 import com.welcome.tou.statement.dto.request.RefuseStatementRequestDto;
 import com.welcome.tou.statement.dto.request.SignStatementRequestDto;
 import com.welcome.tou.statement.dto.request.StatementCreateRequestDto;
@@ -9,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @AllArgsConstructor
@@ -27,6 +30,18 @@ public class StatementController {
         return statementService.getStatementDetail(worker, statementSeq);
     }
 
+    @GetMapping("/worker/list/web/{branchSeq}")
+    public ResultTemplate getStatementListByFilterAndPagination
+            (@RequestParam int page, @PathVariable Long branchSeq,
+             @RequestParam(required = false) Long companySeq,
+             @RequestParam(required = false) Long workerSeq,
+             @RequestParam(required = false) Long productSeq,
+             @RequestParam(required = false) LocalDateTime startTradeDate,
+             @RequestParam(required = false) LocalDateTime endTradeDate,
+             @RequestParam(required = false)Statement.StatementStatus status){
+        return statementService.getStatementListByFilterAndPagination(page, startTradeDate, endTradeDate,
+                companySeq, productSeq, status);
+    }
 
     @PostMapping("/worker")
     public ResultTemplate<?> addStatement(@RequestBody StatementCreateRequestDto request) {
