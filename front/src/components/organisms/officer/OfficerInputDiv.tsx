@@ -2,8 +2,18 @@ import React from 'react';
 import OfficerInput from '../../atoms/officer/OfficerInput';
 import styled from 'styled-components';
 
+interface StockItems {
+  preStockSeq: number;
+  preStockName: string;
+  preStockDate: Date;
+  preStockQuantity: number;
+  preStockUnit: string;
+}
+
 interface InputDivProps {
-  isInput: boolean;
+  isStockManage: boolean;
+  isInput?: boolean;
+  stock?: StockItems;
 }
 
 const handleDropdownChange = (selectedValue: string) => {
@@ -12,8 +22,10 @@ const handleDropdownChange = (selectedValue: string) => {
   console.log(intValue);
 };
 
-const OfficerInputDiv: React.FC<InputDivProps> = ({isInput}) => {
-  if (isInput) {
+const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stock }) => {
+  console.log(stock);
+
+  if (!isStockManage) { // 재고관리 아닐때(거래명세서생성)
     return (
       <MainDiv>
         <SubDiv>
@@ -38,36 +50,74 @@ const OfficerInputDiv: React.FC<InputDivProps> = ({isInput}) => {
         </div>
       </MainDiv>
     );
-  } else {
-    return (
-      <MainDiv>
-        <div>
+  } else { // 재고관리일때
+    if (isInput) { // 입력하는 폼일때
+      return (
+        <MainDiv>
+          <div>
+            <SubDiv>
+              <StyledSpan>• 품목명</StyledSpan>
+              <OfficerInput
+                size={"underwriter"}
+              />
+            </SubDiv>
+            <SubDiv>
+              <StyledSpan>• 수량/단위</StyledSpan>
+              <OfficerInput
+                size={"underwriter2"}
+              />
+              <Dropdown onChange={(e) => handleDropdownChange(e.target.value)}>
+                <option value="1">kg</option>
+                <option value="2">ton</option>
+                <option value="3">마리</option>
+              </Dropdown>
+            </SubDiv>
+          </div>
           <SubDiv>
-            <StyledSpan>• 품목명</StyledSpan>
+            <StyledSpan>• 입고 일시</StyledSpan>
             <OfficerInput
               size={"underwriter"}
             />
           </SubDiv>
+        </MainDiv>
+      );
+    } else { // 입력폼 아닐때
+      return (
+        <MainDiv>
+          <div>
+            <SubDiv>
+              <StyledSpan>• 품목명</StyledSpan>
+              <OfficerInput
+                size={"underwriter"}
+                isDisabled={true}
+                value={stock ? stock.preStockName : ""}
+              />
+            </SubDiv>
+            <SubDiv>
+              <StyledSpan>• 수량/단위</StyledSpan>
+              <OfficerInput
+                size={"underwriter2"}
+                isDisabled={true}
+                value={stock ? stock.preStockQuantity : ""}
+              />
+              <Dropdown value={stock ? stock.preStockUnit : ""} onChange={(e) => handleDropdownChange(e.target.value)}>
+                <option value="1">kg</option>
+                <option value="2">ton</option>
+                <option value="3">마리</option>
+              </Dropdown>
+            </SubDiv>
+          </div>
           <SubDiv>
-            <StyledSpan>• 수량/단위</StyledSpan>
+            <StyledSpan>• 입고 일시</StyledSpan>
             <OfficerInput
-              size={"underwriter2"}
+              size={"underwriter"}
+              isDisabled={true}
+              value={stock ? stock.preStockDate.toString() : ""}
             />
-            <Dropdown onChange={(e) => handleDropdownChange(e.target.value)}>
-              <option value="1">kg</option>
-              <option value="2">ton</option>
-              <option value="3">마리</option>
-            </Dropdown>
           </SubDiv>
-        </div>
-        <SubDiv>
-          <StyledSpan>• 입고 일시</StyledSpan>
-          <OfficerInput
-            size={"underwriter"}
-          />
-        </SubDiv>
-      </MainDiv>
-    );
+        </MainDiv>
+      );
+    }
   }
   
 };

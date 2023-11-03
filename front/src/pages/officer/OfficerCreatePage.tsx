@@ -34,7 +34,7 @@ const OfficerCreatePage = () => {
             조회
           </OfficerBtn> 
         </StyledP>
-        <OfficerInputDiv isInput={true}/>
+        <OfficerInputDiv isStockManage={false}/>
         <StyledP>
           • 거래 일자 등록
           "캘린더 선택 들어갈 자리"
