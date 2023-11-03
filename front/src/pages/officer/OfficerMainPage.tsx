@@ -50,11 +50,11 @@ const DashboardDiv2 = styled.div`
 const DashboardDivUP = styled.div`
   display: flex;
   width: 100%;
-  height: 60%;
+  height: 55%;
 `
 
 const DashboardDivDown = styled.div`
   display: flex;
   width: 100%;
-  height: 30.5%;
+  height: 45.5%;
 `
