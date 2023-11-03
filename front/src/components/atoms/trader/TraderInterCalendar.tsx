@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Calendar from "react-calendar";
 import { BiCalendarCheck } from "react-icons/bi";
 import moment from "moment";
 import { InterCalendarWrapper, DropdownButton } from "../../../commons/style/calendarStyle/TraderInterCalendarStyle";
+
+
 
 interface TraderInterCalendarProps {
   onChange: any;
@@ -16,6 +18,21 @@ const TraderInterCalendar: React.FC<TraderInterCalendarProps> = ({ onChange, val
 
   const [nowDate, setNowDate] = useState<string>(formattedDate);
   const [OpenYN2, setOpenYN2] = useState<boolean>(false);
+
+  // 바깥 클릭을 감지하는 로직
+  // const handleClickOutside = (event: any) => {
+  //   if (event.target.closest(".react-calendar")) {
+  //       return;
+  //   }
+  //   setOpenYN2(false);
+  // };
+  
+  // useEffect(() => {
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => {
+  //       document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, []);
 
   const handleToggleCalendar = () => {
     setOpenYN2(!OpenYN2);

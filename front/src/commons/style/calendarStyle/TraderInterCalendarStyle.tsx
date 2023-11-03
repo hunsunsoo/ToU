@@ -119,6 +119,9 @@ export const InterCalendarWrapper = styled.div<InterCalendarWrapperProps>`
     line-height: 16px;
     font-size: 0.9em;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;   
   }
 
   .react-calendar__tile:disabled {
@@ -128,6 +131,10 @@ export const InterCalendarWrapper = styled.div<InterCalendarWrapperProps>`
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
     background-color: #2d8cec;
+    border-radius: 40rem;
+    color: #f0f0f0;
+    margin-top: 0.3rem;
+    height: 3.125rem;
   }
 
   .react-calendar__tile--now {
@@ -142,29 +149,43 @@ export const InterCalendarWrapper = styled.div<InterCalendarWrapperProps>`
   .react-calendar__tile--hasActive {
     background: #76baff;
   }
+  
 
+  //선택구간 시작과 끝
   .react-calendar__tile--rangeStart,
   .react-calendar__tile--rangeEnd {
-    background-color:#ffa9a9;
+    background-color:#2d8cec !important;
+    border-radius: 10rem;
+    color: #f0f0f0 !important;
   }
+
+
 
   .react-calendar__tile--hasActive:enabled:hover,
   .react-calendar__tile--hasActive:enabled:focus {
     background: #a9d4ff;
+    margin-top: 0.3rem;
+    height: 3.125rem;
   }
   //선택된 구간 전체
   .react-calendar__tile--active {
-    background: #91cdfe;
-    color: white;
+    background: #d7ecfc;
+    color: #000000;
+    margin-top: 0.3rem;
+    height: 3.125rem;
   }
 
+  //클릭된 구간
   .react-calendar__tile--active:enabled:hover,
   .react-calendar__tile--active:enabled:focus {
     background: #2d8cec;
+
   }
  // 호버링 될때 선택된 구간
   .react-calendar--selectRange .react-calendar__tile--hover {
     background-color: #cde8ff;
+    margin-top: 0.3rem;
+    height: 3.125rem;
   }
 `;
 
