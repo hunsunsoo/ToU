@@ -89,6 +89,7 @@ const TraderCreateItemPage: React.FC = () => {
 
   return (
     <StyledContainer>
+
       <StyledHeader>
         <TraderHeader title="거래 명세서 생성" />
         <TraderSubtitle subtitle="거래 품목 등록" />
@@ -167,6 +168,7 @@ const TraderCreateItemPage: React.FC = () => {
           다음
         </TraderBtn>
       </StyledFooter>
+
     </StyledContainer>
   );
 };

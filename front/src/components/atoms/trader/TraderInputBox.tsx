@@ -10,6 +10,7 @@ interface InputProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
 
 type InputSize = "X-Large" | "Large" | "Medium" | "Small";
@@ -85,12 +86,19 @@ const StyledInput = styled.input<InputProps>`
     color: ${(props) =>
       InputColors[props.color || "BlackStroke"].placeholderColor};
   }
-
+  
   &:focus {
     outline: none;
     box-shadow: ${(props) =>
       InputColors[props.color || "BlackStroke"].boxShadow};
   }
+  ${(props) => props.disabled && `
+    font-size: 16px;
+    cursor: not-allowed;
+    background-color: #f2f2f2;
+    // opacity: 0.5;
+  `}
+
 `;
 
 const TraderInputBox = ({ ...props }: InputProps) => {

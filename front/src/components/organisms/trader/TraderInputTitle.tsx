@@ -1,18 +1,20 @@
 import styled from "styled-components";
 import TraderInputBox from "../../atoms/trader/TraderInputBox";
+import { BooleanKeyframeTrack } from "three";
 
 interface TraderInputTitleProps {
   inputTitle: string;
   size: "X-Large" | "Large" | "Medium" | "Small";
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
 
-const TraderInputTitle = ({ inputTitle, size, value, onChange, ...props }: TraderInputTitleProps) => {
+const TraderInputTitle = ({ inputTitle, size, value, onChange, disabled, ...props }: TraderInputTitleProps) => {
   return (
     <Container>
       <InputTitle>{inputTitle}</InputTitle>
-      <TraderInputBox size={size} value={value} onChange={onChange} {...props} />
+      <TraderInputBox size={size} value={value} onChange={onChange} disabled={disabled}{...props} />
     </Container>
   );
 };
