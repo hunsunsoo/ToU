@@ -15,7 +15,6 @@ const TraderHeader = (props: TraderHeaderProps) => {
 
   let title = props.title;
 
-
   return (
     <StyledHeader>
         <BackIcon>

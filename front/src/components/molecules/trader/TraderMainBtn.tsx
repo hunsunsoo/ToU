@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TraderBtn from "../../atoms/trader/TraderBtn";
+import {AiOutlineRight} from "react-icons/ai";
+
 
 type TraderMainBtnProps = {
   route: string;
@@ -28,7 +30,8 @@ const TraderMainBtn: React.FC<TraderMainBtnProps> = ({
     >
       <ButtonContent>
         <StyledImage src={iconSrc} alt={altText} />
-        {children}
+        <StyledChildren>{children}</StyledChildren>
+        <StyledIcon><AiOutlineRight size = "20" color="#868686"/></StyledIcon>
       </ButtonContent>
     </TraderBtn>
   );
@@ -41,11 +44,23 @@ const ButtonContent = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 0 1rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   /* font-weight: bold; */
+
 `;
 
 const StyledImage = styled.img`
-  width: 3rem;
+  width: 3.5rem;
   height: auto;
+  margin-right: auto;
+`;
+
+const StyledChildren = styled.div`
+  flex: 2;
+  text-align: left; 
+  padding: 0 1rem;
+`;
+
+const StyledIcon = styled.div`
+  margin-left: auto; 
 `;
