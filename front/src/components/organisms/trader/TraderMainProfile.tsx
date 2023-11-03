@@ -1,16 +1,29 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { MainPaddingContainer } from "../../../commons/style/mobileStyle/MobileLayoutStyle";
 import TraderImg from "../../atoms/trader/TraderImg";
 import TraderInfo from "../../atoms/trader/TraderInfo";
+import { CurrentConnectionData } from "../../../types/TraderTypes";
+import { customAxios } from "../../api/customAxios";
 
 const TraderMainProfile = () => {
+  const [traderInfo, setTraderInfo] =
+    useState<CurrentConnectionData | null>(null);
+
+  useEffect(() => {
+    customAxios.get("/client/worker").then((res) => {
+      console.log(res.data.data);
+      setTraderInfo(res.data.data);
+      console.log(traderInfo)
+    });
+  }, []);
+
   return (
     <StyledMainContainer>
       <MainPaddingContainer>
         <StyledDiv>
-          <TraderImg />
-          <TraderInfo />
+          <TraderImg logoImage={traderInfo?.company.logoImage} />
+          <TraderInfo workerName={traderInfo?.worker.workerName} />
         </StyledDiv>
       </MainPaddingContainer>
     </StyledMainContainer>

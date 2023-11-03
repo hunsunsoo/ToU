@@ -1,17 +1,24 @@
 import React, { ReactNode } from "react";
-import  styled  from "styled-components";
+import styled from "styled-components";
 
 interface ButtonProps {
   size: ButtonSize;
   color: ButtonColor;
   onClick?: () => void;
   children: ReactNode;
-  disabled?: boolean; // 추가
+  disabled?: boolean;
 }
 
-type ButtonSize = "Main" | "Large" | "LargeR2" | "LargeL1" | "X-Medium" | "Medium"  | "Small";
+type ButtonSize =
+  | "Main"
+  | "Large"
+  | "LargeR2"
+  | "LargeL1"
+  | "X-Medium"
+  | "Medium"
+  | "Small";
 
-type ButtonColor = "Blue" | "Grey" | "White" | "Sky" |"Transparent";
+type ButtonColor = "Blue" | "Grey" | "White" | "Sky" | "Transparent";
 
 //사이즈, 마진, 폰트
 type ButtonStyle = {
@@ -33,55 +40,56 @@ type ButtonColorStyle = {
 
 const ButtonStyles: Record<ButtonSize, ButtonStyle> = {
   "Main": {
-    height: "3.5rem",
+    height: "4rem",
     width:"100%",
     weight: "Bold",
     fontSize: "1rem",
     fontWeight:"",
+    borderRadius: "25px",
   },
   Large: {
     height: "70px",
-    width:"100%",
+    width: "100%",
     weight: "",
     fontSize: "30px",
-    fontWeight:"",
+    fontWeight: "",
     borderRadius: "",
   },
   LargeR2: {
     height: "60px",
-    width:"65%",
+    width: "65%",
     weight: "",
     fontSize: "24px",
-    fontWeight:"",
+    fontWeight: "",
     borderRadius: "",
   },
   LargeL1: {
     height: "60px",
-    width:"35%",
+    width: "35%",
     weight: "",
     fontSize: "24px",
-    fontWeight:"",
+    fontWeight: "",
     borderRadius: "",
   },
-  "X-Medium":{
+  "X-Medium": {
     height: "44px",
-    width:"150px",
+    width: "150px",
     weight: "",
     fontSize: "24px",
-    fontWeight:"",
+    fontWeight: "",
     borderRadius: "",
   },
   Medium: {
     height: "44px",
-    width:"60px",
+    width: "60px",
     weight: "",
     fontSize: "16px",
-    fontWeight:"",
+    fontWeight: "",
     borderRadius: "",
   },
   Small: {
     height: "40px",
-    width:"75px",
+    width: "75px",
     weight: "",
     fontSize: "19px",
     fontWeight: "bold",
@@ -112,7 +120,7 @@ const ButtonColors: Record<ButtonColor, ButtonColorStyle> = {
   Transparent: {
     backgroundColor: "transparent",
     color: "#000000",
-  }
+  },
 };
 
 const StyledButton = styled.button<ButtonProps>`
@@ -128,9 +136,20 @@ const StyledButton = styled.button<ButtonProps>`
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 `;
 
-const TraderBtn = ({ size, color, onClick, children, disabled }: ButtonProps) => {
+const TraderBtn = ({
+  size,
+  color,
+  onClick,
+  children,
+  disabled,
+}: ButtonProps) => {
   return (
-    <StyledButton size={size} color={color} onClick={onClick} disabled={disabled}>
+    <StyledButton
+      size={size}
+      color={color}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {children}
     </StyledButton>
   );
@@ -139,32 +158,32 @@ const TraderBtn = ({ size, color, onClick, children, disabled }: ButtonProps) =>
 export default TraderBtn;
 
 //버튼 모음
-{/* <div>
-<TraderBtn size="Large" color="Blue">
-    다음
-</TraderBtn>
-<TraderBtn size="Large" color="Grey">
-    명세서 생성
-</TraderBtn>
-<TraderBtn size="X-Large" color="Sky">
-    거래 명세서<br/> 불러오기
-</TraderBtn>
-<TraderBtn size="LargeR2" color="Blue">
-    서명
-</TraderBtn>
-<TraderBtn size="LargeL1" color="Grey">
-    거절
-</TraderBtn>
-<TraderBtn size="Medium" color="Blue">
-    수정
-</TraderBtn>
-<TraderBtn size="Medium" color="Grey">
-    삭제
-</TraderBtn>
-<TraderBtn size="Small" color="White">
-    저장
-</TraderBtn>
-<TraderBtn size="X-Medium" color="Transparent">
-    품목 추가
-</TraderBtn>
-</div> */}
+//  <div>
+// <TraderBtn size="Large" color="Blue">
+//     다음
+// </TraderBtn>
+// <TraderBtn size="Large" color="Grey">
+//     명세서 생성
+// </TraderBtn>
+// <TraderBtn size="X-Large" color="Sky">
+//     거래 명세서<br/> 불러오기
+// </TraderBtn>
+// <TraderBtn size="LargeR2" color="Blue">
+//     서명
+// </TraderBtn>
+// <TraderBtn size="LargeL1" color="Grey">
+//     거절
+// </TraderBtn>
+// <TraderBtn size="Medium" color="Blue">
+//     수정
+// </TraderBtn>
+// <TraderBtn size="Medium" color="Grey">
+//     삭제
+// </TraderBtn>
+// <TraderBtn size="Small" color="White">
+//     저장
+// </TraderBtn>
+// <TraderBtn size="X-Medium" color="Transparent">
+//     품목 추가
+// </TraderBtn>
+// </div>
