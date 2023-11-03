@@ -13,4 +13,5 @@ public class AccessWorkerInfoResponseDto {
 
     private String workerName;
     private String loginId;
+    private String role;
 }

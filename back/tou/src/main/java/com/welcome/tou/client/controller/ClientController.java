@@ -28,10 +28,6 @@ public class ClientController {
         return clientService.login(request);
     }
 
-    @GetMapping("/worker")
-    public ResultTemplate<?> getAccessInfo(@AuthenticationPrincipal UserDetails worker) {
-        return clientService.getAccessInfo(worker);
-    }
 
     @PostMapping("/company")
     public ResultTemplate addCompany(@RequestBody CompanyCreateDto request) {

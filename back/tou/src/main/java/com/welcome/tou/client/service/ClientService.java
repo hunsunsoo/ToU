@@ -68,25 +68,14 @@ public class ClientService {
         worker.updateRefreshToken(refreshToken);
         workerRepository.save(worker);
 
-        LoginResponseDto loginResponseDto = LoginResponseDto.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-
-        return ResultTemplate.builder().status(200).data(loginResponseDto).build();
-    }
-
-    public ResultTemplate<?> getAccessInfo(UserDetails worker) {
-        Long workerSeq = Long.parseLong(worker.getUsername());
-        Worker myWorker = workerRepository.findById(workerSeq)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
-
-        Company myCompany = myWorker.getCompany();
+        Company myCompany = worker.getCompany();
 
         List<Branch> branches = branchRepository.findByCompanySeq(myCompany.getCompanySeq());
 
-        AccessInfoResponseDto responseDto = AccessInfoResponseDto.builder()
-                .worker(AccessWorkerInfoResponseDto.builder().workerName(myWorker.getWorkerName()).loginId(myWorker.getLoginId()).build())
+        LoginResponseDto loginResponseDto = LoginResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .worker(AccessWorkerInfoResponseDto.builder().workerName(worker.getWorkerName()).loginId(worker.getLoginId()).role(worker.getRole().name()).build())
                 .company(AccessCompanyInfoResponseDto.from(myCompany))
                 .branches(
                         branches.stream().map(branch -> {
@@ -94,9 +83,9 @@ public class ClientService {
                         }).collect(Collectors.toList())
                 ).build();
 
-
-        return ResultTemplate.builder().status(200).data(responseDto).build();
+        return ResultTemplate.builder().status(200).data(loginResponseDto).build();
     }
+
 
     @Transactional
     public ResultTemplate<?> addCompany(CompanyCreateDto request) {

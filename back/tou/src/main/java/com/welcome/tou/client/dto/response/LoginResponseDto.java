@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -13,4 +15,8 @@ public class LoginResponseDto {
 
     private String accessToken;
     private String refreshToken;
+    private AccessWorkerInfoResponseDto worker;
+    private AccessCompanyInfoResponseDto company;
+    private List<AccessBranchesInfoResponseDto> branches;
+
 }
