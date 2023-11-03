@@ -40,7 +40,7 @@ type ButtonColorStyle = {
 
 const ButtonStyles: Record<ButtonSize, ButtonStyle> = {
   "Main": {
-    height: "4.5rem",
+    height: "4rem",
     width:"100%",
     weight: "Bold",
     fontSize: "1rem",
