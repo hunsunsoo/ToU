@@ -6,10 +6,7 @@ import com.welcome.tou.client.service.ClientService;
 import com.welcome.tou.common.utils.ResultTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -18,6 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClientController {
 
     private final ClientService clientService;
+
+    @GetMapping("/worker/branch/list/{companySeq}")
+    public ResultTemplate getBranchListByCompany(@PathVariable Long companySeq){
+        return clientService.getBranchListOfCompany(companySeq);
+    }
 
     @PostMapping("/login")
     public ResultTemplate login(@RequestBody LoginRequestDto request) {

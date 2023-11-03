@@ -7,6 +7,8 @@ public class NotFoundException extends RuntimeException {
     public static final String STATEMENT_NOT_FOUND = "존재하지 않는 거래명세서입니다.";
     public static final String STOCK_NOT_FOUND = "존재하지 않는 재고입니다.";
 
+    public static final String COMPANY_NOT_FOUND = "존재하지 않는 회사입니다.";
+
     public NotFoundException(String message) {
         super(message);
     }

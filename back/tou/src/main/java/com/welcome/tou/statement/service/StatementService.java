@@ -119,6 +119,8 @@ public class StatementService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(responseDto).build();
     }
 
+
+
     // 거래 최초 등록
     @Transactional
     public ResultTemplate<?> addStatement(StatementCreateRequestDto request) {
