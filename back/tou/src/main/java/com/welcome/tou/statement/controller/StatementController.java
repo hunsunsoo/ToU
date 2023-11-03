@@ -11,6 +11,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.plaf.nimbus.State;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
@@ -33,14 +35,18 @@ public class StatementController {
     @GetMapping("/worker/list/web/{branchSeq}")
     public ResultTemplate getStatementListByFilterAndPagination
             (@RequestParam int page, @PathVariable Long branchSeq,
-             @RequestParam(required = false) Long companySeq,
-             @RequestParam(required = false) Long workerSeq,
-             @RequestParam(required = false) Long productSeq,
-             @RequestParam(required = false) LocalDateTime startTradeDate,
-             @RequestParam(required = false) LocalDateTime endTradeDate,
-             @RequestParam(required = false)Statement.StatementStatus status){
-        return statementService.getStatementListByFilterAndPagination(page, startTradeDate, endTradeDate,
-                companySeq, productSeq, status);
+             @RequestParam String type,
+             @RequestParam(required = false) String companyName,
+             @RequestParam(required = false) String myWorkerName,
+             @RequestParam(required = false) String otherWorkerName,
+             @RequestParam(required = false) Boolean isMine,
+             @AuthenticationPrincipal UserDetails worker,
+             @RequestParam(required = false) LocalDate startDate,
+             @RequestParam(required = false) LocalDate endDate,
+             @RequestParam(required = false) Statement.StatementStatus status,
+            @RequestParam(required = false) String productName) {
+        return statementService.getStatementListByFilterAndPagination(page, branchSeq, type, companyName,  myWorkerName,
+                 otherWorkerName,  isMine,  worker,  startDate, endDate, status, productName );
     }
 
     @PostMapping("/worker")
