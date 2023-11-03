@@ -6,7 +6,7 @@ interface ButtonProps {
   color: ButtonColor;
   onClick?: () => void;
   children: ReactNode;
-  disabled?: boolean; // 추가
+  disabled?: boolean;
 }
 
 type ButtonSize =
@@ -39,12 +39,13 @@ type ButtonColorStyle = {
 };
 
 const ButtonStyles: Record<ButtonSize, ButtonStyle> = {
-  Main: {
-    height: "3.5rem",
-    width: "100%",
+  "Main": {
+    height: "4.5rem",
+    width:"100%",
     weight: "Bold",
     fontSize: "1rem",
-    fontWeight: "",
+    fontWeight:"",
+    borderRadius: "25px",
   },
   Large: {
     height: "70px",
