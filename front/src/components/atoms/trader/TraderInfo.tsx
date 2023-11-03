@@ -1,12 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+interface TraderNameProps {
+  workerName?: string;
+}
 
-const TraderInfo = () => {
+const TraderInfo: React.FC<TraderNameProps> = ({ workerName }) => {
   return (
     <StyledMainContainer>
       <StyledDiv>
         <StyledSpan>어서오세요</StyledSpan>
-        <StyledText>어쩌구 님</StyledText>
+        <StyledText>{workerName || "어쩌구"} 님</StyledText>
       </StyledDiv>
       <StyledDiv>
         <StyledSpan>서명필요</StyledSpan>
