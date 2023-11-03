@@ -7,6 +7,12 @@ import { ROUTES } from "../../../commons/Routes";
 const OfficerHeader: React.FC = () => {
   const navigate = useNavigate();
 
+  const logout = () => {
+    // 토큰 삭제
+    localStorage.removeItem("recoil-persist");
+    window.location.reload();
+  };
+
   return (
     <HeaderContainer>
       <OfficerBtn
@@ -14,6 +20,12 @@ const OfficerHeader: React.FC = () => {
         src="/ToU_White.png"
         alt="Logo"
         onClick={() => navigate(ROUTES.OFFICER_MAIN)} // 로고 클릭 시 메인으로 이동
+      />
+      <OfficerBtn
+        isImg={true}
+        src="/ToU_White.png"
+        alt="Logo"
+        onClick={logout} // 로고 클릭 시 로그 아웃
       />
     </HeaderContainer>
   );

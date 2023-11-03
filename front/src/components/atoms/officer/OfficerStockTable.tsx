@@ -16,14 +16,44 @@ interface StockList {
 // 재고 현황 조회
 const OfiicerStockTable = () => {
   const [stockItems, setStockItems] = useState<StockList[]>([]);
+  const branchSeq = 3; // 임시로 3으로 넣었음. 바꿔야함
 
   useEffect(() => {
-    customAxios.get("/stock/worker/dash/list/1") // 임시로 1로 넣었음. 바꿔야함
-      .then((res) => {
+    // 토큰 들어오는거 기다리기
+    const awaitToken = async () => {
+      return new Promise((resolve) => {
+        const checkToken = () => {
+          const storedValue = localStorage.getItem("recoil-persist");
+          const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+          
+          if (accessToken) {
+            resolve(accessToken);
+          } else {
+            setTimeout(checkToken, 1000); // 1초마다 토큰 체크
+          }
+        };
+        checkToken();
+      });
+    };
+
+    // 재고 정보 가져오기
+    const awaitStockItem = async () => {
+      try {
+        const accessToken = await awaitToken();
+        if (!accessToken) {
+          console.log("Token not found");
+          return;
+        }
+
+        const res = await customAxios.get(`/stock/worker/dash/list/${branchSeq}`);
         setStockItems(res.data.data.stockList);
-        // console.log(res);
-      })
-  }, []);  
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    awaitStockItem();
+  }, [branchSeq]);
 
   return (
     <StockTableDiv>
