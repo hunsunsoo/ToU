@@ -20,6 +20,15 @@ type UserInfo = {
   companyName: string | null;
 };
 
+type CompanyInfo = {
+  companySeq: number | null;
+  companyName: string | null;
+  registrationNumber: string | null;
+  companyLocation: string | null;
+  companyContact: string | null;
+  logoImage: string | null;
+}
+
 /** 유저 정보 저장 */
 export const UserInfoState = atom<UserInfo>({
   key: "UserInfoState",
@@ -36,6 +45,20 @@ export const UserInfoState = atom<UserInfo>({
     branchList: [],
     companySeq: null,
     companyName: null,
+  },
+  effects_UNSTABLE: [persistAtom],
+});
+
+/** 회사 정보 저장 */
+export const CompanyInfoState = atom<CompanyInfo>({
+  key: "CompanyInfoState",
+  default: {
+    companySeq: null,
+    companyName: null,
+    registrationNumber: null,
+    companyLocation: null,
+    companyContact: null,
+    logoImage: null,
   },
   effects_UNSTABLE: [persistAtom],
 });
