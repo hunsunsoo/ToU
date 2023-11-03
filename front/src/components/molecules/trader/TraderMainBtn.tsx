@@ -44,13 +44,12 @@ const ButtonContent = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 0 1rem;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   /* font-weight: bold; */
-
 `;
 
 const StyledImage = styled.img`
-  width: 3.5rem;
+  width: 2.5rem;
   height: auto;
   margin-right: auto;
 `;

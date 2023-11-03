@@ -32,7 +32,7 @@ const StyledDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #949494;
+  border: 0.8px solid #949494;
   width: 240px;
   height: 45px;
   border-radius: 10px;
@@ -41,7 +41,6 @@ const StyledDiv = styled.div`
 const SearchLabel = styled.span`
   /* font-size: 1.3rem;
   margin-right: 2rem; */
-  margin-left: 10px;
   font-size: 20px;
 `;
 
