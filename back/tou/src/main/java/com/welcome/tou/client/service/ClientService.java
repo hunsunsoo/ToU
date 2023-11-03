@@ -3,8 +3,7 @@ package com.welcome.tou.client.service;
 import com.welcome.tou.client.domain.*;
 import com.welcome.tou.client.dto.request.CompanyCreateDto;
 import com.welcome.tou.client.dto.request.LoginRequestDto;
-import com.welcome.tou.client.dto.response.BranchResponseDto;
-import com.welcome.tou.client.dto.response.LoginResponseDto;
+import com.welcome.tou.client.dto.response.*;
 import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.common.utils.ResultTemplate;
@@ -14,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +31,7 @@ public class ClientService {
     private final CompanyRepository companyRepository;
     private final WorkerRepository workerRepository;
     private final BranchRepository branchRepository;
+
     private final JwtService jwtService;
 
     private final PasswordEncoder passwordEncoder;
@@ -73,6 +74,28 @@ public class ClientService {
                 .build();
 
         return ResultTemplate.builder().status(200).data(loginResponseDto).build();
+    }
+
+    public ResultTemplate<?> getAccessInfo(UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker myWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Company myCompany = myWorker.getCompany();
+
+        List<Branch> branches = branchRepository.findByCompanySeq(myCompany.getCompanySeq());
+
+        AccessInfoResponseDto responseDto = AccessInfoResponseDto.builder()
+                .worker(AccessWorkerInfoResponseDto.builder().workerName(myWorker.getWorkerName()).loginId(myWorker.getLoginId()).build())
+                .company(AccessCompanyInfoResponseDto.from(myCompany))
+                .branches(
+                        branches.stream().map(branch -> {
+                            return AccessBranchesInfoResponseDto.from(branch);
+                        }).collect(Collectors.toList())
+                ).build();
+
+
+        return ResultTemplate.builder().status(200).data(responseDto).build();
     }
 
     @Transactional

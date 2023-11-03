@@ -6,6 +6,8 @@ import com.welcome.tou.client.service.ClientService;
 import com.welcome.tou.common.utils.ResultTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,8 +24,13 @@ public class ClientController {
     }
 
     @PostMapping("/login")
-    public ResultTemplate login(@RequestBody LoginRequestDto request) {
+    public ResultTemplate<?> login(@RequestBody LoginRequestDto request) {
         return clientService.login(request);
+    }
+
+    @GetMapping("/worker")
+    public ResultTemplate<?> getAccessInfo(@AuthenticationPrincipal UserDetails worker) {
+        return clientService.getAccessInfo(worker);
     }
 
     @PostMapping("/company")
