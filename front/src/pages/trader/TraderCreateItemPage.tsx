@@ -72,6 +72,10 @@ const TraderCreateItemPage: React.FC = () => {
     });
   };
 
+  const handleItemClick = (billId: number) => {
+    navigate(`/m/confirm/${billId}`);
+  };
+
   const addItem = () => {
     setItems((prevItems) => [
       ...prevItems,
@@ -89,6 +93,7 @@ const TraderCreateItemPage: React.FC = () => {
         <TraderHeader title="거래 명세서 생성" />
         <TraderSubtitle subtitle="거래 품목 등록" />
       </StyledHeader>
+
       <StyledBody>
         <MainPaddingContainer>
           {items.map((item, index) => (
@@ -151,11 +156,12 @@ const TraderCreateItemPage: React.FC = () => {
           )}
         </MainPaddingContainer>
       </StyledBody>
+
       <StyledFooter>
         <TraderBtn
           size="Large"
           color={showNextButton ? "Blue" : "Grey"}
-          onClick={() => navigate("/m/confirm")}
+          onClick={() => handleItemClick(2)} // 여기 billId 받아야 함
           disabled={!showNextButton}
         >
           다음
@@ -170,6 +176,7 @@ export default TraderCreateItemPage;
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
 
 const StyledHeader = styled.div`
@@ -179,11 +186,13 @@ const StyledHeader = styled.div`
   z-index: 12;
 `;
 
-const StyledBody = styled.div``;
+const StyledBody = styled.div`
+  padding-bottom: 70px;
+`;
 
 const StyledFooter = styled.div`
   width: 100%;
-  position: sticky;
+  position: fixed;
   bottom: 0;
 `;
 
@@ -206,6 +215,7 @@ const StyledInfoTitle = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
 const StyledSpan = styled.span`
   display: inline-flex;
   align-items: center;
