@@ -1,7 +1,7 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { authAxios } from "../components/api/customAxios";
 import {
-  UserInfoState,
+  UserInfoState, CompanyInfoState
 } from "../store/State";
 import { useEffect } from 'react';
 
@@ -9,6 +9,7 @@ export function UseAuth() {
   const userInfo = useRecoilValue(UserInfoState);
   const accessToken = userInfo.accessToken;
   const setUserInfo = useSetRecoilState(UserInfoState);
+  const setCompanyInfo = useSetRecoilState(CompanyInfoState);
 
   // console.log("accessToken: ", accessToken)
 
@@ -43,6 +44,15 @@ const login = async (id: string, password: string) => {
       branchList: res.data.data.branches,
       companySeq: res.data.data.company.companySeq,
       companyName: res.data.data.company.companyName,
+    }));
+
+    setCompanyInfo(() => ({
+      companySeq: res.data.data.company.companySeq,
+      companyName: res.data.data.company.companyName,
+      registrationNumber: res.data.data.company.registrationNumber,
+      companyLocation: res.data.data.company.companyLocation,
+      companyContact: res.data.data.company.companyContact,
+      logoImage: res.data.data.company.logoImage,
     }));
 
   } catch (error) {
