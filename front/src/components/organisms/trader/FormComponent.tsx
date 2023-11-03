@@ -1,188 +1,182 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
-type Item = {
-  md: string;
-  quantity: string;
-  price: string;
-  supplyPrice: string;
-};
+import { StatementData } from "../../../types/TraderTypes";
+import { customAxios } from "../../api/customAxios";
 
-type SummaryItem = {
-  sum: string;
-  receiver: string;
-  call: string;
-};
+const FormComponent = () => {
+  const [statementData, setStatementData] = useState<StatementData | null>(
+    null
+  );
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
-// 상단 표의 타입과 데이터를 정의
-type TopTableItem = {
-  registerNumber: string;
-  date: string;
-  businessNumber: string;
-  name: string;
-  businessName: string;
-  address: string;
-};
+  const toggleSection = (section: string) => {
+    if (expandedSection === section) {
+      setExpandedSection(null);
+    } else {
+      setExpandedSection(section);
+    }
+  };
 
-const topTableHeaders = [
-  { text: "등록번호", value: "registerNumber" },
-  { text: "날 짜", value: "date" },
-  { text: "사업자 등록번호", value: "businessNumber" },
-  { text: "성 명", value: "name" },
-  { text: "상 호", value: "businessName" },
-  { text: "주 소", value: "address" },
-];
+  useEffect(() => {
+    customAxios.get("/statement/worker/detail/1").then((res) => {
+      console.log(res.data.data);
+      setStatementData(res.data.data);
+    });
+  }, []);
 
-const topTableItems: TopTableItem = {
-  registerNumber: "20231018-0933052",
-  date: "2023-10-18",
-  businessNumber: "339-95-00113",
-  name: "김싸피",
-  businessName: "하위하위",
-  address: "대전광역시 유성구 어쩌구 저쩌구",
-};
+  if (!statementData) return <div>Loading...</div>;
 
-const summaryItems: SummaryItem[] = [
-  {
-    sum: "1200",
-    receiver: "유뇽수산",
-    call: "010-1234-5678",
-  },
-];
-
-const headers = [
-  {
-    text: "품 목",
-    value: "md",
-  },
-  {
-    text: "수 량",
-    value: "quantity",
-  },
-  {
-    text: "단 가",
-    value: "price",
-  },
-  {
-    text: "공급가액",
-    value: "supplyPrice",
-  },
-];
-
-const items: Item[] = [
-  {
-    md: "키조개",
-    quantity: "20",
-    price: "20",
-    supplyPrice: "400",
-  },
-  {
-    md: "키조개",
-    quantity: "20",
-    price: "20",
-    supplyPrice: "400",
-  },
-  {
-    md: "키조개",
-    quantity: "20",
-    price: "20",
-    supplyPrice: "400",
-  },
-];
-
-const summaryHeaders = [
-  {
-    text: "합 계",
-    value: "sum",
-  },
-  {
-    text: "인수자",
-    value: "receiver",
-  },
-  {
-    text: "연락처",
-    value: "call",
-  },
-];
-
-function FormComponent() {
-  // value 순서에 맞게 테이블 데이터를 출력하기 위한 배열
-  const headerKey = headers.map((header) => header.value as keyof Item);
-  const summaryHeaderKeys = summaryHeaders.map((header) => header.value);
-  const topTableHeaderKeys = topTableHeaders.map((header) => header.value);
   return (
     <Styles>
       <h2>거래명세표</h2>
 
-      <table>
-        <tbody>
-          {topTableHeaderKeys.map((key, index) => (
-            <tr key={index}>
-              <th>{topTableHeaders.find((h) => h.value === key)?.text}</th>
-              <td>{topTableItems[key as keyof TopTableItem]}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <StyledSection
+        data-expanded={expandedSection === "request" ? "true" : "false"}
+        onClick={() => toggleSection("request")}
+      >
+        <strong>요청 정보 (공급자)</strong>
 
+        <Table>
+          <tbody>
+            <TableRow>
+              <TableHeader>회사명</TableHeader>
+              <TableCell>{statementData.reqInfo.companyName}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHeader>사업자 등록번호</TableHeader>
+              <TableCell>{statementData.reqInfo.registrationNumber}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHeader>지점명</TableHeader>
+              <TableCell>{statementData.reqInfo.branchName}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHeader>연락처</TableHeader>
+              <TableCell>{statementData.reqInfo.branchContact}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHeader>담당자</TableHeader>
+              <TableCell>{statementData.reqInfo.workerName}</TableCell>
+            </TableRow>
+          </tbody>
+        </Table>
+      </StyledSection>
+
+      <StyledSection
+        data-expanded={expandedSection === "response" ? "true" : "false"}
+        onClick={() => toggleSection("response")}
+      >
+        <strong>응답 정보 (인수자/수급자)</strong>
+        <Table>
+          <tbody>
+            <TableRow>
+              <TableHeader>회사명</TableHeader>
+              <TableCell>{statementData.resInfo.companyName}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHeader>사업자 등록번호</TableHeader>
+              <TableCell>{statementData.resInfo.registrationNumber}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHeader>지점명</TableHeader>
+              <TableCell>{statementData.resInfo.branchName}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHeader>연락처</TableHeader>
+              <TableCell>{statementData.resInfo.branchContact}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHeader>담당자</TableHeader>
+              <TableCell>{statementData.resInfo.workerName}</TableCell>
+            </TableRow>
+          </tbody>
+        </Table>
+      </StyledSection>
+
+      <strong>품목정보</strong>
       <table>
         <thead>
           <tr>
-            {headers.map((header) => (
-              <th key={header.text}>{header.text}</th>
-            ))}
+            <th>상품 코드</th>
+            <th>수량</th>
+            <th>가격</th>
+            <th>총 가격</th>
+            <th>비고</th>
           </tr>
         </thead>
         <tbody>
-          {items.map((item, index) => (
+          {statementData.itemList.map((item, index) => (
             <tr key={index}>
-              {headerKey.map((key) => (
-                <td key={key + index}>{item[key]}</td>
-              ))}
+              <td>{item.stockCode}</td>
+              <td>
+                {item.stockQuantity}
+                {item.stockUnit}
+              </td>
+              <td>{item.stockPrice}</td>
+              <td>{item.stockTotalPrice}</td>
+              <td>{item.note || "-"}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      <div>
-        <div>2023년 10월 29일 업체명 귀하</div>
-        <div>아래와 같이 계산합니다.</div>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            {summaryHeaders.map((header) => (
-              <th key={header.text}>{header.text}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {summaryItems.map((item, index) => (
-            <tr key={index}>
-              {summaryHeaderKeys.map((key) => (
-                <td key={key + index}>
-                  {key in item ? item[key as keyof SummaryItem] : null}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <>{statementData.tradeDate}</>
     </Styles>
   );
-}
+};
 
 export default FormComponent;
 
-const Styles = styled.div`
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+`;
 
+const TableRow = styled.tr`
+  border: 1px solid black;
+`;
+
+const TableCell = styled.td`
+  padding: 10px;
+  border: 1px solid black;
+`;
+
+const TableHeader = styled.th`
+  padding: 10px;
+  border: 1px solid black;
+  background-color: #eaeaea;
+`;
+
+const StyledSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid black;
+  padding: 10px 0;
+  cursor: pointer;
+
+  & > strong {
+    margin-bottom: 10px;
+  }
+
+  // 수정
+  & > ${Table} {
+    display: none;
+  }
+
+  &[data-expanded="true"] > ${Table} {
+    display: table; // table로 변경
+  }
+`;
+
+const Styles = styled.div`
   table {
     border-spacing: 0;
     border-collapse: collapse;
     width: 100%;
 
-    th, td {
+    th,
+    td {
       padding: 0.5rem;
       border: 1px solid black; // 모든 셀에 테두리를 적용
     }
