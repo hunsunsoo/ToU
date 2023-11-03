@@ -10,6 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import static com.welcome.tou.statement.domain.QStatement.statement;
 
 @Repository
@@ -19,11 +22,20 @@ public class StatementQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public Page<Statement> findWithFilteringAndPagination( Pageable pageable, Long companySeq, Statement.StatementStatus status){
+    public Page<Statement> findWithFilteringAndPagination(
+            Pageable pageable, Long branchSeq, String type, String companyName, String myWorkerName,
+            String otherWorkerName, Boolean isMine, Long workerSeq, LocalDate startDate, LocalDate endDate,
+            Statement.StatementStatus status, String productName){
         QStatement statement = QStatement.statement;
 
         QueryResults<Statement> results = queryFactory.selectFrom(statement)
-                .where(companyEq(companySeq), statusEq(status))
+                .where(
+                        branchSeqEq(branchSeq, type),
+                        companyContain(companyName), statusEq(status),
+                        isMine(isMine,type, workerSeq),
+                        myWorkerContain(myWorkerName, type), otherWorkerContain(otherWorkerName, type),
+                        dateFrom(startDate), dateTo(endDate),
+                        hasProduct(productName))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
@@ -31,11 +43,67 @@ public class StatementQueryRepository {
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
 
     }
-    private BooleanExpression companyEq(Long companySeq) {
-        return companySeq != null ? statement.resBranch.company.companySeq.eq(companySeq) : null;
+    private BooleanExpression companyContain(String companyName) {
+        return companyName != null ? statement.resBranch.company.companyName.contains(companyName) : null;
     }
 
     private BooleanExpression statusEq(Statement.StatementStatus status) {
         return status != null ? statement.statementStatus.eq(status) : null;
+    }
+
+    private BooleanExpression isMine(boolean isMine, String type, Long workerSeq){
+        if ("req".equals(type)) {
+            return isMine ? statement.reqWorker.workerSeq.eq(workerSeq) : null;
+        } else {
+            return !isMine  ? statement.resWorker.workerSeq.eq(workerSeq) : null;
+        }
+    }
+    private BooleanExpression branchSeqEq(Long branchSeq, String type){
+        if ("req".equals(type)) {
+            return branchSeq!=null ? statement.reqBranch.branchSeq.eq(branchSeq) : null;
+        } else {
+            return branchSeq!=null  ? statement.resBranch.branchSeq.eq(branchSeq) : null;
+        }
+    }
+
+    private BooleanExpression hasProduct(String productName){
+        return productName != null ? statement.items.any().stock.stockName.contains(productName) : null;
+    }
+
+
+    private BooleanExpression myWorkerContain(String myWorkerName, String type) {
+        if ("req".equals(type)) {
+            return myWorkerName != null ? statement.reqWorker.workerName.contains(myWorkerName) : null;
+        } else {
+            return myWorkerName != null ? statement.resWorker.workerName.contains(myWorkerName) : null;
+        }
+    }
+
+    private BooleanExpression otherWorkerContain(String otherWorkerName, String type) {
+        if ("req".equals(type)) {
+            return otherWorkerName != null ? statement.resWorker.workerName.contains(otherWorkerName) : null;
+        } else {
+            return otherWorkerName != null ? statement.reqWorker.workerName.contains(otherWorkerName) : null;
+        }
+    }
+
+    private BooleanExpression dateFrom(LocalDate startDate) {
+        if (startDate != null) {
+            LocalDateTime startDateTime = startDate.atStartOfDay();
+
+            return statement.tradeDate.goe(startDateTime);
+        } else {
+            return null;
+        }
+    }
+
+    private BooleanExpression dateTo(LocalDate endDate) {
+
+        if (endDate != null) {
+            LocalDateTime endDateTime = endDate.atTime(23, 59, 59, 999999999); // endDate의 종료 시간
+            return statement.tradeDate.loe(endDateTime);
+        } else {
+            return null;
+        }
     }
 }

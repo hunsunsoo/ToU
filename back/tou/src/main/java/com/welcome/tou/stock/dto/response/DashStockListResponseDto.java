@@ -14,4 +14,5 @@ import java.util.List;
 public class DashStockListResponseDto {
 
     private List<DashStockResponseDto> stockList;
+
 }
