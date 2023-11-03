@@ -8,7 +8,7 @@ build/
 !**/src/test/**/build/
 
 ### env ###
-application.yml
+application-secret.yml
 application.properties
 .env
 
