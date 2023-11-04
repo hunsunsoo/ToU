@@ -25,8 +25,8 @@ public class ClientController {
 
 
     @GetMapping("/worker/branch/list/{companySeq}")
-    public ResultTemplate<?> getBranchListByCompany(@PathVariable Long companySeq) {
-        return clientService.getBranchListOfCompany(companySeq);
+    public ResultTemplate<?> getBranchListByCompany(@PathVariable Long companySeq, @AuthenticationPrincipal UserDetails worker) {
+        return clientService.getBranchListOfCompany(companySeq, worker);
     }
 
     @PostMapping("/login")
