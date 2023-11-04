@@ -38,8 +38,9 @@ export function UseAuth() {
         workerSeq: res.data.data.worker.workerSeq,
         workerName: res.data.data.worker.workerName,
         workerRole: res.data.data.worker.role,
-        selectedBranch: res.data.data.branches[0], // 여기서는 첫 번째 branch를 선택
-        branchList: res.data.data.branches,
+        branchSeq: res.data.data.branch.branchSeq,
+        branchName: res.data.data.branch.branchName,
+        branchType: res.data.data.branch.branchType,
         companySeq: res.data.data.company.companySeq,
         companyName: res.data.data.company.companyName,
       }));
@@ -52,6 +53,7 @@ export function UseAuth() {
         companyContact: res.data.data.company.companyContact,
         logoImage: res.data.data.company.logoImage,
       }));
+      return res;
     } catch (error) {
       console.log(error);
     }
