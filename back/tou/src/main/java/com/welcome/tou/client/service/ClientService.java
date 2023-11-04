@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,18 +69,15 @@ public class ClientService {
 
         Company myCompany = worker.getCompany();
 
-        List<Branch> branches = branchRepository.findByCompanySeq(myCompany.getCompanySeq());
+        Branch myBranch = worker.getBranch();
 
         LoginResponseDto loginResponseDto = LoginResponseDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .worker(AccessWorkerInfoResponseDto.builder().workerName(worker.getWorkerName()).loginId(worker.getLoginId()).role(worker.getRole().name()).build())
                 .company(AccessCompanyInfoResponseDto.from(myCompany))
-                .branchList(
-                        branches.stream().map(branch -> {
-                            return AccessBranchesInfoResponseDto.from(branch);
-                        }).collect(Collectors.toList())
-                ).build();
+                .branch(AccessBranchInfoResponseDto.from(myBranch))
+                .build();
 
         return ResultTemplate.builder().status(200).data(loginResponseDto).build();
     }
