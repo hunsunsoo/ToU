@@ -44,17 +44,20 @@ const DashboardDiv = styled.div`
 `
 
 const DashboardDiv2 = styled.div`
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 `
 
 const DashboardDivUP = styled.div`
   display: flex;
   width: 100%;
-  height: 60%;
+  height: 55%;
 `
 
 const DashboardDivDown = styled.div`
   display: flex;
   width: 100%;
-  height: 30.5%;
+  height: 45.5%;
 `

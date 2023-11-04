@@ -1,31 +1,46 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-// import OfficerBtn from "../../atoms/officer/OfficerBtn";
+import {
+  UserInfoState
+} from "../../../store/State";
 import { ROUTES } from "../../../commons/Routes";
 
 const OfficerSideBar = () => {
   const navigate = useNavigate();
+  const userInfo = useRecoilValue(UserInfoState);
+  console.log(userInfo);
+  const setUserInfo = useSetRecoilState(UserInfoState);
+
   
   const handleDropdownChange = (selectedValue: string) => {
     const intValue = parseInt(selectedValue, 10);
-    // 나중에 이 int값을 seq넘버로 쓰면 됨
     console.log(intValue);
+    // setUserInfo((prevUserInfo: UserInfo) => ({
+    //   ...prevUserInfo,
+    //   selectedBranch: prevUserInfo.branchList.find(
+    //     (branch: BranchInfo) => branch.branchSeq === intValue
+    //   ),
+    // }));
   };
 
   return (
   <SidebarContainer>
+    {/* 이미지는 아직 안했음 */}
     <RoundImage src="/emart.png" alt="Emart Logo" />
     <CompInfo>
-      업체명
+      <p>{userInfo.companyName}</p>
       {/* 드롭다운 메뉴 */}
       <Dropdown onChange={(e) => handleDropdownChange(e.target.value)}>
-        <option value="1">부산공장</option>
-        <option value="2">창원공장</option>
-        <option value="3">포항공장</option>
+        {userInfo.branchList.map((branch) => (
+          <option key={branch.branchSeq} value={`${branch.branchSeq}`}>
+            {branch.branchName}
+          </option>
+        ))}
       </Dropdown>
     </CompInfo>
-    <p>로그인 한 사용자 이름</p>
+    <p>{userInfo.workerName}</p>
     <Line />
     <ListBtn onClick={() => navigate(ROUTES.OFFICER_MAIN)}>메인페이지</ListBtn>
     <ListBtn onClick={() => navigate(ROUTES.OFFICER_CREATE)}>거래명세서 생성</ListBtn>
@@ -55,7 +70,8 @@ const RoundImage = styled.img`
 `;
 
 const CompInfo = styled.div`
-  display: flex;
+  display: block;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
   margin-top: 10px;
@@ -63,10 +79,10 @@ const CompInfo = styled.div`
 
 const Dropdown = styled.select`
   /* width: 100%; */
-  padding: 8px;
+  padding: 4px;
   position: relative;
-  left: 30px;
-  font-size: 16px;
+  left: 10px;
+  font-size: 13px;
 `
 
 const Line = styled.div`

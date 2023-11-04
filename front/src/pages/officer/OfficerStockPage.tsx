@@ -1,10 +1,100 @@
+import React, { useEffect, useState } from 'react';
 import { styled } from "styled-components";
 import OfficerSideBar from "../../components/organisms/officer/OfficerSideBar";
 import OfficerTitle from "../../components/atoms/officer/OfficerTitle";
 import OfficerBtn from "../../components/atoms/officer/OfficerBtn";
 import OfficerInputDiv from "../../components/organisms/officer/OfficerInputDiv";
+import Modal from "../../components/atoms/officer/OfficerItemModal";
+import { customAxios } from '../../components/api/customAxios';
+
+interface StockList {
+  stockSeq: number;
+  stockName: string;
+  stockDate: Date;
+  stockQuantity: number;
+  stockUnit: string;
+}
+
+interface StockItems {
+  preStockSeq: number;
+  preStockName: string;
+  preStockDate: Date;
+  preStockQuantity: number;
+  preStockUnit: string;
+}
 
 const OfficerStockPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [stockItems, setStockItems] = useState<StockList[]>([]);
+
+  // 기존 재고
+  const [preStock, setPreStock] = useState<StockItems>();
+
+  useEffect(() => {
+    // 토큰 들어오는거 기다리기
+    const awaitToken = async () => {
+      return new Promise((resolve) => {
+        const checkToken = () => {
+          const storedValue = localStorage.getItem("recoil-persist");
+          const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+          
+          if (accessToken) {
+            resolve(accessToken);
+          } else {
+            setTimeout(checkToken, 1000); // 1초마다 토큰 체크
+          }
+        };
+        checkToken();
+      });
+    };
+
+    // 기존 재고 목록 가져오기
+    const awaitStockItems = async () => {
+      try {
+        const accessToken = await awaitToken();
+        if (!accessToken) {
+          console.log("Token not found");
+          return;
+        }
+
+        const res = await customAxios.get(`/stock/officials/list/in/3`);
+        setStockItems(res.data.data.stockList);
+        console.log(res.data.data.stockList);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    awaitStockItems();
+  }, []);  
+
+  // 모달 함수
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // 조회 버튼 클릭
+  const getItemList = () => {
+    openModal();
+  }
+
+  // 기존 재고 선택 시
+  const selectPreStock = (selectedItem: StockList) => {
+    const { stockSeq, stockName, stockDate, stockQuantity, stockUnit } = selectedItem;
+    setPreStock({
+      preStockSeq: stockSeq,
+      preStockName: stockName,
+      preStockDate: stockDate,
+      preStockQuantity: stockQuantity,
+      preStockUnit: stockUnit,
+    });
+    closeModal();
+  }
+
+  // onClick 이벤트
   const onClick = () => {
 
   }
@@ -23,15 +113,15 @@ const OfficerStockPage = () => {
             isImg={false}
             isLarge={false}
             isActive={true}
-            onClick={onClick}>
+            onClick={getItemList}>
             조회
           </OfficerBtn> 
         </StyledP>
-        <OfficerInputDiv isInput={false}/>
+        <OfficerInputDiv isStockManage={true} isInput={false} stock={preStock} />
         <StyledP>
           • 가공 상품 / 추가 재고
         </StyledP>
-        <OfficerInputDiv isInput={false}/>
+        <OfficerInputDiv isStockManage={true} isInput={true}/>
         <BtnDiv>
           <OfficerBtn
             isImg={false}
@@ -49,6 +139,35 @@ const OfficerStockPage = () => {
           </OfficerBtn>
         </BtnDiv>
       </ContentDiv>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+      >
+        <div>
+          <h2>기존 재고 조회</h2>
+          {/* 모달 내용 추가 */}
+          <StyledTable>
+            <thead>
+              <tr>
+                <th>품명</th>
+                <th>입고일시</th>
+                <th>입고수량</th>
+              </tr>
+            </thead>
+            <tbody>
+              {stockItems.map((item, index) => (
+                <tr key={index} onClick={() => selectPreStock(item)}>
+                  <td>{item.stockName}</td>
+                  <td>{item.stockDate.toLocaleString('en-US', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
+                  <td>{item.stockQuantity} {item.stockUnit}</td>
+                </tr>
+              ))}
+            </tbody>
+          </StyledTable>
+        </div>
+      </Modal>
+
     </MainDiv>
   );
 };
@@ -88,3 +207,24 @@ const BtnDiv = styled.div`
   margin-left: 60%;
   gap: 50px
 `
+
+const StyledTable = styled.table`
+  margin: 10px 0;
+  width: 100%;
+  border-collapse: collapse;
+  color: #545A96;
+
+  th, td {
+    padding: 6px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  td {
+    font-size: 14px;
+  }
+
+  th {
+    font-size: 16px;
+  }
+`;

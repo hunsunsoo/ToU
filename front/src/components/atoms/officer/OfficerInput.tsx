@@ -1,14 +1,16 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import styled from "styled-components";
 
 interface InputProps {
   size: InputSize;
+  isDisabled?: boolean;
   color?: InputColor;
   placeholder?: string;
   type?: "text" | "number";
   value?: string | number;
-  onClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  // onClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  // onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type InputSize = "X-Large" | "Large" | "Medium" | "Small" | "underwriter" | "underwriter2";
@@ -91,6 +93,8 @@ const StyledInput = styled.input<InputProps>`
     InputColors[props.color || "BlackStroke"].backgroundColor};
   color: ${(props) => InputColors[props.color || "BlackStroke"].color};
   margin-right: 10px;
+  ${(props) => props.isDisabled && `disabled: true;`}
+
 
   &::placeholder {
     color: ${(props) =>
@@ -102,24 +106,13 @@ const StyledInput = styled.input<InputProps>`
     box-shadow: ${(props) =>
       InputColors[props.color || "BlackStroke"].boxShadow};
   }
+
+  
 `;
 
-const OfficerInput = ({ ...props }: InputProps) => {
-  return <StyledInput {...props} />;
+const OfficerInput = ({ value, onChange,...props }: InputProps) => {
+  return <StyledInput value={value} onChange={onChange} {...props} />;
 };
 
 export default OfficerInput;
 
-// placeholder
-// type
-// value
-// onClick
-// onKeyPress
-// color
-// size
-
-//인풋박스
-{/* <TraderInputBox size="X-Large" color="BlackStroke"></TraderInputBox>
-<TraderInputBox size="Large" color="BlackStroke"></TraderInputBox>
-<TraderInputBox size="Medium" color="BlackStroke"></TraderInputBox>
-<TraderInputBox size="Small" color="BlackStroke"></TraderInputBox> */}

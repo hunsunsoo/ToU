@@ -1,22 +1,60 @@
+import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import { BiHomeAlt } from 'react-icons/bi';
+import { customAxios } from '../../api/customAxios';
 
-interface Item {
-  id: number;
-  item: string;
-  company: string;
-  date?: Date;
-  price: number; // 단가
-  supplyAmount?: number;
+interface StockList {
+  stockName: string;
+  fromCompanyName: string;
+  fromBranchName: string;
+  stockDate: Date;
+  stockPrice: number;
+  stockQuantity: number;
+  stockUnit: string;
 }
 
-const items: Item[] = [
-  { id: 1, item: "고등어", company: "동현수산", date: new Date("2023.10.18 09:00"), price: 10000, supplyAmount: 300},
-  { id: 2, item: "고등어", company: "싸피수산", date: new Date("2023.10.23 10:23"), price: 9000, supplyAmount: 100},
-  { id: 3, item: "광어", company: "싸피수산", date: new Date("2023.10.28 09:00"), price: 12000, supplyAmount: 400}
-];
-
+// 재고 현황 조회
 const OfiicerStockTable = () => {
+  const [stockItems, setStockItems] = useState<StockList[]>([]);
+  const branchSeq = 3; // 임시로 3으로 넣었음. 바꿔야함
+
+  useEffect(() => {
+    // 토큰 들어오는거 기다리기
+    const awaitToken = async () => {
+      return new Promise((resolve) => {
+        const checkToken = () => {
+          const storedValue = localStorage.getItem("recoil-persist");
+          const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+          
+          if (accessToken) {
+            resolve(accessToken);
+          } else {
+            setTimeout(checkToken, 1000); // 1초마다 토큰 체크
+          }
+        };
+        checkToken();
+      });
+    };
+
+    // 재고 정보 가져오기
+    const awaitStockItem = async () => {
+      try {
+        const accessToken = await awaitToken();
+        if (!accessToken) {
+          console.log("Token not found");
+          return;
+        }
+
+        const res = await customAxios.get(`/stock/worker/dash/list/${branchSeq}`);
+        setStockItems(res.data.data.stockList);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    awaitStockItem();
+  }, [branchSeq]);
+
   return (
     <StockTableDiv>
       <StyledTitle>
@@ -33,13 +71,13 @@ const OfiicerStockTable = () => {
           </tr>
         </thead>
         <tbody>
-          {items.map((item) => (
-            <tr key={item.id}>
-              <td>{item.item}</td>
-              <td>{item.company}</td>
-              <td>{item.date?.toLocaleString('en-US', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
-              <td>{item.price} 원</td>
-              <td>{item.supplyAmount} kg</td>
+          {stockItems.map((item, index) => (
+            <tr key={index}>
+              <td>{item.stockName}</td>
+              <td>{item.fromCompanyName}</td>
+              <td>{item.stockDate.toLocaleString('en-US', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
+              <td>{item.stockPrice} 원</td>
+              <td>{item.stockQuantity} {item.stockUnit}</td>
             </tr>
           ))}
         </tbody>
@@ -52,7 +90,7 @@ export default OfiicerStockTable;
 
 const StockTableDiv = styled.div`
   width: 100%;
-  height: 100%;
+  height: 65%;
   border: 1px solid black;
   border-radius: 30px;
   margin: 0 20px 20px 20px;
