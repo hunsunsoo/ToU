@@ -293,9 +293,12 @@ public class StatementService {
 
     // 거래 최초 등록
     @Transactional
-    public ResultTemplate<?> addStatement(StatementCreateRequestDto request) {
-        Branch reqBranch = branchRepository.findById(request.getRequestBranch())
-                .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
+    public ResultTemplate<?> addStatement(StatementCreateRequestDto request, UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker myWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch reqBranch = myWorker.getBranch();
 
         Branch resBranch = branchRepository.findById(request.getResponseBranch())
                 .orElseThrow(() -> new NotFoundException("수급 관할 구역이" + NotFoundException.BRANCH_NOT_FOUND));
@@ -313,8 +316,6 @@ public class StatementService {
             Item newItem = Item.createItem(newStatement, stock);
             itemRepository.save(newItem);
         }
-
-        // 거래명세서 생성과 함께 일정 추가 예정
 
         return ResultTemplate.builder().status(200).data("거래 신청 완료").build();
     }

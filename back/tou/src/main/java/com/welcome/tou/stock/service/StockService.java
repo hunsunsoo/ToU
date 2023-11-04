@@ -64,6 +64,10 @@ public class StockService {
 
         List<Stock> stockList = stockRepository.findStockByBranchAndInOutStatusAndUseStatus(myBranch.getBranchSeq(), Stock.InOutStatus.OUT, Stock.UseStatus.UNUSED);
 
+        if(stockList == null || stockList.size() == 0) {
+            throw new NotFoundException("거래 가능한 재고가 존재하지 않습니다.");
+        }
+
         StockListResponseDto responseDto = StockListResponseDto.from(stockList.stream().map(stock -> {
             return StockResponseDto.from(stock);
         }).collect(Collectors.toList()));
