@@ -11,6 +11,11 @@ java {
 	sourceCompatibility = '11'
 }
 
+ext {
+	// 메인 클래스의 경로를 설정합니다.
+	javaMainClass = "com.ssafy.tou.TouApplication"
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -19,6 +24,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+
 }
 
 dependencies {
@@ -29,8 +35,25 @@ dependencies {
 	implementation 'org.hyperledger.fabric:fabric-gateway-java:2.1.1'
 	implementation 'com.google.guava:guava:29.0-jre'
 	implementation 'com.github.bxforce:hyperledger-fabric-spring-boot-starter:1.0.1-RELEASE'
+	implementation 'com.google.guava:guava:29.0-jre'
+	runtimeOnly 'io.netty:netty-tcnative-boringssl-static:2.0.43.Final'
+
+
 }
+
+
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+
+
+// 의존성을 빌드한 후 앱을 실행하는 작업(task)을 정의합니다.
+task runApp(type: Exec) {
+	dependsOn build // 빌드 작업에 의존합니다.
+	group = "Execution"
+	description = "Run the main class with ExecTask"
+	// Java 명령어를 사용하여 메인 클래스를 실행합니다. 클래스패스는 소스 셋의 런타임 클래스패스로 설정됩니다.
+	commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), javaMainClass
 }
