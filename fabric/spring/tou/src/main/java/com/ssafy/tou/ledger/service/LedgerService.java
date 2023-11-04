@@ -29,10 +29,15 @@ public class LedgerService {
             // get the network and contract
             System.out.println("gateway.getNework 시작");
             Network network = gateway.getNetwork("mychannel");
+            System.out.println("network Name : \n" + network.getChannel().getName());
             System.out.println("network.getContract(\"basic\"); 시작");
-            Contract contract = network.getContract("basic");
+            Contract contract = null;
+            try {
+                 contract = network.getContract("basic");
 
-
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+            }
             byte[] result;
             System.out.println(" contract.submitTransaction(\"InitLedger\"); 시작");
             contract.submitTransaction("InitLedger");
