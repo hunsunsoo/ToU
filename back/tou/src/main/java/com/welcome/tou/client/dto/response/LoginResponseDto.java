@@ -17,6 +17,6 @@ public class LoginResponseDto {
     private String refreshToken;
     private AccessWorkerInfoResponseDto worker;
     private AccessCompanyInfoResponseDto company;
-    private List<AccessBranchesInfoResponseDto> branchList;
+    private AccessBranchInfoResponseDto branch;
 
 }
