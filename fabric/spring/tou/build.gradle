@@ -32,8 +32,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'com.google.guava:guava:29.0-jre'
 	implementation 'com.github.bxforce:hyperledger-fabric-spring-boot-starter:1.0.1-RELEASE'
-	runtimeOnly 'io.netty:netty-tcnative-boringssl-static:2.0.43.Final'
+//	runtimeOnly 'io.netty:netty-tcnative-boringssl-static:2.0.43.Final'
 
 
 }
