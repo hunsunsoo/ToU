@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import OfficerInput from '../../atoms/officer/OfficerInput';
 import styled from 'styled-components';
 
@@ -14,16 +14,19 @@ interface InputDivProps {
   isStockManage: boolean;
   isInput?: boolean;
   stock?: StockItems;
+  selectedCompanyName?: string;
 }
 
-const handleDropdownChange = (selectedValue: string) => {
-  const intValue = parseInt(selectedValue, 10);
-  // 나중에 이 int값을 seq넘버로 쓰면 됨
-  console.log(intValue);
-};
 
-const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stock }) => {
+
+const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stock, selectedCompanyName }) => {
   console.log(stock);
+
+  const handleDropdownChange = (selectedValue: string) => {
+    const intValue = parseInt(selectedValue, 10);
+    console.log(intValue);
+    // setBranchInfo
+  };
 
   if (!isStockManage) { // 재고관리 아닐때(거래명세서생성)
     return (
@@ -32,17 +35,12 @@ const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stoc
             <StyledSpan>• 업체명</StyledSpan>
           <OfficerInput
             size={"underwriter"}
+            value={selectedCompanyName || ""}
           />
         </SubDiv>
         <div>
           <SubDiv>
-            <StyledSpan>• 담당자</StyledSpan>
-            <OfficerInput
-              size={"underwriter"}
-            />
-          </SubDiv>
-          <SubDiv>
-            <StyledSpan>• 연락처</StyledSpan>
+            <StyledSpan>• 관할구역</StyledSpan>
             <OfficerInput
               size={"underwriter"}
             />
@@ -100,11 +98,14 @@ const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stoc
                 isDisabled={true}
                 value={stock ? stock.preStockQuantity : ""}
               />
-              <Dropdown value={stock ? stock.preStockUnit : ""} onChange={(e) => handleDropdownChange(e.target.value)}>
-                <option value="1">kg</option>
-                <option value="2">ton</option>
-                <option value="3">마리</option>
+              <Dropdown onChange={(e) => handleDropdownChange(e.target.value)}>
+                {/* {userInfo.branchList.map((branch) => (
+                  <option key={branch.branchSeq} value={`${branch.branchSeq}`}>
+                    {branch.branchName}
+                  </option>
+                ))} */}
               </Dropdown>
+
             </SubDiv>
           </div>
           <SubDiv>
@@ -115,6 +116,7 @@ const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stoc
               value={stock ? stock.preStockDate.toString() : ""}
             />
           </SubDiv>
+
         </MainDiv>
       );
     }
