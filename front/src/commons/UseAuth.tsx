@@ -53,6 +53,7 @@ export function UseAuth() {
         companyContact: res.data.data.company.companyContact,
         logoImage: res.data.data.company.logoImage,
       }));
+      return res;
     } catch (error) {
       console.log(error);
     }
