@@ -21,6 +21,7 @@ public class Worker {
     @JoinColumn(name = "company_seq")
     private Company company;
 
+    // 지점 참조키
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_seq")
     private Branch branch;

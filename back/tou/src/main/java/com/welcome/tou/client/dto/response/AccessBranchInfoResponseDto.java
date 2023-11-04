@@ -7,14 +7,14 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Data
-public class AccessBranchesInfoResponseDto {
+public class AccessBranchInfoResponseDto {
 
     private Long branchSeq;
     private String branchName;
     private String branchType;
 
-    public static AccessBranchesInfoResponseDto from(Branch branch) {
-        AccessBranchesInfoResponseDto response = new AccessBranchesInfoResponseDto();
+    public static AccessBranchInfoResponseDto from(Branch branch) {
+        AccessBranchInfoResponseDto response = new AccessBranchInfoResponseDto();
         response.branchSeq = branch.getBranchSeq();
         response.branchName = branch.getBranchName();
         response.branchType = branch.getBranchType().name();
