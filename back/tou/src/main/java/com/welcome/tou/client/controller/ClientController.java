@@ -18,8 +18,14 @@ public class ClientController {
 
     private final ClientService clientService;
 
+    @GetMapping("/worker/company/list")
+    public ResultTemplate<?> getCompanyList() {
+        return clientService.getCompanyList();
+    }
+
+
     @GetMapping("/worker/branch/list/{companySeq}")
-    public ResultTemplate getBranchListByCompany(@PathVariable Long companySeq){
+    public ResultTemplate<?> getBranchListByCompany(@PathVariable Long companySeq) {
         return clientService.getBranchListOfCompany(companySeq);
     }
 
