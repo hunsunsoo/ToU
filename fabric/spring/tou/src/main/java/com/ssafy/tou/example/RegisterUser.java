@@ -21,6 +21,7 @@ import org.hyperledger.fabric.sdk.security.CryptoSuiteFactory;
 import org.hyperledger.fabric_ca.sdk.HFCAClient;
 import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
 
+
 public class RegisterUser {
 
 	public static void main(String[] args) throws Exception {
@@ -39,6 +40,7 @@ public class RegisterUser {
 
 		// Check to see if we've already enrolled the user.
 		if (wallet.get("appUser") != null) {
+			System.out.println("wallet appUser Id : \n" + wallet.get("appUser").getMspId());
 			System.out.println("An identity for the user \"appUser\" already exists in the wallet");
 			return;
 		}

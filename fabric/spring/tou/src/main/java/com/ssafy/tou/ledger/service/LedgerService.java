@@ -37,20 +37,29 @@ public class LedgerService {
             System.out.println("Evaluate Transaction: GetAllAssets, result: " + response);
         } catch (Exception e) {
             System.err.println(e);
+            System.out.println(e.getMessage());
         }
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
     }
 
     private Gateway connect() throws IOException {
+        System.out.println("Gateway connect() start");
         // Load a file system based wallet for managing identities.
         Path walletPath = Paths.get("wallet");
         Wallet wallet = null;
         wallet = Wallets.newFileSystemWallet(walletPath);
+
+
+        System.out.println("Finish \"Load a file system based wallet for managing identities\"");
+
         // load a CCP
         Path networkConfigPath = Paths.get("..", "..", "test-network", "organizations", "peerOrganizations", "org1.example.com", "connection-org1.yaml");
 
         Gateway.Builder builder = Gateway.createBuilder();
+        System.out.println("Finish \"Gateway.createBuilder()\"");
+
         builder.identity(wallet, "appUser").networkConfig(networkConfigPath).discovery(true);
+
         return builder.connect();
     }
 }
