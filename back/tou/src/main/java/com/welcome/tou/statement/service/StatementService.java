@@ -27,8 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -148,6 +147,73 @@ public class StatementService {
                 .data(response)
                 .build();
 
+    }
+
+
+    public ResultTemplate<?> getStatementListPreparing(Long lastItemSeq, UserDetails worker) {
+        // 유저 정보 가져오고
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker myWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Long companySeq = myWorker.getCompany().getCompanySeq();
+
+        List<Branch> branchList = null;
+
+        // 내가 서명할 수 있는 브랜치만 남기고
+        String myRole = myWorker.getRole().name();
+
+        switch (myRole){
+            case "PRODUCER":
+                branchList = branchRepository.findByCompanySeqAndRole(companySeq, Collections.singletonList(Branch.BranchType.PRODUCT));
+                break;
+            case "OFFICIALS":
+                branchList = branchRepository.findByCompanySeqAndRole(companySeq, Arrays.asList(Branch.BranchType.PROCESS, Branch.BranchType.PACKAGING));
+                break;
+            case "SELLER":
+                branchList = branchRepository.findByCompanySeqAndRole(companySeq, Collections.singletonList(Branch.BranchType.SELL));
+                break;
+        }
+
+        if (branchList == null || branchList.size() == 0){
+            throw new NotFoundException(NotFoundException.BRANCH_NOT_FOUND);
+        }
+
+        List<Long> branchSeqList = branchList.stream()
+                .map(Branch::getBranchSeq)
+                .collect(Collectors.toList());
+        // 무한스크롤 아님
+        List<Statement> myStatement = statementRepository.findStatementsByBranchSeq(branchSeqList);
+
+        StatementPreparingResponseDto responseDto = StatementPreparingResponseDto.builder()
+                .statementList(
+                        myStatement.stream().map(statement -> {
+
+                            List<Stock> stocks = itemRepository.findStockByStatementSeq(statement.getStatementSeq());
+
+                            String productsName = "";
+
+                            if(stocks == null || stocks.size() == 0) {
+                                throw new NotFoundException(NotFoundException.STOCK_NOT_FOUND);
+                            } else if(stocks.size() == 1) {
+                                productsName = stocks.get(0).getStockName();
+                            } else {
+                                productsName = stocks.get(0).getStockName() + " 외 " + String.valueOf(stocks.size()-1) + "건";
+                            }
+
+                            return PreparingListResponseDto.builder()
+                                    .statementSeq(statement.getStatementSeq())
+                                    .branchName(statement.getReqBranch().getBranchName())
+                                    .productsName(productsName)
+                                    .tradeDate(statement.getTradeDate())
+                                    .build();
+
+                        }).collect(Collectors.toList())
+                )
+                .hasNext(true)
+                .build();
+
+        return ResultTemplate.builder().status(200).data(responseDto).build();
     }
 
 

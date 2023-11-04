@@ -43,6 +43,12 @@ public class StatementController {
                 companySeq, productSeq, status);
     }
 
+    @GetMapping("/worker/list/preparing/{lastItemSeq}")
+    public ResultTemplate getStatementListPreparing(@PathVariable Long lastItemSeq,
+                                                    @AuthenticationPrincipal UserDetails worker) {
+        return statementService.getStatementListPreparing(lastItemSeq, worker);
+    }
+
     @PostMapping("/worker")
     public ResultTemplate<?> addStatement(@RequestBody StatementCreateRequestDto request) {
         return statementService.addStatement(request);

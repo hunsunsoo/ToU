@@ -22,5 +22,8 @@ public interface StatementRepository extends JpaRepository<Statement, Long> {
            + "group by s.reqBranch.branchName")
     List<BranchTradeCountResponseDto> findReqBranchTradeCountByResBranch(@Param("branchSeq") Long branchSeq);
 
+    @Query("SELECT s FROM Statement s "
+            + "WHERE s.reqBranch.branchSeq IN :branchSeq")
+    List<Statement> findStatementsByBranchSeq(@Param("branchSeq") List<Long> branchSeqList);
 
 }
