@@ -28,7 +28,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.hyperledger.fabric:fabric-gateway-java:2.1.1'
 	implementation 'com.google.guava:guava:29.0-jre'
-	runtimeOnly 'io.netty:netty-tcnative-boringssl-static:2.0.44.Final'
+	implementation 'com.github.bxforce:hyperledger-fabric-spring-boot-starter:1.0.1-RELEASE'
 }
 
 tasks.named('test') {
