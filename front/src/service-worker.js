@@ -10,7 +10,7 @@ function register() {
     }
 
     window.addEventListener('load', () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.ts`;
+      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
       if (isLocalhost) {
         checkValidServiceWorker(swUrl);
@@ -21,7 +21,7 @@ function register() {
   }
 }
 
-function registerValidSW(swUrl: string) {
+function registerValidSW(swUrl) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
@@ -45,7 +45,7 @@ function registerValidSW(swUrl: string) {
     });
 }
 
-function checkValidServiceWorker(swUrl: string) {
+function checkValidServiceWorker(swUrl) {
   fetch(swUrl, {
     headers: { 'Service-Worker': 'script' },
   })

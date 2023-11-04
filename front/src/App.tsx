@@ -88,7 +88,7 @@ const RoutesContainer = () => {
       <Route
         path={ROUTES.OFFICER_URL}
         element={
-          useRecoilValue(UserInfoState).accessToken != null ? (
+          useRecoilValue(UserInfoState)?.accessToken != null ? (
             <OfficerContainer>
               <OfficerHeader/>
               <Routes>
