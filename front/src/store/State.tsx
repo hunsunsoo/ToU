@@ -3,19 +3,14 @@ import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
 
-type BranchInfo = {
-  branchSeq: number | null;
-  branchName: string | null;
-  branchType: string | null;
-};
-
 type UserInfo = {
   accessToken: string | null;
   workerSeq: number | null;
   workerName: string | null;
   workerRole: string | null;
-  selectedBranch: BranchInfo;
-  branchList: BranchInfo[];
+  branchSeq: number | null;
+  branchName: string | null;
+  branchType: string | null;
   companySeq: number | null;
   companyName: string | null;
 };
@@ -37,12 +32,9 @@ export const UserInfoState = atom<UserInfo>({
     workerSeq: null,
     workerName: null,
     workerRole: null,
-    selectedBranch: {
-      branchSeq: null,
-      branchName: null,
-      branchType: null,
-    },
-    branchList: [],
+    branchSeq: null,
+    branchName: null,
+    branchType: null,
     companySeq: null,
     companyName: null,
   },
