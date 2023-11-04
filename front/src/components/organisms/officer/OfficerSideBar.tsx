@@ -10,7 +10,6 @@ import { ROUTES } from "../../../commons/Routes";
 const OfficerSideBar = () => {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(UserInfoState);
-  console.log(userInfo);
   const setUserInfo = useSetRecoilState(UserInfoState);
 
   
