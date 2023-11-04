@@ -1,29 +1,22 @@
-import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
 import { MainPaddingContainer } from "../../../commons/style/mobileStyle/MobileLayoutStyle";
 import TraderImg from "../../atoms/trader/TraderImg";
 import TraderInfo from "../../atoms/trader/TraderInfo";
-import { CurrentConnectionData } from "../../../types/TraderTypes";
-import { customAxios } from "../../api/customAxios";
+import { UserInfoState, CompanyInfoState } from "../../../store/State";
+import TraderBranch from "../../molecules/trader/TraderBranch";
 
 const TraderMainProfile = () => {
-  const [traderInfo, setTraderInfo] =
-    useState<CurrentConnectionData | null>(null);
-
-  useEffect(() => {
-    customAxios.get("/client/worker").then((res) => {
-      console.log(res.data.data);
-      setTraderInfo(res.data.data);
-      console.log(traderInfo)
-    });
-  }, []);
+  const userInfo = useRecoilValue(UserInfoState);
+  const companyInfo = useRecoilValue(CompanyInfoState);
 
   return (
     <StyledMainContainer>
       <MainPaddingContainer>
         <StyledDiv>
-          <TraderImg logoImage={traderInfo?.company.logoImage} />
-          <TraderInfo workerName={traderInfo?.worker.workerName} />
+          <TraderImg logoImage={companyInfo?.logoImage || undefined} />
+          <TraderInfo workerName={userInfo?.workerName || undefined} />
+          <TraderBranch />
         </StyledDiv>
       </MainPaddingContainer>
     </StyledMainContainer>

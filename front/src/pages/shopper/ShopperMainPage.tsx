@@ -1,30 +1,21 @@
 import { styled } from "styled-components";
-import { Canvas } from "@react-three/fiber";
 
 import { MainPaddingContainer } from "./../../commons/style/mobileStyle/MobileLayoutStyle";
-import { EarthCanvas } from "./../../components/EarthCanvas/index";
 
 import ShopperTitle from "../../components/atoms/shopper/ShopperTitle";
 import ShopperItemList from "../../components/organisms/shopper/ShopperItemList";
 
 const ShopperMainPage = () => {
   return (
-      <StyledMainPaddingContainer>
-        <ShopperTitle />
+    <StyledMainPaddingContainer>
+      <ShopperTitle />
 
-        <ContentContainer>
-          <CanvasContainer>
-            <Canvas camera={{ fov: 45, near: 0.1, far: 1000, position: [0, 0, 0] }}>
-              <EarthCanvas />
-            </Canvas>
-          </CanvasContainer>
-          
-          <ShopperItemListContainer>
-            <ShopperItemList />
-          </ShopperItemListContainer>
-        </ContentContainer>
-
-      </StyledMainPaddingContainer>
+      <ContentContainer>
+        <ShopperItemListContainer>
+          <ShopperItemList />
+        </ShopperItemListContainer>
+      </ContentContainer>
+    </StyledMainPaddingContainer>
   );
 };
 
@@ -45,20 +36,12 @@ const ContentContainer = styled.div`
   position: relative;
 `;
 
-const CanvasContainer = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-`;
-
 const ShopperItemListContainer = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.8);  // 배경 색상 (선택사항)
-  max-height: 150px;  // 원하는 높이 설정
+  background: rgba(255, 255, 255, 0.8); // 배경 색상 (선택사항)
+  max-height: 150px; // 원하는 높이 설정
   overflow-y: auto;
-  z-index: 1;  // 필요하면 z-index를 조절해주세요
+  z-index: 1; // 필요하면 z-index를 조절해주세요
 `;
