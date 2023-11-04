@@ -56,8 +56,9 @@ public class StatementController {
     }
 
     @PostMapping("/worker")
-    public ResultTemplate<?> addStatement(@RequestBody StatementCreateRequestDto request) {
-        return statementService.addStatement(request);
+    public ResultTemplate<?> addStatement(@RequestBody StatementCreateRequestDto request,
+                                          @AuthenticationPrincipal UserDetails worker) {
+        return statementService.addStatement(request, worker);
     }
 
 
