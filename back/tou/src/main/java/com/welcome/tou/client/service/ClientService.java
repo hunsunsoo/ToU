@@ -77,7 +77,7 @@ public class ClientService {
                 .refreshToken(refreshToken)
                 .worker(AccessWorkerInfoResponseDto.builder().workerName(worker.getWorkerName()).loginId(worker.getLoginId()).role(worker.getRole().name()).build())
                 .company(AccessCompanyInfoResponseDto.from(myCompany))
-                .branches(
+                .branchList(
                         branches.stream().map(branch -> {
                             return AccessBranchesInfoResponseDto.from(branch);
                         }).collect(Collectors.toList())
