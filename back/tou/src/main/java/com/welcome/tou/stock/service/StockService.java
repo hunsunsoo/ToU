@@ -46,13 +46,29 @@ public class StockService {
         Branch branch = branchRepository.findById(branchSeq).orElseThrow(()->{
             throw new NotFoundException(NotFoundException.BRANCH_NOT_FOUND);
         });
-        List<Stock> list = stockRepository.findStockByBranchAndInOutStatusAndUseStatus(branchSeq);
+        List<Stock> list = stockRepository.findStockByBranchAndInOutStatusAndUseStatus(branchSeq, Stock.InOutStatus.IN, Stock.UseStatus.UNUSED);
 
         StockListResponseDto response = StockListResponseDto.from(list.stream().map(stock -> {
             return StockResponseDto.from(stock);
         }).collect(Collectors.toList()));
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
+    }
+
+    public ResultTemplate getStockListForStatement(UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch myBranch = reqWorker.getBranch();
+
+        List<Stock> stockList = stockRepository.findStockByBranchAndInOutStatusAndUseStatus(myBranch.getBranchSeq(), Stock.InOutStatus.OUT, Stock.UseStatus.UNUSED);
+
+        StockListResponseDto responseDto = StockListResponseDto.from(stockList.stream().map(stock -> {
+            return StockResponseDto.from(stock);
+        }).collect(Collectors.toList()));
+
+        return ResultTemplate.builder().status(200).data(responseDto).build();
     }
 
     public ResultTemplate getProductList(Long branchSeq) {

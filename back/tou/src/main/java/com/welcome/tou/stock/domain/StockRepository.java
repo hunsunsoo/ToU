@@ -14,9 +14,11 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
 
     @Query(value = "select s from Stock s "
-                   +"where s.branch.branchSeq = :branchSeq and s.inOutStatus = 'IN' "
-                   +"and s.useStatus = 'UNUSED'" + "order by s.stockSeq")
-    List<Stock> findStockByBranchAndInOutStatusAndUseStatus(@Param("branchSeq") Long branchSeq);
+                   +"where s.branch.branchSeq = :branchSeq " + "and s.inOutStatus = :inOutStatus "
+                   +"and s.useStatus = :useStatus " + "order by s.stockSeq")
+    List<Stock> findStockByBranchAndInOutStatusAndUseStatus(@Param("branchSeq") Long branchSeq,
+                                                            @Param("inOutStatus") Stock.InOutStatus inOutStatus,
+                                                            @Param("useStatus") Stock.UseStatus useStatus);
 
     @Query(value = "select s from Stock s "
                    +"where s.stockName = :stockName and s.inOutStatus = 'IN' "
