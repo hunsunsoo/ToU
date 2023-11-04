@@ -13,11 +13,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @DependsOn("JwtService")
@@ -59,13 +61,21 @@ public class ClientService {
 
 
 
-    public ResultTemplate getBranchListOfCompany(Long companySeq) {
+    public ResultTemplate getBranchListOfCompany(Long companySeq, UserDetails worker) {
 
         companyRepository.findById(companySeq).orElseThrow(() ->
                 new NotFoundException(NotFoundException.COMPANY_NOT_FOUND));
 
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch mybranch = reqWorker.getBranch();
+
         List<BranchResponseDto> branchList = branchRepository.findByCompanySeq(companySeq)
-                .stream().map(branch -> {
+                .stream()
+                .filter(branch -> (!Objects.equals(branch.getBranchSeq(), mybranch.getBranchSeq())))
+                .map(branch -> {
                     return BranchResponseDto.builder().branchName(branch.getBranchName())
                             .branchSeq(branch.getBranchSeq()).build();
                 }).collect(Collectors.toList());
