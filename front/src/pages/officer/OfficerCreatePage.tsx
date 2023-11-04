@@ -13,18 +13,40 @@ interface Company {
   companyName: string;
 }
 
+interface Branch {
+  branchSeq: number;
+  branchName: string;
+}
+
 const OfficerCreatePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // 업체 목록 조회
+  // company 목록 조회
   const [companys, setCompanys] = useState<Company[]>([]);
-  // 선택 업체 이름
+  // 선택 company 정보
+  const [selectedCompanySeq, setSelectedCompanySeq] = useState<number>();
   const [selectedCompanyName, setSelectedCompanyName] = useState<string>("");
+
+  // 선택 company의 branch 목록 조회
+  const [branchs, setBranchs] = useState<Branch[]>([]);
+
 
   // 업체 선택 함수
   const selectCompany = (company: Company) => {
     setSelectedCompanyName(company.companyName);
+    setSelectedCompanySeq(company.companySeq);
+    
     closeModal();
   }
+
+  useEffect(() => {
+    if (selectedCompanySeq) {
+      customAxios(`client/worker/branch/list/${selectedCompanySeq}`)
+        .then((res) => {
+          console.log(res.data.data.branchList);
+          setBranchs(res.data.data.branchList);
+        })
+    }
+  }, [selectedCompanySeq])
 
   useEffect(() => {
     // 업체 목록 조회 API
@@ -76,7 +98,7 @@ const OfficerCreatePage = () => {
             조회
           </OfficerBtn> 
         </StyledP>
-        <OfficerInputDiv selectedCompanyName={selectedCompanyName} isStockManage={false}/>
+        <OfficerInputDiv selectedCompanyName={selectedCompanyName} branchs={branchs} isStockManage={false}/>
         <StyledP>
           • 거래 일자 등록
           "캘린더 선택 들어갈 자리"
