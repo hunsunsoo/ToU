@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
+
 import { StatementData } from "../../../types/TraderTypes";
 import { customAxios } from "../../api/customAxios";
 
 const FormComponent = () => {
+  // 거래명세서 데이터
   const [statementData, setStatementData] = useState<StatementData | null>(
     null
   );
+
+  // 표 펼쳐보기 관련
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
   const toggleSection = (section: string) => {
@@ -18,24 +23,47 @@ const FormComponent = () => {
     }
   };
 
+  // 거래명세서 상세보기 api 요청
   useEffect(() => {
     customAxios.get("/statement/worker/detail/1").then((res) => {
+      // 임시로 1 넣어놓음. 수정필요함
       console.log(res.data.data);
       setStatementData(res.data.data);
     });
   }, []);
 
+  // 거래명세서 서명 상태 관련
+  const isSigned =
+    statementData &&
+    statementData.reqInfo !== null &&
+    statementData.resInfo !== null;
+
   if (!statementData) return <div>Loading...</div>;
 
   return (
     <Styles>
-      <h2>거래명세표</h2>
+      <StyledTitle>
+        <div>거래명세표</div>
+        {isSigned && (
+          <SignatureStatus>서명이 완료된 거래명세서입니다.</SignatureStatus>
+        )}
+      </StyledTitle>
 
       <StyledSection
         data-expanded={expandedSection === "request" ? "true" : "false"}
         onClick={() => toggleSection("request")}
       >
-        <strong>요청 정보 (공급자)</strong>
+        <StyledDiv>
+          <strong>요청 정보 (공급자)</strong>
+          <StyledSpan>
+            {expandedSection === "request" ? "닫기" : "펼쳐보기"}
+            {expandedSection === "request" ? (
+              <HiChevronUp />
+            ) : (
+              <HiChevronDown />
+            )}
+          </StyledSpan>
+        </StyledDiv>
 
         <Table>
           <tbody>
@@ -67,7 +95,18 @@ const FormComponent = () => {
         data-expanded={expandedSection === "response" ? "true" : "false"}
         onClick={() => toggleSection("response")}
       >
-        <strong>응답 정보 (인수자/수급자)</strong>
+        <StyledDiv>
+          <strong>응답 정보 (인수자/수급자)</strong>
+          <StyledSpan>
+            {expandedSection === "response" ? "닫기" : "펼쳐보기"}
+            {expandedSection === "response" ? (
+              <HiChevronUp />
+            ) : (
+              <HiChevronDown />
+            )}
+          </StyledSpan>
+        </StyledDiv>
+
         <Table>
           <tbody>
             <TableRow>
@@ -94,7 +133,9 @@ const FormComponent = () => {
         </Table>
       </StyledSection>
 
-      <strong>품목정보</strong>
+      <StyledDiv>
+        <strong>품목정보</strong>
+      </StyledDiv>
       <table>
         <thead>
           <tr>
@@ -105,6 +146,7 @@ const FormComponent = () => {
             <th>비고</th>
           </tr>
         </thead>
+
         <tbody>
           {statementData.itemList.map((item, index) => (
             <tr key={index}>
@@ -121,7 +163,7 @@ const FormComponent = () => {
         </tbody>
       </table>
 
-      <>{statementData.tradeDate}</>
+      <StyledDate>{statementData.tradeDate}</StyledDate>
     </Styles>
   );
 };
@@ -148,10 +190,20 @@ const TableHeader = styled.th`
   background-color: #eaeaea;
 `;
 
+const StyledDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`;
+
+const StyledSpan = styled.span`
+  display: flex;
+  align-items: center;
+`;
+
 const StyledSection = styled.div`
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid black;
   padding: 10px 0;
   cursor: pointer;
 
@@ -189,4 +241,23 @@ const Styles = styled.div`
       background-color: white; // 아이템의 배경색을 흰색으로 변경
     }
   }
+`;
+
+const StyledTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.6rem;
+  margin: 1rem 0;
+  align-items: flex-end;
+`;
+
+const SignatureStatus = styled.span`
+  color: red;
+  margin-left: 1rem;
+  font-size: 1rem;
+`;
+
+const StyledDate = styled.div`
+  margin: 1rem 0;
 `;
