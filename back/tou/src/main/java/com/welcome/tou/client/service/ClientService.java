@@ -35,6 +35,30 @@ public class ClientService {
 
     private final PasswordEncoder passwordEncoder;
 
+
+    public ResultTemplate<?> getCompanyList() {
+        List<Company> companyList = companyRepository.findAll();
+
+        if (companyList == null || companyList.size() == 0) {
+            throw new NotFoundException(NotFoundException.COMPANY_NOT_FOUND);
+        }
+
+        List<SimpleCompanyInfoResponseDto> simpleCompanyList = companyList.stream().map(company -> {
+            return SimpleCompanyInfoResponseDto.builder()
+                    .companySeq(company.getCompanySeq())
+                    .companyName(company.getCompanyName())
+                    .build();
+        }).collect(Collectors.toList());
+
+        CompanyListResponseDto responseDto = CompanyListResponseDto.builder()
+                .companyList(simpleCompanyList)
+                .build();
+
+        return ResultTemplate.builder().status(200).data(responseDto).build();
+    }
+
+
+
     public ResultTemplate getBranchListOfCompany(Long companySeq) {
 
         companyRepository.findById(companySeq).orElseThrow(() ->
