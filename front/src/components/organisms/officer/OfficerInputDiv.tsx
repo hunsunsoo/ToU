@@ -15,12 +15,16 @@ interface InputDivProps {
   isInput?: boolean;
   stock?: StockItems;
   selectedCompanyName?: string;
+  branchs?: Branch[];
+}
+
+interface Branch {
+  branchSeq: number;
+  branchName: string;
 }
 
 
-
-const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stock, selectedCompanyName }) => {
-  console.log(stock);
+const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stock, selectedCompanyName, branchs }) => {
 
   const handleDropdownChange = (selectedValue: string) => {
     const intValue = parseInt(selectedValue, 10);
@@ -41,9 +45,13 @@ const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stoc
         <div>
           <SubDiv>
             <StyledSpan>• 관할구역</StyledSpan>
-            <OfficerInput
-              size={"underwriter"}
-            />
+            <Dropdown>
+              {branchs && branchs.map((branch, index) => (
+                <option key={index} value={branch.branchName}>
+                  {branch.branchName}
+                </option>
+              ))}
+            </Dropdown>
           </SubDiv>
         </div>
       </MainDiv>
@@ -145,7 +153,7 @@ const StyledSpan = styled.span`
 `
 
 const Dropdown = styled.select`
-  /* width: 100%; */
+  min-width: 300px;
   padding: 8px;
   position: relative;
   /* left: 30px; */
