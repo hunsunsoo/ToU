@@ -27,12 +27,21 @@ public class LedgerService {
         String response = null;
         try (Gateway gateway = connect()) {
             // get the network and contract
+            System.out.println("gateway.getNework 시작");
             Network network = gateway.getNetwork("mychannel");
+            System.out.println("network.getContract(\"basic\"); 시작");
             Contract contract = network.getContract("basic");
 
+
             byte[] result;
+            System.out.println(" contract.submitTransaction(\"InitLedger\"); 시작");
             contract.submitTransaction("InitLedger");
+
+            System.out.println(" result = contract.evaluateTransaction(\"GetAllAssets\"); 시작");
+
             result = contract.evaluateTransaction("GetAllAssets");
+
+
             response = new String(result);
             System.out.println("Evaluate Transaction: GetAllAssets, result: " + response);
         } catch (Exception e) {
