@@ -24,6 +24,8 @@ public class QWorker extends EntityPathBase<Worker> {
 
     public final StringPath biometrics = createString("biometrics");
 
+    public final QBranch branch;
+
     public final QCompany company;
 
     public final StringPath email = createString("email");
@@ -60,6 +62,7 @@ public class QWorker extends EntityPathBase<Worker> {
 
     public QWorker(Class<? extends Worker> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.branch = inits.isInitialized("branch") ? new QBranch(forProperty("branch"), inits.get("branch")) : null;
         this.company = inits.isInitialized("company") ? new QCompany(forProperty("company")) : null;
     }
 
