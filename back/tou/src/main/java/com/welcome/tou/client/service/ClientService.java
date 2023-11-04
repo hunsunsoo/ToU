@@ -70,8 +70,11 @@ public class ClientService {
                             .branchSeq(branch.getBranchSeq()).build();
                 }).collect(Collectors.toList());
 
+        BranchListResponseDto responseDto = BranchListResponseDto.builder()
+                .branchList(branchList)
+                .build();
 
-        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(branchList).build();
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(responseDto).build();
     }
 
     @Transactional
