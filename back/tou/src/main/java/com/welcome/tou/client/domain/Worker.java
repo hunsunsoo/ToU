@@ -21,6 +21,10 @@ public class Worker {
     @JoinColumn(name = "company_seq")
     private Company company;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_seq")
+    private Branch branch;
+
     // 성명
     @Column(name = "worker_name", length = 50, nullable = false)
     private String workerName;
