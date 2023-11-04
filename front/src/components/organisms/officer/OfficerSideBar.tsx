@@ -31,14 +31,7 @@ const OfficerSideBar = () => {
     <RoundImage src="/emart.png" alt="Emart Logo" />
     <CompInfo>
       <p>{userInfo.companyName}</p>
-      {/* 드롭다운 메뉴 */}
-      <Dropdown onChange={(e) => handleDropdownChange(e.target.value)}>
-        {userInfo.branchList.map((branch) => (
-          <option key={branch.branchSeq} value={`${branch.branchSeq}`}>
-            {branch.branchName}
-          </option>
-        ))}
-      </Dropdown>
+      <p>{userInfo.branchName}</p>
     </CompInfo>
     <p>{userInfo.workerName}</p>
     <Line />
