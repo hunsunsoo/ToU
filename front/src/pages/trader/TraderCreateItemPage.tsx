@@ -105,7 +105,7 @@ const TraderCreateItemPage: React.FC = () => {
                   ( {index + 1} / {items.length} )
                 </StyledSpan>
               </StyledInfoTitle>
-              <TraderDropdownTitle inputTitle="품목" />
+              {/* <TraderDropdownTitle inputTitle="품목" /> */}
               <TraderUnitInputTitle
                 inputTitle="수량"
                 value={item.unit}

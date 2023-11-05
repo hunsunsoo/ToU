@@ -10,12 +10,85 @@ import TraderInfoTitle from "../../components/organisms/trader/TraderInfoTitle";
 import TraderCalendarTitle from "../../components/organisms/trader/TraderCalendarTitle";
 import TraderDropdownTitle from "../../components/organisms/trader/TraderDropdownTitle";
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
+import { customAxios } from "../../components/api/customAxios";
+
+interface Item {
+  seq: number;
+  name: string;
+}
+
+interface Company {
+  companySeq: number;
+  companyName: string;
+}
+
+interface Branch {
+  branchSeq: number;
+  branchName: string;
+}
 
 const TraderCreatePage = () => {
   const navigate = useNavigate();
 
   const [companyName, setCompanyName] = useState("");
   const [isValid, setIsValid] = useState(false); // 모든 입력값이 유효한지에 대한 상태
+
+  // company 목록 조회
+  const [companys, setCompanys] = useState<Company[]>([]);
+
+  // 선택 company 정보
+  const [selectedCompanySeq, setSelectedCompanySeq] = useState<number>();
+  // const [selectedCompanyName, setSelectedCompanyName] = useState<string>("");
+
+  // company의 branch 목록 조회
+  const [branchs, setBranchs] = useState<Branch[]>([]);
+
+   // 선택 branch 정보
+  const [selectedBranchSeq, setSelectedBranchSeq] = useState<number>();
+  // const [selectedBranchName, setSelectedBranchName] = useState<string>("");
+
+  //company에 대한 드롭다운 항목
+  const companyDropdownItems = companys.map((company) => ({
+    seq: company.companySeq,
+    name: company.companyName,
+  }));
+
+  // branch에 대한 드롭다운 항목
+  const branchDropdownItems = branchs.map((branch) => ({
+    seq: branch.branchSeq,
+    name: branch.branchName,
+  }));
+
+  const [selectedCompany, setSelectedCompany] = useState<Item | null>(null);
+  const [selectedBranch, setSelectedBranch] = useState<Item | null>(null);
+
+  const handleSelectCompany = (item: Item) => {
+    setSelectedCompany(item);
+    setSelectedCompanySeq(item.seq);
+  };
+
+  const handleSelectBranch = (item: Item) => {
+    setSelectedBranch(item);
+    setSelectedBranchSeq(item.seq);
+  };
+  useEffect(() => {
+    // 업체 목록 조회 API
+    customAxios("/client/worker/company/list").then((res) => {
+      console.log(res.data.data.companyList);
+      setCompanys(res.data.data.companyList);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (selectedCompanySeq) {
+      customAxios(`client/worker/branch/list/${selectedCompanySeq}`).then(
+        (res) => {
+          // console.log(res.data.data.branchList);
+          setBranchs(res.data.data.branchList);
+        }
+      );
+    }
+  }, [selectedCompanySeq]);
 
   const checkValidity = () => {
     if (companyName) {
@@ -40,14 +113,18 @@ const TraderCreatePage = () => {
       <StyledBody>
         <MainPaddingContainer>
           <TraderInfoTitle infoTitle="인수자 정보" />
-          <TraderInputTitle
+          <TraderDropdownTitle
             inputTitle="업체명"
-            size="Large"
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
+            items={companyDropdownItems}
+            selectedItem={selectedCompany}
+            onSelect={handleSelectCompany}
           />
-          <TraderDropdownTitle inputTitle="관할 구역" />
-          <TraderDropdownTitle inputTitle="인수자" />
+          <TraderDropdownTitle
+            inputTitle="관할 구역"
+            items={branchDropdownItems}
+            selectedItem={selectedBranch}
+            onSelect={handleSelectBranch}
+          />
           <TraderInfoTitle infoTitle="거래 일자 등록" />
           <TraderCalendarTitle />
         </MainPaddingContainer>
