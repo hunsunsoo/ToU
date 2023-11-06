@@ -49,10 +49,9 @@ public class StatementController {
                  otherWorkerName,  isMine,  worker,  startDate, endDate, status, productName );
     }
 
-    @GetMapping("/worker/list/preparing/{lastItemSeq}")
-    public ResultTemplate getStatementListPreparing(@PathVariable Long lastItemSeq,
-                                                    @AuthenticationPrincipal UserDetails worker) {
-        return statementService.getStatementListPreparing(lastItemSeq, worker);
+    @GetMapping("/worker/list/preparing")
+    public ResultTemplate getStatementListPreparing(@AuthenticationPrincipal UserDetails worker) {
+        return statementService.getStatementListPreparing(worker);
     }
 
     @PostMapping("/worker")

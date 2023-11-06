@@ -224,17 +224,19 @@ public class StatementService {
     }
 
 
-    public ResultTemplate<?> getStatementListPreparing(Long lastItemSeq, UserDetails worker) {
+    public ResultTemplate<?> getStatementListPreparing(UserDetails worker) {
         // 유저 정보 가져오고
         Long workerSeq = Long.parseLong(worker.getUsername());
         Worker myWorker = workerRepository.findById(workerSeq)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
+        Branch myBranch = myWorker.getBranch();
+
+        /**
+         * 실무자와 지점을 연결하면서 서명할 수 있는 거래명세서의 범위 좁힘
         Long companySeq = myWorker.getCompany().getCompanySeq();
 
         List<Branch> branchList = null;
-
-        // 내가 서명할 수 있는 브랜치만 남기고
         String myRole = myWorker.getRole().name();
 
         switch (myRole){
@@ -256,8 +258,12 @@ public class StatementService {
         List<Long> branchSeqList = branchList.stream()
                 .map(Branch::getBranchSeq)
                 .collect(Collectors.toList());
-        // 무한스크롤 아님
-        List<Statement> myStatement = statementRepository.findStatementsByBranchSeq(branchSeqList);
+         */
+
+        List<Statement> myStatement = statementRepository.findStatementsByBranchSeq(myBranch.getBranchSeq());
+        if(myStatement == null || myStatement.size() == 0) {
+            throw new NotFoundException(NotFoundException.STOCK_FOR_SIGN_NOT_FOUND);
+        }
 
         StatementPreparingResponseDto responseDto = StatementPreparingResponseDto.builder()
                 .statementList(
@@ -284,7 +290,7 @@ public class StatementService {
 
                         }).collect(Collectors.toList())
                 )
-                .hasNext(true)
+                .hasNext(false)
                 .build();
 
         return ResultTemplate.builder().status(200).data(responseDto).build();
