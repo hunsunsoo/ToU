@@ -43,7 +43,7 @@ const TraderCreatePage = () => {
   // company의 branch 목록 조회
   const [branchs, setBranchs] = useState<Branch[]>([]);
 
-   // 선택 branch 정보
+  // 선택 branch 정보
   const [selectedBranchSeq, setSelectedBranchSeq] = useState<number>();
   // const [selectedBranchName, setSelectedBranchName] = useState<string>("");
 
@@ -58,6 +58,11 @@ const TraderCreatePage = () => {
     seq: branch.branchSeq,
     name: branch.branchName,
   }));
+
+  //거래일자
+  const [selectedDate, setSelectedDate] = useState<Date | Date[] | null>(
+    new Date()
+  );
 
   const [selectedCompany, setSelectedCompany] = useState<Item | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Item | null>(null);
@@ -91,17 +96,20 @@ const TraderCreatePage = () => {
   }, [selectedCompanySeq]);
 
   const checkValidity = () => {
-    if (companyName) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
+    const isCompanySelected = selectedCompany !== null;
+    const isBranchSelected = selectedBranch !== null;
+    const isDateSelected = selectedDate instanceof Date && !isNaN(selectedDate.valueOf());
+   
+    setIsValid(isCompanySelected && isBranchSelected && isDateSelected);
   };
 
   useEffect(() => {
     checkValidity();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [companyName]);
+  }, [selectedCompany, selectedBranch, selectedDate]);
+
+  // useEffect(() => {
+  //   console.log(selectedDate);
+  // }, [selectedDate]);
 
   return (
     <StyledContainer>
@@ -126,7 +134,10 @@ const TraderCreatePage = () => {
             onSelect={handleSelectBranch}
           />
           <TraderInfoTitle infoTitle="거래 일자 등록" />
-          <TraderCalendarTitle />
+          <TraderCalendarTitle
+            selectedDate={selectedDate}
+            onDateChange={setSelectedDate}
+          />
         </MainPaddingContainer>
       </StyledBody>
 

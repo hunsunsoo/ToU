@@ -2,19 +2,16 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import TraderCalendar from "../../atoms/trader/TraderCalendar";
 
-const TraderCalendarTitle = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | Date[] | null>(
-    new Date()
-  );
+interface TraderCalendarTitleProps {
+  selectedDate: Date | Date[] | null;
+  onDateChange: (date: Date | Date[] | null) => void;
+}
 
-  const handleDateChange = (date: Date | Date[] | null) => {
-    setSelectedDate(date);
-  };
-
+const TraderCalendarTitle: React.FC<TraderCalendarTitleProps> = ({ selectedDate, onDateChange }) => {
   return (
     <Container>
       <InputTitle>거래 일자</InputTitle>
-      <TraderCalendar onChange={handleDateChange} value={selectedDate} />
+      <TraderCalendar onChange={onDateChange} value={selectedDate} />
     </Container>
   );
 };
@@ -22,12 +19,12 @@ const TraderCalendarTitle = () => {
 export default TraderCalendarTitle;
 
 const Container = styled.div`
-  padding-top:10px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  margin: 30px 0 30px 0;
 `;
 
 const InputTitle = styled.span`
