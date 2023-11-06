@@ -77,11 +77,14 @@ public class StockService {
         return ResultTemplate.builder().status(200).data(responseDto).build();
     }
 
-    public ResultTemplate getProductList(Long branchSeq) {
-        Branch branch = branchRepository.findById(branchSeq).orElseThrow(()->{
-            throw new NotFoundException(NotFoundException.BRANCH_NOT_FOUND);
-        });
-        List<Product> list = productRepository.findByBranch(branchSeq);
+    public ResultTemplate getProductList(UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch myBranch = reqWorker.getBranch();
+
+        List<Product> list = productRepository.findByBranch(myBranch.getBranchSeq());
 
         ProductListResponseDto response = ProductListResponseDto.builder().productList(list.stream().map(product -> {
             return ProductResponseDto.builder().productSeq(product.getProductSeq()).productName(product.getProductName()).build();
