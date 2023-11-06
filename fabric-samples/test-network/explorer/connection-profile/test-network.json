@@ -29,18 +29,18 @@
 		"Org1MSP": {
 			"mspid": "Org1MSP",
 			"adminPrivateKey": {
-				"path": "organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/d3d0850b2503d4a2079870dc8aa0b41d64b76e41819c98757bfb7e9ac9fb9913_sk"
+				"path": "/home/ubuntu/S09P31B310/fabric-samples/test-network/explorer/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/d3d0850b2503d4a2079870dc8aa0b41d64b76e41819c98757bfb7e9ac9fb9913_sk"
 			},
 			"peers": ["peer0.org1.example.com"],
 			"signedCert": {
-				"path": "organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/cert.pem"
+				"path": "/home/ubuntu/S09P31B310/fabric-samples/test-network/explorer/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/cert.pem"
 			}
 		}
 	},
 	"peers": {
 		"peer0.org1.example.com": {
 			"tlsCACerts": {
-				"path": "organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
+				"path": "/home/ubuntu/S09P31B310/fabric-samples/test-network/explorer/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
 			},
 			"url": "grpcs://peer0.org1.example.com:7051"
 		}
