@@ -32,9 +32,9 @@ public class StatementController {
         return statementService.getStatementDetail(worker, statementSeq);
     }
 
-    @GetMapping("/worker/list/web/{branchSeq}")
+    @GetMapping("/worker/list/web")
     public ResultTemplate getStatementListByFilterAndPagination
-            (@RequestParam int page, @PathVariable Long branchSeq,
+            (@RequestParam int page,
              @RequestParam String type,
              @RequestParam(required = false) String companyName,
              @RequestParam(required = false) String myWorkerName,
@@ -45,7 +45,7 @@ public class StatementController {
              @RequestParam(required = false) LocalDate endDate,
              @RequestParam(required = false) Statement.StatementStatus status,
             @RequestParam(required = false) String productName) {
-        return statementService.getStatementListByFilterAndPagination(page, branchSeq, type, companyName,  myWorkerName,
+        return statementService.getStatementListByFilterAndPagination(page, type, companyName,  myWorkerName,
                  otherWorkerName,  isMine,  worker,  startDate, endDate, status, productName );
     }
 

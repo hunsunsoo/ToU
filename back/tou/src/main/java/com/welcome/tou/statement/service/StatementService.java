@@ -122,21 +122,18 @@ public class StatementService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(responseDto).build();
     }
 
-    public ResultTemplate getStatementListByFilterAndPagination(int page, Long branchSeq, String type, String companyName, String myWorkerName,
+    public ResultTemplate getStatementListByFilterAndPagination(int page, String type, String companyName, String myWorkerName,
                                                                 String otherWorkerName, Boolean isMine, UserDetails worker, LocalDate startDate, LocalDate endDate,
                                                                 Statement.StatementStatus status, String productName) {
 
 
         log.info("endDate :{}",endDate);
-        //관할구역 예외관리
-        Branch reqBranch = branchRepository.findById(branchSeq)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
 
-        //로그인 유저 예외관리
         Long workerSeq = Long.parseLong(worker.getUsername());
         Worker reqWorker = workerRepository.findById(workerSeq)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
+        Branch reqBranch = reqWorker.getBranch();
 
         if (page < 1) throw new BadRequestException(BadRequestException.BAD_PAGE_REQUEST);
         if (isMine && myWorkerName != null) throw new BadRequestException(BadRequestException.BAD_VARIABLE_REQUEST);
@@ -147,7 +144,7 @@ public class StatementService {
                 Sort.by("statementSeq").ascending());
 
         //필터링 + pagenation
-        Page<Statement> list = statementQueryRepository.findWithFilteringAndPagination(pageable, branchSeq, type, companyName,
+        Page<Statement> list = statementQueryRepository.findWithFilteringAndPagination(pageable, reqBranch.getBranchSeq(), type, companyName,
                 myWorkerName, otherWorkerName, isMine, workerSeq, startDate, endDate, status, productName);
 
         // 1. 현재 페이지 번호를 계산합니다.
