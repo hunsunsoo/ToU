@@ -35,9 +35,9 @@ public class StockController {
         return stockService.getStockListForStatement(worker);
     }
 
-    @GetMapping("/worker/product/list/{branchSeq}")
-    public ResultTemplate getProductList(@PathVariable Long branchSeq){
-        return stockService.getProductList(branchSeq);
+    @GetMapping("/worker/product/list")
+    public ResultTemplate getProductList(@AuthenticationPrincipal UserDetails worker){
+        return stockService.getProductList(worker);
     }
 
     @GetMapping("/worker/dash/list/{branchSeq}")
