@@ -122,21 +122,18 @@ public class StatementService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(responseDto).build();
     }
 
-    public ResultTemplate getStatementListByFilterAndPagination(int page, Long branchSeq, String type, String companyName, String myWorkerName,
+    public ResultTemplate getStatementListByFilterAndPagination(int page, String type, String companyName, String myWorkerName,
                                                                 String otherWorkerName, Boolean isMine, UserDetails worker, LocalDate startDate, LocalDate endDate,
                                                                 Statement.StatementStatus status, String productName) {
 
 
         log.info("endDate :{}",endDate);
-        //관할구역 예외관리
-        Branch reqBranch = branchRepository.findById(branchSeq)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
 
-        //로그인 유저 예외관리
         Long workerSeq = Long.parseLong(worker.getUsername());
         Worker reqWorker = workerRepository.findById(workerSeq)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
+        Branch reqBranch = reqWorker.getBranch();
 
         if (page < 1) throw new BadRequestException(BadRequestException.BAD_PAGE_REQUEST);
         if (isMine && myWorkerName != null) throw new BadRequestException(BadRequestException.BAD_VARIABLE_REQUEST);
@@ -147,7 +144,7 @@ public class StatementService {
                 Sort.by("statementSeq").ascending());
 
         //필터링 + pagenation
-        Page<Statement> list = statementQueryRepository.findWithFilteringAndPagination(pageable, branchSeq, type, companyName,
+        Page<Statement> list = statementQueryRepository.findWithFilteringAndPagination(pageable, reqBranch.getBranchSeq(), type, companyName,
                 myWorkerName, otherWorkerName, isMine, workerSeq, startDate, endDate, status, productName);
 
         // 1. 현재 페이지 번호를 계산합니다.
@@ -224,17 +221,19 @@ public class StatementService {
     }
 
 
-    public ResultTemplate<?> getStatementListPreparing(Long lastItemSeq, UserDetails worker) {
+    public ResultTemplate<?> getStatementListPreparing(UserDetails worker) {
         // 유저 정보 가져오고
         Long workerSeq = Long.parseLong(worker.getUsername());
         Worker myWorker = workerRepository.findById(workerSeq)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
+        Branch myBranch = myWorker.getBranch();
+
+        /**
+         * 실무자와 지점을 연결하면서 서명할 수 있는 거래명세서의 범위 좁힘
         Long companySeq = myWorker.getCompany().getCompanySeq();
 
         List<Branch> branchList = null;
-
-        // 내가 서명할 수 있는 브랜치만 남기고
         String myRole = myWorker.getRole().name();
 
         switch (myRole){
@@ -256,8 +255,12 @@ public class StatementService {
         List<Long> branchSeqList = branchList.stream()
                 .map(Branch::getBranchSeq)
                 .collect(Collectors.toList());
-        // 무한스크롤 아님
-        List<Statement> myStatement = statementRepository.findStatementsByBranchSeq(branchSeqList);
+         */
+
+        List<Statement> myStatement = statementRepository.findStatementsByBranchSeq(myBranch.getBranchSeq());
+        if(myStatement == null || myStatement.size() == 0) {
+            throw new NotFoundException(NotFoundException.STOCK_FOR_SIGN_NOT_FOUND);
+        }
 
         StatementPreparingResponseDto responseDto = StatementPreparingResponseDto.builder()
                 .statementList(
@@ -284,7 +287,7 @@ public class StatementService {
 
                         }).collect(Collectors.toList())
                 )
-                .hasNext(true)
+                .hasNext(false)
                 .build();
 
         return ResultTemplate.builder().status(200).data(responseDto).build();
