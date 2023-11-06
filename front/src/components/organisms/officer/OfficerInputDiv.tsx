@@ -16,6 +16,7 @@ interface InputDivProps {
   stock?: StockItems;
   selectedCompanyName?: string;
   branchs?: Branch[];
+  branchSelectionCallback?: (branchSeq: number) => void;
 }
 
 interface Branch {
@@ -24,12 +25,17 @@ interface Branch {
 }
 
 
-const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stock, selectedCompanyName, branchs }) => {
+const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stock, selectedCompanyName, branchs, branchSelectionCallback }) => {
+  const [selectedBranch, setSelectedBranch] = useState<number | string>("");
 
   const handleDropdownChange = (selectedValue: string) => {
     const intValue = parseInt(selectedValue, 10);
-    console.log(intValue);
-    // setBranchInfo
+    setSelectedBranch(Number(selectedValue));
+    // console.log(intValue);
+    if (branchSelectionCallback) {
+      branchSelectionCallback(intValue);
+    }
+
   };
 
   if (!isStockManage) { // 재고관리 아닐때(거래명세서생성)
@@ -45,9 +51,9 @@ const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stoc
         <div>
           <SubDiv>
             <StyledSpan>• 관할구역</StyledSpan>
-            <Dropdown>
+            <Dropdown value={selectedBranch} onChange={(e) => handleDropdownChange(e.target.value)}>
               {branchs && branchs.map((branch, index) => (
-                <option key={index} value={branch.branchName}>
+                <option key={index} value={branch.branchSeq}>
                   {branch.branchName}
                 </option>
               ))}

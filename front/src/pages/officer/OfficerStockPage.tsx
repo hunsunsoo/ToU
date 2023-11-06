@@ -143,6 +143,7 @@ const OfficerStockPage = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
+        modalType={"type1"}
       >
         <div>
           <h2>기존 재고 조회</h2>
