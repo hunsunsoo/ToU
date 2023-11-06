@@ -37,9 +37,9 @@ dependencies {
 	runtimeOnly 'io.netty:netty-tcnative-boringssl-static:2.0.43.Final'
 
 	//추가
-	compileOnly 'io.grpc:grpc-api:1.59.0'
-	runtimeOnly 'io.grpc:grpc-netty-shaded:1.59.0'
-	implementation 'com.google.code.gson:gson:2.10.1'
+//	compileOnly 'io.grpc:grpc-api:1.59.0'
+//	runtimeOnly 'io.grpc:grpc-netty-shaded:1.59.0'
+//	implementation 'com.google.code.gson:gson:2.10.1'
 	//추가 끝
 
 
