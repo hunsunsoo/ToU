@@ -41,12 +41,14 @@ public class StockService {
     private final StockRepository stockRepository;
 
 
-    public ResultTemplate getStockList(Long branchSeq) {
+    public ResultTemplate getStockList(UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
-        Branch branch = branchRepository.findById(branchSeq).orElseThrow(()->{
-            throw new NotFoundException(NotFoundException.BRANCH_NOT_FOUND);
-        });
-        List<Stock> list = stockRepository.findStockByBranchAndInOutStatusAndUseStatus(branchSeq, Stock.InOutStatus.IN, Stock.UseStatus.UNUSED);
+        Branch myBranch = reqWorker.getBranch();
+
+        List<Stock> list = stockRepository.findStockByBranchAndInOutStatusAndUseStatus(myBranch.getBranchSeq(), Stock.InOutStatus.IN, Stock.UseStatus.UNUSED);
 
         StockListResponseDto response = StockListResponseDto.from(list.stream().map(stock -> {
             return StockResponseDto.from(stock);

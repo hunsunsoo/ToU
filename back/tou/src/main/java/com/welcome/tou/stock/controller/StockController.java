@@ -25,9 +25,9 @@ public class StockController {
 
     private final StockService stockService;
 
-    @GetMapping("/officials/list/in/{branchSeq}")
-    public ResultTemplate getStockList(@PathVariable Long branchSeq){
-        return stockService.getStockList(branchSeq);
+    @GetMapping("/officials/list/in")
+    public ResultTemplate getStockList(@AuthenticationPrincipal UserDetails worker){
+        return stockService.getStockList(worker);
     }
 
     @GetMapping("/worker/list/out")
