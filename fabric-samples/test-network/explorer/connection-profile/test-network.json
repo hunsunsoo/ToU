@@ -29,18 +29,18 @@
 		"Org1MSP": {
 			"mspid": "Org1MSP",
 			"adminPrivateKey": {
-				"path": "organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/20c5a9ddd2e1a7131da27d5630879b7a3f39b0813f409347fd7a162999e316e1_sk"
+				"path": "/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/20c5a9ddd2e1a7131da27d5630879b7a3f39b0813f409347fd7a162999e316e1_sk"
 			},
 			"peers": ["peer0.org1.example.com"],
 			"signedCert": {
-				"path": "organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/cert.pem"
+				"path": "/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/cert.pem"
 			}
 		}
 	},
 	"peers": {
 		"peer0.org1.example.com": {
 			"tlsCACerts": {
-				"path": "organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
+				"path": "/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
 			},
 			"url": "grpcs://peer0.org1.example.com:7051"
 		}
