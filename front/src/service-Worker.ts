@@ -10,7 +10,7 @@ function register() {
     }
 
     window.addEventListener('load', () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+      const swUrl = `${process.env.PUBLIC_URL}/service-worker.ts`;
 
       if (isLocalhost) {
         checkValidServiceWorker(swUrl);
@@ -21,7 +21,7 @@ function register() {
   }
 }
 
-function registerValidSW(swUrl) {
+function registerValidSW(swUrl: string) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
@@ -35,7 +35,6 @@ function registerValidSW(swUrl) {
               } else {
                 console.log('Content is cached for offline use.');
               }
-              workbox.precaching.precacheAndRoute(self.__WB_MANIFEST || []);
             }
           };
         }
@@ -46,7 +45,7 @@ function registerValidSW(swUrl) {
     });
 }
 
-function checkValidServiceWorker(swUrl) {
+function checkValidServiceWorker(swUrl: string) {
   fetch(swUrl, {
     headers: { 'Service-Worker': 'script' },
   })
