@@ -9,6 +9,7 @@ import Modal from "../../components/atoms/officer/OfficerItemModal";
 import { customAxios } from '../../components/api/customAxios';
 import OfficerCreateCalendar from '../../components/atoms/officer/OfficerCreateCalendar';
 import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router';
 
 
 interface Company {
@@ -22,6 +23,8 @@ interface Branch {
 }
 
 const OfficerCreatePage = () => {
+  const navigate = useNavigate();
+
   // 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -127,7 +130,9 @@ const OfficerCreatePage = () => {
             duration: 1000,
           });
           setTimeout(() => {
+            navigate("/manage");
           }, 1000);
+          
         } else {
           toast.error("요청이 실패했습니다.", {
             duration: 1000,
@@ -144,6 +149,7 @@ const OfficerCreatePage = () => {
         setTimeout(() => {
         }, 1000);
       })
+    
   }
 
   return( 
