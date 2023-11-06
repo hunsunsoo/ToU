@@ -1,6 +1,7 @@
 package com.welcome.tou.stock.service;
 
 
+import com.welcome.tou.common.exception.InvalidStockException;
 import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.stock.dto.request.StockCreateByOfficialsRequestDto;
@@ -152,13 +153,11 @@ public class StockService {
 
     @Transactional
     public ResultTemplate<?> addStockByProducer(StockCreateByProducerRequestDto request, UserDetails worker) {
-
-        Branch branch = branchRepository.findById(request.getBranchSeq())
-                .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
-
         Long workerSeq = Long.parseLong(worker.getUsername());
         Worker reqWorker = workerRepository.findById(workerSeq)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch branch = reqWorker.getBranch();
 
         if(branch.getCompany() != reqWorker.getCompany()) {
             throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
@@ -183,12 +182,11 @@ public class StockService {
 
     @Transactional
     public ResultTemplate<?> addStockByOfiicials(StockCreateByOfficialsRequestDto request, UserDetails worker){
-        Branch branch = branchRepository.findById(request.getBranchSeq())
-                .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
-
         Long workerSeq = Long.parseLong(worker.getUsername());
         Worker reqWorker = workerRepository.findById(workerSeq)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch branch = reqWorker.getBranch();
 
         if(branch.getCompany() != reqWorker.getCompany()) {
             throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
@@ -199,6 +197,12 @@ public class StockService {
 
         if(branch != beforeStock.getBranch()){
             throw new MismatchException(MismatchException.STOCK_IS_NOT_IN_BRANCH);
+        }
+        if(beforeStock.getUseStatus() == Stock.UseStatus.USED) {
+            throw new InvalidStockException(InvalidStockException.STOCK_USED_ALREADY);
+        }
+        if(beforeStock.getInOutStatus() == Stock.InOutStatus.OUT) {
+            throw new InvalidStockException(InvalidStockException.STOCK_IS_NOT_NEED_PROCESS);
         }
 
         beforeStock.updateUseStatus(Stock.UseStatus.USED);

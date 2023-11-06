@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 public class StockCreateByProducerRequestDto {
 
-    private Long branchSeq;
     private String stockName;
     private Double stockQuantity;
     private String stockUnit;
