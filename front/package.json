@@ -74,6 +74,7 @@
   },
   "proxy": "http://k9b310.p.ssafy.io:8080",
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/react-calendar": "^4.1.0",
     "@types/react-slick": "^0.23.11"
   }
