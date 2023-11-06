@@ -257,7 +257,7 @@ public class StatementService {
                 .collect(Collectors.toList());
          */
 
-        List<Statement> myStatement = statementRepository.findStatementsByBranchSeq(myBranch.getBranchSeq());
+        List<Statement> myStatement = statementRepository.findStatementsByBranchSeqAndPreparing(myBranch.getBranchSeq());
         if(myStatement == null || myStatement.size() == 0) {
             throw new NotFoundException(NotFoundException.STOCK_FOR_SIGN_NOT_FOUND);
         }

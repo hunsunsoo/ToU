@@ -23,7 +23,8 @@ public interface StatementRepository extends JpaRepository<Statement, Long> {
     List<BranchTradeCountResponseDto> findReqBranchTradeCountByResBranch(@Param("branchSeq") Long branchSeq);
 
     @Query("SELECT s FROM Statement s "
-            + "WHERE s.reqBranch.branchSeq = :branchSeq")
-    List<Statement> findStatementsByBranchSeq(@Param("branchSeq") Long branchSeqList);
+            + "WHERE s.reqBranch.branchSeq = :branchSeq "
+            + "and s.statementStatus = 'PREPARING'")
+    List<Statement> findStatementsByBranchSeqAndPreparing(@Param("branchSeq") Long branchSeqList);
 
 }
