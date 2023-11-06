@@ -4,6 +4,7 @@ import com.welcome.tou.client.domain.Branch;
 import com.welcome.tou.client.domain.BranchRepository;
 import com.welcome.tou.client.domain.Worker;
 import com.welcome.tou.client.domain.WorkerRepository;
+import com.welcome.tou.common.exception.BadRequestException;
 import com.welcome.tou.common.exception.InvalidTradeException;
 import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
@@ -25,7 +26,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -119,17 +122,70 @@ public class StatementService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(responseDto).build();
     }
 
-    public ResultTemplate getStatementListByFilterAndPagination(int page, LocalDateTime startDate,
-                                                                LocalDateTime endDate, Long companySeq,
-                                                                Long productSeq,
-                                                                Statement.StatementStatus status) {
+    public ResultTemplate getStatementListByFilterAndPagination(int page, Long branchSeq, String type, String companyName, String myWorkerName,
+                                                                String otherWorkerName, Boolean isMine, UserDetails worker, LocalDate startDate, LocalDate endDate,
+                                                                Statement.StatementStatus status, String productName) {
 
-        PageRequest pageable = PageRequest.of(page, 5,
+
+        log.info("endDate :{}",endDate);
+        //관할구역 예외관리
+        Branch reqBranch = branchRepository.findById(branchSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.BRANCH_NOT_FOUND));
+
+        //로그인 유저 예외관리
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+
+        if (page < 1) throw new BadRequestException(BadRequestException.BAD_PAGE_REQUEST);
+        if (isMine && myWorkerName != null) throw new BadRequestException(BadRequestException.BAD_VARIABLE_REQUEST);
+
+
+        //페이지네이션 page 수 , size, 정렬
+        PageRequest pageable = PageRequest.of(page - 1, 2,
                 Sort.by("statementSeq").ascending());
-        Page<Statement> list = statementQueryRepository.findWithFilteringAndPagination(pageable, companySeq, status);
+
+        //필터링 + pagenation
+        Page<Statement> list = statementQueryRepository.findWithFilteringAndPagination(pageable, branchSeq, type, companyName,
+                myWorkerName, otherWorkerName, isMine, workerSeq, startDate, endDate, status, productName);
+
+        // 1. 현재 페이지 번호를 계산합니다.
+        int currentPage = list.getNumber() + 1;
+        int maxPagesToShow = 3; // 한 번에 표시할 페이지 수
+
+// startPage는 현재 페이지 번호를 maxPagesToShow로 나눈 몫에 1을 더한 값에 maxPagesToShow를 곱하고 maxPagesToShow - 2를 더한 값입니다.
+        int startPage = (int) Math.floor((currentPage - 1) / maxPagesToShow) * maxPagesToShow + 1;
+
+// endPage는 startPage에서 maxPagesToShow만큼 더한 후 -1을 합니다.
+        int endPage = startPage + maxPagesToShow - 1;
+
+// 만약 endPage가 전체 페이지 수보다 큰 경우에는 전체 페이지 수를 endPage로 설정합니다.
+        if (endPage > list.getTotalPages()) {
+            endPage = list.getTotalPages();
+        }
+        int pre;
+        int prevPageGroupEnd = startPage - 1; // 이전 페이지 그룹의 마지막 페이지
+        if (prevPageGroupEnd >= 1) {
+            pre = prevPageGroupEnd;
+        } else {
+            pre = 1;
+        }
+
+// next 페이지 번호
+        int next;
+        int nextPageGroupStart = startPage + maxPagesToShow; // 다음 페이지 그룹의 시작 페이지
+        if (list.getTotalPages() > nextPageGroupStart) {
+            next = nextPageGroupStart;
+        } else {
+            next = endPage;
+        }
+        int start = (currentPage - 1) * list.getSize() + 1; // 시작 글 번호
 
 
-        List<WebStatementResponseDto> response = list.getContent()
+        if(page> list.getTotalPages())
+            throw new BadRequestException(BadRequestException.OVER_PAGE_REQUEST);
+        List<WebStatementResponseDto> statementList = list.getContent()
                 .stream()
                 .map(statement -> {
                     AtomicReference<Double> price = new AtomicReference<>(0.0);
@@ -138,9 +194,27 @@ public class StatementService {
                         double itemTotalPrice = item.getStock().getStockPrice() * item.getStock().getStockQuantity();
                         price.updateAndGet(v -> v + itemTotalPrice);
                     });
-                    return WebStatementResponseDto.from(statement, new DecimalFormat("#,###.00").format(price.get()));
+                    return WebStatementResponseDto.from(statement, type,
+                            new DecimalFormat("#,###.00").format(price.get()));
                 })
                 .collect(Collectors.toList());
+
+        WebStatementPageableResponseDto response = WebStatementPageableResponseDto.builder()
+                .statementList(statementList)
+                .totalElements(list.getTotalElements())
+                .totalPages(list.getTotalPages())
+                .currentPage(list.getNumber() + 1) // 페이지 인덱스는 0부터 시작하므로 1을 더합니다.
+                .size(list.getSize())
+                .first(list.isFirst()) // 첫 페이지인지 확인
+                .last(list.isLast()) // 마지막 페이지인지 확인
+                .hasNext(list.hasNext()) // 다음 페이지가 있는지 확인
+                .hasPrevious(list.hasPrevious()) // 이전 페이지가 있는지 확인
+                .startPage(startPage)  // 추가: 표시될 시작 페이지 번호 설정
+                .endPage(endPage)      // 추가: 표시될 끝 페이지 번호 설정
+                .pre(pre)
+                .next(next)
+                .start(start)
+                .build();
 
         return ResultTemplate.builder()
                 .status(HttpStatus.OK.value())
