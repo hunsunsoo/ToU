@@ -19,6 +19,7 @@ public class StockResponseDto {
     private Double stockQuantity;
     private String stockUnit;
     private String stockName;
+    private Long stockPrice;
 
     public static StockResponseDto from(Stock stock){
 
@@ -29,6 +30,7 @@ public class StockResponseDto {
         response.stockQuantity = stock.getStockQuantity();
         response.stockUnit = stock.getStockUnit();
         response.stockName = stock.getStockName();
+        response.stockPrice = stock.getStockPrice();
 
         return response;
     }
