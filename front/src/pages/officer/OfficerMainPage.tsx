@@ -4,6 +4,7 @@ import OfficerCalendar from "../../components/atoms/officer/OfficerCalendar";
 import OfficerDoughnutChart from "../../components/atoms/officer/OfficerDoughnutChart";
 import OfficerGraph from "../../components/atoms/officer/OfficerGraph";
 import OfficerStockTable from "../../components/atoms/officer/OfficerStockTable";
+import OfficerChart from "../../components/atoms/officer/OfficerChart";
 
 const OfficerMainPage = () => {
   return (
@@ -13,11 +14,12 @@ const OfficerMainPage = () => {
         <OfficerCalendar/>
         <DashboardDiv2>
           <DashboardDivUP>
-            <OfficerDoughnutChart 
+            {/* <OfficerDoughnutChart 
               total={13} 
               comp1={5}
               comp2={3}
-              comp3={2} />
+              comp3={2} /> */}
+              <OfficerChart />
             <OfficerGraph />
           </DashboardDivUP>
           <DashboardDivDown>
