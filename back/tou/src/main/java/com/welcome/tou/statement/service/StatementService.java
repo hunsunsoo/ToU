@@ -280,6 +280,49 @@ public class StatementService {
 
                             return PreparingListResponseDto.builder()
                                     .statementSeq(statement.getStatementSeq())
+                                    .branchName(statement.getResBranch().getBranchName())
+                                    .productsName(productsName)
+                                    .tradeDate(statement.getTradeDate())
+                                    .build();
+
+                        }).collect(Collectors.toList())
+                )
+                .hasNext(false)
+                .build();
+
+        return ResultTemplate.builder().status(200).data(responseDto).build();
+    }
+
+    public ResultTemplate<?> getStatementListWaiting(UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker myWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch myBranch = myWorker.getBranch();
+
+        List<Statement> myStatement = statementRepository.findStatementsByBranchSeqAndWaiting(myBranch.getBranchSeq());
+        if(myStatement == null || myStatement.size() == 0) {
+            throw new NotFoundException(NotFoundException.STOCK_FOR_SIGN_NOT_FOUND);
+        }
+
+        StatementPreparingResponseDto responseDto = StatementPreparingResponseDto.builder()
+                .statementList(
+                        myStatement.stream().map(statement -> {
+
+                            List<Stock> stocks = itemRepository.findStockByStatementSeq(statement.getStatementSeq());
+
+                            String productsName = "";
+
+                            if(stocks == null || stocks.size() == 0) {
+                                throw new NotFoundException(NotFoundException.STOCK_NOT_FOUND);
+                            } else if(stocks.size() == 1) {
+                                productsName = stocks.get(0).getStockName();
+                            } else {
+                                productsName = stocks.get(0).getStockName() + " 외 " + String.valueOf(stocks.size()-1) + "건";
+                            }
+
+                            return PreparingListResponseDto.builder()
+                                    .statementSeq(statement.getStatementSeq())
                                     .branchName(statement.getReqBranch().getBranchName())
                                     .productsName(productsName)
                                     .tradeDate(statement.getTradeDate())

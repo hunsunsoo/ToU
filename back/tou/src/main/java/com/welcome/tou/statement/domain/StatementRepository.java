@@ -25,6 +25,10 @@ public interface StatementRepository extends JpaRepository<Statement, Long> {
     @Query("SELECT s FROM Statement s "
             + "WHERE s.reqBranch.branchSeq = :branchSeq "
             + "and s.statementStatus = 'PREPARING'")
-    List<Statement> findStatementsByBranchSeqAndPreparing(@Param("branchSeq") Long branchSeqList);
+    List<Statement> findStatementsByBranchSeqAndPreparing(@Param("branchSeq") Long branchSeq);
 
+    @Query("SELECT s FROM Statement s "
+            + "WHERE s.resBranch.branchSeq = :branchSeq "
+            + "and s.statementStatus = 'WAITING'")
+    List<Statement> findStatementsByBranchSeqAndWaiting(@Param("branchSeq") Long branchSeq);
 }

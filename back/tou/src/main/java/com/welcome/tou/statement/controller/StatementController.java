@@ -54,6 +54,11 @@ public class StatementController {
         return statementService.getStatementListPreparing(worker);
     }
 
+    @GetMapping("/worker/list/waiting")
+    public ResultTemplate getStatementListWaiting(@AuthenticationPrincipal UserDetails worker) {
+        return statementService.getStatementListWaiting(worker);
+    }
+
     @PostMapping("/worker")
     public ResultTemplate<?> addStatement(@RequestBody StatementCreateRequestDto request,
                                           @AuthenticationPrincipal UserDetails worker) {
