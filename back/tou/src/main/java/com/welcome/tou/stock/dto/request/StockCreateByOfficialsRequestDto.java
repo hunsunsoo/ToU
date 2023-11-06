@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 public class StockCreateByOfficialsRequestDto {
 
-    private Long branchSeq;
     private Long beforeStockSeq;
 
     private String newStockName;
