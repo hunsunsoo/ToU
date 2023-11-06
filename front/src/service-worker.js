@@ -35,6 +35,7 @@ function registerValidSW(swUrl) {
               } else {
                 console.log('Content is cached for offline use.');
               }
+              workbox.precaching.precacheAndRoute(self.__WB_MANIFEST || []);
             }
           };
         }
