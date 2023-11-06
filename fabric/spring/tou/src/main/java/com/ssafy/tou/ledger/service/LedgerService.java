@@ -34,6 +34,7 @@ public class LedgerService {
             Contract contract = null;
             try {
                  contract = network.getContract("basic");
+                System.out.println(contract.toString());
 
             } catch (Exception e){
                 System.out.println(e.getMessage());

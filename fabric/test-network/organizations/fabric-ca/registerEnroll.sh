@@ -77,6 +77,9 @@ function createOrg1() {
   fabric-ca-client enroll -u https://org1admin:org1adminpw@localhost:7054 --caname ca-org1 -M ${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
   { set +x; } 2>/dev/null
 
+  # PEM 파일을 src/main/resources 디렉토리로 복사합니다.
+  cp ${PWD}/organizations/fabric-ca/org1/tls-cert.pem ../../../spring/tou/src/main/resources/tls-cert.pem
+
   cp ${PWD}/organizations/peerOrganizations/org1.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/config.yaml
 }
 
