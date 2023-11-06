@@ -72,7 +72,7 @@ const OfficerItemTable: React.FC<OfficerItemTableProps> = ({ onSelectedSeqListCh
     };
 
     // 판매용 재고 목록 조회
-    customAxios(`stock/worker/list/out`)
+    customAxios.get(`stock/worker/list/out`)
       .then((res) => {
         const updatedStockItems = res.data.data.stockList.map((stockitem: StockList) => {
           const { price1, price2 } = calculatePrice(stockitem.stockPrice, stockitem.stockQuantity);
