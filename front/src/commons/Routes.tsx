@@ -11,7 +11,6 @@ export const ROUTES = {
   TRADER_LOGIN: "login",
   TRADER_CONFIRM: "confirm/:billId",
   TRADER_CREATE: "create",
-  TRADER_CREATEITEM: "create/item",
   TRADER_GETLIST: "list",
   TRADER_SECTION: "section",
   TRADER_SIGN: "sign/:billId",
