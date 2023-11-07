@@ -7,13 +7,14 @@ interface InputProps {
   color?: InputColor;
   placeholder?: string;
   type?: "text" | "number";
-  value?: string | number;
+  value?: string | number | null;
   // onClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   // onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  name?: string;
 }
 
-type InputSize = "X-Large" | "Large" | "Medium" | "Small" | "underwriter" | "underwriter2";
+type InputSize = "X-Large" | "Large" | "Medium" | "Small" | "underwriter" | "underwriter2" | "underwriter3";
 
 type InputStyle = {
   height: string;
@@ -65,7 +66,13 @@ const InputStyles: Record<InputSize, InputStyle> = {
   },
   underwriter2: {
     height: "35px",
-    width: "270px",
+    width: "200px",
+    fontSize: "16px",
+    borderRadius: "0px",
+  },
+  underwriter3: {
+    height: "35px",
+    width: "140px",
     fontSize: "16px",
     borderRadius: "0px",
   },

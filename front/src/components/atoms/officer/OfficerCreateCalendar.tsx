@@ -3,21 +3,18 @@ import styled from "styled-components";
 import Calendar from "react-calendar";
 import { BiCalendarCheck } from "react-icons/bi";
 import moment from "moment";
-import { CalendarWrapper, DropdownButton } from "../../../commons/style/calendarStyle/TraderCalendarStyle";
+import { CalendarWrapper, DropdownButton } from "../../../commons/style/calendarStyle/OfficerCreateCalendarStyle";
 
 // type ValuePiece = Date | null;
 // type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-interface TraderCalendarProps {
+interface OfficerCreateCalendarProps {
   onChange: any;
   value: any;
 }
 
-const TraderCalendar: React.FC<TraderCalendarProps> = ({ onChange, value }) => {
-  const today = new Date();
-  const formattedDate = `${today.getFullYear()}년 ${String(today.getMonth() + 1).padStart(2, '0')}월 ${String(today.getDate()).padStart(2, '0')}일`;
-
-  const [nowDate, setNowDate] = useState<string>(formattedDate);
+const OfficerCreateCalendar: React.FC<OfficerCreateCalendarProps> = ({ onChange, value }) => {
+  const [nowDate, setNowDate] = useState<string>("거래일자를 등록하세요");
   const [OpenYN, setOpenYN] = useState<boolean>(false);
 
   const handleToggleCalendar = () => {
@@ -53,7 +50,7 @@ const TraderCalendar: React.FC<TraderCalendarProps> = ({ onChange, value }) => {
   );
 };
 
-export default TraderCalendar;
+export default OfficerCreateCalendar;
 
 const CalendarContainer = styled.div`
   position: relative;

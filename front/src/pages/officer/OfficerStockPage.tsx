@@ -6,6 +6,8 @@ import OfficerBtn from "../../components/atoms/officer/OfficerBtn";
 import OfficerInputDiv from "../../components/organisms/officer/OfficerInputDiv";
 import Modal from "../../components/atoms/officer/OfficerItemModal";
 import { customAxios } from '../../components/api/customAxios';
+import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router';
 
 interface StockList {
   stockSeq: number;
@@ -16,19 +18,28 @@ interface StockList {
 }
 
 interface StockItems {
-  preStockSeq: number;
-  preStockName: string;
-  preStockDate: Date;
-  preStockQuantity: number;
-  preStockUnit: string;
+  stockSeq?: number;
+  stockName?: string;
+  stockDate: Date;
+  stockQuantity?: number;
+  stockUnit?: string;
+  stockPrice?: number;
 }
 
 const OfficerStockPage = () => {
+  const navigate = useNavigate();
+
+  const [branchType, setBranchType] = useState("PROCESS");
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [stockItems, setStockItems] = useState<StockList[]>([]);
-
+  
   // 기존 재고
   const [preStock, setPreStock] = useState<StockItems>();
+  
+  // 새로운 재고
+  const [newStock, setNewStock] = useState<StockItems>();
+  console.log(newStock);
 
   useEffect(() => {
     // 토큰 들어오는거 기다리기
@@ -37,6 +48,7 @@ const OfficerStockPage = () => {
         const checkToken = () => {
           const storedValue = localStorage.getItem("recoil-persist");
           const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+          setBranchType(storedValue && JSON.parse(storedValue)?.UserInfoState?.branchType);
           
           if (accessToken) {
             resolve(accessToken);
@@ -57,7 +69,7 @@ const OfficerStockPage = () => {
           return;
         }
 
-        const res = await customAxios.get(`/stock/officials/list/in/3`);
+        const res = await customAxios.get(`/stock/officials/list/in`);
         setStockItems(res.data.data.stockList);
         console.log(res.data.data.stockList);
       } catch (error) {
@@ -85,13 +97,78 @@ const OfficerStockPage = () => {
   const selectPreStock = (selectedItem: StockList) => {
     const { stockSeq, stockName, stockDate, stockQuantity, stockUnit } = selectedItem;
     setPreStock({
-      preStockSeq: stockSeq,
-      preStockName: stockName,
-      preStockDate: stockDate,
-      preStockQuantity: stockQuantity,
-      preStockUnit: stockUnit,
+      stockSeq: stockSeq,
+      stockName: stockName,
+      stockDate: stockDate,
+      stockQuantity: stockQuantity,
+      stockUnit: stockUnit,
     });
     closeModal();
+  }
+
+  // 새로운 재고 업데이트
+  const updateNewStock = (updatedStock: StockItems) => {
+    setNewStock(updatedStock);
+  };
+
+  // 재고 수정(가공)
+  const handleManufacture = () => {
+    const body = {
+      beforeStockSeq: preStock?.stockSeq,
+      newStockName: newStock?.stockName,
+      newStockQuantity: newStock?.stockQuantity,
+      newStockUnit: newStock?.stockUnit,
+      newStockPrice: newStock?.stockPrice,
+    }
+    customAxios.post(`stock/officials`, body)
+    .then((res) => {
+      console.log(res);
+      if(res.status === 200) {
+        toast.success("가공 공정을 성공했습니다.", {
+          duration: 1000,
+        });
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+        
+      } else {
+        toast.error("요청이 실패했습니다.", {
+          duration: 1000,
+        });
+        setTimeout(() => {
+        }, 1000);
+      }
+    })
+  }
+
+  // 재고 수정(가공)
+  const handleProduct = () => {
+    const body = {
+      stockName: newStock?.stockName,
+      stockQuantity: newStock?.stockQuantity,
+      stockUnit: newStock?.stockUnit,
+      stockPrice: newStock?.stockPrice,
+    }
+    
+    customAxios.post(`stock/producer`, body)
+    .then((res) => {
+      console.log(res);
+      if(res.status === 200) {
+        toast.success("재고 등록을 성공했습니다.", {
+          duration: 1000,
+        });
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+        
+      } else {
+        toast.error("요청이 실패했습니다.", {
+          duration: 1000,
+        });
+        setTimeout(() => {
+        }, 1000);
+      }
+    })
   }
 
   // onClick 이벤트
@@ -103,46 +180,81 @@ const OfficerStockPage = () => {
     <MainDiv>
       <OfficerSideBar/>
       <ContentDiv>
+        <div><Toaster /></div>
         <OfficerTitle>
           공정/재고 관리
         </OfficerTitle>
         <Line/>
-        <StyledP>
-          • 기존 재고
-          <OfficerBtn
-            isImg={false}
-            isLarge={false}
-            isActive={true}
-            onClick={getItemList}>
-            조회
-          </OfficerBtn> 
-        </StyledP>
-        <OfficerInputDiv isStockManage={true} isInput={false} stock={preStock} />
-        <StyledP>
-          • 가공 상품 / 추가 재고
-        </StyledP>
-        <OfficerInputDiv isStockManage={true} isInput={true}/>
-        <BtnDiv>
-          <OfficerBtn
-            isImg={false}
-            isLarge={false}
-            isActive={true}
-            onClick={onClick}>
-            등록
-          </OfficerBtn>
-          <OfficerBtn
-            isImg={false}
-            isLarge={false}
-            isActive={false}
-            onClick={onClick}>
-            초기화
-          </OfficerBtn>
-        </BtnDiv>
+        { branchType != "PRODUCT"?
+        <>
+          <StyledP>
+            • 기존 재고
+            <OfficerBtn
+              isImg={false}
+              isLarge={false}
+              isActive={true}
+              onClick={getItemList}>
+              조회
+            </OfficerBtn> 
+          </StyledP>
+          <OfficerInputDiv isStockManage={true} isInput={false} stock={preStock} />
+        </>
+         :
+        null}
+
+        { branchType == "PRODUCT"?
+        <>
+          <StyledP>
+            • 재고 등록
+          </StyledP>
+          <OfficerInputDiv isStockManage={true} isInput={true} stock={newStock} updateStock={updateNewStock} />
+          <BtnDiv>
+            <OfficerBtn
+              isImg={false}
+              isLarge={false}
+              isActive={true}
+              onClick={handleProduct}>
+              등록
+            </OfficerBtn>
+            <OfficerBtn
+              isImg={false}
+              isLarge={false}
+              isActive={false}
+              onClick={onClick}>
+              초기화
+            </OfficerBtn>
+          </BtnDiv>
+        </>
+          :
+        <>
+          <StyledP>
+            • 가공 상품 / 추가 재고
+          </StyledP>
+          <OfficerInputDiv isStockManage={true} isInput={true} stock={newStock} updateStock={updateNewStock} />
+          <BtnDiv>
+            <OfficerBtn
+              isImg={false}
+              isLarge={false}
+              isActive={true}
+              onClick={handleManufacture}>
+              등록
+            </OfficerBtn>
+            <OfficerBtn
+              isImg={false}
+              isLarge={false}
+              isActive={false}
+              onClick={onClick}>
+              초기화
+            </OfficerBtn>
+          </BtnDiv>
+        </>
+        }
       </ContentDiv>
 
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
+        modalType={"type1"}
       >
         <div>
           <h2>기존 재고 조회</h2>

@@ -2,9 +2,9 @@ import TraderSubtitle from "../../components/atoms/trader/TraderSubtitle";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import styled from "styled-components";
-import TraderCalendarTitle from "../../components/organisms/trader/TraderCalendarTitle";
 import TraderSearchBox from "../../components/organisms/trader/TraderSearchBox";
 import TraderBillItemList from "../../components/organisms/trader/TraderBillItemList";
+import TraderInterCalendarTitle from "../../components/organisms/trader/TraderInterCalendarTitle";
 
 const TraderGetListPage = () => {
   return (
@@ -13,10 +13,9 @@ const TraderGetListPage = () => {
         <TraderHeader title="거래 명세서 불러오기" />
         <TraderSubtitle subtitle="거래 명세서 불러오기" />
       </StyledHeader>
-
       <MainPaddingContainer>
         <TraderSearchBox />
-        <TraderCalendarTitle />
+        <TraderInterCalendarTitle/>
         <TraderBillItemList />
       </MainPaddingContainer>
     </StyledContainer>
