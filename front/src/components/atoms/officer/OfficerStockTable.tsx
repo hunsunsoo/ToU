@@ -16,7 +16,7 @@ interface StockList {
 // 재고 현황 조회
 const OfiicerStockTable = () => {
   const [stockItems, setStockItems] = useState<StockList[]>([]);
-  const branchSeq = 3; // 임시로 3으로 넣었음. 바꿔야함
+  const [branchSeq, setBranchSeq] = useState(3); // 임시로 3으로 넣었음. 바꿔야함
 
   useEffect(() => {
     // 토큰 들어오는거 기다리기
@@ -25,6 +25,8 @@ const OfiicerStockTable = () => {
         const checkToken = () => {
           const storedValue = localStorage.getItem("recoil-persist");
           const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+          setBranchSeq(storedValue && JSON.parse(storedValue)?.UserInfoState?.branchSeq);
+          
           
           if (accessToken) {
             resolve(accessToken);
