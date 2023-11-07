@@ -1,3 +1,5 @@
+# Spring Boot
+
 HELP.md
 .gradle
 build/
@@ -6,6 +8,7 @@ build/
 !**/src/test/**/build/
 
 ### env ###
+application-secret.yml
 application.properties
 .env
 

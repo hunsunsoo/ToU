@@ -30,4 +30,11 @@ public class Item {
     // 비고
     @Column(name = "note")
     private String note;
+
+    public static Item createItem(Statement statement, Stock stock) {
+        Item item = new Item();
+        item.statement = statement;
+        item.stock = stock;
+        return item;
+    }
 }

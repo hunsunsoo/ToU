@@ -12,10 +12,30 @@ import java.util.Optional;
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
 
-    @Query(value = "select s from Stock s "
-                   +"where s.branch.branchSeq = :branchSeq and s.inOutStatus = 'IN' "
-                   +"and s.useStatus = 'UNUSED'")
-    List<Stock> findStockByBranchAndInOutStatusAndUseStatus(@Param("branchSeq") Long branchSeq);
 
+    @Query(value = "select s from Stock s "
+                   +"where s.branch.branchSeq = :branchSeq " + "and s.inOutStatus = :inOutStatus "
+                   +"and s.useStatus = :useStatus " + "order by s.stockSeq")
+    List<Stock> findStockByBranchAndInOutStatusAndUseStatus(@Param("branchSeq") Long branchSeq,
+                                                            @Param("inOutStatus") Stock.InOutStatus inOutStatus,
+                                                            @Param("useStatus") Stock.UseStatus useStatus);
+
+    @Query(value = "select s from Stock s "
+                   +"where s.stockName = :stockName and s.inOutStatus = 'IN' "
+                   + "order by s.stockSeq ")
+    List<Stock> findByStockName(@Param("stockName") String stockName);
+
+
+    @Query("select s from Stock s "
+           + "where s.branch.branchSeq =:branchSeq and s.inOutStatus = 'IN' "
+           + "and s.stockSeq in "
+           +"(select max(st.stockSeq) from Stock st where st.stockName = s.stockName group by st.stockName)")
+    List<Stock> findDistinctByBranch(@Param("branchSeq") Long branchSeq);
+
+    @Query(value = "select s from Stock s "
+                   +"where s.branch.branchSeq = :branchSeq "
+                   + "order by s.stockSeq "
+                   + "limit 5")
+    List<Stock> findByBranchLimit5(@Param("branchSeq") Long branchSeq);
 
 }
