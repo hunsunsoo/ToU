@@ -16,7 +16,10 @@ const TraderMainProfile = () => {
         <StyledDiv>
           <TraderImg logoImage={companyInfo?.logoImage || undefined} />
           <TraderInfo workerName={userInfo?.workerName || undefined} />
-          <TraderBranch />
+          <TraderBranch
+            companyName={userInfo?.companyName || ""}
+            branchName={userInfo?.branchName || ""}
+          />
         </StyledDiv>
       </MainPaddingContainer>
     </StyledMainContainer>

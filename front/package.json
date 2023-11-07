@@ -10,6 +10,7 @@
     "@fortawesome/sharp-solid-svg-icons": "^6.4.2",
     "@mediapipe/tasks-vision": "^0.10.7",
     "@nivo/line": "^0.83.0",
+    "@nivo/pie": "^0.83.0",
     "@react-three/drei": "^9.88.7",
     "@react-three/fiber": "^8.15.8",
     "@testing-library/jest-dom": "^5.17.0",
@@ -73,6 +74,7 @@
   },
   "proxy": "http://k9b310.p.ssafy.io:8080",
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/react-calendar": "^4.1.0",
     "@types/react-slick": "^0.23.11"
   }

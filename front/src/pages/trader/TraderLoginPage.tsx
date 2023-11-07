@@ -1,15 +1,33 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import styled from "styled-components";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import { UseAuth } from "../../commons/UseAuth";
 
 const TraderLoginPage = () => {
+  const navigate = useNavigate();
+
   const { login } = UseAuth();
-  
+
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  
+
+  const handleLogin = async () => {
+    try {
+      const res = await login(id, password);
+
+      // API 호출 후 응답의 status가 200이면 페이지를 이동합니다.
+      if (res && res.status === 200) {
+        navigate("/m/main");
+      } else {
+        console.log("로그인 실패");
+      }
+    } catch (error) {
+      console.log("로그인 중 에러 발생:", error);
+    }
+  };
 
   return (
     <StyledMainPaddingContainer>
@@ -28,7 +46,7 @@ const TraderLoginPage = () => {
           />
         </StyledDiv>
       </LoginDiv>
-      <button onClick={() => login(id, password)}>로그인</button>
+      <button onClick={handleLogin}>로그인</button>
     </StyledMainPaddingContainer>
   );
 };
