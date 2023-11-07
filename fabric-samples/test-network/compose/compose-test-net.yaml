@@ -7,8 +7,8 @@ version: '3.7'
 
 volumes:
   orderer.tou.com:
-  peer0.product-org.tou.com:
-  peer0.process-org.tou.com:
+  peer0.orgProduct.tou.com:
+  peer0.orgProcess.tou.com:
 
 networks:
   test:
