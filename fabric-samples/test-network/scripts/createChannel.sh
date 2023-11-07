@@ -34,7 +34,7 @@ createChannelGenesisBlock() {
 }
 
 createChannel() {
-	setGlobals 1
+	setGlobals Product 0
 	# Poll in case the raft leader is not set yet
 	local rc=1
 	local COUNTER=1
@@ -55,7 +55,7 @@ createChannel() {
 joinChannel() {
   FABRIC_CFG_PATH=$PWD/../config/
   ORG=$1
-  setGlobals $ORG
+  setGlobals $ORG 0
 	local rc=1
 	local COUNTER=1
 	## Sometimes Join takes time, hence retry
@@ -93,9 +93,9 @@ successln "Channel '$CHANNEL_NAME' created"
 
 ## Join all the peers to the channel
 infoln "Joining orgProduct peer to the channel..."
-joinChannel Product
+joinChannel Product 0
 infoln "Joining orgProcess peer to the channel..."
-joinChannel Process
+joinChannel Process 0
 
 ## Set the anchor peers for each org in the channel
 infoln "Setting anchor peer for orgProduct..."
