@@ -22,7 +22,7 @@ export const ROUTES = {
   OFFICER_LOGIN: "/",
   OFFICER_MAIN: "/",
   OFFICER_CREATE: "/create",
-  OFFICER_DETAIL: "/detail",
+  OFFICER_DETAIL: "/detail/:billId",
   OFFICER_MANAGE: "/manage",
   OFFICER_STOCK: "/stock",
   OFFICER_NOTICE: "/notice",

@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useState, ChangeEvent } from "react"; // Import useState here
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/sharp-light-svg-icons";
 
-const TraderSearchBox = () => {
+interface TraderSearchBoxProps {
+  onSearch: (searchTerm: string) => void;
+}
+
+const TraderSearchBox: React.FC<TraderSearchBoxProps> = ({ onSearch }) => {
+  const [inputValue, setInputValue] = useState(""); 
+
+  // Add the type for the event parameter
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setInputValue(value);
+    onSearch(value);
+  };
+
   return (
     <StyledContainer>
       <SearchLabel>업체명</SearchLabel>
       <StyledDiv>
-        <SearchInput placeholder="검색어를 입력하세요" />
-        <SearchButton>
-        <FontAwesomeIcon icon={faMagnifyingGlass} />
+        <SearchInput
+          placeholder="검색어를 입력하세요"
+          value={inputValue}
+          onChange={handleInputChange} // 입력이 변경될 때 마다 핸들러를 호출합니다.
+        />
+        <SearchButton onClick={() => onSearch(inputValue)}>
+          <FontAwesomeIcon icon={faMagnifyingGlass} />
         </SearchButton>
       </StyledDiv>
     </StyledContainer>
