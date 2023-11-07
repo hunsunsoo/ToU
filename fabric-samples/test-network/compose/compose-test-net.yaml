@@ -82,7 +82,7 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orgProduct.tou.com:3051
       - CORE_PEER_LOCALMSPID=OrgProductMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
-      - CORE_OPERATIONS_LISTENADDRESS=peer0.orgProduct.tou.com:9443
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.orgProduct.tou.com:9343
       - CORE_METRICS_PROVIDER=prometheus
       - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0orgProduct"}
       - CORE_CHAINCODE_EXECUTETIMEOUT=300s
@@ -121,7 +121,7 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orgProcess.tou.com:5051
       - CORE_PEER_LOCALMSPID=OrgProcessMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp      
-      - CORE_OPERATIONS_LISTENADDRESS=peer0.orgProcess.tou.com:9445
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.orgProcess.tou.com:9543
       - CORE_METRICS_PROVIDER=prometheus
       - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0orgProcess"}
       - CORE_CHAINCODE_EXECUTETIMEOUT=300s
