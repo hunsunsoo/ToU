@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineLeft, AiOutlineHome } from "react-icons/ai";
 import styled from "styled-components";
 
-// import style from "./TreaderHeader.module.css"
-
 interface TraderHeaderProps {
   title: string;
 }

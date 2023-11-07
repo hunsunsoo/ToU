@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TraderBillItem from "../../atoms/trader/TraderBillItem";
+import { customAxios } from "../../api/customAxios";
 
 const TraderBillItemList = () => {
   const dates = ["2023.10.18", "2023.10.19"]; // 예시 날짜 데이터
@@ -12,25 +13,24 @@ const TraderBillItemList = () => {
     navigate(`/m/confirm/${billId}`);
   };
 
+  useEffect(() => {
+    customAxios
+      .get(`/statement/worker/list/preparing`)
+      .then((res) => console.log("getPreparing",res));
+  });
+
   return (
     <ItemListContainer>
       {dates.map((date) => (
         <div key={date}>
           <DateHeader>{date}</DateHeader>
-          <TraderBillItem
-            itemText="ㅎㅇ"
-            onClick={() => handleItemClick(2)}
-          />
-          <TraderBillItem
-            itemText="ㅎㅇ"
-            onClick={() => handleItemClick(1)}
-          />
+          <TraderBillItem itemText="ㅎㅇ" onClick={() => handleItemClick(2)} />
+          <TraderBillItem itemText="ㅎㅇ" onClick={() => handleItemClick(1)} />
         </div>
       ))}
     </ItemListContainer>
   );
 };
-// ... (하단 코드 생략)
 
 export default TraderBillItemList;
 

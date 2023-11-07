@@ -1,20 +1,57 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
+import styled from "styled-components";
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import TraderRoleDropdown from "../../components/atoms/trader/TraderRoleDropdown";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import TraderStateFilter from "./../../components/molecules/trader/TraderStateFilter";
 import TraderStateTable from "../../components/organisms/trader/TraderStateTable";
-import styled from "styled-components";
+import { TraderStateTableProps } from "../../types/TraderTypes";
+import { customAxios } from "../../components/api/customAxios";
 
 const TraderStatePage = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState("전체");
+  const [statementList, setStatementList] = useState<
+    TraderStateTableProps["statementList"]
+  >([]);
+  const [filteredStatementList, setFilteredStatementList] = useState<
+    TraderStateTableProps["statementList"]
+  >([]);
 
   const handleMainButtonClick = () => {
     navigate("/m/main");
   };
+
+  useEffect(() => {
+    customAxios
+      .get("/statement/worker/list/app")
+      .then((res) => {
+        const list = res.data.data.statementList;
+        console.log(list)
+        setStatementList(list);
+        // 초기 렌더링에서는 모든 리스트를 보여줍니다.
+        setFilteredStatementList(list);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  }, [location]);
+  
+  useEffect(() => {
+    // 선택된 역할에 따라 리스트를 필터링합니다.
+    let filteredList = [];
+    if (selectedRole === "공급") {
+      filteredList = statementList.filter((item) => item.reqORres === 0);
+    } else if (selectedRole === "수급") {
+      filteredList = statementList.filter((item) => item.reqORres === 1);
+    } else {
+      filteredList = statementList; // "전체"를 선택한 경우
+    }
+    setFilteredStatementList(filteredList);
+  }, [selectedRole, statementList]);
 
   return (
     <StyledContainer>
@@ -26,7 +63,11 @@ const TraderStatePage = () => {
       <MainPaddingContainer>
         <StyledBody>
           <TraderStateFilter />
-          <TraderStateTable selectedRole={selectedRole} />
+          {/* 필터링된 리스트를 TraderStateTable 컴포넌트로 전달합니다. */}
+          <TraderStateTable
+            selectedRole={selectedRole}
+            statementList={filteredStatementList}
+          />
         </StyledBody>
       </MainPaddingContainer>
 

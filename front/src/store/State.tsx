@@ -54,3 +54,4 @@ export const CompanyInfoState = atom<CompanyInfo>({
   },
   effects_UNSTABLE: [persistAtom],
 });
+
