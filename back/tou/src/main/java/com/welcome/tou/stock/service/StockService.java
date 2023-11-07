@@ -6,6 +6,7 @@ import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.stock.dto.request.StockCreateByOfficialsRequestDto;
 import com.welcome.tou.stock.dto.response.*;
+import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 
 import java.util.Comparator;
@@ -158,6 +159,10 @@ public class StockService {
                 .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
         Branch branch = reqWorker.getBranch();
+
+        System.out.println(request.getStockName());
+        System.out.println(request.getStockPrice());
+        System.out.println(request.getStockQuantity());
 
         if(branch.getCompany() != reqWorker.getCompany()) {
             throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
