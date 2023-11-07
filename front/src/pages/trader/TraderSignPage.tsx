@@ -31,10 +31,6 @@ const TraderSignPage = () => {
           setStatus("READY");
         }
       })
-      .catch((error) => {
-        // 오류 처리
-        console.error("Failed to fetch statement data", error);
-      });
   }, []);
 
   const renderButtons = () => {

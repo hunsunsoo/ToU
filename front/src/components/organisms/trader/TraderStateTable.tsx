@@ -1,21 +1,25 @@
 import React from "react";
 import styled from "styled-components";
-
-interface TraderStateTableProps {
-  selectedRole: string;
-  statementList: Array<{
-    reqORres: number;
-    statementSeq: number;
-    branchName: string;
-    productName: string;
-    tradeDate: string;
-    statementStatus: string;
-  }>;
-}
+import { TraderStateTableProps } from "../../../types/TraderTypes";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleDateString("ko-KR"); // 한국어 날짜 포맷으로 변경 ('yyyy-mm-dd')
+};
+
+const getStatusKorean = (status: string) => {
+  switch (status) {
+    case "PREPARING":
+      return "거래예정";
+    case "WAITING":
+      return "서명대기중";
+    case "COMPLETION":
+      return "거래완료";
+    case "REFUSIAL":
+      return "거절";
+    default:
+      return status; // 만약 다른 상태가 있다면 그대로 반환
+  }
 };
 
 const TraderStateTable: React.FC<TraderStateTableProps> = ({
@@ -33,28 +37,28 @@ const TraderStateTable: React.FC<TraderStateTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {statementList.map(
-            (
-              item,
-              index // 이제 statementList를 map을 사용하여 표시합니다.
-            ) => (
-              <StyledRow
-                key={item.statementSeq} // key로는 고유한 statementSeq를 사용하는 것이 좋습니다.
-                onClick={
-                  () =>
-                    (window.location.href = `http://localhost:3000/m/sign/${item.statementSeq}`) // 필요에 따라 URL을 수정하세요.
-                }
-              >
-                <td>{item.reqORres === 0 ? "공급" : item.reqORres === 1 ? "수급" : ""}</td>
-                <StyledStatus status={item.statementStatus}>
-                  {item.statementStatus}
-                </StyledStatus>
-                <td>{`${item.branchName}\n${item.productName}\n${formatDate(
-                  item.tradeDate
-                )}`}</td>
-              </StyledRow>
-            )
-          )}
+          {statementList.map((item) => (
+            <StyledRow
+              key={item.statementSeq}
+              onClick={() =>
+                (window.location.href = `http://localhost:3000/m/sign/${item.statementSeq}`)
+              }
+            >
+              <td>
+                {item.reqORres === 0
+                  ? "공급"
+                  : item.reqORres === 1
+                  ? "수급"
+                  : ""}
+              </td>
+              <StyledStatus status={item.statementStatus}>
+                {getStatusKorean(item.statementStatus)}
+              </StyledStatus>
+              <td>{`${item.branchName}\n${item.productName}\n${formatDate(
+                item.tradeDate
+              )}`}</td>
+            </StyledRow>
+          ))}
         </tbody>
       </StyledTable>
     </div>
@@ -88,15 +92,16 @@ interface StyledStatusProps {
 const StyledStatus = styled.td<StyledStatusProps>`
   font-weight: bold;
   color: ${(props) => {
-    switch (props.status) {
-      case "서명 필요":
-        return "blue";
-      case "COMPLETION":
+    const statusKorean = getStatusKorean(props.status);
+    switch (statusKorean) {
+      case "거래예정":
+        return "orange";
+      case "거래완료":
         return "green";
-      case "거절된 문서":
+      case "거절":
         return "red";
-      case "서명 대기중":
-        return "black";
+      case "서명대기중":
+        return "blue";
       default:
         return "black";
     }
