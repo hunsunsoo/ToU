@@ -2,28 +2,37 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 
-const options = ["1", "2", "3", "4", "5", "6"];
+interface Item {
+  seq: number;
+  name: string;
+}
 
-const TraderDropdown: React.FC = () => {
+interface TraderDropdownProps {
+  items: Item[];
+  selectedItem: Item | null;
+  onSelect: (item: Item) => void;
+}
+
+
+const TraderDropdown: React.FC<TraderDropdownProps> = ({ items, onSelect, selectedItem }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
 
   return (
     <DropdownContainer>
       <DropdownButton onClick={() => setIsOpen(!isOpen)}>
-        {selectedOption}
+        {selectedItem?.name || "선택하세요"}
         {isOpen ? <BiChevronUp  size = "30"/> : <BiChevronDown  size = "30"/>}
       </DropdownButton>
       {isOpen && (
         <DropdownList>
-          {options.map((option) => (
+          {items.map((item) => (
             <DropdownListItem 
-              key={option} 
+              key={item.name}
               onClick={() => {
-                setSelectedOption(option);
+                onSelect(item);
                 setIsOpen(false);
               }}>
-              {option}
+              {item.name}
             </DropdownListItem>
           ))}
         </DropdownList>

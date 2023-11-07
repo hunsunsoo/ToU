@@ -2,15 +2,23 @@ import React from 'react'
 import styled from "styled-components";
 import TraderDropdown from '../../atoms/trader/TraderDropdown';
 
-interface TraderUnitInputTitleProps {
-  inputTitle: string;
+interface Item {
+  seq: number;
+  name: string;
 }
 
-const TraderDropdownTitle = ({ inputTitle, ...props }: TraderUnitInputTitleProps) => {
+interface TraderDropdownTitleProps {
+  inputTitle: string;
+  items: Item[];
+  selectedItem: Item | null;
+  onSelect: (item: Item) => void;
+}
+
+const TraderDropdownTitle = ({ inputTitle, items, onSelect, selectedItem }: TraderDropdownTitleProps) => {
   return (
     <Container>
       <InputTitle>{inputTitle}</InputTitle>
-      <TraderDropdown {...props} />
+      <TraderDropdown items={items} onSelect={onSelect} selectedItem={selectedItem} />
     </Container>
   );
 };

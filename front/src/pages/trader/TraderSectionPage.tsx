@@ -13,7 +13,7 @@ const TraderSectionPage = () => {
       </StyledHeader>
 
       <MainPaddingContainer>
-        <TraderDropdownTitle inputTitle="관할 구역" />
+        {/* <TraderDropdownTitle inputTitle="관할 구역" /> */}
         <TraderSectionFilter />
         <TraderSectionTable />
       </MainPaddingContainer>
