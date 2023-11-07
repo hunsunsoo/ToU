@@ -108,6 +108,7 @@ public class ClientService {
                                     .branchName(branchName)
                                     .productName(productName)
                                     .statementStatus(statement.getStatementStatus().name())
+                                    .tradeDate(statement.getTradeDate())
                                     .reqORres(isReq)
                                     .build();
                         }).collect(Collectors.toList())

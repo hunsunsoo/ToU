@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Builder
@@ -15,5 +17,6 @@ public class ScheduleResponseDto {
     private String branchName;
     private String productName;
     private String statementStatus;
+    private LocalDateTime tradeDate;
     private int reqORres;
 }
