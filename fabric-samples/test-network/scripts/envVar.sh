@@ -11,40 +11,77 @@
 . scripts/utils.sh
 
 export CORE_PEER_TLS_ENABLED=true
-export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
-export PEER0_ORG1_CA=${PWD}/organizations/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
-export PEER0_ORG2_CA=${PWD}/organizations/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
-export PEER0_ORG3_CA=${PWD}/organizations/peerOrganizations/org3.example.com/tlsca/tlsca.org3.example.com-cert.pem
-export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
+export ORDERER_CA=${PWD}/organizations/ordererOrganizations/tou.com/tlsca/tlsca.tou.com-cert.pem
+export PEER0_ORGPRODUCT_CA=${PWD}/organizations/peerOrganizations/orgProduct.tou.com/tlsca/tlsca.orgProduct.tou.com-cert.pem
+export PEER0_ORGPROCESS_CA=${PWD}/organizations/peerOrganizations/orgProcess.tou.com/tlsca/tlsca.orgProcess.tou.com-cert.pem
+#export PEER0_ORGPACKAGE_CA=${PWD}/organizations/peerOrganizations/orgPackage.tou.com/tlsca/tlsca.orgPackage.tou.com-cert.pem
+#export PEER0_ORGSELL_CA=${PWD}/organizations/peerOrganizations/orgSell.tou.com/tlsca/tlsca.orgSell.tou.com-cert.pem
+#export PEER1_ORGPRODUCT_CA=${PWD}/organizations/peerOrganizations/orgProduct.tou.com/tlsca/tlsca.orgProduct.tou.com-cert.pem
+#export PEER1_ORGPROCESS_CA=${PWD}/organizations/peerOrganizations/orgProcess.tou.com/tlsca/tlsca.orgProcess.tou.com-cert.pem
+#export PEER1_ORGPACKAGE_CA=${PWD}/organizations/peerOrganizations/orgPackage.tou.com/tlsca/tlsca.orgPackage.tou.com-cert.pem
+#export PEER1_ORGSELL_CA=${PWD}/organizations/peerOrganizations/orgSell.tou.com/tlsca/tlsca.orgSell.tou.com-cert.pem
+
+export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/tou.com/orderers/orderer.tou.com/tls/server.crt
+export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/tou.com/orderers/orderer.tou.com/tls/server.key
 
 # Set environment variables for the peer org
+# 피어 추가할 때 피어 번호별로 변수 추가 예정
 setGlobals() {
   local USING_ORG=""
+
   if [ -z "$OVERRIDE_ORG" ]; then
     USING_ORG=$1
   else
     USING_ORG="${OVERRIDE_ORG}"
   fi
-  infoln "Using organization ${USING_ORG}"
-  if [ $USING_ORG -eq 1 ]; then
-    export CORE_PEER_LOCALMSPID="Org1MSP"
-    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
-    export CORE_PEER_ADDRESS=localhost:7051
-  elif [ $USING_ORG -eq 2 ]; then
-    export CORE_PEER_LOCALMSPID="Org2MSP"
-    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
-    export CORE_PEER_ADDRESS=localhost:9051
 
-  elif [ $USING_ORG -eq 3 ]; then
-    export CORE_PEER_LOCALMSPID="Org3MSP"
-    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
-    export CORE_PEER_ADDRESS=localhost:11051
+  local MYPEER=$2
+
+  infoln "Using organization ${USING_ORG}"
+
+  if [ $USING_ORG == 'Product' ] && [ $MYPEER -eq 0 ]; then
+    export CORE_PEER_LOCALMSPID="OrgProductMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORGPRODUCT_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgProduct.tou.com/users/Admin@orgProduct.tou.com/msp
+    export CORE_PEER_ADDRESS=localhost:3051
+  elif [ $USING_ORG == 'Product' ] && [ $MYPEER -eq 1 ]; then
+    export CORE_PEER_LOCALMSPID="OrgProductMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER1_ORGPRODUCT_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgProduct.tou.com/users/Admin@orgProduct.tou.com/msp
+    export CORE_PEER_ADDRESS=localhost:4051
+  elif [ $USING_ORG == 'Process' ] && [ $MYPEER -eq 0 ]; then
+    export CORE_PEER_LOCALMSPID="OrgProcessMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORGPROCESS_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgProcess.tou.com/users/Admin@orgProcess.tou.com/msp
+    export CORE_PEER_ADDRESS=localhost:5051
+  elif [ $USING_ORG == 'Process' ] && [ $MYPEER -eq 1 ]; then
+    export CORE_PEER_LOCALMSPID="OrgProcessMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER1_ORGPROCESS_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgProcess.tou.com/users/Admin@orgProcess.tou.com/msp
+    export CORE_PEER_ADDRESS=localhost:6051
+  elif [ $USING_ORG == 'Package' ] && [ $MYPEER -eq 0 ]; then
+    export CORE_PEER_LOCALMSPID="OrgPackageMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORGPACKAGE_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgPackage.tou.com/users/Admin@orgPackage.tou.com/msp
+    export CORE_PEER_ADDRESS=localhost:7051
+  elif [ $USING_ORG == 'Package' ] && [ $MYPEER -eq 1 ]; then
+    export CORE_PEER_LOCALMSPID="OrgPackageMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER1_ORGPACKAGE_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgPackage.tou.com/users/Admin@orgPackage.tou.com/msp
+    export CORE_PEER_ADDRESS=localhost:8051
+  elif [ $USING_ORG == 'Sell' ] && [ $MYPEER -eq 0 ]; then
+    export CORE_PEER_LOCALMSPID="OrgSellMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_SELL_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgSell.tou.com/users/Admin@orgSell.tou.com/msp
+    export CORE_PEER_ADDRESS=localhost:9051
+  elif [ $USING_ORG == 'Sell' ] && [ $MYPEER -eq 1 ]; then
+    export CORE_PEER_LOCALMSPID="OrgSellMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER1_ORGSELL_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgSell.tou.com/users/Admin@orgSell.tou.com/msp
+    export CORE_PEER_ADDRESS=localhost:10051
+
   else
-    errorln "ORG Unknown"
+    errorln "==========================ORG Unknown=========================="
   fi
 
   if [ "$VERBOSE" == "true" ]; then
@@ -54,23 +91,38 @@ setGlobals() {
 
 # Set environment variables for use in the CLI container
 setGlobalsCLI() {
-  setGlobals $1
+  setGlobals $1 $2
 
+  local MYPEER=$2
   local USING_ORG=""
   if [ -z "$OVERRIDE_ORG" ]; then
     USING_ORG=$1
   else
     USING_ORG="${OVERRIDE_ORG}"
   fi
-  if [ $USING_ORG -eq 1 ]; then
-    export CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-  elif [ $USING_ORG -eq 2 ]; then
-    export CORE_PEER_ADDRESS=peer0.org2.example.com:9051
-  elif [ $USING_ORG -eq 3 ]; then
-    export CORE_PEER_ADDRESS=peer0.org3.example.com:11051
+
+
+  if [ $USING_ORG == 'Product' ] && [ $MYPEER -eq 0 ]; then
+    export CORE_PEER_ADDRESS=peer0.orgProduct.tou.com:3051
+  elif [ $USING_ORG == 'Product' ] && [ $MYPEER -eq 1 ]; then
+    export CORE_PEER_ADDRESS=peer1.orgProduct.tou.com:4051
+  elif [ $USING_ORG == 'Process' ] && [ $MYPEER -eq 0 ]; then
+    export CORE_PEER_ADDRESS=peer0.orgProcess.tou.com:5051
+  elif [ $USING_ORG == 'Process' ] && [ $MYPEER -eq 1 ]; then
+    export CORE_PEER_ADDRESS=peer1.orgProcess.tou.com:6051
+  elif [ $USING_ORG == 'Package' ] && [ $MYPEER -eq 0 ]; then
+    export CORE_PEER_ADDRESS=peer0.orgPackage.tou.com:7051
+  elif [ $USING_ORG == 'Package' ] && [ $MYPEER -eq 1 ]; then
+    export CORE_PEER_ADDRESS=peer1.orgPackage.tou.com:8051
+  elif [ $USING_ORG == 'Sell' ] && [ $MYPEER -eq 0 ]; then
+    export CORE_PEER_ADDRESS=peer0.orgSell.tou.com:9051
+  elif [ $USING_ORG == 'Sell' ] && [ $MYPEER -eq 1 ]; then
+    export CORE_PEER_ADDRESS=peer1.orgSell.tou.com:10051
+
   else
-    errorln "ORG Unknown"
+    echo "================== ERROR !!! ORG Unknown =================="
   fi
+
 }
 
 # parsePeerConnectionParameters $@
@@ -80,8 +132,8 @@ parsePeerConnectionParameters() {
   PEER_CONN_PARMS=()
   PEERS=""
   while [ "$#" -gt 0 ]; do
-    setGlobals $1
-    PEER="peer0.org$1"
+    setGlobals $1 $2
+    PEER="peer$2.org$1"
     ## Set peer addresses
     if [ -z "$PEERS" ]
     then
@@ -91,7 +143,7 @@ parsePeerConnectionParameters() {
     fi
     PEER_CONN_PARMS=("${PEER_CONN_PARMS[@]}" --peerAddresses $CORE_PEER_ADDRESS)
     ## Set path to TLS certificate
-    CA=PEER0_ORG$1_CA
+    CA=PEER${2}_ORG${1^^}_CA
     TLSINFO=(--tlsRootCertFiles "${!CA}")
     PEER_CONN_PARMS=("${PEER_CONN_PARMS[@]}" "${TLSINFO[@]}")
     # shift by one to get to the next organization

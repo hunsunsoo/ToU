@@ -12,7 +12,7 @@ To use the Fabric samples, you need to download the Fabric Docker images and the
 
 ## Test network
 
-The [Fabric test network](test-network) in the samples repository provides a Docker Compose based test network with two
+The [Fabric test network](test-network2) in the samples repository provides a Docker Compose based test network with two
 Organization peers and an ordering service node. You can use it on your local machine to run the samples listed below.
 You can also use it to deploy and test your own Fabric chaincodes and applications. To get started, see
 the [test network tutorial](https://hyperledger-fabric.readthedocs.io/en/latest/test_network.html).
