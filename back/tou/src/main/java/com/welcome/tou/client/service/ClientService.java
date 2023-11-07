@@ -9,6 +9,10 @@ import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.common.utils.ResultTemplate;
 import com.welcome.tou.security.jwt.service.JwtService;
 
+import com.welcome.tou.statement.domain.ItemRepository;
+import com.welcome.tou.statement.domain.Statement;
+import com.welcome.tou.statement.domain.StatementRepository;
+import com.welcome.tou.stock.domain.Stock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.DependsOn;
@@ -18,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -32,6 +37,8 @@ public class ClientService {
     private final CompanyRepository companyRepository;
     private final WorkerRepository workerRepository;
     private final BranchRepository branchRepository;
+    private final StatementRepository statementRepository;
+    private final ItemRepository itemRepository;
 
     private final JwtService jwtService;
 
@@ -54,6 +61,59 @@ public class ClientService {
 
         CompanyListResponseDto responseDto = CompanyListResponseDto.builder()
                 .companyList(simpleCompanyList)
+                .build();
+
+        return ResultTemplate.builder().status(200).data(responseDto).build();
+    }
+
+    public ResultTemplate<?> getScheduleList(UserDetails worker, Integer year, Integer month) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch myBranch = reqWorker.getBranch();
+
+        if(year == null)
+            year = LocalDateTime.now().getYear();
+        if(month == null)
+            month = LocalDateTime.now().getMonthValue();
+
+        List<Statement> scheduleList = statementRepository.findStatementsForSchedule(myBranch.getBranchSeq(), year, month);
+
+        ScheduleListResponseDto responseDto = ScheduleListResponseDto.builder()
+                .ScheduleList(scheduleList.stream().map(statement -> {
+                            List<Stock> stocks = itemRepository.findStockByStatementSeq(statement.getStatementSeq());
+
+                            String productName = "";
+
+                            if(stocks == null || stocks.size() == 0) {
+                                throw new NotFoundException(NotFoundException.STOCK_NOT_FOUND + "거래번호 : " + String.valueOf(statement.getStatementSeq()));
+                            } else if(stocks.size() == 1) {
+                                productName = stocks.get(0).getStockName();
+                            } else {
+                                productName = stocks.get(0).getStockName() + " 외 " + String.valueOf(stocks.size()-1) + "건";
+                            }
+
+                            String branchName = "";
+                            int isReq = 0;
+                            if(statement.getReqBranch() == myBranch) {
+                                branchName = statement.getResBranch().getBranchName();
+                                isReq = 1;
+                            }
+
+                            else if(statement.getResBranch() == myBranch) branchName = statement.getReqBranch().getBranchName();
+
+                            return ScheduleResponseDto.builder()
+                                    .statementSeq(statement.getStatementSeq())
+                                    .branchName(branchName)
+                                    .productName(productName)
+                                    .statementStatus(statement.getStatementStatus().name())
+                                    .reqORres(isReq)
+                                    .build();
+                        }).collect(Collectors.toList())
+                )
+                .year(year.intValue())
+                .month(month.intValue())
                 .build();
 
         return ResultTemplate.builder().status(200).data(responseDto).build();

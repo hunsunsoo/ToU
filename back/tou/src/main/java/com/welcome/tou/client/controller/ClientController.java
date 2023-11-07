@@ -23,6 +23,13 @@ public class ClientController {
         return clientService.getCompanyList();
     }
 
+    @GetMapping("/worker/schedule/list")
+    public ResultTemplate<?> getScheduleList(@AuthenticationPrincipal UserDetails worker,
+                                             @RequestParam(required = false) Integer year,
+                                             @RequestParam(required = false) Integer month) {
+        return clientService.getScheduleList(worker, year, month);
+    }
+
 
     @GetMapping("/worker/branch/list/{companySeq}")
     public ResultTemplate<?> getBranchListByCompany(@PathVariable Long companySeq, @AuthenticationPrincipal UserDetails worker) {
