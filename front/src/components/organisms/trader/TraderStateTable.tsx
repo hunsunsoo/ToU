@@ -3,51 +3,25 @@ import styled from "styled-components";
 
 interface TraderStateTableProps {
   selectedRole: string;
+  statementList: Array<{
+    reqORres: number;
+    statementSeq: number;
+    branchName: string;
+    productName: string;
+    tradeDate: string;
+    statementStatus: string;
+  }>;
 }
 
-interface DataTable {
-  status: string;
-  description: string[];
-}
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("ko-KR"); // 한국어 날짜 포맷으로 변경 ('yyyy-mm-dd')
+};
 
 const TraderStateTable: React.FC<TraderStateTableProps> = ({
   selectedRole,
+  statementList,
 }) => {
-  const data: DataTable[] = [
-    {
-      status: "서명 필요",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "완료된 문서",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "거절된 문서",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "서명 대기중",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "서명 대기중",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "서명 대기중",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "서명 대기중",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "서명 대기중",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-  ];
-
   return (
     <div>
       <StyledTable>
@@ -59,18 +33,28 @@ const TraderStateTable: React.FC<TraderStateTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
-            <StyledRow
-              key={index}
-              onClick={() =>
-                (window.location.href = `http://localhost:3000/m/sign/${item.description[0]}`)
-              }
-            >
-              <td>{selectedRole === "전체" ? "수급" : selectedRole}</td>
-              <StyledStatus status={item.status}>{item.status}</StyledStatus>
-              <td>{item.description.join("\n")}</td>
-            </StyledRow>
-          ))}
+          {statementList.map(
+            (
+              item,
+              index // 이제 statementList를 map을 사용하여 표시합니다.
+            ) => (
+              <StyledRow
+                key={item.statementSeq} // key로는 고유한 statementSeq를 사용하는 것이 좋습니다.
+                onClick={
+                  () =>
+                    (window.location.href = `http://localhost:3000/m/sign/${item.statementSeq}`) // 필요에 따라 URL을 수정하세요.
+                }
+              >
+                <td>{item.reqORres === 0 ? "공급" : item.reqORres === 1 ? "수급" : ""}</td>
+                <StyledStatus status={item.statementStatus}>
+                  {item.statementStatus}
+                </StyledStatus>
+                <td>{`${item.branchName}\n${item.productName}\n${formatDate(
+                  item.tradeDate
+                )}`}</td>
+              </StyledRow>
+            )
+          )}
         </tbody>
       </StyledTable>
     </div>
@@ -78,7 +62,6 @@ const TraderStateTable: React.FC<TraderStateTableProps> = ({
 };
 
 export default TraderStateTable;
-
 
 const StyledTable = styled.table`
   width: 100%;
@@ -108,7 +91,7 @@ const StyledStatus = styled.td<StyledStatusProps>`
     switch (props.status) {
       case "서명 필요":
         return "blue";
-      case "완료된 문서":
+      case "COMPLETION":
         return "green";
       case "거절된 문서":
         return "red";

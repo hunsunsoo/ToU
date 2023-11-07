@@ -1,20 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import TraderRoleDropdown from "../../components/atoms/trader/TraderRoleDropdown";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import TraderStateFilter from "./../../components/molecules/trader/TraderStateFilter";
 import TraderStateTable from "../../components/organisms/trader/TraderStateTable";
-import styled from "styled-components";
+import { customAxios } from "../../components/api/customAxios";
 
 const TraderStatePage = () => {
   const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState("전체");
 
+  // 데이터를 저장할 state를 추가.
+  const [statementList, setStatementList] = useState([]);
+
   const handleMainButtonClick = () => {
     navigate("/m/main");
   };
+
+  useEffect(() => {
+    customAxios.get("/statement/worker/list/app")
+      .then((res) => {
+        setStatementList(res.data.data.statementList);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  }, []);
+  
 
   return (
     <StyledContainer>
@@ -26,7 +41,10 @@ const TraderStatePage = () => {
       <MainPaddingContainer>
         <StyledBody>
           <TraderStateFilter />
-          <TraderStateTable selectedRole={selectedRole} />
+          <TraderStateTable
+            selectedRole={selectedRole}
+            statementList={statementList}
+          />
         </StyledBody>
       </MainPaddingContainer>
 

@@ -3,8 +3,8 @@ export interface StatementData {
   statementSeq: number;
   tradeDate: string;
   totalPrice: number;
-  reqInfo: CompanyInfo;
-  resInfo: CompanyInfo;
+  reqInfo: CompanyInfo | null;
+  resInfo: CompanyInfo | null;
   itemList: Item[];
 }
 

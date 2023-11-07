@@ -4,12 +4,12 @@ import ShopperInfoCardList from "../../components/organisms/shopper/ShopperInfoC
 
 const ShopperInfoPage = () => {
   return (
-    <MainPaddingContainer>
+    <StyledMainPaddingContainer>
       <StyledTitle>
         <StyledImage src="/ToU.png" alt="Logo" /> 의 유통과정을 알려드릴게요
       </StyledTitle>
       <ShopperInfoCardList />
-    </MainPaddingContainer>
+    </StyledMainPaddingContainer>
   );
 };
 
@@ -25,6 +25,6 @@ const StyledImage = styled.img`
   height: auto;
 `;
 
-// const StyledMainPaddingContainer = styled(MainPaddingContainer)`
-//   height: calc(100vh - 57px);
-// `
+const StyledMainPaddingContainer = styled(MainPaddingContainer)`
+  height: calc(100vh - 56px);
+`
