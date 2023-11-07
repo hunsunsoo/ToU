@@ -80,6 +80,10 @@ public class ClientService {
 
         List<Statement> scheduleList = statementRepository.findStatementsForSchedule(myBranch.getBranchSeq(), year, month);
 
+        if(scheduleList == null || scheduleList.size() == 0) {
+            throw new NotFoundException(NotFoundException.STATEMENT_NOT_FOUND);
+        }
+
         ScheduleListResponseDto responseDto = ScheduleListResponseDto.builder()
                 .ScheduleList(scheduleList.stream().map(statement -> {
                             List<Stock> stocks = itemRepository.findStockByStatementSeq(statement.getStatementSeq());
