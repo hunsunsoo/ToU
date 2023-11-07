@@ -29,14 +29,17 @@ interface StockItems {
 const OfficerStockPage = () => {
   const navigate = useNavigate();
 
+  const [branchType, setBranchType] = useState("PROCESS");
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [stockItems, setStockItems] = useState<StockList[]>([]);
-
+  
   // 기존 재고
   const [preStock, setPreStock] = useState<StockItems>();
-
+  
   // 새로운 재고
   const [newStock, setNewStock] = useState<StockItems>();
+  console.log(newStock);
 
   useEffect(() => {
     // 토큰 들어오는거 기다리기
@@ -45,6 +48,7 @@ const OfficerStockPage = () => {
         const checkToken = () => {
           const storedValue = localStorage.getItem("recoil-persist");
           const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+          setBranchType(storedValue && JSON.parse(storedValue)?.UserInfoState?.branchType);
           
           if (accessToken) {
             resolve(accessToken);
@@ -137,6 +141,36 @@ const OfficerStockPage = () => {
     })
   }
 
+  // 재고 수정(가공)
+  const handleProduct = () => {
+    const body = {
+      stockName: newStock?.stockName,
+      stockQuantity: newStock?.stockQuantity,
+      stockUnit: newStock?.stockUnit,
+      stockPrice: newStock?.stockPrice,
+    }
+    
+    customAxios.post(`stock/producer`, body)
+    .then((res) => {
+      console.log(res);
+      if(res.status === 200) {
+        toast.success("재고 등록을 성공했습니다.", {
+          duration: 1000,
+        });
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+        
+      } else {
+        toast.error("요청이 실패했습니다.", {
+          duration: 1000,
+        });
+        setTimeout(() => {
+        }, 1000);
+      }
+    })
+  }
+
   // onClick 이벤트
   const onClick = () => {
 
@@ -151,37 +185,70 @@ const OfficerStockPage = () => {
           공정/재고 관리
         </OfficerTitle>
         <Line/>
-        <StyledP>
-          • 기존 재고
-          <OfficerBtn
-            isImg={false}
-            isLarge={false}
-            isActive={true}
-            onClick={getItemList}>
-            조회
-          </OfficerBtn> 
-        </StyledP>
-        <OfficerInputDiv isStockManage={true} isInput={false} stock={preStock} />
-        <StyledP>
-          • 가공 상품 / 추가 재고
-        </StyledP>
-        <OfficerInputDiv isStockManage={true} isInput={true} stock={newStock} updateStock={updateNewStock} />
-        <BtnDiv>
-          <OfficerBtn
-            isImg={false}
-            isLarge={false}
-            isActive={true}
-            onClick={handleManufacture}>
-            등록
-          </OfficerBtn>
-          <OfficerBtn
-            isImg={false}
-            isLarge={false}
-            isActive={false}
-            onClick={onClick}>
-            초기화
-          </OfficerBtn>
-        </BtnDiv>
+        { branchType != "PRODUCT"?
+        <>
+          <StyledP>
+            • 기존 재고
+            <OfficerBtn
+              isImg={false}
+              isLarge={false}
+              isActive={true}
+              onClick={getItemList}>
+              조회
+            </OfficerBtn> 
+          </StyledP>
+          <OfficerInputDiv isStockManage={true} isInput={false} stock={preStock} />
+        </>
+         :
+        null}
+
+        { branchType == "PRODUCT"?
+        <>
+          <StyledP>
+            • 재고 등록
+          </StyledP>
+          <OfficerInputDiv isStockManage={true} isInput={true} stock={newStock} updateStock={updateNewStock} />
+          <BtnDiv>
+            <OfficerBtn
+              isImg={false}
+              isLarge={false}
+              isActive={true}
+              onClick={handleProduct}>
+              등록
+            </OfficerBtn>
+            <OfficerBtn
+              isImg={false}
+              isLarge={false}
+              isActive={false}
+              onClick={onClick}>
+              초기화
+            </OfficerBtn>
+          </BtnDiv>
+        </>
+          :
+        <>
+          <StyledP>
+            • 가공 상품 / 추가 재고
+          </StyledP>
+          <OfficerInputDiv isStockManage={true} isInput={true} stock={newStock} updateStock={updateNewStock} />
+          <BtnDiv>
+            <OfficerBtn
+              isImg={false}
+              isLarge={false}
+              isActive={true}
+              onClick={handleManufacture}>
+              등록
+            </OfficerBtn>
+            <OfficerBtn
+              isImg={false}
+              isLarge={false}
+              isActive={false}
+              onClick={onClick}>
+              초기화
+            </OfficerBtn>
+          </BtnDiv>
+        </>
+        }
       </ContentDiv>
 
       <Modal
