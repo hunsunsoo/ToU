@@ -61,7 +61,7 @@ const OfficerCreatePage = () => {
   useEffect(() => {
     // branch 목록 조회 API
     if (selectedCompanySeq) {
-      customAxios(`client/worker/branch/list/${selectedCompanySeq}`)
+      customAxios.get(`client/worker/branch/list/${selectedCompanySeq}`)
         .then((res) => {
           console.log(res.data.data.branchList);
           setBranchs(res.data.data.branchList);
@@ -88,7 +88,7 @@ const OfficerCreatePage = () => {
     };
 
     // company 목록 조회 API
-    customAxios('/client/worker/company/list')
+    customAxios.get('/client/worker/company/list')
       .then((res) => {
         // console.log(res.data.data.companyList);
         setCompanys(res.data.data.companyList);
@@ -267,14 +267,6 @@ const StyledP = styled.div`
   align-items: center;
   gap: 15px;
   font-size: 17px;
-`
-
-const Dropdown = styled.select`
-  /* width: 100%; */
-  padding: 8px;
-  position: relative;
-  left: 30px;
-  font-size: 16px;
 `
 
 const BtnDiv = styled.div`

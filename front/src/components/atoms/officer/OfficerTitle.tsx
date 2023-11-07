@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import styled from 'styled-components';
 
 interface TitleProps {
@@ -11,7 +11,9 @@ const OfficerTitle: React.FC<TitleProps> = ({children}) => {
 
 export default OfficerTitle;
 
-const StyledTitle = styled.p`
-  margin-top: 5px;
+const StyledTitle = styled.div`
+  display: flex;
+  align-items: center;
+  /* margin-top: 5px; */
   font-size: 22px;
 `
