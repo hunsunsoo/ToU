@@ -89,11 +89,11 @@ public class StatementService {
         Double totalPrice = 0.0;
         StatementReqInfoResponseDto reqInfo;
         StatementResInfoResponseDto resInfo;
-        if (statement.getStatementStatus().equals(Statement.StatementStatus.WAITING)) {
+        if (statement.getStatementStatus().equals(Statement.StatementStatus.PREPARING)) {
             reqInfo = null;
             resInfo = null;
 
-        } else if (statement.getStatementStatus().equals(Statement.StatementStatus.PREPARING)) {
+        } else if (statement.getStatementStatus().equals(Statement.StatementStatus.WAITING)) {
             reqInfo = StatementReqInfoResponseDto.from(statement);
             resInfo = null;
         } else {
