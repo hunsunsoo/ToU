@@ -93,7 +93,7 @@ services:
     command: peer node start
     ports:
       - 3051:3051
-      - 9443:9443
+      - 9343:9343
     networks:
       - test
 
@@ -132,7 +132,7 @@ services:
     command: peer node start
     ports:
       - 5051:5051
-      - 9445:9445
+      - 9543:9543
     networks:
       - test
 
