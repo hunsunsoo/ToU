@@ -221,6 +221,56 @@ public class StatementService {
     }
 
 
+    public ResultTemplate getStatementListForApp(UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch myBranch = reqWorker.getBranch();
+
+        List<Statement> myStatement = statementRepository.findAllStatementsByBranchSeq(myBranch.getBranchSeq());
+
+        if(myStatement == null || myStatement.size() == 0) {
+            throw new NotFoundException(NotFoundException.STATEMENT_NOT_FOUND);
+        }
+
+        AppStatementListResponseDto responseDto = AppStatementListResponseDto.builder()
+                .StatementList(
+                        myStatement.stream().map(statement -> {
+                            List<Stock> stocks = itemRepository.findStockByStatementSeq(statement.getStatementSeq());
+
+                            String productName = "";
+
+                            if(stocks == null || stocks.size() == 0) {
+                                throw new NotFoundException(NotFoundException.STOCK_NOT_FOUND + "거래번호 : " + String.valueOf(statement.getStatementSeq()));
+                            } else if(stocks.size() == 1) {
+                                productName = stocks.get(0).getStockName();
+                            } else {
+                                productName = stocks.get(0).getStockName() + " 외 " + String.valueOf(stocks.size()-1) + "건";
+                            }
+                            String branchName = "";
+                            int isReq = 0;
+                            if(statement.getReqBranch() == myBranch) {
+                                branchName = statement.getResBranch().getBranchName();
+                                isReq = 1;
+                            }
+                            else if(statement.getResBranch() == myBranch) branchName = statement.getReqBranch().getBranchName();
+
+                            return AppStatementResponseDto.builder()
+                                    .statementSeq(statement.getStatementSeq())
+                                    .branchName(branchName)
+                                    .productName(productName)
+                                    .tradeDate(statement.getTradeDate())
+                                    .statementStatus(statement.getStatementStatus().name())
+                                    .reqORres(isReq)
+                                    .build();
+                        }).collect(Collectors.toList())
+                ).build();
+
+        return ResultTemplate.builder().status(200).data(responseDto).build();
+    }
+
+
     public ResultTemplate<?> getStatementListPreparing(UserDetails worker) {
         // 유저 정보 가져오고
         Long workerSeq = Long.parseLong(worker.getUsername());
@@ -257,7 +307,50 @@ public class StatementService {
                 .collect(Collectors.toList());
          */
 
-        List<Statement> myStatement = statementRepository.findStatementsByBranchSeq(myBranch.getBranchSeq());
+        List<Statement> myStatement = statementRepository.findStatementsByBranchSeqAndPreparing(myBranch.getBranchSeq());
+        if(myStatement == null || myStatement.size() == 0) {
+            throw new NotFoundException(NotFoundException.STOCK_FOR_SIGN_NOT_FOUND);
+        }
+
+        StatementPreparingResponseDto responseDto = StatementPreparingResponseDto.builder()
+                .statementList(
+                        myStatement.stream().map(statement -> {
+
+                            List<Stock> stocks = itemRepository.findStockByStatementSeq(statement.getStatementSeq());
+
+                            String productsName = "";
+
+                            if(stocks == null || stocks.size() == 0) {
+                                throw new NotFoundException(NotFoundException.STOCK_NOT_FOUND);
+                            } else if(stocks.size() == 1) {
+                                productsName = stocks.get(0).getStockName();
+                            } else {
+                                productsName = stocks.get(0).getStockName() + " 외 " + String.valueOf(stocks.size()-1) + "건";
+                            }
+
+                            return PreparingListResponseDto.builder()
+                                    .statementSeq(statement.getStatementSeq())
+                                    .branchName(statement.getResBranch().getBranchName())
+                                    .productsName(productsName)
+                                    .tradeDate(statement.getTradeDate())
+                                    .build();
+
+                        }).collect(Collectors.toList())
+                )
+                .hasNext(false)
+                .build();
+
+        return ResultTemplate.builder().status(200).data(responseDto).build();
+    }
+
+    public ResultTemplate<?> getStatementListWaiting(UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker myWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch myBranch = myWorker.getBranch();
+
+        List<Statement> myStatement = statementRepository.findStatementsByBranchSeqAndWaiting(myBranch.getBranchSeq());
         if(myStatement == null || myStatement.size() == 0) {
             throw new NotFoundException(NotFoundException.STOCK_FOR_SIGN_NOT_FOUND);
         }
