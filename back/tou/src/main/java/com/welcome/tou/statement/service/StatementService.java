@@ -101,8 +101,8 @@ public class StatementService {
             resInfo = StatementResInfoResponseDto.from(statement);
         }
 
-        if (!((reqInfo != null && reqInfo.getCompanySeq() == myWorker.getCompany().getCompanySeq()) ||
-              (resInfo != null && resInfo.getCompanySeq() == myWorker.getCompany().getCompanySeq()))) {
+        if (((reqInfo != null && reqInfo.getCompanySeq() != myWorker.getCompany().getCompanySeq()) ||
+              (resInfo != null && resInfo.getCompanySeq() != myWorker.getCompany().getCompanySeq())) ) {
             throw new MismatchException(MismatchException.WORKER_AND_BRANCH_MISMATCH);
         }
 
