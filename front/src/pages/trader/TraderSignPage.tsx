@@ -31,6 +31,7 @@ const TraderSignPage = () => {
           setStatus("READY");
         }
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderButtons = () => {
