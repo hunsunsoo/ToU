@@ -27,23 +27,21 @@ import {
   O_DETAIL,
   O_MANAGE,
   O_STOCK,
-  O_NOTICE
+  O_NOTICE,
 } from "./pages/Pages";
 import { ROUTES } from "./commons/Routes";
 import ShopperHeader from "./components/organisms/shopper/ShopperHeader";
 import { MobileGlobalStyle } from "./commons/style/mobileStyle/MobileGlobalStyle";
 import OfficerHeader from "./components/organisms/officer/OfficerHeader";
 
-import { useRecoilValue } from 'recoil';
-import { UserInfoState } from './store/State';
-
+import { useRecoilValue } from "recoil";
+import { UserInfoState } from "./store/State";
 
 interface ShopperContainerProps {
   isMain: boolean;
 }
 
 const RoutesContainer = () => {
-
   const location = useLocation();
   console.log(location.pathname);
   return (
@@ -74,7 +72,10 @@ const RoutesContainer = () => {
               <Route path={ROUTES.TRADER_LOGIN} element={<T_LOGIN />} />
               <Route path={ROUTES.TRADER_CONFIRM} element={<T_CONFIRM />} />
               <Route path={ROUTES.TRADER_CREATE} element={<T_CREATE />} />
-              <Route path={ROUTES.TRADER_CREATEITEM} element={<T_CREATEITEM />} />
+              <Route
+                path={ROUTES.TRADER_CREATEITEM}
+                element={<T_CREATEITEM />}
+              />
               <Route path={ROUTES.TRADER_GETLIST} element={<T_GETLIST />} />
               <Route path={ROUTES.TRADER_SECTION} element={<T_SECTION />} />
               <Route path={ROUTES.TRADER_SIGN} element={<T_SIGN />} />
@@ -90,7 +91,7 @@ const RoutesContainer = () => {
         element={
           useRecoilValue(UserInfoState)?.accessToken != null ? (
             <OfficerContainer>
-              <OfficerHeader/>
+              <OfficerHeader />
               <Routes>
                 <Route path={ROUTES.OFFICER_MAIN} element={<O_MAIN />} />
                 <Route path={ROUTES.OFFICER_CREATE} element={<O_CREATE />} />
@@ -102,7 +103,7 @@ const RoutesContainer = () => {
             </OfficerContainer>
           ) : (
             <OfficerContainer>
-              <OfficerHeader/>
+              <OfficerHeader />
               <Routes>
                 <Route path={ROUTES.OFFICER_LOGIN} element={<O_LOGIN />} />
               </Routes>
@@ -133,7 +134,7 @@ const ShopperContainer = styled.div<ShopperContainerProps>`
     #cfe7ff 48.53%,
     rgba(74, 168, 255, 0.89) 98.64%
   ); */
-  height: ${(props) => (props.isMain ? "8000px" : "auto")}
+    overflow: hidden;
 `;
 
 const TraderContainer = styled.div``;

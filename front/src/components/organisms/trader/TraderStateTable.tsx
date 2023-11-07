@@ -1,53 +1,31 @@
 import React from "react";
 import styled from "styled-components";
+import { TraderStateTableProps } from "../../../types/TraderTypes";
 
-interface TraderStateTableProps {
-  selectedRole: string;
-}
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("ko-KR"); // 한국어 날짜 포맷으로 변경 ('yyyy-mm-dd')
+};
 
-interface DataTable {
-  status: string;
-  description: string[];
-}
+const getStatusKorean = (status: string) => {
+  switch (status) {
+    case "PREPARING":
+      return "거래예정";
+    case "WAITING":
+      return "서명대기중";
+    case "COMPLETION":
+      return "거래완료";
+    case "REFUSIAL":
+      return "거절";
+    default:
+      return status; // 만약 다른 상태가 있다면 그대로 반환
+  }
+};
 
 const TraderStateTable: React.FC<TraderStateTableProps> = ({
   selectedRole,
+  statementList,
 }) => {
-  const data: DataTable[] = [
-    {
-      status: "서명 필요",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "완료된 문서",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "거절된 문서",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "서명 대기중",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "서명 대기중",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "서명 대기중",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "서명 대기중",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-    {
-      status: "서명 대기중",
-      description: ["업체명", "하위빠위", "2023-10-19 06:43"],
-    },
-  ];
-
   return (
     <div>
       <StyledTable>
@@ -59,16 +37,26 @@ const TraderStateTable: React.FC<TraderStateTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {statementList.map((item) => (
             <StyledRow
-              key={index}
+              key={item.statementSeq}
               onClick={() =>
-                (window.location.href = `http://localhost:3000/m/sign/${item.description[0]}`)
+                (window.location.href = `http://localhost:3000/m/sign/${item.statementSeq}`)
               }
             >
-              <td>{selectedRole === "전체" ? "수급" : selectedRole}</td>
-              <StyledStatus status={item.status}>{item.status}</StyledStatus>
-              <td>{item.description.join("\n")}</td>
+              <td>
+                {item.reqORres === 0
+                  ? "공급"
+                  : item.reqORres === 1
+                  ? "수급"
+                  : ""}
+              </td>
+              <StyledStatus status={item.statementStatus}>
+                {getStatusKorean(item.statementStatus)}
+              </StyledStatus>
+              <td>{`${item.branchName}\n${item.productName}\n${formatDate(
+                item.tradeDate
+              )}`}</td>
             </StyledRow>
           ))}
         </tbody>
@@ -78,7 +66,6 @@ const TraderStateTable: React.FC<TraderStateTableProps> = ({
 };
 
 export default TraderStateTable;
-
 
 const StyledTable = styled.table`
   width: 100%;
@@ -105,15 +92,16 @@ interface StyledStatusProps {
 const StyledStatus = styled.td<StyledStatusProps>`
   font-weight: bold;
   color: ${(props) => {
-    switch (props.status) {
-      case "서명 필요":
-        return "blue";
-      case "완료된 문서":
+    const statusKorean = getStatusKorean(props.status);
+    switch (statusKorean) {
+      case "거래예정":
+        return "orange";
+      case "거래완료":
         return "green";
-      case "거절된 문서":
+      case "거절":
         return "red";
-      case "서명 대기중":
-        return "black";
+      case "서명대기중":
+        return "blue";
       default:
         return "black";
     }

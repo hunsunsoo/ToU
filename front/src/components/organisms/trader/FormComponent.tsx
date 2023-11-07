@@ -1,50 +1,48 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-
+import { useState } from "react";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
 
 import { StatementData } from "../../../types/TraderTypes";
-import { customAxios } from "../../api/customAxios";
+import {
+  Table,
+  TableRow,
+  TableCell,
+  TableHeader,
+  StyledDiv,
+  StyledSpan,
+  StyledSection,
+  Styles,
+  StyledTitle,
+  SignatureStatus,
+  StyledDate,
+} from "./FormComponentStyle";
 
-const FormComponent = () => {
-  // 거래명세서 데이터
-  const [statementData, setStatementData] = useState<StatementData | null>(
-    null
-  );
+interface FormComponentProps {
+  statementData: StatementData;
+  status: string;
+}
 
-  // 표 펼쳐보기 관련
+const FormComponent: React.FC<FormComponentProps> = ({
+  statementData,
+  status,
+}) => {
+
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
   const toggleSection = (section: string) => {
-    if (expandedSection === section) {
-      setExpandedSection(null);
-    } else {
-      setExpandedSection(section);
-    }
+    setExpandedSection(expandedSection === section ? null : section);
   };
 
-  // 거래명세서 상세보기 api 요청
-  useEffect(() => {
-    customAxios.get("/statement/worker/detail/1").then((res) => {
-      // 임시로 1 넣어놓음. 수정필요함
-      console.log(res.data.data);
-      setStatementData(res.data.data);
-    });
-  }, []);
+  const formatDate = (dateString: string) => {
+    return dateString.split("T")[0];
+  };
 
-  // 거래명세서 서명 상태 관련
-  const isSigned =
-    statementData &&
-    statementData.reqInfo !== null &&
-    statementData.resInfo !== null;
-
-  if (!statementData) return <div>Loading...</div>;
+  const showSignatureStatus = status === "READY";
 
   return (
     <Styles>
       <StyledTitle>
         <div>거래명세표</div>
-        {isSigned && (
+        {showSignatureStatus && (
           <SignatureStatus>서명이 완료된 거래명세서입니다.</SignatureStatus>
         )}
       </StyledTitle>
@@ -69,23 +67,25 @@ const FormComponent = () => {
           <tbody>
             <TableRow>
               <TableHeader>회사명</TableHeader>
-              <TableCell>{statementData.reqInfo.companyName}</TableCell>
+              <TableCell>{statementData?.reqInfo?.companyName}</TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>사업자 등록번호</TableHeader>
-              <TableCell>{statementData.reqInfo.registrationNumber}</TableCell>
+              <TableCell>
+                {statementData?.reqInfo?.registrationNumber}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>지점명</TableHeader>
-              <TableCell>{statementData.reqInfo.branchName}</TableCell>
+              <TableCell>{statementData?.reqInfo?.branchName}</TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>연락처</TableHeader>
-              <TableCell>{statementData.reqInfo.branchContact}</TableCell>
+              <TableCell>{statementData?.reqInfo?.branchContact}</TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>담당자</TableHeader>
-              <TableCell>{statementData.reqInfo.workerName}</TableCell>
+              <TableCell>{statementData?.reqInfo?.workerName}</TableCell>
             </TableRow>
           </tbody>
         </Table>
@@ -111,23 +111,25 @@ const FormComponent = () => {
           <tbody>
             <TableRow>
               <TableHeader>회사명</TableHeader>
-              <TableCell>{statementData.resInfo.companyName}</TableCell>
+              <TableCell>{statementData?.resInfo?.companyName}</TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>사업자 등록번호</TableHeader>
-              <TableCell>{statementData.resInfo.registrationNumber}</TableCell>
+              <TableCell>
+                {statementData?.resInfo?.registrationNumber}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>지점명</TableHeader>
-              <TableCell>{statementData.resInfo.branchName}</TableCell>
+              <TableCell>{statementData?.resInfo?.branchName}</TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>연락처</TableHeader>
-              <TableCell>{statementData.resInfo.branchContact}</TableCell>
+              <TableCell>{statementData?.resInfo?.branchContact}</TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>담당자</TableHeader>
-              <TableCell>{statementData.resInfo.workerName}</TableCell>
+              <TableCell>{statementData?.resInfo?.workerName}</TableCell>
             </TableRow>
           </tbody>
         </Table>
@@ -163,101 +165,9 @@ const FormComponent = () => {
         </tbody>
       </table>
 
-      <StyledDate>{statementData.tradeDate}</StyledDate>
+      <StyledDate>{formatDate(statementData.tradeDate)}</StyledDate>
     </Styles>
   );
 };
 
 export default FormComponent;
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`;
-
-const TableRow = styled.tr`
-  border: 1px solid black;
-`;
-
-const TableCell = styled.td`
-  padding: 10px;
-  border: 1px solid black;
-`;
-
-const TableHeader = styled.th`
-  padding: 10px;
-  border: 1px solid black;
-  background-color: #eaeaea;
-`;
-
-const StyledDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-`;
-
-const StyledSpan = styled.span`
-  display: flex;
-  align-items: center;
-`;
-
-const StyledSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 10px 0;
-  cursor: pointer;
-
-  & > strong {
-    margin-bottom: 10px;
-  }
-
-  // 수정
-  & > ${Table} {
-    display: none;
-  }
-
-  &[data-expanded="true"] > ${Table} {
-    display: table; // table로 변경
-  }
-`;
-
-const Styles = styled.div`
-  table {
-    border-spacing: 0;
-    border-collapse: collapse;
-    width: 100%;
-
-    th,
-    td {
-      padding: 0.5rem;
-      border: 1px solid black; // 모든 셀에 테두리를 적용
-    }
-
-    th {
-      background-color: #eaeaea; // 헤더의 배경색을 회색으로 변경
-    }
-
-    td {
-      background-color: white; // 아이템의 배경색을 흰색으로 변경
-    }
-  }
-`;
-
-const StyledTitle = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 1.6rem;
-  margin: 1rem 0;
-  align-items: flex-end;
-`;
-
-const SignatureStatus = styled.span`
-  color: red;
-  margin-left: 1rem;
-  font-size: 1rem;
-`;
-
-const StyledDate = styled.div`
-  margin: 1rem 0;
-`;
