@@ -49,6 +49,11 @@ public class StatementController {
                  otherWorkerName,  isMine,  worker,  startDate, endDate, status, productName );
     }
 
+    @GetMapping("/worker/list/app")
+    public ResultTemplate getStatementListForApp(@AuthenticationPrincipal UserDetails worker) {
+        return statementService.getStatementListForApp(worker);
+    }
+
     @GetMapping("/worker/list/preparing")
     public ResultTemplate getStatementListPreparing(@AuthenticationPrincipal UserDetails worker) {
         return statementService.getStatementListPreparing(worker);
