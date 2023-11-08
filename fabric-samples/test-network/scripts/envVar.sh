@@ -28,6 +28,7 @@ export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/t
 # 피어 추가할 때 피어 번호별로 변수 추가 예정
 setGlobals() {
   local USING_ORG=""
+  local USING_PEER=""
 
   if [ -z "$OVERRIDE_ORG" ]; then
     USING_ORG=$1
@@ -35,11 +36,17 @@ setGlobals() {
     USING_ORG="${OVERRIDE_ORG}"
   fi
 
-  local MYPEER=$2
+  if [ -z "$OVERRIDE_PEER" ]; then
+    USING_PEER=$2
+  else
+    USING_PEER="${OVERRIDE_PEER}"
+  fi
+
 
   infoln "Using organization ${USING_ORG}"
+  infoln "Using PEER NO ${USING_PEER}"
 
-  if [ $USING_ORG == 'Product' ] && [ $MYPEER -eq 0 ]; then
+  if [ $USING_ORG == 'Product' ] && [ $USING_PEER -eq 0 ]; then
     export CORE_PEER_LOCALMSPID="OrgProductMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORGPRODUCT_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgProduct.tou.com/users/Admin@orgProduct.tou.com/msp
