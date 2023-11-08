@@ -38,6 +38,9 @@ function queryInstalled() {
 function approveForMyOrg() {
   ORG=$1
   PEER=$2
+  infoln "approveForMyOrg ORG :  ${ORG}"
+  infoln "approveForMyOrg PEER :  ${PEER}"
+
   setGlobals $ORG $PEER
   setGlobalsCLI $ORG $PEER
   set -x
@@ -53,6 +56,8 @@ function approveForMyOrg() {
 function checkCommitReadiness() {
   ORG=$1
   PEER=$2
+    infoln "checkCommitReadiness ORG :  ${ORG}"
+    infoln "checkCommitReadiness PEER :  ${PEER}"
   shift 1
   setGlobals $ORG $PEER
   setGlobalsCLI $ORG $PEER
