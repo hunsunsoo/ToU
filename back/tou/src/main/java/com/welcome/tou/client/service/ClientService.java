@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -66,26 +67,26 @@ public class ClientService {
         return ResultTemplate.builder().status(200).data(responseDto).build();
     }
 
-    public ResultTemplate<?> getScheduleList(UserDetails worker, Integer year, Integer month) {
+    public ResultTemplate<?> getScheduleList(UserDetails worker) {
         Long workerSeq = Long.parseLong(worker.getUsername());
         Worker reqWorker = workerRepository.findById(workerSeq)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
 
         Branch myBranch = reqWorker.getBranch();
 
-        if(year == null)
-            year = LocalDateTime.now().getYear();
-        if(month == null)
-            month = LocalDateTime.now().getMonthValue();
+        int year = LocalDateTime.now().getYear();
+        int month = LocalDateTime.now().getMonthValue();
 
-        List<Statement> scheduleList = statementRepository.findStatementsForSchedule(myBranch.getBranchSeq(), year, month);
+        List<Statement> scheduleList = statementRepository.findStatementsForSchedule(myBranch.getBranchSeq());
 
         if(scheduleList == null || scheduleList.size() == 0) {
             throw new NotFoundException(NotFoundException.STATEMENT_NOT_FOUND);
         }
 
         ScheduleListResponseDto responseDto = ScheduleListResponseDto.builder()
-                .ScheduleList(scheduleList.stream().map(statement -> {
+                .ScheduleList(scheduleList.stream()
+                        .sorted(Comparator.comparing(Statement::getTradeDate))
+                        .map(statement -> {
                             List<Stock> stocks = itemRepository.findStockByStatementSeq(statement.getStatementSeq());
 
                             String productName = "";
@@ -117,8 +118,8 @@ public class ClientService {
                                     .build();
                         }).collect(Collectors.toList())
                 )
-                .year(year.intValue())
-                .month(month.intValue())
+                .year(year)
+                .month(month)
                 .build();
 
         return ResultTemplate.builder().status(200).data(responseDto).build();
