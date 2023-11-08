@@ -150,7 +150,7 @@ installChaincode 'Process' 0
 queryInstalled 'Product' 0
 
 ## approve the definition for org1
-approveForMyOrg 'Process' 0
+approveForMyOrg 'Product' 0
 
 ## check whether the chaincode definition is ready to be committed
 ## expect org1 to have approved and org2 not to
