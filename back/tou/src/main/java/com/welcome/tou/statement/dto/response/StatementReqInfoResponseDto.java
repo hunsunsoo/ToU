@@ -18,6 +18,7 @@ public class StatementReqInfoResponseDto {
     private Long companySeq;
     private String companyName;
     private String registrationNumber;
+    private Long branchSeq;
     private String branchName;
     private String branchLocation;
     private String branchContact;
@@ -32,6 +33,7 @@ public class StatementReqInfoResponseDto {
         response.companySeq = company.getCompanySeq();
         response.companyName = company.getCompanyName();
         response.registrationNumber = company.getRegistrationNumber();
+        response.branchSeq = statement.getResBranch().getBranchSeq();
         response.branchName = statement.getReqBranch().getBranchName();
         response.branchLocation = statement.getReqBranch().getBranchLocation();
         response.branchContact = statement.getReqBranch().getBranchContact();
