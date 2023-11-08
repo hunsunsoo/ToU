@@ -40,6 +40,13 @@ function approveForMyOrg() {
   infoln "approveForMyOrg ORG :  ${ORG}"
   infoln "approveForMyOrg PEER :  ${PEER}"
 
+  # 승인 정책이 "NA"가 아닌 경우 확인하고 로그에 기록
+  if [ "$CC_END_POLICY" != "NA" ]; then
+    infoln "Using endorsement policy: $CC_END_POLICY"
+  else
+    infoln "No endorsement policy provided, using default"
+  fi
+
   setGlobals $ORG $PEER
   setGlobalsCLI $ORG $PEER
   infoln "policy : ${CC_END_POLICY}"
@@ -56,8 +63,8 @@ function approveForMyOrg() {
 function checkCommitReadiness() {
   ORG=$1
   PEER=$4
-    infoln "checkCommitReadiness ORG :  ${ORG}"
-    infoln "checkCommitReadiness PEER :  ${PEER}"
+  infoln "checkCommitReadiness ORG :  ${ORG}"
+   infoln "checkCommitReadiness PEER :  ${PEER}"
 
   setGlobals $ORG $PEER
   setGlobalsCLI $ORG $PEER
@@ -90,13 +97,22 @@ function checkCommitReadiness() {
     # Log the final result of commit readiness check
   echo "Final commit readiness check result:" >> commitReadinessLog.txt
   cat log.txt >> commitReadinessLog.txt
+
+
+  # 커밋 준비성 확인 로그 추가
+  println "Checking commit readiness for chaincode name: $CC_NAME, version: $CC_VERSION, sequence: $CC_SEQUENCE."
+
 }
 
 # commitChaincodeDefinition VERSION PEER ORG (PEER ORG)...
 function commitChaincodeDefinition() {
   parsePeerConnectionParameters $@
+
+  infoln "Committing with sequence number: $CC_SEQUENCE and package ID: $PACKAGE_ID"
+
   res=$?
   verifyResult $res "Invoke transaction failed on channel '$CHANNEL_NAME' due to uneven number of peer and org parameters "
+
 
   # while 'peer chaincode' command can get the orderer endpoint from the
   # peer (if join was successful), let's supply it directly as we know
@@ -142,6 +158,11 @@ function queryCommitted() {
   else
     fatalln "After $MAX_RETRY attempts, Query chaincode definition result on peer0.org${ORG} is INVALID!"
   fi
+
+
+  # 체인코드 설치 확인 로그 추가
+  println "Querying installed chaincodes on peer${PEER}.org${ORG} to verify installation."
+  println "Expecting to find package ID: $PACKAGE_ID"
 }
 
 function chaincodeInvokeInit() {

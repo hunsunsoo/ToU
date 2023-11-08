@@ -117,6 +117,16 @@ packageChaincode() {
 # 	setGlobals $ORG $PEER
 #
 # 	setGlobalsCLI $ORG $PEER
+  # 패키지 ID가 예상 패턴과 일치하는지 확인
+  println "Verifying that the package ID matches the expected pattern."
+  PACKAGE_ID_CHECK=$(peer lifecycle chaincode calculatepackageid ${CC_NAME}.tar.gz)
+
+  if [ "$PACKAGE_ID" = "$PACKAGE_ID_CHECK" ]; then
+   infoln "Package ID is valid: $PACKAGE_ID"
+  else
+   fatalln "Package ID is invalid: $PACKAGE_ID"
+  fi
+
   set -x
   peer lifecycle chaincode package ${CC_NAME}.tar.gz --path ${CC_SRC_PATH} --lang ${CC_RUNTIME_LANGUAGE} --label ${CC_NAME}_${CC_VERSION} >&log.txt
   res=$?
