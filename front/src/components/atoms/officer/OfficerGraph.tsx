@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { BiLineChart } from "react-icons/bi";
 import { ResponsiveLine } from "@nivo/line";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { UserInfoState } from "../../../store/State";
 import { customAxios } from "../../api/customAxios";
@@ -126,15 +126,31 @@ const chartData = [
 ];
 
 const OfiicerGraph = () => {
-  const branchSeq = useRecoilValue(UserInfoState).branchSeq;
+  const [branchSeq, setBranchSeq] = useState(0);
 
   useEffect(() => {
-    customAxios
-      .get(`/stock/worker/${branchSeq}/receiving/price`)
-      .then((res) => {
-        console.log("입고단가",res.data);
-      });
-  });
+    // 토큰 들어오는거 기다리기
+    const checkToken = () => {
+      const storedValue = localStorage.getItem("recoil-persist");
+      const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+      setBranchSeq(storedValue && JSON.parse(storedValue)?.UserInfoState?.branchSeq);
+      
+      
+      if (accessToken) {        
+        // 업체별 거래횟수 정보 가져오기
+        customAxios.get(`/stock/worker/${branchSeq}/receiving/price`)
+        .then((res) => {
+          console.log("입고단가",res.data);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+      } else {
+        setTimeout(checkToken, 1000); // 1초마다 토큰 체크
+      }
+    };
+    checkToken();
+  }, [branchSeq]);
 
   return (
     <GraphDiv>
