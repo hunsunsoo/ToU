@@ -73,74 +73,96 @@ const MyResponsiveLine = ({ data }: { data: any[] }) => (
   />
 );
 
-const chartData = [
-  {
-    id: "고등어",
-    color: "hsl(303, 70%, 50%)",
-    data: [
-      { x: "5월", y: 12500 },
-      { x: "6월", y: 10000 },
-      { x: "7월", y: 8300 },
-      { x: "8월", y: 13500 },
-      { x: "9월", y: 14000 },
-      { x: "10월", y: 15500 },
-    ],
-  },
-  {
-    id: "무늬오징어",
-    color: "hsl(303, 70%, 50%)",
-    data: [
-      { x: "5월", y: 11500 },
-      { x: "6월", y: 13000 },
-      { x: "7월", y: 15000 },
-      { x: "8월", y: 14000 },
-      { x: "9월", y: 16000 },
-      { x: "10월", y: 17000 },
-    ],
-  },
-  {
-    id: "독도새우",
-    color: "hsl(303, 70%, 50%)",
-    data: [
-      { x: "5월", y: 20000 },
-      { x: "6월", y: 18000 },
-      { x: "7월", y: 23500 },
-      { x: "8월", y: 24000 },
-      { x: "9월", y: 22000 },
-      { x: "10월", y: 23000 },
-    ],
-  },
-  {
-    id: "키조개(대)",
-    color: "hsl(303, 70%, 50%)",
-    data: [
-      { x: "5월", y: 9000 },
-      { x: "6월", y: 11500 },
-      { x: "7월", y: 12500 },
-      { x: "8월", y: 11000 },
-      { x: "9월", y: 12500 },
-      { x: "10월", y: 10000 },
-    ],
-  },
-  // Add data for 무늬오징어, 독도새우, 키조개(대) here
-];
+// const chartData = [
+//   {
+//     id: "고등어",
+//     color: "hsl(303, 70%, 50%)",
+//     data: [
+//       { x: "5월", y: 12500 },
+//       { x: "6월", y: 10000 },
+//       { x: "7월", y: 8300 },
+//       { x: "8월", y: 13500 },
+//       { x: "9월", y: 14000 },
+//       { x: "10월", y: 15500 },
+//     ],
+//   },
+//   {
+//     id: "무늬오징어",
+//     color: "hsl(303, 70%, 50%)",
+//     data: [
+//       { x: "5월", y: 11500 },
+//       { x: "6월", y: 13000 },
+//       { x: "7월", y: 15000 },
+//       { x: "8월", y: 14000 },
+//       { x: "9월", y: 16000 },
+//       { x: "10월", y: 17000 },
+//     ],
+//   },
+//   {
+//     id: "독도새우",
+//     color: "hsl(303, 70%, 50%)",
+//     data: [
+//       { x: "5월", y: 20000 },
+//       { x: "6월", y: 18000 },
+//       { x: "7월", y: 23500 },
+//       { x: "8월", y: 24000 },
+//       { x: "9월", y: 22000 },
+//       { x: "10월", y: 23000 },
+//     ],
+//   },
+//   {
+//     id: "키조개(대)",
+//     color: "hsl(303, 70%, 50%)",
+//     data: [
+//       { x: "5월", y: 9000 },
+//       { x: "6월", y: 11500 },
+//       { x: "7월", y: 12500 },
+//       { x: "8월", y: 11000 },
+//       { x: "9월", y: 12500 },
+//       { x: "10월", y: 10000 },
+//     ],
+//   },
+// ];
+
+interface productList {
+  stockName: string,
+  averagePriceList: averageList,
+}
+
+interface averageList {
+  stockDate: string,
+  stockPrice: number,
+}
 
 const OfiicerGraph = () => {
   const [branchSeq, setBranchSeq] = useState(0);
+  const [chartData, setChartData] = useState<productList[]>([]);
 
   useEffect(() => {
     // 토큰 들어오는거 기다리기
     const checkToken = () => {
       const storedValue = localStorage.getItem("recoil-persist");
-      const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
-      setBranchSeq(storedValue && JSON.parse(storedValue)?.UserInfoState?.branchSeq);
+      const userInfo = storedValue && JSON.parse(storedValue)?.UserInfoState;
+      const branchSeqFromStorage = userInfo ? userInfo.branchSeq : null;
+      setBranchSeq(branchSeqFromStorage || 0);      
       
-      
-      if (accessToken) {        
+      if (branchSeq !== 0) {
         // 업체별 거래횟수 정보 가져오기
         customAxios.get(`/stock/worker/${branchSeq}/receiving/price`)
         .then((res) => {
           console.log("입고단가",res.data);
+          console.log("입고단가",res.data.data.productList);
+          // const transformedData = res.data.data.productList.map((item: productList) => {
+          //   return {
+          //     id: item.stockName,
+          //     color: "hsl(303, 70%, 50%)", // 고정값이거나 다른 로직을 통해 동적으로 설정할 수 있습니다.
+          //     data: [
+          //       { x: item.averagePriceList.stockDate, y: item.averagePriceList.stockPrice },
+          //       // 다른 필요한 속성이 있다면 추가하세요.
+          //     ],
+          //   };
+          // });
+          // setChartData(transformedData);
         })
         .catch((res) => {
           console.log(res);
@@ -164,7 +186,15 @@ const OfiicerGraph = () => {
       </StyledTitle>
 
       <div style={{ height: "300px" }}>
-        <MyResponsiveLine data={chartData} />
+        {chartData ? (
+          chartData.length > 0 ? (
+            <MyResponsiveLine data={chartData} />
+          ) : (
+            <p>데이터 없음</p>
+          )
+        ) : (
+          <p>로딩 중...</p>
+        )}
       </div>
     </GraphDiv>
   );
