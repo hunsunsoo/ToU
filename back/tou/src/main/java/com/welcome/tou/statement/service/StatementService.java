@@ -459,6 +459,7 @@ public class StatementService {
 
     }
 
+    @Transactional
     public ResultTemplate<?> refuseStatement(RefuseStatementRequestDto request, UserDetails worker) {
         Statement statement = statementRepository.findById(request.getStatementSeq())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.STATEMENT_NOT_FOUND));
