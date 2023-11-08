@@ -33,7 +33,7 @@ public class StatementReqInfoResponseDto {
         response.companySeq = company.getCompanySeq();
         response.companyName = company.getCompanyName();
         response.registrationNumber = company.getRegistrationNumber();
-        response.branchSeq = statement.getResBranch().getBranchSeq();
+        response.branchSeq = statement.getReqBranch().getBranchSeq();
         response.branchName = statement.getReqBranch().getBranchName();
         response.branchLocation = statement.getReqBranch().getBranchLocation();
         response.branchContact = statement.getReqBranch().getBranchContact();
