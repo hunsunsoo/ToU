@@ -244,15 +244,21 @@ public class StatementService {
                                 productName = stocks.get(0).getStockName() + " 외 " + String.valueOf(stocks.size()-1) + "건";
                             }
                             String branchName = "";
+                            Long branchSeq = 0L;
                             int isReq = 0;
                             if(statement.getReqBranch() == myBranch) {
                                 branchName = statement.getResBranch().getBranchName();
+                                branchSeq = statement.getResBranch().getBranchSeq();
                                 isReq = 1;
                             }
-                            else if(statement.getResBranch() == myBranch) branchName = statement.getReqBranch().getBranchName();
+                            else if(statement.getResBranch() == myBranch) {
+                                branchName = statement.getReqBranch().getBranchName();
+                                branchSeq = statement.getReqBranch().getBranchSeq();
+                            }
 
                             return AppStatementResponseDto.builder()
                                     .statementSeq(statement.getStatementSeq())
+                                    .branchSeq(branchSeq)
                                     .branchName(branchName)
                                     .productName(productName)
                                     .tradeDate(statement.getTradeDate())
