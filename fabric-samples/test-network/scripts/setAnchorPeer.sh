@@ -61,7 +61,6 @@ infoln "Call setGlobals in setAnchorPeer.sh "
 infoln "setGlobals variable ${ORG}"
 setGlobals $ORG 0
 
-infoln "Call setGlobalsCLI in setAnchorPeer.sh "
 createAnchorPeerUpdate
 
 updateAnchorPeer 

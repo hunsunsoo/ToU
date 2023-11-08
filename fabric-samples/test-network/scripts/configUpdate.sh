@@ -16,7 +16,8 @@ fetchChannelConfig() {
   CHANNEL=$2
   OUTPUT=$3
 
-  setGlobals $ORG
+  setGlobals $ORG 0
+  setGlobalsCLI $ORG 0
 
   infoln "Fetching the most recent configuration block for the channel"
   set -x
