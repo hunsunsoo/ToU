@@ -11,8 +11,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StockPriceGraphListResponseDto {
+public class AveragePriceGraphListResponseDto {
 
-    private List<StockPriceListResponseDto> stockList;
+    private List<AveragePriceListResponseDto> productList;
 
 }

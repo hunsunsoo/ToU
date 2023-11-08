@@ -27,7 +27,7 @@ public class ClientController {
     public ResultTemplate<?> getScheduleList(@AuthenticationPrincipal UserDetails worker,
                                              @RequestParam(required = false) Integer year,
                                              @RequestParam(required = false) Integer month) {
-        return clientService.getScheduleList(worker, year, month);
+        return clientService.getScheduleList(worker);
     }
 
 
