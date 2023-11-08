@@ -17,6 +17,7 @@ public class StatementResInfoResponseDto {
     private Long companySeq;
     private String companyName;
     private String registrationNumber;
+    private Long branchSeq;
     private String branchName;
     private String branchLocation;
     private String branchContact;
@@ -31,6 +32,7 @@ public class StatementResInfoResponseDto {
         response.companySeq = company.getCompanySeq();
         response.companyName = company.getCompanyName();
         response.registrationNumber = company.getRegistrationNumber();
+        response.branchSeq = statement.getResBranch().getBranchSeq();
         response.branchName = statement.getResBranch().getBranchName();
         response.branchLocation = statement.getResBranch().getBranchLocation();
         response.branchContact = statement.getResBranch().getBranchContact();
