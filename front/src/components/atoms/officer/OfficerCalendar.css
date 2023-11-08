@@ -46,7 +46,7 @@
 
 .react-calendar__tile {
   text-align: center;
-  height: 60px;
+  height: 75px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
