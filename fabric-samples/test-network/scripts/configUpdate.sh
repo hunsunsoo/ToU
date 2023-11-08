@@ -41,6 +41,11 @@ createConfigUpdate() {
   MODIFIED=$3
   OUTPUT=$4
 
+  infoln "In createConfigUpdate"
+  infoln "ORIGINAL : ${ORIGINAL}"
+  infoln "MODIFIED : ${MODIFIED}"
+  infoln "OUTPUT : ${OUTPUT}"
+
   set -x
   configtxlator proto_encode --input "${ORIGINAL}" --type common.Config --output original_config.pb
   configtxlator proto_encode --input "${MODIFIED}" --type common.Config --output modified_config.pb
