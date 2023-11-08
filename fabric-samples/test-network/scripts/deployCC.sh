@@ -154,16 +154,16 @@ approveForMyOrg 'Product' 0
 
 ## check whether the chaincode definition is ready to be committed
 ## expect org1 to have approved and org2 not to
-checkCommitReadiness 'Product' "\"Org1MSP\": true" "\"Org2MSP\": false" 0
-checkCommitReadiness 'Process' "\"Org1MSP\": true" "\"Org2MSP\": false" 0
+checkCommitReadiness 'Product' "\"OrgProductMSP\": true" "\"OrgProcessMSP\": false" 0
+checkCommitReadiness 'Process' "\"OrgProductMSP\": true" "\"OrgProcessMSP\": false" 0
 
 ## now approve also for org2
 approveForMyOrg 'Process' 0
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
-checkCommitReadiness 'Product' "\"Org1MSP\": true" "\"Org2MSP\": true"
-checkCommitReadiness 'Process' "\"Org1MSP\": true" "\"Org2MSP\": true"
+checkCommitReadiness 'Product' "\"OrgProductMSP\": true" "\"OrgProcessMSP\": true"
+checkCommitReadiness 'Process' "\"OrgProductMSP\": true" "\"OrgProcessMSP\": true"
 
 ## now that we know for sure both orgs have approved, commit the definition
 commitChaincodeDefinition 'Product' 2
@@ -177,7 +177,7 @@ queryCommitted 'Process' 0
 if [ "$CC_INIT_FCN" = "NA" ]; then
   infoln "Chaincode initialization is not required"
 else
-  chaincodeInvokeInit 'Process' 0
+  chaincodeInvokeInit 'Process' 0 2
 fi
 
 exit 0
