@@ -4,6 +4,7 @@ package com.welcome.tou.stock.service;
 import com.welcome.tou.common.exception.InvalidStockException;
 import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
+import com.welcome.tou.stock.domain.*;
 import com.welcome.tou.stock.dto.request.StockCreateByOfficialsRequestDto;
 import com.welcome.tou.stock.dto.response.*;
 import lombok.extern.java.Log;
@@ -18,10 +19,6 @@ import com.welcome.tou.client.domain.BranchRepository;
 import com.welcome.tou.client.domain.Worker;
 import com.welcome.tou.client.domain.WorkerRepository;
 import com.welcome.tou.common.utils.ResultTemplate;
-import com.welcome.tou.stock.domain.Product;
-import com.welcome.tou.stock.domain.ProductRepository;
-import com.welcome.tou.stock.domain.Stock;
-import com.welcome.tou.stock.domain.StockRepository;
 import com.welcome.tou.stock.dto.request.ProductCreateRequestDto;
 import com.welcome.tou.stock.dto.request.StockCreateByProducerRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +38,7 @@ public class StockService {
     private final WorkerRepository workerRepository;
     private final BranchRepository branchRepository;
     private final StockRepository stockRepository;
+    private final AverageRepository averageRepository;
 
 
     public ResultTemplate getStockList(UserDetails worker) {
@@ -116,23 +114,25 @@ public class StockService {
             throw new NotFoundException(NotFoundException.BRANCH_NOT_FOUND);
         });
 
-        List<Stock> list = stockRepository.findDistinctByBranch(branchSeq);
+        List<Average> list = averageRepository.findRecentSixMonthsByBranch(branchSeq, LocalDateTime.now().minusMonths(7));
+        List<AveragePriceListResponseDto> productList = list.stream()
+                .collect(Collectors.groupingBy(Average::getAverageProductName)) // productName으로 그룹화
+                .entrySet().stream().map(entry -> {
+                    String productName = entry.getKey();
+                    List<AveragePriceResponseDto> priceList = entry.getValue().stream().map(average ->
+                            AveragePriceResponseDto.builder()
+                                    .stockDate(average.getAverageDate().getMonthValue() + "월")
+                                    .stockPrice(average.getAverageProductPrice())
+                                    .build()
+                    ).collect(Collectors.toList());
+                    return AveragePriceListResponseDto.builder()
+                            .stockName(productName)
+                            .averagePriceList(priceList)
+                            .build();
+                }).collect(Collectors.toList());
 
-        //1번째 스트림 : product가 들어있는 list 돌며 이름이 동일한 stock List찾기
-        //2번째 스트림 : stockList 돌면서 priceList 만들기
-        //만든 priceList와 productName을 조합하여 ResponseDto생성
-        List<StockPriceListResponseDto> stockList = list.stream().map(st -> {
-                    List<StockPriceResponseDto> priceList = stockRepository.findByStockName(st.getStockName()).stream().map(stock -> {
-                        return StockPriceResponseDto.from(stock);
-                    }).collect(Collectors.toList());
-                    return StockPriceListResponseDto.builder().stockName(st.getStockName()).priceList(priceList).build();
-                }).sorted(Comparator.comparingInt((StockPriceListResponseDto dto) -> dto.getPriceList().size()).reversed())
-                .limit(4)
-                .collect(Collectors.toList());
-
-        StockPriceGraphListResponseDto response = StockPriceGraphListResponseDto.builder().stockList(stockList).build();
-
-        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(stockList).build();
+        AveragePriceGraphListResponseDto response = AveragePriceGraphListResponseDto.builder().productList(productList).build();
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
 
     }
 

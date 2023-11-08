@@ -6,18 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StockPriceListResponseDto {
+public class AveragePriceResponseDto {
 
-    private String stockName;
-    private List<StockPriceResponseDto> priceList;
-
-
-
-
+    private String stockDate;
+    private Long stockPrice;
 
 }
