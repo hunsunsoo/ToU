@@ -28,19 +28,19 @@ export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/t
 # 피어 추가할 때 피어 번호별로 변수 추가 예정
 setGlobals() {
   local USING_ORG=""
-  local USING_PEER=""
+  local USING_PEER=$2
 
   if [ -z "$OVERRIDE_ORG" ]; then
     USING_ORG=$1
   else
     USING_ORG="${OVERRIDE_ORG}"
   fi
-
-  if [ -z "$OVERRIDE_PEER" ]; then
-    USING_PEER=$2
-  else
-    USING_PEER="${OVERRIDE_PEER}"
-  fi
+#
+#  if [ -z "$OVERRIDE_PEER" ]; then
+#    USING_PEER=$2
+#  else
+#    USING_PEER="${OVERRIDE_PEER}"
+#  fi
 
 
   infoln "Using organization ${USING_ORG}"

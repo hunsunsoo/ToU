@@ -57,7 +57,7 @@ CHANNEL_NAME=$2
 infoln "CHANNEL_NAME in setAnchorPeer : ${CHANNEL_NAME} "
 
 
-infoln "Call setGlobalsCLI in setAnchorPeer.sh "
+infoln "Call setGlobals in setAnchorPeer.sh "
 infoln "setGlobals variable ${ORG}"
 setGlobals $ORG 0
 
