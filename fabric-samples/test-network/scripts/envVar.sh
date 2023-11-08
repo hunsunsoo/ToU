@@ -150,6 +150,7 @@ parsePeerConnectionParameters() {
   PEER_CONN_PARMS=()
   PEERS=""
   while [ "$#" -gt 0 ]; do
+    infoln "parsePeerConnectionParameters in envVar.sh"
     setGlobals $1 $2
     PEER="peer$2.org$1"
     ## Set peer addresses

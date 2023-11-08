@@ -98,9 +98,12 @@ infoln "Joining orgProcess peer to the channel..."
 joinChannel 'Process' 0
 
 ## Set the anchor peers for each org in the channel
-infoln "Setting anchor peer for orgProduct..."
+infoln "=========Setting anchor peer for orgProduct...========="
 setAnchorPeer 'Product' 0
-infoln "Setting anchor peer for orgProcess..."
+
+infoln "=========Finish Setting anchor peer for orgProduct========="
+infoln "=========Setting anchor peer for orgProcess...========="
 setAnchorPeer 'Process' 0
+infoln "=========Finish Setting anchor peer for orgProcess========="
 
 successln "Channel '$CHANNEL_NAME' joined"

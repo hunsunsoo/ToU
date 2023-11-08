@@ -20,9 +20,12 @@ createAnchorPeerUpdate() {
   if [ $ORG == 'Product' ]; then
     HOST="peer0.orgProduct.tou.com"
     PORT=3051
+    infoln "Product createAnchorPeerUpdate in if Sentence"
   elif [ $ORG == 'Process' ]; then
     HOST="peer0.orgProcess.tou.com"
     PORT=5051
+    infoln "Process createAnchorPeerUpdate in if Sentence"
+
   elif [ $ORG == 'Package' ]; then
     HOST="peer0.orgPackage.tou.com"
     PORT=7051
