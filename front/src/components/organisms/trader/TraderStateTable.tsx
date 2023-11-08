@@ -1,4 +1,5 @@
 import React from "react";
+import toast, { Toaster } from "react-hot-toast";
 import styled from "styled-components";
 import { TraderStateTableProps } from "../../../types/TraderTypes";
 
@@ -15,8 +16,8 @@ const getStatusKorean = (status: string) => {
       return "서명대기중";
     case "COMPLETION":
       return "거래완료";
-    case "REFUSIAL":
-      return "거절";
+    case "REFUSAL":
+      return "거절된문서";
     default:
       return status; // 만약 다른 상태가 있다면 그대로 반환
   }
@@ -26,8 +27,18 @@ const TraderStateTable: React.FC<TraderStateTableProps> = ({
   selectedRole,
   statementList,
 }) => {
+  // 클릭 핸들러 함수
+  const handleClick = (status: string, statementSeq: number) => {
+    if (status === "REFUSAL") {
+      toast.error("거절된 문서입니다.");
+    } else {
+      window.location.href = `http://localhost:3000/m/sign/${statementSeq}`;
+    }
+  };
+
   return (
     <div>
+      <Toaster position="top-center" reverseOrder={false} />
       <StyledTable>
         <thead>
           <tr>
@@ -41,7 +52,7 @@ const TraderStateTable: React.FC<TraderStateTableProps> = ({
             <StyledRow
               key={item.statementSeq}
               onClick={() =>
-                (window.location.href = `http://localhost:3000/m/sign/${item.statementSeq}`)
+                handleClick(item.statementStatus, item.statementSeq)
               }
             >
               <td>
@@ -98,7 +109,7 @@ const StyledStatus = styled.td<StyledStatusProps>`
         return "orange";
       case "거래완료":
         return "green";
-      case "거절":
+      case "거절된문서":
         return "red";
       case "서명대기중":
         return "blue";

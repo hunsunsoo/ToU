@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import toast, { Toaster } from "react-hot-toast";
 import styled from "styled-components";
+
 import { customAxios } from "../../components/api/customAxios";
 import { StatementData } from "./../../types/TraderTypes";
 import FormComponent from "../../components/organisms/trader/FormComponent";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
+import { UserInfoState } from "../../store/State";
 
 const TraderSignPage = () => {
   const [statementData, setStatementData] = useState<StatementData | null>(
@@ -14,6 +18,7 @@ const TraderSignPage = () => {
   );
   const [status, setStatus] = useState<string>("");
   const { billId } = useParams<{ billId: string }>();
+  const currentBranchSeq = useRecoilValue(UserInfoState).branchSeq;
 
   useEffect(() => {
     customAxios.get(`/statement/worker/detail/${billId}`).then((res) => {
@@ -33,51 +38,50 @@ const TraderSignPage = () => {
   }, []);
 
   const renderButtons = () => {
-    // reqInfo와 resInfo가 모두 null일 때 "서명요청" 버튼을 렌더링합니다.
-    if (
+    // "메인으로" 버튼을 렌더링해야 하는 조건을 확인합니다.
+    const shouldShowMainButton =
+      (statementData?.reqInfo && statementData?.resInfo) || // 첫 번째 조건: 둘 다 null이 아닐 때
+      statementData?.reqInfo?.branchSeq === currentBranchSeq; // 두 번째 조건: branchSeq가 같을 때
+
+    if (shouldShowMainButton) {
+      return (
+        <TraderBtn size="Large" color="Blue">
+          메인으로
+        </TraderBtn>
+      );
+    } else if (
       statementData &&
       statementData.reqInfo === null &&
       statementData.resInfo === null
     ) {
+      // reqInfo와 resInfo가 모두 null일 때 "서명요청" 버튼을 렌더링합니다.
       return (
         <TraderBtn size="Large" color="Blue" onClick={handleRequestSign}>
           서명요청
         </TraderBtn>
       );
-    }
-    // reqInfo는 데이터가 있고 resInfo가 null이면 "거절"과 "서명" 버튼을 렌더링합니다.
-    else if (
+    } else if (
       statementData &&
       statementData.reqInfo !== null &&
       statementData.resInfo === null
     ) {
+      // reqInfo는 데이터가 있고 resInfo가 null이면 "거절"과 "서명" 버튼을 렌더링합니다.
       return (
         <>
-          <TraderBtn size="LargeL1" color="Grey">
+          <TraderBtn size="LargeL1" color="Grey" onClick={handleRefusal}>
             거절
           </TraderBtn>
-          <TraderBtn size="LargeR2" color="Blue">
+          <TraderBtn size="LargeR2" color="Blue" onClick={handleResponseSign}>
             서명
           </TraderBtn>
         </>
-      );
-    }
-    // reqInfo와 resInfo가 모두 null이 아니라면 "메인으로" 버튼을 렌더링합니다.
-    else if (
-      statementData &&
-      statementData.reqInfo !== null &&
-      statementData.resInfo !== null
-    ) {
-      return (
-        <TraderBtn size="Large" color="Blue">
-          메인으로
-        </TraderBtn>
       );
     }
     // 그 외의 경우에는 버튼을 렌더링하지 않습니다.
     return null;
   };
 
+  // 서명요청 핸들러
   const handleRequestSign = () => {
     const requestBody = {
       statementSeq: statementData?.statementSeq, // statementData가 유효한 경우 statementSeq 값을 사용
@@ -87,12 +91,43 @@ const TraderSignPage = () => {
     customAxios
       .post("/statement/worker/sign", requestBody)
       .then((response) => {
-        console.log("Sign request successful", response);
-        // 요청 성공 후의 처리 로직을 여기에 작성하세요.
+        toast.success("서명요청을 보냈습니다.");
       })
       .catch((error) => {
-        console.error("Sign request failed", error);
-        // 요청 실패 시의 처리 로직을 여기에 작성하세요.
+        toast.error("서명요청에 실패했습니다.");
+      });
+  };
+
+  // 서명 응답 핸들러
+  const handleResponseSign = () => {
+    const requestBody = {
+      statementSeq: statementData?.statementSeq,
+      type: "BUY",
+    };
+
+    customAxios
+      .post("/statement/worker/sign", requestBody)
+      .then((response) => {
+        toast.success("서명을 완료했습니다.");
+      })
+      .catch((error) => {
+        toast.error("서명에 실패했습니다.");
+      });
+  };
+
+  // 거절 핸들러
+  const handleRefusal = () => {
+    const requestBody = {
+      statementSeq: statementData?.statementSeq, // statementData가 유효한 경우 statementSeq 값을 사용
+    };
+
+    customAxios
+      .post("/statement/worker/refusal", requestBody)
+      .then((response) => {
+        toast.success("거절 되었습니다.");
+      })
+      .catch((error) => {
+        toast.error("거절에 실패했습니다.");
       });
   };
 
@@ -100,6 +135,7 @@ const TraderSignPage = () => {
 
   return (
     <StyledContainer>
+      <Toaster position="top-center" reverseOrder={false} />
       <StyledTraderHeader>
         <TraderHeader title="거래 명세서 서명" />
       </StyledTraderHeader>

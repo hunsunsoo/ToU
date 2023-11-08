@@ -18,6 +18,7 @@ interface CompanyInfo {
   branchType: string;
   workerSeq: number;
   workerName: string;
+  branchSeq: number;
 }
 
 interface Item {

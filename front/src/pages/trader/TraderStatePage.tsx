@@ -26,18 +26,30 @@ const TraderStatePage = () => {
   };
 
   useEffect(() => {
-    customAxios
-      .get("/statement/worker/list/app")
-      .then((res) => {
-        const list = res.data.data.statementList;
-        console.log(res);
-        setStatementList(list);
-        // 초기 렌더링에서는 모든 리스트를 보여줍니다.
-        setFilteredStatementList(list);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
+    // 토큰 들어오는거 기다리기
+    const checkToken = () => {
+      const storedValue = localStorage.getItem("recoil-persist");
+      const accessToken =
+        storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+
+      if (accessToken) {
+        customAxios
+          .get("/statement/worker/list/app")
+          .then((res) => {
+            const list = res.data.data.statementList;
+            console.log(res);
+            setStatementList(list);
+            // 초기 렌더링에서는 모든 리스트를 보여줍니다.
+            setFilteredStatementList(list);
+          })
+          .catch((error) => {
+            console.error("Error fetching data: ", error);
+          });
+      } else {
+        setTimeout(checkToken, 1000); // 1초마다 토큰 체크
+      }
+    };
+    checkToken();
   }, [location]);
 
   useEffect(() => {
@@ -99,13 +111,13 @@ export default TraderStatePage;
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: calc(100vh - 188px);
 `;
 
 const StyledBody = styled.div`
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 188px);
+  margin-bottom: 60px;
 `;
 
 const StyledHeader = styled.div`

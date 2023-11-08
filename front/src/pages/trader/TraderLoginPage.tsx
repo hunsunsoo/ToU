@@ -33,7 +33,7 @@ const TraderLoginPage = () => {
     <StyledMainPaddingContainer>
       <LoginDiv>
         <StyledDiv>
-          <TextSpan> I D</TextSpan>
+          <TextSpan> ID</TextSpan>
           <StyleInput value={id} onChange={(e) => setId(e.target.value)} />
         </StyledDiv>
 
@@ -63,9 +63,6 @@ const StyledMainPaddingContainer = styled(MainPaddingContainer)`
 const LoginDiv = styled.div`
   display: flex;
   flex-direction: column;
-  height: 8%;
-  margin-left: 20%;
-  margin-top: 1%;
 `;
 
 const StyledDiv = styled.div`
