@@ -15,6 +15,7 @@ public class ItemResponseDto {
 
     private Long stockSeq;
     private String stockCode;
+    private String stockName;
     private Double stockQuantity;
     private String stockUnit;
     private Long stockPrice;
@@ -25,6 +26,7 @@ public class ItemResponseDto {
         ItemResponseDto responseDto = new ItemResponseDto();
         Stock stock = item.getStock();
         responseDto.stockSeq = stock.getStockSeq();
+        responseDto.stockName = stock.getStockName();
         responseDto.stockCode = stock.getStockCode();
         responseDto.stockQuantity = stock.getStockQuantity();
         responseDto.stockUnit = stock.getStockUnit();
