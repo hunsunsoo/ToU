@@ -31,6 +31,13 @@ function queryInstalled() {
   cat log.txt
   verifyResult $res "Query installed on peer${PEER}.org${ORG} has failed"
   successln "Query installed successful on peer${PEER}.org${ORG} on channel"
+
+
+  # 추가된 로그 코드
+  echo "Querying installed chaincodes on peer${PEER}.org${ORG} to verify installation."
+  echo "Expecting to find package ID: $PACKAGE_ID"
+  installed=$(cat log.txt)
+  echo $installed | grep $PACKAGE_ID && echo "Chaincode is correctly installed." || echo "Chaincode is NOT correctly installed."
 }
 
 # approveForMyOrg VERSION PEER ORG
@@ -99,9 +106,11 @@ function checkCommitReadiness() {
   cat log.txt >> commitReadinessLog.txt
 
 
-  # 커밋 준비성 확인 로그 추가
-  println "Checking commit readiness for chaincode name: $CC_NAME, version: $CC_VERSION, sequence: $CC_SEQUENCE."
 
+  # 추가된 로그 코드
+  echo "Checking commit readiness for chaincode name: $CC_NAME, version: $CC_VERSION, sequence: $CC_SEQUENCE..."
+  readiness_response=$(cat log.txt)
+  echo $readiness_response | jq
 }
 
 # commitChaincodeDefinition VERSION PEER ORG (PEER ORG)...
