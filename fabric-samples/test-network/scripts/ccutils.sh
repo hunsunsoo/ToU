@@ -4,9 +4,8 @@
 # installChaincode PEER ORG
 function installChaincode() {
   ORG=$1
-  PEER=$2
-  setGlobals $ORG $PEER
-  setGlobalsCLI $ORG $PEER
+	setGlobals $ORG $2
+  setGlobalsCLI $ORG $2
   set -x
   peer lifecycle chaincode queryinstalled --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
   if test $? -ne 0; then
@@ -15,8 +14,8 @@ function installChaincode() {
   fi
   { set +x; } 2>/dev/null
   cat log.txt
-  verifyResult $res "Chaincode installation on peer${PEER}.org${ORG} has failed"
-  successln "Chaincode is installed on peer${PEER}.org${ORG}"
+  verifyResult $res "Chaincode installation on peer${2}.org${ORG} has failed"
+  successln "Chaincode is installed on peer${2}.org${ORG}"
 }
 
 # queryInstalled PEER ORG
@@ -49,18 +48,19 @@ function approveForMyOrg() {
   { set +x; } 2>/dev/null
   cat log.txt
   verifyResult $res "Chaincode definition approved on peer0.org${ORG} on channel '$CHANNEL_NAME' failed"
-  successln "Chaincode definition approved on peer0.org${ORG} on channel '$CHANNEL_NAME'"
+  successln "===Chaincode definition approved on peer0.org${ORG} on channel '$CHANNEL_NAME'==="
 }
 
 # checkCommitReadiness VERSION PEER ORG
 function checkCommitReadiness() {
   ORG=$1
-  PEER=$4
+  PEER=$2
     infoln "checkCommitReadiness ORG :  ${ORG}"
     infoln "checkCommitReadiness PEER :  ${PEER}"
-  shift 1
+
   setGlobals $ORG $PEER
   setGlobalsCLI $ORG $PEER
+  shift 2
   infoln "Checking the commit readiness of the chaincode definition on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME'..."
   local rc=1
   local COUNTER=1
@@ -112,7 +112,7 @@ function queryCommitted() {
   setGlobals $ORG $PEER
   setGlobalsCLI $ORG $PEER
   EXPECTED_RESULT="Version: ${CC_VERSION}, Sequence: ${CC_SEQUENCE}, Endorsement Plugin: escc, Validation Plugin: vscc"
-  infoln "Querying chaincode definition on peer0.org${ORG} on channel '$CHANNEL_NAME'..."
+  infoln "Querying chaincode definition on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME'..."
   local rc=1
   local COUNTER=1
   # continue to poll
