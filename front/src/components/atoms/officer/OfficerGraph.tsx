@@ -125,13 +125,13 @@ const MyResponsiveLine = ({ data }: { data: any[] }) => (
 // ];
 
 interface productList {
-  stockName: string,
-  averagePriceList: averageList,
+  stockName: string;
+  averagePriceList: averageList[];
 }
 
 interface averageList {
-  stockDate: string,
-  stockPrice: number,
+  stockDate: string;
+  stockPrice: number;
 }
 
 const OfiicerGraph = () => {
@@ -144,29 +144,32 @@ const OfiicerGraph = () => {
       const storedValue = localStorage.getItem("recoil-persist");
       const userInfo = storedValue && JSON.parse(storedValue)?.UserInfoState;
       const branchSeqFromStorage = userInfo ? userInfo.branchSeq : null;
-      setBranchSeq(branchSeqFromStorage || 0);      
-      
+      setBranchSeq(branchSeqFromStorage || 0);
+
       if (branchSeq !== 0) {
         // 업체별 거래횟수 정보 가져오기
-        customAxios.get(`/stock/worker/${branchSeq}/receiving/price`)
-        .then((res) => {
-          console.log("입고단가",res.data);
-          console.log("입고단가",res.data.data.productList);
-          // const transformedData = res.data.data.productList.map((item: productList) => {
-          //   return {
-          //     id: item.stockName,
-          //     color: "hsl(303, 70%, 50%)", // 고정값이거나 다른 로직을 통해 동적으로 설정할 수 있습니다.
-          //     data: [
-          //       { x: item.averagePriceList.stockDate, y: item.averagePriceList.stockPrice },
-          //       // 다른 필요한 속성이 있다면 추가하세요.
-          //     ],
-          //   };
-          // });
-          // setChartData(transformedData);
-        })
-        .catch((res) => {
-          console.log(res);
-        });
+        customAxios
+          .get(`/stock/worker/${branchSeq}/receiving/price`)
+          .then((res) => {
+            console.log("입고단가", res.data.data.productList);
+            const transformedData = res.data.data.productList.map(
+              (item: productList) => {
+                return {
+                  id: item.stockName,
+                  color: "hsl(303, 70%, 50%)", // 고정값이거나 다른 로직을 통해 동적으로 설정할 수 있습니다.
+                  data: item.averagePriceList.map((averageItem: averageList) => ({
+                    x: averageItem.stockDate,
+                    y: averageItem.stockPrice,
+                  })),
+                };
+              }
+            );
+            setTimeout(() => {}, 1000);
+            setChartData(transformedData);
+          })
+          .catch((res) => {
+            console.log(res);
+          });
       } else {
         setTimeout(checkToken, 1000); // 1초마다 토큰 체크
       }
