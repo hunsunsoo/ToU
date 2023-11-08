@@ -56,6 +56,7 @@ joinChannel() {
   FABRIC_CFG_PATH=$PWD/../config/
   ORG=$1
   setGlobals $ORG 0
+  setGlobalCLI $ORG 0
 	local rc=1
 	local COUNTER=1
 	## Sometimes Join takes time, hence retry

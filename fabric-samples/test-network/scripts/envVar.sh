@@ -139,21 +139,39 @@ setGlobalsCLI() {
 
 
   if [ $USING_ORG == 'Product' ] && [ $USING_PEER -eq 0 ]; then
-    export CORE_PEER_ADDRESS=peer0.orgProduct.tou.com:3051
+#    export CORE_PEER_ADDRESS=peer0.orgProduct.tou.com:3051
+    export CORE_PEER_ADDRESS=localhost:3051
+
   elif [ $USING_ORG == 'Product' ] && [ $USING_PEER -eq 1 ]; then
-    export CORE_PEER_ADDRESS=peer1.orgProduct.tou.com:4051
+#    export CORE_PEER_ADDRESS=peer1.orgProduct.tou.com:4051
+    export CORE_PEER_ADDRESS=localhost:4051
+
   elif [ $USING_ORG == 'Process' ] && [ $USING_PEER -eq 0 ]; then
-    export CORE_PEER_ADDRESS=peer0.orgProcess.tou.com:5051
+#    export CORE_PEER_ADDRESS=peer0.orgProcess.tou.com:5051
+    export CORE_PEER_ADDRESS=localhost:5051
+
+
   elif [ $USING_ORG == 'Process' ] && [ $USING_PEER -eq 1 ]; then
-    export CORE_PEER_ADDRESS=peer1.orgProcess.tou.com:6051
+#    export CORE_PEER_ADDRESS=peer1.orgProcess.tou.com:6051
+    export CORE_PEER_ADDRESS=localhost:6051
+
+
   elif [ $USING_ORG == 'Package' ] && [ $USING_PEER -eq 0 ]; then
-    export CORE_PEER_ADDRESS=peer0.orgPackage.tou.com:7051
+#    export CORE_PEER_ADDRESS=peer0.orgPackage.tou.com:7051
+    export CORE_PEER_ADDRESS=localhost:7051
+
   elif [ $USING_ORG == 'Package' ] && [ $USING_PEER -eq 1 ]; then
-    export CORE_PEER_ADDRESS=peer1.orgPackage.tou.com:8051
+#    export CORE_PEER_ADDRESS=peer1.orgPackage.tou.com:8051
+    export CORE_PEER_ADDRESS=localhost:8051
+
   elif [ $USING_ORG == 'Sell' ] && [ $USING_PEER -eq 0 ]; then
-    export CORE_PEER_ADDRESS=peer0.orgSell.tou.com:9051
+#    export CORE_PEER_ADDRESS=peer0.orgSell.tou.com:9051
+    export CORE_PEER_ADDRESS=localhost:9051
+
   elif [ $USING_ORG == 'Sell' ] && [ $USING_PEER -eq 1 ]; then
-    export CORE_PEER_ADDRESS=peer1.orgSell.tou.com:10051
+#    export CORE_PEER_ADDRESS=peer1.orgSell.tou.com:10051
+    export CORE_PEER_ADDRESS=localhost:10051
+
 
   else
     echo "================== ERROR !!! ORG Unknown =================="
