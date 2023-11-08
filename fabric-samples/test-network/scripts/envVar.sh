@@ -50,42 +50,60 @@ setGlobals() {
     export CORE_PEER_LOCALMSPID="OrgProductMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORGPRODUCT_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgProduct.tou.com/users/Admin@orgProduct.tou.com/msp
-    export CORE_PEER_ADDRESS=localhost:3051
+#    export CORE_PEER_ADDRESS=localhost:3051
+    export CORE_PEER_ADDRESS=peer0.orgProduct.tou.com:3051
+
   elif [ $USING_ORG == 'Product' ] && [ $USING_PEER -eq 1 ]; then
     export CORE_PEER_LOCALMSPID="OrgProductMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER1_ORGPRODUCT_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgProduct.tou.com/users/Admin@orgProduct.tou.com/msp
-    export CORE_PEER_ADDRESS=localhost:4051
+#    export CORE_PEER_ADDRESS=localhost:4051
+    export CORE_PEER_ADDRESS=peer1.orgProduct.tou.com:4051
+
   elif [ $USING_ORG == 'Process' ] && [ $USING_PEER -eq 0 ]; then
     export CORE_PEER_LOCALMSPID="OrgProcessMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORGPROCESS_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgProcess.tou.com/users/Admin@orgProcess.tou.com/msp
-    export CORE_PEER_ADDRESS=localhost:5051
+#    export CORE_PEER_ADDRESS=localhost:5051
+
+    export CORE_PEER_ADDRESS=peer0.orgProcess.tou.com:5051
+
   elif [ $USING_ORG == 'Process' ] && [ $USING_PEER -eq 1 ]; then
     export CORE_PEER_LOCALMSPID="OrgProcessMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER1_ORGPROCESS_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgProcess.tou.com/users/Admin@orgProcess.tou.com/msp
-    export CORE_PEER_ADDRESS=localhost:6051
+#    export CORE_PEER_ADDRESS=localhost:6051
+
+    export CORE_PEER_ADDRESS=peer1.orgProcess.tou.com:6051
+
   elif [ $USING_ORG == 'Package' ] && [ $USING_PEER -eq 0 ]; then
     export CORE_PEER_LOCALMSPID="OrgPackageMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORGPACKAGE_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgPackage.tou.com/users/Admin@orgPackage.tou.com/msp
-    export CORE_PEER_ADDRESS=localhost:7051
+#    export CORE_PEER_ADDRESS=localhost:7051
+    export CORE_PEER_ADDRESS=peer0.orgPackage.tou.com:7051
+
   elif [ $USING_ORG == 'Package' ] && [ $USING_PEER -eq 1 ]; then
     export CORE_PEER_LOCALMSPID="OrgPackageMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER1_ORGPACKAGE_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgPackage.tou.com/users/Admin@orgPackage.tou.com/msp
-    export CORE_PEER_ADDRESS=localhost:8051
+#    export CORE_PEER_ADDRESS=localhost:8051
+    export CORE_PEER_ADDRESS=peer1.orgPackage.tou.com:8051
+
   elif [ $USING_ORG == 'Sell' ] && [ $USING_PEER -eq 0 ]; then
     export CORE_PEER_LOCALMSPID="OrgSellMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_SELL_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgSell.tou.com/users/Admin@orgSell.tou.com/msp
-    export CORE_PEER_ADDRESS=localhost:9051
+#    export CORE_PEER_ADDRESS=localhost:9051
+    export CORE_PEER_ADDRESS=peer0.orgSell.tou.com:9051
+
   elif [ $USING_ORG == 'Sell' ] && [ $USING_PEER -eq 1 ]; then
     export CORE_PEER_LOCALMSPID="OrgSellMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER1_ORGSELL_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/orgSell.tou.com/users/Admin@orgSell.tou.com/msp
-    export CORE_PEER_ADDRESS=localhost:10051
+#    export CORE_PEER_ADDRESS=localhost:10051
+    export CORE_PEER_ADDRESS=peer1.orgSell.tou.com:10051
+
 
   else
     errorln "==========================ORG Unknown=========================="
