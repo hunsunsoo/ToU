@@ -15,23 +15,42 @@ interface ChartData {
 }
 
 const OfficerChart = () => {
-  const branchSeq = useRecoilValue(UserInfoState).branchSeq;
+  const [branchSeq, setBranchSeq] = useState(0);
   // 차트 데이터 상태를 useState로 선언합니다.
 
   const [chartData, setChartData] = useState<ChartData[]>([]);
 
   useEffect(() => {
-    customAxios.get(`statement/worker/${branchSeq}/trade/count`).then((res) => {
-      // 서버로부터 받아온 데이터를 차트 데이터 형식으로 변환합니다.
-      const newChartData = res.data.data.map((dataItem: any) => ({
-        id: dataItem.branchName,
-        label: dataItem.branchName,
-        value: dataItem.branchTradeCount,
-        // 색상은 선택적으로 지정할 수 있습니다. 지정하지 않으면 자동으로 할당됩니다.
-      }));
-      // 변환된 데이터를 차트 데이터 상태에 저장합니다.
-      setChartData(newChartData);
-    });
+    // 토큰 들어오는거 기다리기
+    const checkToken = () => {
+      const storedValue = localStorage.getItem("recoil-persist");
+      const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+      setBranchSeq(storedValue && JSON.parse(storedValue)?.UserInfoState?.branchSeq);
+      
+      console.log(branchSeq);
+
+      if (accessToken) {
+        customAxios.get(`statement/worker/${branchSeq}/trade/count`).then((res) => {
+          // 서버로부터 받아온 데이터를 차트 데이터 형식으로 변환합니다.
+          const newChartData = Array.isArray(res.data.data)
+          ? res.data.data.map((dataItem: any) => ({
+            id: dataItem.branchName,
+            label: dataItem.branchName,
+            value: dataItem.branchTradeCount,
+            // 색상은 선택적으로 지정할 수 있습니다. 지정하지 않으면 자동으로 할당됩니다.
+          }))
+            : [];
+          // 변환된 데이터를 차트 데이터 상태에 저장합니다.
+          setChartData(newChartData);
+          })
+          .catch((res) => {
+            console.log(res);
+          });
+      } else {
+        setTimeout(checkToken, 1000); // 1초마다 토큰 체크
+      }
+    };
+  checkToken();
   }, [branchSeq]); // branchSeq 값이 변경될 때마다 useEffect를 실행합니다.
   return (
     <StyledContainer>

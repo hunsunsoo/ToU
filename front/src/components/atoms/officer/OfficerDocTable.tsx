@@ -38,10 +38,9 @@ const OfficerDocTable: React.FC<OfficerDocTableProps> = ({ isSupply, params  }) 
   // 상품 목록 조회
   const [statements, setStatements] = useState<statementList[]>([]);
 
-  const handleRowClick = (itemId: number) => {
+  const handleRowClick = (statementSeq: number) => {
     // 페이지 이동 로직
-    // navigate(`/detail/${itemId}`); 일단 임시
-    navigate(`/detail`);
+    navigate(`/detail/${statementSeq}`);
   };
 
   useEffect(() => {
@@ -84,7 +83,7 @@ const OfficerDocTable: React.FC<OfficerDocTableProps> = ({ isSupply, params  }) 
       </thead>
       <tbody>
         {statements.map((statement) => (
-          <tr key={statement.id} onClick={() => handleRowClick(statement.id)}>
+          <tr key={statement.id} onClick={() => handleRowClick(statement.statementSeq)}>
             <td>{statement.id}</td>
             <td>{statement.companyName}</td>
             {isSupply ? (

@@ -16,72 +16,71 @@ interface StockList {
 // 재고 현황 조회
 const OfiicerStockTable = () => {
   const [stockItems, setStockItems] = useState<StockList[]>([]);
-  const branchSeq = 3; // 임시로 3으로 넣었음. 바꿔야함
+  const [branchSeq, setBranchSeq] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // 토큰 들어오는거 기다리기
-    const awaitToken = async () => {
-      return new Promise((resolve) => {
-        const checkToken = () => {
-          const storedValue = localStorage.getItem("recoil-persist");
-          const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
-          
-          if (accessToken) {
-            resolve(accessToken);
-          } else {
-            setTimeout(checkToken, 1000); // 1초마다 토큰 체크
-          }
-        };
-        checkToken();
-      });
-    };
-
-    // 재고 정보 가져오기
-    const awaitStockItem = async () => {
-      try {
-        const accessToken = await awaitToken();
-        if (!accessToken) {
-          console.log("Token not found");
-          return;
-        }
-
-        const res = await customAxios.get(`/stock/worker/dash/list/${branchSeq}`);
-        setStockItems(res.data.data.stockList);
-      } catch (error) {
-        console.log(error);
+    const checkToken = () => {
+      const storedValue = localStorage.getItem("recoil-persist");
+      // const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+      const userInfo = storedValue && JSON.parse(storedValue)?.UserInfoState;
+      const branchSeqFromStorage = userInfo ? userInfo.branchSeq : null;
+      setBranchSeq(branchSeqFromStorage || 0);
+      
+      if (branchSeq !== 0) {          
+        // 재고 정보 가져오기
+        console.log(branchSeq);
+        customAxios.get(`/stock/worker/dash/list/${branchSeq}`)
+        .then((res) => {
+          setStockItems(res.data.data.stockList);
+          console.log(res.data.data.stockList);
+          setIsLoading(false);
+        })
+        .catch((res) => {
+          console.log(res);
+        })
+      } else {
+        setTimeout(checkToken, 1000); // 1초마다 토큰 체크
       }
     };
-
-    awaitStockItem();
+    checkToken();
   }, [branchSeq]);
 
   return (
     <StockTableDiv>
-      <StyledTitle>
-        <BiHomeAlt color="#545A96" size={"30px"} style={{marginRight: "10px"}}/>재고 현황
-      </StyledTitle>
-      <StyledTable>
-        <thead>
-          <tr>
-            <th>품명</th>
-            <th>입고업체</th>
-            <th>입고일시</th>
-            <th>입고단가</th>
-            <th>입고수량</th>
-          </tr>
-        </thead>
-        <tbody>
-          {stockItems.map((item, index) => (
-            <tr key={index}>
-              <td>{item.stockName}</td>
-              <td>{item.fromCompanyName}</td>
-              <td>{item.stockDate.toLocaleString('en-US', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
-              <td>{item.stockPrice} 원</td>
-              <td>{item.stockQuantity} {item.stockUnit}</td>
-            </tr>
-          ))}
-        </tbody>
-      </StyledTable>
+      {isLoading ? (
+        // 로딩중
+        null
+      ) : (
+        <>
+          <StyledTitle>
+            <BiHomeAlt color="#545A96" size={"30px"} style={{marginRight: "10px"}}/>재고 현황
+          </StyledTitle>
+          <StyledTable>
+            <thead>
+              <tr>
+                <th>품명</th>
+                <th>입고업체</th>
+                <th>입고일시</th>
+                <th>입고단가</th>
+                <th>입고수량</th>
+              </tr>
+            </thead>
+            <tbody>
+              {stockItems?.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.stockName}</td>
+                  <td>{item.fromCompanyName}</td>
+                  <td>{item.stockDate.toLocaleString('en-US', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
+                  <td>{item.stockPrice} 원</td>
+                  <td>{item.stockQuantity} {item.stockUnit}</td>
+                </tr>
+              ))}
+            </tbody>
+          </StyledTable>
+        </>
+      )}
     </StockTableDiv>
   );
 };
