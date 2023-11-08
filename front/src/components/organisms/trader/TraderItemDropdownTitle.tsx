@@ -11,7 +11,7 @@ interface Item {
 interface TraderItemDropdownTitleProps {
   inputTitle: string;
   items: Item[];
-  selectedItem: Item | null;
+  selectedItem: Item | null | any;
   onSelect: (item: Item) => void;
 }
 

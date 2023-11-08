@@ -43,15 +43,9 @@ interface Stock {
   stockUnit: string;
   stockName: string;
   stockPrice: number;
-  stockPrice2: number;
+  stockTotalPrice: number;
   note?: string;
-}
-
-interface Item {
-  unit: string;
-  price: string;
-  amount: string;
-  note: string;
+  selectedStock?: StockDropdownItem; 
 }
 
 const TraderCreatePage = () => {
@@ -96,6 +90,8 @@ const TraderCreatePage = () => {
     date: stock.stockDate,
   }));
 
+  // const [selectedStockDetails, setSelectedStockDetails] = useState<Stock | null>(null);
+
 
   //거래일자
   const [selectedDate, setSelectedDate] = useState<Date | Date[] | null>(
@@ -105,7 +101,8 @@ const TraderCreatePage = () => {
   const [selectedCompany, setSelectedCompany] = useState<DropdownItem | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<DropdownItem | null>(null);
   const [selectedStock, setSelectedStock] = useState<StockDropdownItem | null>(null);
-  
+
+  const [selectedSeqList, setSelectedSeqList] = useState<number[]>([]);
 
   const handleSelectCompany = (dropdownItem: DropdownItem) => {
     setSelectedCompany(dropdownItem);
@@ -117,45 +114,86 @@ const TraderCreatePage = () => {
     setSelectedBranchSeq(dropdownItem.seq);
   };
 
-  const handleSelectStock = (dropdownItem: StockDropdownItem) => {
+  const handleSelectStock = (index: number, dropdownItem: StockDropdownItem) => {
     setSelectedStock(dropdownItem);
     setSelectedStockSeq(dropdownItem.seq);
-  };
 
+    const stockDetails = stocks.find(stock => stock.stockSeq === dropdownItem.seq);
+    if (stockDetails) {
+      setItems((prevItems) => {
+        const updatedItems = [...prevItems];
+        updatedItems[index] = {
+          ...updatedItems[index],
+          ...stockDetails,
+          stockTotalPrice: stockDetails.stockQuantity * stockDetails.stockPrice,
+          selectedStock: dropdownItem,
+          // 드롭다운에서 선택된 품목명도 반영할 수 있습니다.
+          // stockName: dropdownItem.name,
+        };
+        return updatedItems;
+      });    
+
+       // 이전에 선택된 품목이 있었다면, selectedSeqList에서 제거
+      const previousSelectedItem = items[index].selectedStock;
+      if (previousSelectedItem && previousSelectedItem.seq !== dropdownItem.seq) {
+        setSelectedSeqList(prevSeqList => prevSeqList.filter(seq => seq !== previousSelectedItem.seq));
+      }
+  
+      // selectedSeqList에 새로운 선택 항목 추가
+      setSelectedSeqList(prevSeqList => {
+        // 이미 선택된 항목은 다시 추가하지 않음
+        if (prevSeqList.includes(dropdownItem.seq)) {
+          return prevSeqList;
+        } else {
+          return [...prevSeqList, dropdownItem.seq];
+        }
+      });
+    }
+  };
+  useEffect(() => {
+    console.log("selectedStockSeqs:", selectedSeqList);
+  }, [selectedSeqList]);
+
+  // 드롭박스 목록에서 이미 선택된 품목을 제외하는 함수
+  const getAvailableItems = () => {
+    // 이미 선택된 품목들의 stockSeq를 추출합니다.
+    const selectedStockSeqs = items.map(item => item.selectedStock?.seq).filter(Boolean);
+
+    // 전체 드롭다운 항목에서 이미 선택된 항목들을 제외합니다.
+    return stockDropdownItems.filter(item => !selectedStockSeqs.includes(item.seq));
+  };
 
   const [showAddButton, setShowAddButton] = useState(true);
   const [showNextButton, setShowNextButton] = useState(true);
-  const [items, setItems] = useState<Item[]>([
+
+  const [items, setItems] = useState<Stock[]>([
     {
-      unit: "",
-      price: "",
-      amount: "",
+      stockSeq: -1, // 적절한 기본값으로 설정해야 함
+      stockDate: new Date(), // 현재 날짜나 적절한 기본값으로 설정
+      stockQuantity: 0,
+      stockUnit: "",
+      stockName: "",
+      stockPrice: 0,
+      stockTotalPrice: 0,
       note: "",
+      
     },
   ]);
 
-
-  const checkValidity = () => {
-    const isCompanySelected = selectedCompany !== null;
-    const isBranchSelected = selectedBranch !== null;
-    const isDateSelected = selectedDate instanceof Date && !isNaN(selectedDate.valueOf());
-   
-    setIsValid(isCompanySelected && isBranchSelected && isDateSelected);
-  };
 
   const nextHandler = (() => {
     setReqStep(prevReqStep => prevReqStep + 1);
   })
 
   const goBackToStep1 = () => {
-    setReqStep(1); // 예를 들어, reqStep을 1로 설정하는 함수입니다.
+    setReqStep(1);
   };
 
 
   useEffect(() => {
     // 업체 목록 조회 API
     customAxios("/client/worker/company/list").then((res) => {
-      console.log(res.data.data.companyList);
+      // console.log(res.data.data.companyList);
       setCompanys(res.data.data.companyList);
     });
   }, []);
@@ -164,7 +202,7 @@ const TraderCreatePage = () => {
     if (selectedCompanySeq) {
       customAxios(`client/worker/branch/list/${selectedCompanySeq}`).then(
         (res) => {
-          console.log(res.data.data.branchList);
+          // console.log(res.data.data.branchList);
           setBranchs(res.data.data.branchList);
         }
       );
@@ -189,63 +227,52 @@ const TraderCreatePage = () => {
       });
     };
 
-    // 가격 계산 함수
-    const calculatePrice = (price: number, quantity: number) => {
-      const price1 = Math.round(price * quantity);
-      const price2 = Math.round(price * quantity / 10);
-      return { price1, price2 };
-    };
-
     // 판매용 재고 목록 조회
     customAxios(`stock/worker/list/out`)
       .then((res) => {
-        console.log(res);
-        console.log(res.data.data.stockList);
-        const updatedStockItems = res.data.data.stockList.map((stockitem: Stock) => {
-          const { price1, price2 } = calculatePrice(stockitem.stockPrice, stockitem.stockQuantity);
+        // console.log(res);
+        // console.log(res.data.data.stockList);
+        const updatedStockItems = res.data.data.stockList.map((stockItem: Stock) => {
           return {
-            ...stockitem,
-            stockPrice1: price1,
-            stockPrice2: price2,
+            ...stockItem,
           };
         });
         setStocks(updatedStockItems);
-      })
+      });
     }, []);
 
 
-
-
+  const checkValidity = () => {
+    const isCompanySelected = selectedCompany !== null;
+    const isBranchSelected = selectedBranch !== null;
+    const isDateSelected = selectedDate instanceof Date && !isNaN(selectedDate.valueOf());
+    
+    setIsValid(isCompanySelected && isBranchSelected && isDateSelected);
+  };
+  
   useEffect(() => {
     checkValidity();
   }, [selectedCompany, selectedBranch, selectedDate]);
 
 
   useEffect(() => {
-    if (items.length >= 20) {
-      setShowAddButton(false);
-    }
-  }, [items]);
+    // 모든 항목이 유효한지 검사합니다.
+    const allItemsValid = items.every(item => {
+      // 선택된 품목과 각 입력 필드가 유효한지 검사
+      const isValidStock = item.stockSeq > -1;
+      const isValidQuantity = item.stockQuantity> 0;
+      const isValidPrice = item.stockPrice > 0;
+      const isValidTotalPrice = item.stockTotalPrice > 0;
+      return isValidStock && isValidQuantity && isValidPrice && isValidTotalPrice;
+    });
 
-  useEffect(() => {
-    const allValid = items.every(
-      (item) => item.unit && item.price && item.amount && item.note
-    );
-    setShowAddButton(allValid);
-  }, [items]);
-
-  useEffect(() => {
-    const allValid =
-      items.length > 0 &&
-      items.every(
-        (item) => item.unit && item.price && item.amount && item.note
-      );
-    setShowNextButton(allValid);
+    setShowAddButton(allItemsValid);
+    setShowNextButton(items.length > 0 && allItemsValid);
   }, [items]);
 
   const handleInputChange = (
     index: number,
-    field: keyof Item,
+    field: keyof Stock,
     value: string
   ) => {
     setItems((prevItems) => {
@@ -268,13 +295,32 @@ const TraderCreatePage = () => {
   const addItem = () => {
     setItems((prevItems) => [
       ...prevItems,
-      { unit: "", price: "", amount: "", note: "" },
+      {
+        stockSeq: -1, // 적절한 기본값으로 설정해야 함
+        stockDate: new Date(), // 현재 날짜나 적절한 기본값으로 설정
+        stockQuantity: 0,
+        stockUnit: "", // 기본 단위 설정이 필요할 수 있음
+        stockName: "", // 기본 품목명 설정이 필요할 수 있음
+        stockPrice: 0,
+        stockTotalPrice: 0,
+        note: "",
+        selectedStockName: null, 
+      },
     ]);
   };
 
   const removeItem = (index: number) => {
+
+    const removedItemSeq = items[index].selectedStock?.seq;
+
     setItems((prevItems) => prevItems.filter((_, i) => i !== index));
+
+    if (removedItemSeq != null) {
+      setSelectedSeqList((prevSeqList) => prevSeqList.filter((seq) => seq !== removedItemSeq));
+    }
   };
+
+ 
 
   return (
     <>
@@ -339,36 +385,36 @@ const TraderCreatePage = () => {
                   </StyledInfoTitle>
                   <TraderItemDropdownTitle
                     inputTitle="품목"
-                    items={stockDropdownItems}
-                    selectedItem={selectedStock}
-                    onSelect={handleSelectStock} />
+                    items={getAvailableItems()}
+                    selectedItem={item.selectedStock}
+                    onSelect={(dropdownItem) => handleSelectStock(index, dropdownItem)} />
                   <TraderUnitInputTitle
                     inputTitle="수량"
-                    value={item.unit}
+                    value={item.stockQuantity.toString() || ''}
                     onChange={(e) =>
-                      handleInputChange(index, "unit", e.target.value)
+                      handleInputChange(index, "stockQuantity", e.target.value)
                     }
                   />
                   <TraderInputTitle
                     inputTitle="단가"
                     size="Large"
-                    value={item.price}
+                    value={item.stockPrice.toString() || ''}
                     onChange={(e) =>
-                      handleInputChange(index, "price", e.target.value)
+                      handleInputChange(index, "stockPrice", e.target.value)
                     }
                   />
                   <TraderInputTitle
                     inputTitle="금액"
                     size="Large"
-                    value={item.amount}
+                    value={item.stockTotalPrice.toString() || ''}
                     onChange={(e) =>
-                      handleInputChange(index, "amount", e.target.value)
+                      handleInputChange(index, "stockTotalPrice", e.target.value)
                     }
                   />
                   <StyledTraderInputTitle
                     inputTitle="비고"
                     size="X-Large"
-                    value={item.note}
+                    value={item.note || ''}
                     onChange={(e) =>
                       handleInputChange(index, "note", e.target.value)
                     }
