@@ -37,7 +37,7 @@ const TraderStatePage = () => {
           .get("/statement/worker/list/app")
           .then((res) => {
             const list = res.data.data.statementList;
-            console.log(res);
+            console.log(res.data.data.statementList);
             setStatementList(list);
             // 초기 렌더링에서는 모든 리스트를 보여줍니다.
             setFilteredStatementList(list);
