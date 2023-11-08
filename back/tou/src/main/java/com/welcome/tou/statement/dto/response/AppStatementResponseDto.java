@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class AppStatementResponseDto {
 
     private Long statementSeq;
+    private Long branchSeq;
     private String branchName;
     private String productName;
     private LocalDateTime tradeDate;
