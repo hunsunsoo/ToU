@@ -120,6 +120,8 @@ packageChaincode() {
   # 패키지 ID가 예상 패턴과 일치하는지 확인
   println "Verifying that the package ID matches the expected pattern."
   PACKAGE_ID_CHECK=$(peer lifecycle chaincode calculatepackageid ${CC_NAME}.tar.gz)
+  infoln "===================================================="
+  infoln "$(peer lifecycle chaincode package)"
 
   if [ "$PACKAGE_ID" = "$PACKAGE_ID_CHECK" ]; then
    infoln "Package ID is valid: $PACKAGE_ID"
