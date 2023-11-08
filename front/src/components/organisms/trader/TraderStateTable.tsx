@@ -46,9 +46,9 @@ const TraderStateTable: React.FC<TraderStateTableProps> = ({
             >
               <td>
                 {item.reqORres === 0
-                  ? "공급"
-                  : item.reqORres === 1
                   ? "수급"
+                  : item.reqORres === 1
+                  ? "공급"
                   : ""}
               </td>
               <StyledStatus status={item.statementStatus}>

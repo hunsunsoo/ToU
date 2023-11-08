@@ -3,10 +3,10 @@ import styled, { css } from "styled-components";
 import TraderSubtitle from "../../components/atoms/trader/TraderSubtitle";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
-import TraderSearchBox from "../../components/organisms/trader/TraderSearchBox";
 import TraderBillItemList from "../../components/organisms/trader/TraderBillItemList";
-import TraderInterCalendarTitle from "../../components/organisms/trader/TraderInterCalendarTitle";
 import { customAxios } from "../../components/api/customAxios";
+// import TraderSearchBox from "../../components/organisms/trader/TraderSearchBox";
+// import TraderInterCalendarTitle from "../../components/organisms/trader/TraderInterCalendarTitle";
 
 // 타입 정의 (실제 타입에 맞춰서 수정해야 합니다)
 export type BillType = {
@@ -24,11 +24,15 @@ const TraderGetListPage = () => {
   const [bills, setBills] = useState<BillType[]>([]);
   const [selectedButton, setSelectedButton] = useState("waiting"); // 선택된 버튼의 상태를 추적
 
+  // const [searchTerm, setSearchTerm] = useState(""); // 검색어를 위한 상태
+  // const [selectedDate, setSelectedDate] = useState(new Date()); // 선택된 날짜를 위한 상태
+
   // 요청을 보내는 함수를 정의합니다.
   const fetchBills = (endpoint: string, buttonKey: string) => {
     customAxios
       .get(endpoint)
       .then((res) => {
+        console.log(res);
         setBills(res.data.data.statementList);
         setSelectedButton(buttonKey);
       })
@@ -47,6 +51,34 @@ const TraderGetListPage = () => {
   const handleDemandClick = () => {
     fetchBills(`/statement/worker/list/preparing`, "preparing");
   };
+
+  // // 검색어를 업데이트하는 함수
+  // const handleSearch = (searchTerm: string) => {
+  //   setSearchTerm(searchTerm);
+  // };
+
+  // // 날짜가 변경될 때 실행될 함수
+  // const handleDateChange = (date: Date | null) => {
+  //   // react-calendar는 single mode에서 Date 객체를, range mode에서 Date 배열을 반환할 수 있습니다.
+  //   // 상황에 맞게 처리하세요.
+  //   const selectedDate = Array.isArray(date) ? date[0] : date;
+  //   setSelectedDate(selectedDate);
+  // };
+
+  // 검색어와 날짜에 따라 목록을 필터링하는 함수
+  // const getFilteredBills = () => {
+  //   return bills.filter((bill) => {
+  //     // 날짜와 검색어 모두 만족하는 항목만 필터링
+  //     const billDate = new Date(bill.tradeDate);
+  //     return (
+  //       bill.productsName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+  //       billDate.toDateString() === selectedDate.toDateString()
+  //     );
+  //   });
+  // };
+
+  // // 필터링된 목록을 상태에 저장
+  // const filteredBills = getFilteredBills();
 
   // 기본은 수급
   useEffect(() => {

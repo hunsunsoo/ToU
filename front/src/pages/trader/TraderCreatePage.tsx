@@ -76,6 +76,7 @@ const TraderCreatePage = () => {
     setSelectedBranch(item);
     setSelectedBranchSeq(item.seq);
   };
+  
   useEffect(() => {
     // 업체 목록 조회 API
     customAxios("/client/worker/company/list").then((res) => {
