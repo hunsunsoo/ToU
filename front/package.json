@@ -27,6 +27,8 @@
     "chart.js": "^4.4.0",
     "embla-carousel-react": "^8.0.0-rc14",
     "framer-motion": "^10.16.4",
+    "html2pdf": "^0.0.11",
+    "html2pdf.js": "^0.10.1",
     "http-proxy-middleware": "^2.0.6",
     "moment": "^2.29.4",
     "react": "^18.2.0",
