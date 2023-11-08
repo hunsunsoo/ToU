@@ -10,6 +10,7 @@ import TraderInputTitle from "../../components/organisms/trader/TraderInputTitle
 import TraderInfoTitle from "../../components/organisms/trader/TraderInfoTitle";
 import TraderCalendarTitle from "../../components/organisms/trader/TraderCalendarTitle";
 import TraderDropdownTitle from "../../components/organisms/trader/TraderDropdownTitle";
+import TraderItemDropdownTitle from "../../components/organisms/trader/TraderItemDropdownTitle";
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import TraderUnitInputTitle from "../../components/organisms/trader/TraderUnitInputTitle";
 import { customAxios } from "../../components/api/customAxios";
@@ -17,6 +18,12 @@ import { customAxios } from "../../components/api/customAxios";
 interface DropdownItem {
   seq: number;
   name: string;
+}
+
+interface StockDropdownItem {
+  seq: number;
+  name: string;
+  date: Date;
 }
 
 interface Company {
@@ -27,6 +34,17 @@ interface Company {
 interface Branch {
   branchSeq: number;
   branchName: string;
+}
+
+interface Stock {
+  stockSeq: number;
+  stockDate: Date;
+  stockQuantity: number;
+  stockUnit: string;
+  stockName: string;
+  stockPrice: number;
+  stockPrice2: number;
+  note?: string;
 }
 
 interface Item {
@@ -46,18 +64,19 @@ const TraderCreatePage = () => {
 
   // company 목록 조회
   const [companys, setCompanys] = useState<Company[]>([]);
-
   // 선택 company 정보
   const [selectedCompanySeq, setSelectedCompanySeq] = useState<number>();
-  // const [selectedCompanyName, setSelectedCompanyName] = useState<string>("");
 
-  // company의 branch 목록 조회
+  // branch 목록 조회 (company의)
   const [branchs, setBranchs] = useState<Branch[]>([]);
-
   // 선택 branch 정보
   const [selectedBranchSeq, setSelectedBranchSeq] = useState<number>();
-  // const [selectedBranchName, setSelectedBranchName] = useState<string>("");
-
+ 
+  // stock 목록 조회
+  const [stocks, setStocks] = useState<Stock[]>([]);
+  // 선택 Stock 정보
+  const [selectedStockSeq, setSelectedStockSeq] = useState<number>();
+  
   //company에 대한 드롭다운 항목
   const companyDropdownItems = companys.map((company) => ({
     seq: company.companySeq,
@@ -70,6 +89,14 @@ const TraderCreatePage = () => {
     name: branch.branchName,
   }));
 
+  // stock에 대한 드롭다운 항목
+  const stockDropdownItems = stocks.map((stock) => ({
+    seq: stock.stockSeq,
+    name: stock.stockName,
+    date: stock.stockDate,
+  }));
+
+
   //거래일자
   const [selectedDate, setSelectedDate] = useState<Date | Date[] | null>(
     new Date()
@@ -77,6 +104,24 @@ const TraderCreatePage = () => {
 
   const [selectedCompany, setSelectedCompany] = useState<DropdownItem | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<DropdownItem | null>(null);
+  const [selectedStock, setSelectedStock] = useState<StockDropdownItem | null>(null);
+  
+
+  const handleSelectCompany = (dropdownItem: DropdownItem) => {
+    setSelectedCompany(dropdownItem);
+    setSelectedCompanySeq(dropdownItem.seq);
+  };
+
+  const handleSelectBranch = (dropdownItem: DropdownItem) => {
+    setSelectedBranch(dropdownItem);
+    setSelectedBranchSeq(dropdownItem.seq);
+  };
+
+  const handleSelectStock = (dropdownItem: StockDropdownItem) => {
+    setSelectedStock(dropdownItem);
+    setSelectedStockSeq(dropdownItem.seq);
+  };
+
 
   const [showAddButton, setShowAddButton] = useState(true);
   const [showNextButton, setShowNextButton] = useState(true);
@@ -89,16 +134,6 @@ const TraderCreatePage = () => {
     },
   ]);
 
-
-  const handleSelectCompany = (dropdownItem: DropdownItem) => {
-    setSelectedCompany(dropdownItem);
-    setSelectedCompanySeq(dropdownItem.seq);
-  };
-
-  const handleSelectBranch = (dropdownItem: DropdownItem) => {
-    setSelectedBranch(dropdownItem);
-    setSelectedBranchSeq(dropdownItem.seq);
-  };
 
   const checkValidity = () => {
     const isCompanySelected = selectedCompany !== null;
@@ -116,6 +151,7 @@ const TraderCreatePage = () => {
     setReqStep(1); // 예를 들어, reqStep을 1로 설정하는 함수입니다.
   };
 
+
   useEffect(() => {
     // 업체 목록 조회 API
     customAxios("/client/worker/company/list").then((res) => {
@@ -128,12 +164,57 @@ const TraderCreatePage = () => {
     if (selectedCompanySeq) {
       customAxios(`client/worker/branch/list/${selectedCompanySeq}`).then(
         (res) => {
-          // console.log(res.data.data.branchList);
+          console.log(res.data.data.branchList);
           setBranchs(res.data.data.branchList);
         }
       );
     }
   }, [selectedCompanySeq]);
+
+  useEffect(() => {
+    // 토큰 들어오는거 기다리기
+    const awaitToken = async () => {
+      return new Promise((resolve) => {
+        const checkToken = () => {
+          const storedValue = localStorage.getItem("recoil-persist");
+          const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+          
+          if (accessToken) {
+            resolve(accessToken);
+          } else {
+            setTimeout(checkToken, 1000); // 1초마다 토큰 체크
+          }
+        };
+        checkToken();
+      });
+    };
+
+    // 가격 계산 함수
+    const calculatePrice = (price: number, quantity: number) => {
+      const price1 = Math.round(price * quantity);
+      const price2 = Math.round(price * quantity / 10);
+      return { price1, price2 };
+    };
+
+    // 판매용 재고 목록 조회
+    customAxios(`stock/worker/list/out`)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data.data.stockList);
+        const updatedStockItems = res.data.data.stockList.map((stockitem: Stock) => {
+          const { price1, price2 } = calculatePrice(stockitem.stockPrice, stockitem.stockQuantity);
+          return {
+            ...stockitem,
+            stockPrice1: price1,
+            stockPrice2: price2,
+          };
+        });
+        setStocks(updatedStockItems);
+      })
+    }, []);
+
+
+
 
   useEffect(() => {
     checkValidity();
@@ -256,7 +337,11 @@ const TraderCreatePage = () => {
                       ( {index + 1} / {items.length} )
                     </StyledSpan>
                   </StyledInfoTitle>
-                  {/* <TraderDropdownTitle inputTitle="품목" /> */}
+                  <TraderItemDropdownTitle
+                    inputTitle="품목"
+                    items={stockDropdownItems}
+                    selectedItem={selectedStock}
+                    onSelect={handleSelectStock} />
                   <TraderUnitInputTitle
                     inputTitle="수량"
                     value={item.unit}
