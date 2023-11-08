@@ -47,7 +47,7 @@ Organizations:
     - &OrgProduct
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: OrgProduct
+        Name: OrgProductMSP
 
         # ID to load the MSP definition as
         ID: OrgProductMSP
@@ -74,7 +74,7 @@ Organizations:
     - &OrgProcess
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: OrgProcess
+        Name: OrgProcessMSP
 
         # ID to load the MSP definition as
         ID: OrgProcessMSP
