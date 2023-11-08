@@ -55,7 +55,7 @@ function approveForMyOrg() {
 # checkCommitReadiness VERSION PEER ORG
 function checkCommitReadiness() {
   ORG=$1
-  PEER=$2
+  PEER=$4
     infoln "checkCommitReadiness ORG :  ${ORG}"
     infoln "checkCommitReadiness PEER :  ${PEER}"
   shift 1

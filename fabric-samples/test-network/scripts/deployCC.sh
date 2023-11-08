@@ -154,8 +154,8 @@ approveForMyOrg 'Product' 0
 
 ## check whether the chaincode definition is ready to be committed
 ## expect org1 to have approved and org2 not to
-checkCommitReadiness 'Product' "\"Org1MSP\": true" "\"Org2MSP\": false"
-checkCommitReadiness 'Process' "\"Org1MSP\": true" "\"Org2MSP\": false"
+checkCommitReadiness 'Product' "\"Org1MSP\": true" "\"Org2MSP\": false" 0
+checkCommitReadiness 'Process' "\"Org1MSP\": true" "\"Org2MSP\": false" 0
 
 ## now approve also for org2
 approveForMyOrg 'Process' 0
