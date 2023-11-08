@@ -23,8 +23,8 @@ createAnchorPeerUpdate() {
   elif [ $ORG == 'Process' ]; then
     HOST="peer0.orgProcess.tou.com"
     PORT=5051
-  elif [ $ORG -eq 3 ]; then
-    HOST="peer0.org3.tou.com"
+  elif [ $ORG == 'Package' ]; then
+    HOST="peer0.orgPackage.tou.com"
     PORT=7051
   else
     errorln "Org${ORG} unknown"
@@ -54,6 +54,6 @@ CHANNEL_NAME=$2
 
 setGlobalsCLI $ORG
 
-createAnchorPeerUpdate 
+createAnchorPeerUpdate 'Product'
 
 updateAnchorPeer 
