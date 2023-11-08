@@ -150,16 +150,10 @@ const TraderCreatePage = () => {
       });
     }
   };
-  useEffect(() => {
-    console.log("selectedStockSeqs:", selectedSeqList);
-  }, [selectedSeqList]);
 
   // 드롭박스 목록에서 이미 선택된 품목을 제외하는 함수
   const getAvailableItems = () => {
-    // 이미 선택된 품목들의 stockSeq를 추출합니다.
     const selectedStockSeqs = items.map(item => item.selectedStock?.seq).filter(Boolean);
-
-    // 전체 드롭다운 항목에서 이미 선택된 항목들을 제외합니다.
     return stockDropdownItems.filter(item => !selectedStockSeqs.includes(item.seq));
   };
 
@@ -168,8 +162,8 @@ const TraderCreatePage = () => {
 
   const [items, setItems] = useState<Stock[]>([
     {
-      stockSeq: -1, // 적절한 기본값으로 설정해야 함
-      stockDate: new Date(), // 현재 날짜나 적절한 기본값으로 설정
+      stockSeq: -1,
+      stockDate: new Date(),
       stockQuantity: 0,
       stockUnit: "",
       stockName: "",
@@ -231,7 +225,7 @@ const TraderCreatePage = () => {
     customAxios(`stock/worker/list/out`)
       .then((res) => {
         // console.log(res);
-        // console.log(res.data.data.stockList);
+        console.log(res.data.data.stockList);
         const updatedStockItems = res.data.data.stockList.map((stockItem: Stock) => {
           return {
             ...stockItem,
@@ -388,9 +382,10 @@ const TraderCreatePage = () => {
                     items={getAvailableItems()}
                     selectedItem={item.selectedStock}
                     onSelect={(dropdownItem) => handleSelectStock(index, dropdownItem)} />
-                  <TraderUnitInputTitle
+                 <TraderUnitInputTitle
                     inputTitle="수량"
                     value={item.stockQuantity.toString() || ''}
+                    selectedUnit={item.stockUnit}
                     onChange={(e) =>
                       handleInputChange(index, "stockQuantity", e.target.value)
                     }

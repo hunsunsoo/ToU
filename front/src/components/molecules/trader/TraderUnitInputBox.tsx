@@ -4,14 +4,17 @@ import TraderUnitDropdown from "../../atoms/trader/TraderUnitDropdown";
 
 interface TraderUnitInputBoxProps {
   value: string;
+  selectedUnit: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TraderUnitInputBox = ({ value, onChange, ...props }: TraderUnitInputBoxProps) => {
+
+const TraderUnitInputBox = ({ value, selectedUnit, onChange, ...props }: TraderUnitInputBoxProps) => {
+
   return (
     <Container>
       <TraderInputBox size="Small" value={value} onChange={onChange} {...props} />
-      <TraderUnitDropdown/>
+      <TraderUnitDropdown selectedUnit={selectedUnit}/>
     </Container>
   );
 };

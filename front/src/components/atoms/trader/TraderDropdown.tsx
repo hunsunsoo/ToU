@@ -40,6 +40,7 @@ const TraderDropdown: React.FC<TraderDropdownProps> = ({ items, onSelect, select
     </DropdownContainer>
   );
 };
+export default TraderDropdown;
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -83,4 +84,4 @@ const DropdownListItem = styled.li`
   }
 `;
 
-export default TraderDropdown;
+
