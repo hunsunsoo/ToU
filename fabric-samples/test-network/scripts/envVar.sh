@@ -98,6 +98,10 @@ setGlobals() {
 
 # Set environment variables for use in the CLI container
 setGlobalsCLI() {
+  infoln "Calling setGlobals in setGlobalsCLI"
+  infoln "Variable 1 in setGlobalsCLI: $1"
+  infoln "Variable 2 in setGlobalsCLI: $2"
+
   setGlobals $1 $2
 
   local USING_PEER=""
