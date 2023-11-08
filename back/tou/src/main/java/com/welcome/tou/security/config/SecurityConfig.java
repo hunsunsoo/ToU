@@ -23,6 +23,7 @@ public class SecurityConfig {
 
     private final JwtService jwtService;
     private final WorkerRepository workerRepository;
+    private final CorsConfig corsConfig;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -32,12 +33,12 @@ public class SecurityConfig {
                 .csrf().disable()
                 .headers().frameOptions().disable()
                 .and()
-                .cors()
-                .and()
+                .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfig.corsConfigurationSource()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
 //                .anyRequest().permitAll();
+                .requestMatchers("/api/consumer/**").permitAll()
                 .requestMatchers("/api/client/login").permitAll()
                 .requestMatchers("/api/client/company").hasRole("SELLER")
                 .anyRequest().authenticated()
