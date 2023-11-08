@@ -124,7 +124,7 @@ packageChaincode() {
   { set +x; } 2>/dev/null
   cat log.txt
   verifyResult $res "Chaincode packaging has failed"
-  successln "Chaincode is packaged"
+  successln "Chaincode is packaged and PACKAGE_ID : ${PACKAGE_ID}"
 }
 
 function checkPrereqs() {

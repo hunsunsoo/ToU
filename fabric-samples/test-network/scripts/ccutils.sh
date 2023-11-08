@@ -85,6 +85,10 @@ function checkCommitReadiness() {
   else
     fatalln "After $MAX_RETRY attempts, Check commit readiness result on peer${PEER}.org${ORG} is INVALID!"
   fi
+
+    # Log the final result of commit readiness check
+  echo "Final commit readiness check result:" >> commitReadinessLog.txt
+  cat log.txt >> commitReadinessLog.txt
 }
 
 # commitChaincodeDefinition VERSION PEER ORG (PEER ORG)...
@@ -103,6 +107,9 @@ function commitChaincodeDefinition() {
   cat log.txt
   verifyResult $res "Chaincode definition commit failed on peer0.org${ORG} on channel '$CHANNEL_NAME' failed"
   successln "Chaincode definition committed on channel '$CHANNEL_NAME'"
+  # Log the final result of commit attempt
+  echo "Final chaincode commit attempt result:" >> chaincodeCommitLog.txt
+  cat log.txt >> chaincodeCommitLog.txt
 }
 
 # queryCommitted ORG
