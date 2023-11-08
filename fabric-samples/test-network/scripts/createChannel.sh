@@ -93,14 +93,14 @@ successln "Channel '$CHANNEL_NAME' created"
 
 ## Join all the peers to the channel
 infoln "Joining orgProduct peer to the channel..."
-joinChannel Product 0
+joinChannel 'Product' 0
 infoln "Joining orgProcess peer to the channel..."
-joinChannel Process 0
+joinChannel 'Process' 0
 
 ## Set the anchor peers for each org in the channel
 infoln "Setting anchor peer for orgProduct..."
-setAnchorPeer Product
+setAnchorPeer 'Product'
 infoln "Setting anchor peer for orgProcess..."
-setAnchorPeer Process
+setAnchorPeer 'Process'
 
 successln "Channel '$CHANNEL_NAME' joined"
