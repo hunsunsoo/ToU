@@ -55,7 +55,8 @@ createConfigUpdate() {
 signConfigtxAsPeerOrg() {
   ORG=$1
   CONFIGTXFILE=$2
-  setGlobals $ORG
+  setGlobals $ORG 0
+  setGlobalsCLI $ORG 0
   set -x
   peer channel signconfigtx -f "${CONFIGTXFILE}"
   { set +x; } 2>/dev/null
