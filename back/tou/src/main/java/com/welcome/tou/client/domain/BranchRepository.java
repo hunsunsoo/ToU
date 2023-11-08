@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BranchRepository extends JpaRepository<Branch, Long> {
 
@@ -18,5 +19,10 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
             + "and b.branchType in :branchType")
     List<Branch> findByCompanySeqAndRole(@Param("companySeq") Long companySeq,
                                          @Param("branchType") List<Branch.BranchType> branchTypes);
+
+    @Query("select b from Branch b "
+            + "where b.channelCode = :channelCode")
+    Optional<Branch> findByChannelCode(@Param("channelCode") String channelCode);
+
 
 }
