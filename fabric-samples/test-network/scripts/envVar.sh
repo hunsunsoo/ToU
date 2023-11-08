@@ -100,7 +100,7 @@ setGlobals() {
 setGlobalsCLI() {
   setGlobals $1 $2
 
-  local USING_PEER=$2
+  local USING_PEER=""
   local USING_ORG=""
   if [ -z "$OVERRIDE_ORG" ]; then
     USING_ORG=$1

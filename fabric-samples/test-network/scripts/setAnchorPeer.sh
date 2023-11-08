@@ -52,8 +52,8 @@ updateAnchorPeer() {
 ORG=$1
 CHANNEL_NAME=$2
 
-setGlobalsCLI $ORG
+setGlobalsCLI $ORG 0
 
-createAnchorPeerUpdate 'Product'
+createAnchorPeerUpdate
 
 updateAnchorPeer 
