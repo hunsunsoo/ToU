@@ -42,6 +42,7 @@ function approveForMyOrg() {
 
   setGlobals $ORG $PEER
   setGlobalsCLI $ORG $PEER
+  infoln "policy : ${CC_END_POLICY}"
   set -x
   peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.tou.com --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence ${CC_SEQUENCE} ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG} >&log.txt
   res=$?

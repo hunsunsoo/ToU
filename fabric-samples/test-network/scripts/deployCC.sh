@@ -154,6 +154,8 @@ installChaincode 'Process' 0
 ## query whether the chaincode is installed
 queryInstalled 'Product' 0
 
+queryInstalled 'Process' 0
+
 ## approve the definition for org1
 approveForMyOrg 'Product' 0
 
