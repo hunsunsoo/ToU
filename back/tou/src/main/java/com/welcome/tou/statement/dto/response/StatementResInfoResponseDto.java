@@ -25,7 +25,7 @@ public class StatementResInfoResponseDto {
     private Long workerSeq;
     private String workerName;
 
-    public static StatementResInfoResponseDto from(Statement statement, String workerName){
+    public static StatementResInfoResponseDto from(Statement statement, Long workerSeq, String workerName){
         StatementResInfoResponseDto response = new StatementResInfoResponseDto();
 
         Company company = statement.getResBranch().getCompany();
@@ -37,7 +37,7 @@ public class StatementResInfoResponseDto {
         response.branchLocation = statement.getResBranch().getBranchLocation();
         response.branchContact = statement.getResBranch().getBranchContact();
         response.branchType = statement.getResBranch().getBranchType();
-        response.workerSeq = statement.getResWorker().getWorkerSeq();
+        response.workerSeq = workerSeq;
         response.workerName = workerName;
 
         return response;
