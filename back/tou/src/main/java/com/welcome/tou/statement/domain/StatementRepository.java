@@ -1,5 +1,6 @@
 package com.welcome.tou.statement.domain;
 
+import com.welcome.tou.client.domain.Branch;
 import com.welcome.tou.statement.dto.response.BranchTradeCountResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,6 +28,13 @@ public interface StatementRepository extends JpaRepository<Statement, Long> {
             + "or s.resBranch.branchSeq = :branchSeq ) "
             + "and s.statementStatus != 'DELETE'")
     List<Statement> findAllStatementsByBranchSeq(@Param("branchSeq") Long branchSeq);
+
+
+    @Query("SELECT s FROM Statement s "
+            + "WHERE (s.reqBranch.branchSeq in :branchSeq "
+            + "or s.resBranch.branchSeq in :branchSeq ) "
+            + "and s.statementStatus = 'COMPLETION'")
+    List<Statement> findAllStatementsByBranchListAndCompletion(@Param("branchSeq") List<Long> branchList);
 
     @Query("SELECT s FROM Statement s "
             + "WHERE s.reqBranch.branchSeq = :branchSeq "
