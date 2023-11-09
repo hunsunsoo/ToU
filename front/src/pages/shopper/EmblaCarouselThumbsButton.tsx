@@ -1,19 +1,28 @@
-import React from 'react'
+import React from "react";
 
-type PropType = {
-  selected: boolean
-  imgSrc: string
-  index: number
-  onClick: () => void
-}
+type ThumbProps = {
+  selected: boolean;
+  index: number;
+  onClick: () => void;
+  branchName: string;
+  branchLocation: string;
+  branchType: string;
+  // Add more properties as needed
+};
 
-export const Thumb: React.FC<PropType> = (props) => {
-  const { selected, imgSrc, index, onClick } = props
-
+export const Thumb: React.FC<ThumbProps> = ({
+  selected,
+  index,
+  onClick,
+  branchName,
+  branchLocation,
+  branchType,
+  // Destructure more properties as needed
+}) => {
   return (
     <div
-      className={'embla-thumbs__slide'.concat(
-        selected ? ' embla-thumbs__slide--selected' : ''
+      className={"embla-thumbs__slide".concat(
+        selected ? " embla-thumbs__slide--selected" : ""
       )}
     >
       <button
@@ -24,12 +33,12 @@ export const Thumb: React.FC<PropType> = (props) => {
         <div className="embla-thumbs__slide__number">
           <span>{index + 1}</span>
         </div>
-        <img
-          className="embla-thumbs__slide__img"
-          src={imgSrc}
-          alt="Your alt text"
-        />
+        <div className="embla-thumbs__slide__info">
+          <p>{branchName}</p>
+          <p>{branchLocation}</p>
+          <p>{branchType}</p>
+        </div>
       </button>
     </div>
-  )
-}
+  );
+};
