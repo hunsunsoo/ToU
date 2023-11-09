@@ -1,6 +1,36 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
+import { customAxios } from "../../api/customAxios";
+
+interface Supply {
+  // req
+  registrationNumber: number; // 사업자 등록 번호
+  workerName: string; // 이름
+  branchName: string; // 상호
+  branchLocation: string; // 주소
+}
 
 const OfficerSupplyDiv = () => {
+  // 공급자 정보
+  const [supply, setSupply] = useState<Supply>();
+  const { billId } = useParams<{ billId: string }>();
+
+  useEffect(() => {
+    // 공급자 정보 조회
+    customAxios.get(`statement/worker/detail/${billId}`)
+    .then((res) => {
+       console.log(res);
+       const { registrationNumber, workerName, branchName, branchLocation } = res.data.data.reqInfo;
+      
+       setSupply({ registrationNumber, workerName, branchName, branchLocation });
+    })
+    .catch((res) => {
+      console.log(res);
+    })
+  }, [])
+
+
   return (
     <StyledTable>
       <tr>
@@ -12,17 +42,17 @@ const OfficerSupplyDiv = () => {
       </tr>
       <tr>
         <td>사업자 등록 번호</td>
-        <td>339-95-00113</td>
+        <td>{supply?.registrationNumber}</td>
         <td>성명</td>
-        <td>김싸피</td>
+        <td>{supply?.workerName}</td>
       </tr>
       <tr>
         <td>상호</td>
-        <td colSpan={5}>(주)싸피수산</td>
+        <td colSpan={5}>(주){supply?.branchName}</td>
       </tr>
       <tr>
         <td>주소</td>
-        <td colSpan={5}><p>대전광역시 유성구 동서대로 98-39(덕명동)</p> <p>삼성화재 유성연수원</p></td>
+        <td colSpan={5}><p>{supply?.branchLocation}</p> <p>{supply?.branchName}</p></td>
       </tr>
     </StyledTable>
   );
