@@ -14,6 +14,7 @@ import TraderItemDropdownTitle from "../../components/organisms/trader/TraderIte
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import TraderUnitInputTitle from "../../components/organisms/trader/TraderUnitInputTitle";
 import { customAxios } from "../../components/api/customAxios";
+import toast, { Toaster } from 'react-hot-toast';
 
 interface DropdownItem {
   seq: number;
@@ -235,6 +236,49 @@ const TraderCreatePage = () => {
       });
     }, []);
 
+  const handleStatementCreate = () => {
+    const body = {
+      responseBranch:selectedBranchSeq,
+      tradeDate: selectedDate,
+      items: selectedSeqList,
+    }
+    console.log("body :",body)
+    
+  customAxios.post(`statement/worker`, body)
+    .then((res) => {
+      console.log(res);
+      if(res.status === 200) {
+        toast.success("거래명세서 생성을 성공했습니다.", {
+          duration: 1000,
+        });
+        setTimeout(() => {
+        }, 1000);
+        const statementSeq:number = res.data.data.statementSeq;
+        console.log("statementSeq:", statementSeq);
+        navigate(`/m/confirm/${statementSeq}`);
+      } else {
+        toast.error("요청이 실패했습니다.", {
+          duration: 1000,
+        });
+        setTimeout(() => {
+        }, 1000);
+      }
+    })
+    .catch((res) => {
+      console.log(res);
+      toast.error("서버 에러", {
+        duration: 1000,
+      });
+      setTimeout(() => {
+      }, 1000);
+    })
+    
+}
+
+
+  const handleItemClick = (billId: number) => {
+    navigate(`/m/confirm/${billId}`);
+  };
 
   const checkValidity = () => {
     const isCompanySelected = selectedCompany !== null;
@@ -282,9 +326,7 @@ const TraderCreatePage = () => {
     });
   };
 
-  const handleItemClick = (billId: number) => {
-    navigate(`/m/confirm/${billId}`);
-  };
+ 
 
   const addItem = () => {
     setItems((prevItems) => [
@@ -314,7 +356,9 @@ const TraderCreatePage = () => {
     }
   };
 
- 
+  useEffect(() => {
+    console.log("selectedStockSeqs:", selectedSeqList);
+  }, [selectedSeqList]);
 
   return (
     <>
@@ -439,7 +483,7 @@ const TraderCreatePage = () => {
             <TraderBtn
               size="Large"
               color={showNextButton ? "Blue" : "Grey"}
-              onClick={() => handleItemClick(2)} // 여기 billId 받아야 함
+              onClick={() => handleStatementCreate()}
               disabled={!showNextButton}
             >
               다음
@@ -474,7 +518,6 @@ const StyledFooter = styled.div`
   position: fixed;
   bottom: 0;
 `;
-
 
 
 ////  itemPage
