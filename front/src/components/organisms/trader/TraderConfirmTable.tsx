@@ -6,20 +6,16 @@ import { faTrashCan  } from "@fortawesome/sharp-light-svg-icons";
 
 interface TraderConfirmTableProps {
     isEditable: boolean;
+    data: Array<{ id: number; category: string; quantity: number; price: number; }>;
   } 
 
-const TraderConfirmTable: React.FC<TraderConfirmTableProps> = ({ isEditable }) => {
-  const initialData = [
-    { id: 1, category: '키즈피자', quantity: 10, price: 1000 },
-    { id: 2, category: '키즈피자', quantity: 20, price: 2000 },
-    { id: 3, category: '키즈피자', quantity: 3000, price: 3000000 }
-  ];
-  
-  const [data, setData] = useState(initialData);
+const TraderConfirmTable: React.FC<TraderConfirmTableProps> = ({ isEditable ,data }) => {
+
+  const [tableData, setTableData] = useState(data);
 
   const handleDelete = (id: number) => {
     const newData = data.filter(item => item.id !== id);
-    setData(newData);
+    setTableData(newData);
   };
   
 

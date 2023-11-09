@@ -242,19 +242,16 @@ const TraderCreatePage = () => {
       tradeDate: selectedDate,
       items: selectedSeqList,
     }
-    console.log("body :",body)
     
   customAxios.post(`statement/worker`, body)
     .then((res) => {
-      console.log(res);
       if(res.status === 200) {
         toast.success("거래명세서 생성을 성공했습니다.", {
           duration: 1000,
         });
         setTimeout(() => {
         }, 1000);
-        const statementSeq:number = res.data.data.statementSeq;
-        console.log("statementSeq:", statementSeq);
+        const statementSeq:string = res.data.data.statementSeq;
         navigate(`/m/confirm/${statementSeq}`);
       } else {
         toast.error("요청이 실패했습니다.", {
@@ -272,13 +269,7 @@ const TraderCreatePage = () => {
       setTimeout(() => {
       }, 1000);
     })
-    
 }
-
-
-  const handleItemClick = (billId: number) => {
-    navigate(`/m/confirm/${billId}`);
-  };
 
   const checkValidity = () => {
     const isCompanySelected = selectedCompany !== null;
