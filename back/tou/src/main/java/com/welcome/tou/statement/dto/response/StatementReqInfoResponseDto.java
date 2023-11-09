@@ -26,7 +26,7 @@ public class StatementReqInfoResponseDto {
     private Long workerSeq;
     private String workerName;
 
-    public static StatementReqInfoResponseDto from(Statement statement){
+    public static StatementReqInfoResponseDto from(Statement statement, String workerName){
         StatementReqInfoResponseDto response = new StatementReqInfoResponseDto();
 
         Company company = statement.getReqBranch().getCompany();
@@ -39,7 +39,7 @@ public class StatementReqInfoResponseDto {
         response.branchContact = statement.getReqBranch().getBranchContact();
         response.branchType = statement.getReqBranch().getBranchType();
         response.workerSeq = statement.getReqWorker().getWorkerSeq();
-        response.workerName = statement.getReqWorker().getWorkerName();
+        response.workerName = workerName;
 
         return response;
     }
