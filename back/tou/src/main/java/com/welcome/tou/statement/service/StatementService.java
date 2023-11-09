@@ -87,14 +87,14 @@ public class StatementService {
         StatementReqInfoResponseDto reqInfo;
         StatementResInfoResponseDto resInfo;
         if (statement.getStatementStatus().equals(Statement.StatementStatus.PREPARING)) {
-            reqInfo = StatementReqInfoResponseDto.from(statement, null);
-            resInfo = StatementResInfoResponseDto.from(statement, null);
+            reqInfo = StatementReqInfoResponseDto.from(statement, null,null);
+            resInfo = StatementResInfoResponseDto.from(statement, null, null);
         } else if (statement.getStatementStatus().equals(Statement.StatementStatus.WAITING)) {
-            reqInfo = StatementReqInfoResponseDto.from(statement, statement.getReqWorker().getWorkerName());
-            resInfo = StatementResInfoResponseDto.from(statement, null);
+            reqInfo = StatementReqInfoResponseDto.from(statement, statement.getReqWorker().getWorkerSeq(),statement.getReqWorker().getWorkerName());
+            resInfo = StatementResInfoResponseDto.from(statement, null,null);
         } else {
-            reqInfo = StatementReqInfoResponseDto.from(statement, statement.getReqWorker().getWorkerName());
-            resInfo = StatementResInfoResponseDto.from(statement, statement.getResWorker().getWorkerName());
+            reqInfo = StatementReqInfoResponseDto.from(statement, statement.getReqWorker().getWorkerSeq(), statement.getReqWorker().getWorkerName());
+            resInfo = StatementResInfoResponseDto.from(statement, statement.getResWorker().getWorkerSeq(),statement.getResWorker().getWorkerName());
         }
 
 
