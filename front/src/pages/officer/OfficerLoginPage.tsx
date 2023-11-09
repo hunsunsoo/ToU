@@ -2,12 +2,15 @@ import { useState } from 'react';
 import { styled } from "styled-components";
 import { BiSolidUser, BiSolidLockAlt } from 'react-icons/bi';
 import { UseAuth } from "../../commons/UseAuth";
+import fido from '../../commons/Fido';
 
 // import OfficerHeader from "../../components/organisms/officer/OfficerHeader";
 import OfficerBtn from "../../components/atoms/officer/OfficerBtn";
 
 const OfficerLoginPage = () => {
   const { login } = UseAuth();
+  
+  
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
@@ -45,6 +48,11 @@ const OfficerLoginPage = () => {
             isImg={false}
             onClick={() => login(id, password)}>
             로그인
+          </OfficerBtn>
+          <OfficerBtn
+            isImg={false}
+            onClick={() => fido()}>
+            등록
           </OfficerBtn>
         </LoginBtnDiv>
       </GridDiv>
