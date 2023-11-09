@@ -24,6 +24,7 @@ interface CompanyInfo {
 interface Item {
   stockSeq: number;
   stockCode: string;
+  stockName: string;
   stockQuantity: number;
   stockUnit: string;
   stockPrice: number;

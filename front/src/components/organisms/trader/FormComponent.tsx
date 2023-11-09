@@ -25,7 +25,6 @@ const FormComponent: React.FC<FormComponentProps> = ({
   statementData,
   status,
 }) => {
-
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
   const toggleSection = (section: string) => {
@@ -34,6 +33,11 @@ const FormComponent: React.FC<FormComponentProps> = ({
 
   const formatDate = (dateString: string) => {
     return dateString.split("T")[0];
+  };
+
+  // 숫자를 현지화된 문자열로 변환하는 함수
+  const formatNumber = (number: number) => {
+    return new Intl.NumberFormat("ko-KR").format(number);
   };
 
   const showSignatureStatus = status === "READY";
@@ -141,10 +145,11 @@ const FormComponent: React.FC<FormComponentProps> = ({
       <table>
         <thead>
           <tr>
-            <th>상품 코드</th>
+            {/* <th>상품코드</th> */}
+            <th>품목명</th>
             <th>수량</th>
-            <th>가격</th>
-            <th>총 가격</th>
+            <th>단가</th>
+            <th>공급가액</th>
             <th>비고</th>
           </tr>
         </thead>
@@ -152,13 +157,16 @@ const FormComponent: React.FC<FormComponentProps> = ({
         <tbody>
           {statementData.itemList.map((item, index) => (
             <tr key={index}>
-              <td>{item.stockCode}</td>
+              {/* <td>{item.stockCode}</td> */}
+              <td>{item.stockName}</td>
               <td>
-                {item.stockQuantity}
+                {formatNumber(item.stockQuantity)}
                 {item.stockUnit}
               </td>
-              <td>{item.stockPrice}</td>
-              <td>{item.stockTotalPrice}</td>
+              <td>{formatNumber(item.stockPrice)}</td>{" "}
+              {/* formatNumber 함수를 사용하여 단가 형식화 */}
+              <td>{formatNumber(item.stockTotalPrice)}</td>{" "}
+              {/* formatNumber 함수를 사용하여 공급가액 형식화 */}
               <td>{item.note || "-"}</td>
             </tr>
           ))}

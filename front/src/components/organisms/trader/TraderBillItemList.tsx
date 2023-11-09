@@ -10,20 +10,40 @@ type TraderBillItemListProps = {
 
 const TraderBillItemList = ({ bills }: TraderBillItemListProps) => {
   const navigate = useNavigate();
+
+  // bills 배열을 날짜별로 그룹화하는 함수
+  const groupBillsByDate = (bills: BillType[]) => {
+    const groups: { [key: string]: BillType[] } = {};
+    bills.forEach((bill) => {
+      const date = new Date(bill.tradeDate).toLocaleDateString();
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(bill);
+    });
+    return groups;
+  };
+
+  // 날짜별로 그룹화된 bills
+  const groupedBills = groupBillsByDate(bills);
+
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
-      {bills && bills.length > 0 ? (
+      {Object.keys(groupedBills).length > 0 ? (
         <ItemListContainer>
-          {bills.map((bill) => (
-            <div key={bill.statementSeq}>
+          {Object.entries(groupedBills).map(([date, bills]) => (
+            <div key={date}>
               <DateHeader>
-                <span>{new Date(bill.tradeDate).toLocaleDateString()}</span>
+                <span>{date}</span>
               </DateHeader>
-              <TraderBillItem
-                itemText={`${bill.branchName} - ${bill.productsName}`}
-                onClick={() => navigate(`/m/sign/${bill.statementSeq}`)}
-              />
+              {bills.map((bill) => (
+                <TraderBillItem
+                  key={bill.statementSeq}
+                  itemText={`${bill.branchName} - ${bill.productsName}`}
+                  onClick={() => navigate(`/m/sign/${bill.statementSeq}`)}
+                />
+              ))}
             </div>
           ))}
         </ItemListContainer>

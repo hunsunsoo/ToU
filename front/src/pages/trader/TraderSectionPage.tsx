@@ -19,12 +19,32 @@ interface Branch {
   branchName: string;
 }
 
+export interface TableRow {
+  companyName: string;
+  productName: string;
+  tradeDate: string;
+  workerName: string;
+  statementSeq: number;
+}
+
+interface Statement {
+  statementSeq: number;
+  reqBranchSeq: number;
+  reqBranchName: string;
+  resBranchSeq: number;
+  resBranchName: string;
+  productName: string;
+  tradeDate: string;
+}
+
 const TraderSectionPage = () => {
   const currentCompanySeq = useRecoilValue(CompanyInfoState).companySeq;
 
   const [branchs, setBranchs] = useState<Branch[]>([]);
   const [selectedBranch, setSelectedBranch] = useState<Item | null>(null);
   const [selectedBranchSeq, setSelectedBranchSeq] = useState<number>();
+
+  const [tableData, setTableData] = useState<TableRow[]>([]); // 테이블 데이터를 위한 상태 정의
 
   // branch에 대한 드롭다운 항목
   const branchDropdownItems = branchs.map((branch) => ({
@@ -41,10 +61,36 @@ const TraderSectionPage = () => {
     customAxios
       .get(`/client/worker/branch/list/${currentCompanySeq}`)
       .then((res) => {
-        console.log(res);
         setBranchs(res.data.data.branchList);
       });
   }, [currentCompanySeq]);
+
+  useEffect(() => {
+    if (selectedBranchSeq) {
+      customAxios.get(`/statement/worker/list/completion`).then((res) => {
+        const statements: Statement[] = res.data.data.statementList;
+
+        const filteredStatements = statements.filter(
+          (statement) =>
+            statement.reqBranchSeq === selectedBranchSeq ||
+            statement.resBranchSeq === selectedBranchSeq
+        );
+
+        setTableData(
+          filteredStatements.map((statement) => ({
+            companyName: res.data.data.companyName,
+            productName: statement.productName,
+            tradeDate: statement.tradeDate,
+            workerName:
+              statement.reqBranchSeq === selectedBranchSeq
+                ? statement.resBranchName
+                : statement.reqBranchName,
+            statementSeq: statement.statementSeq,
+          }))
+        );
+      });
+    }
+  }, [selectedBranchSeq]);
 
   return (
     <StyledContainer>
@@ -60,7 +106,16 @@ const TraderSectionPage = () => {
           onSelect={handleSelectBranch}
         />
         <TraderSectionFilter />
-        <TraderSectionTable />
+
+        {!selectedBranch && <p>관할 구역을 선택해주세요.</p>}
+
+        {selectedBranch && tableData.length === 0 && (
+          <p>거래명세서가 존재하지 않습니다.</p>
+        )}
+
+        {selectedBranch && tableData.length > 0 && (
+          <TraderSectionTable data={tableData} />
+        )}
       </MainPaddingContainer>
     </StyledContainer>
   );
