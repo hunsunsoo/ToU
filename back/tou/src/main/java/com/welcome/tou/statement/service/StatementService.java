@@ -1,9 +1,6 @@
 package com.welcome.tou.statement.service;
 
-import com.welcome.tou.client.domain.Branch;
-import com.welcome.tou.client.domain.BranchRepository;
-import com.welcome.tou.client.domain.Worker;
-import com.welcome.tou.client.domain.WorkerRepository;
+import com.welcome.tou.client.domain.*;
 import com.welcome.tou.common.exception.BadRequestException;
 import com.welcome.tou.common.exception.InvalidTradeException;
 import com.welcome.tou.common.exception.MismatchException;
@@ -383,6 +380,53 @@ public class StatementService {
                         }).collect(Collectors.toList())
                 )
                 .hasNext(false)
+                .build();
+
+        return ResultTemplate.builder().status(200).data(responseDto).build();
+    }
+
+    public ResultTemplate<?> getStatementMyCompanyOnCompletion(UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker myWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch MyBranch = myWorker.getBranch();
+        Company MyCompany = myWorker.getCompany();
+
+        List<Branch> ourBranchList = branchRepository.findByCompanySeq(MyCompany.getCompanySeq());
+        List<Long> outBranchSeqs = ourBranchList.stream().map(branch -> {
+            return branch.getBranchSeq();
+        }).collect(Collectors.toList());
+        List<Statement> statementList = statementRepository.findAllStatementsByBranchListAndCompletion(outBranchSeqs);
+
+        StatementOurCompanyOnCompletionDto responseDto = StatementOurCompanyOnCompletionDto.builder()
+                .companyName(MyCompany.getCompanyName())
+                .statementList(
+                        statementList.stream().map(statement -> {
+
+                            List<Stock> stocks = itemRepository.findStockByStatementSeq(statement.getStatementSeq());
+
+                            String productsName = "";
+
+                            if(stocks == null || stocks.size() == 0) {
+                                throw new NotFoundException(NotFoundException.STOCK_NOT_FOUND);
+                            } else if(stocks.size() == 1) {
+                                productsName = stocks.get(0).getStockName();
+                            } else {
+                                productsName = stocks.get(0).getStockName() + " 외 " + String.valueOf(stocks.size()-1) + "건";
+                            }
+
+                            return StatementOnCompletionDto.builder()
+                                    .statementSeq(statement.getStatementSeq())
+                                    .reqBranchSeq(statement.getReqBranch().getBranchSeq())
+                                    .reqBranchName(statement.getReqBranch().getBranchName())
+                                    .resBranchSeq(statement.getResBranch().getBranchSeq())
+                                    .resBranchName(statement.getResBranch().getBranchName())
+                                    .productName(productsName)
+                                    .tradeDate(statement.getTradeDate())
+                                    .build();
+                        }).collect(Collectors.toList())
+                )
                 .build();
 
         return ResultTemplate.builder().status(200).data(responseDto).build();
