@@ -244,6 +244,7 @@ public class StatementService {
                                 productName = stocks.get(0).getStockName() + " 외 " + String.valueOf(stocks.size()-1) + "건";
                             }
                             String branchName = "";
+
                             Long branchSeq = 0L;
                             int isReq = 0;
                             if(statement.getReqBranch() == myBranch) {
@@ -414,7 +415,12 @@ public class StatementService {
             itemRepository.save(newItem);
         }
 
-        return ResultTemplate.builder().status(200).data("거래 신청 완료").build();
+        AddStatementResponseDto responseDto = AddStatementResponseDto.builder()
+                .message("거래 신청 완료")
+                .statementSeq(newStatement.getStatementSeq())
+                .build();
+
+        return ResultTemplate.builder().status(200).data(responseDto).build();
     }
 
 
