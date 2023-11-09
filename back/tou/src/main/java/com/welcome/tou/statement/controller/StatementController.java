@@ -64,12 +64,16 @@ public class StatementController {
         return statementService.getStatementListWaiting(worker);
     }
 
+    @GetMapping("/worker/list/completion")
+    public ResultTemplate<?> getStatementMyCompanyOnCompletion(@AuthenticationPrincipal UserDetails worker) {
+        return statementService.getStatementMyCompanyOnCompletion(worker);
+    }
+
     @PostMapping("/worker")
     public ResultTemplate<?> addStatement(@RequestBody StatementCreateRequestDto request,
                                           @AuthenticationPrincipal UserDetails worker) {
         return statementService.addStatement(request, worker);
     }
-
 
 
 
