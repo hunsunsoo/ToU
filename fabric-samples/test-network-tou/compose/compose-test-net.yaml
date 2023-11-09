@@ -6,9 +6,9 @@
 version: '3.7'
 
 volumes:
-  orderer.example.com:
-  peer0.org1.example.com:
-  peer0.org2.example.com:
+  orderer.tou.com:
+  peer0.orgProduct.tou.com:
+  peer0.orgProcess.tou.com:
 
 networks:
   test:
@@ -16,8 +16,8 @@ networks:
 
 services:
 
-  orderer.example.com:
-    container_name: orderer.example.com
+  orderer.tou.com:
+    container_name: orderer.tou.com
     image: hyperledger/fabric-orderer:latest
     labels:
       service: hyperledger-fabric
@@ -43,14 +43,14 @@ services:
       - ORDERER_ADMIN_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
       - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
       - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:7053
-      - ORDERER_OPERATIONS_LISTENADDRESS=orderer.example.com:9443
+      - ORDERER_OPERATIONS_LISTENADDRESS=orderer.tou.com:9443
       - ORDERER_METRICS_PROVIDER=prometheus
     working_dir: /root
     command: orderer
     volumes:
-        - ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
-        - ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/:/var/hyperledger/orderer/tls
-        - orderer.example.com:/var/hyperledger/production/orderer
+        - ../organizations/ordererOrganizations/tou.com/orderers/orderer.tou.com/msp:/var/hyperledger/orderer/msp
+        - ../organizations/ordererOrganizations/tou.com/orderers/orderer.tou.com/tls/:/var/hyperledger/orderer/tls
+        - orderer.tou.com:/var/hyperledger/production/orderer
     ports:
       - 7050:7050
       - 7053:7053
@@ -58,8 +58,8 @@ services:
     networks:
       - test
 
-  peer0.org1.example.com:
-    container_name: peer0.org1.example.com
+  peer0.orgProduct.tou.com:
+    container_name: peer0.orgProduct.tou.com
     image: hyperledger/fabric-peer:latest
     labels:
       service: hyperledger-fabric
@@ -73,32 +73,32 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variables
-      - CORE_PEER_ID=peer0.org1.example.com
-      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.org1.example.com:7052
-      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
-      - CORE_PEER_LOCALMSPID=Org1MSP
+      - CORE_PEER_ID=peer0.orgProduct.tou.com
+      - CORE_PEER_ADDRESS=peer0.orgProduct.tou.com:3051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:3051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.orgProduct.tou.com:3052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:3052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orgProduct.tou.com:3051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orgProduct.tou.com:3051
+      - CORE_PEER_LOCALMSPID=OrgProductMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
-      - CORE_OPERATIONS_LISTENADDRESS=peer0.org1.example.com:9444
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.orgProduct.tou.com:9343
       - CORE_METRICS_PROVIDER=prometheus
-      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0org1"}
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0orgProduct"}
       - CORE_CHAINCODE_EXECUTETIMEOUT=300s
     volumes:
-        - ../organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com:/etc/hyperledger/fabric
-        - peer0.org1.example.com:/var/hyperledger/production
+        - ../organizations/peerOrganizations/orgProduct.tou.com/peers/peer0.orgProduct.tou.com:/etc/hyperledger/fabric
+        - peer0.orgProduct.tou.com:/var/hyperledger/production
     working_dir: /root
     command: peer node start
     ports:
-      - 7051:7051
-      - 9444:9444
+      - 3051:3051
+      - 9343:9343
     networks:
       - test
 
-  peer0.org2.example.com:
-    container_name: peer0.org2.example.com
+  peer0.orgProcess.tou.com:
+    container_name: peer0.orgProcess.tou.com
     image: hyperledger/fabric-peer:latest
     labels:
       service: hyperledger-fabric
@@ -112,27 +112,27 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variables
-      - CORE_PEER_ID=peer0.org2.example.com
-      - CORE_PEER_ADDRESS=peer0.org2.example.com:9051
-      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.org2.example.com:9052
-      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:9051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:9051
-      - CORE_PEER_LOCALMSPID=Org2MSP
+      - CORE_PEER_ID=peer0.orgProcess.tou.com
+      - CORE_PEER_ADDRESS=peer0.orgProcess.tou.com:5051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:5051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.orgProcess.tou.com:5052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:5052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orgProcess.tou.com:5051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orgProcess.tou.com:5051
+      - CORE_PEER_LOCALMSPID=OrgProcessMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp      
-      - CORE_OPERATIONS_LISTENADDRESS=peer0.org2.example.com:9445
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.orgProcess.tou.com:9543
       - CORE_METRICS_PROVIDER=prometheus
-      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0org2"}
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0orgProcess"}
       - CORE_CHAINCODE_EXECUTETIMEOUT=300s
     volumes:
-        - ../organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com:/etc/hyperledger/fabric
-        - peer0.org2.example.com:/var/hyperledger/production
+        - ../organizations/peerOrganizations/orgProcess.tou.com/peers/peer0.orgProcess.tou.com:/etc/hyperledger/fabric
+        - peer0.orgProcess.tou.com:/var/hyperledger/production
     working_dir: /root
     command: peer node start
     ports:
-      - 9051:9051
-      - 9445:9445
+      - 5051:5051
+      - 9543:9543
     networks:
       - test
 
@@ -154,7 +154,7 @@ services:
         - ../organizations:/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations
         - ../scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
     depends_on:
-      - peer0.org1.example.com
-      - peer0.org2.example.com
+      - peer0.orgProduct.tou.com
+      - peer0.orgProcess.tou.com
     networks:
       - test

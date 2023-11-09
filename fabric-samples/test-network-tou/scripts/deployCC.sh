@@ -3,8 +3,8 @@
 source scripts/utils.sh
 
 CHANNEL_NAME=${1:-"mychannel"}
-CC_NAME=${2}
-CC_SRC_PATH=${3}
+CC_NAME=${2:-"basic"}
+CC_SRC_PATH=${3:-"NA"}
 CC_SRC_LANGUAGE=${4}
 CC_VERSION=${5:-"1.0"}
 CC_SEQUENCE=${6:-"1"}
@@ -112,6 +112,23 @@ fi
 . scripts/ccutils.sh
 
 packageChaincode() {
+  #  ORG=$1
+  #  PEER=$2
+  # 	setGlobals $ORG $PEER
+  #
+  # 	setGlobalsCLI $ORG $PEER
+  # 패키지 ID가 예상 패턴과 일치하는지 확인
+  println "Verifying that the package ID matches the expected pattern."
+  PACKAGE_ID_CHECK=$(peer lifecycle chaincode calculatepackageid ${CC_NAME}.tar.gz)
+  infoln "===================================================="
+  infoln "$(peer lifecycle chaincode package)"
+
+  if [ "$PACKAGE_ID" = "$PACKAGE_ID_CHECK" ]; then
+    infoln "Package ID is valid: $PACKAGE_ID"
+  else
+    fatalln "Package ID is invalid: $PACKAGE_ID"
+  fi
+
   set -x
   peer lifecycle chaincode package ${CC_NAME}.tar.gz --path ${CC_SRC_PATH} --lang ${CC_RUNTIME_LANGUAGE} --label ${CC_NAME}_${CC_VERSION} >&log.txt
   res=$?
@@ -119,11 +136,20 @@ packageChaincode() {
   { set +x; } 2>/dev/null
   cat log.txt
   verifyResult $res "Chaincode packaging has failed"
-  successln "Chaincode is packaged"
+  successln "Chaincode is packaged and PACKAGE_ID : ${PACKAGE_ID}"
+
+  # 추가된 로그 코드
+  echo "Checking existence of the chaincode package file..."
+  if [ -f "${CC_NAME}.tar.gz" ]; then
+    echo "Chaincode package file found."
+  else
+    echo "Chaincode package file NOT found!"
+  fi
+
 }
 
 function checkPrereqs() {
-  jq --version > /dev/null 2>&1
+  jq --version >/dev/null 2>&1
 
   if [[ $? -ne 0 ]]; then
     errorln "jq command not found..."
@@ -142,42 +168,44 @@ packageChaincode
 
 ## Install chaincode on peer0.org1 and peer0.org2
 infoln "Installing chaincode on peer0.org1..."
-installChaincode 1
+installChaincode 'Product' 0
 infoln "Install chaincode on peer0.org2..."
-installChaincode 2
+installChaincode 'Process' 0
 
 ## query whether the chaincode is installed
-queryInstalled 1
+queryInstalled 'Product' 0
+
+queryInstalled 'Process' 0
 
 ## approve the definition for org1
-approveForMyOrg 1
+approveForMyOrg 'Product' 0
+
+## now approve also for org2
+approveForMyOrg 'Process' 0
 
 ## check whether the chaincode definition is ready to be committed
 ## expect org1 to have approved and org2 not to
-checkCommitReadiness 1 "\"Org1MSP\": true" "\"Org2MSP\": false"
-checkCommitReadiness 2 "\"Org1MSP\": true" "\"Org2MSP\": false"
-
-## now approve also for org2
-approveForMyOrg 2
+#checkCommitReadiness 'Product' "\"OrgProductMSP\": true" "\"OrgProcessMSP\": false" 0
+#checkCommitReadiness 'Process' "\"OrgProductMSP\": true" "\"OrgProcessMSP\": false" 0
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
-checkCommitReadiness 1 "\"Org1MSP\": true" "\"Org2MSP\": true"
-checkCommitReadiness 2 "\"Org1MSP\": true" "\"Org2MSP\": true"
+checkCommitReadiness 'Product' "\"OrgProductMSP\": true" "\"OrgProcessMSP\": true" 0
+checkCommitReadiness 'Process' "\"OrgProductMSP\": true" "\"OrgProcessMSP\": true" 0
 
 ## now that we know for sure both orgs have approved, commit the definition
-commitChaincodeDefinition 1 2
+commitChaincodeDefinition 'Product' 0 'Process' 0
 
 ## query on both orgs to see that the definition committed successfully
-queryCommitted 1
-queryCommitted 2
+queryCommitted 'Product' 0
+queryCommitted 'Process' 0
 
 ## Invoke the chaincode - this does require that the chaincode have the 'initLedger'
 ## method defined
 if [ "$CC_INIT_FCN" = "NA" ]; then
   infoln "Chaincode initialization is not required"
 else
-  chaincodeInvokeInit 1 2
+  chaincodeInvokeInit 'Process' 0 'Product' 0
 fi
 
 exit 0

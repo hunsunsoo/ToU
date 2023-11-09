@@ -1,6 +1,6 @@
 # Kubernetes Test Network 
 
-This project re-establishes the Hyperledger [test-network](../test-network2) as a _cloud native_ application.
+This project re-establishes the Hyperledger [test-network](../test-network) as a _cloud native_ application.
 
 ### Objectives:
 

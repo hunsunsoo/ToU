@@ -78,7 +78,7 @@
 process.env.HFC_LOGGING = '{"debug": "./debug.log"}';
 
 const { Gateway, Wallets } = require('fabric-network');
-const EventStrategies = require('test-network/lib/impl/event/defaulteventhandlerstrategies');
+const EventStrategies = require('test-network-tou/lib/impl/event/defaulteventhandlerstrategies');
 const FabricCAServices = require('fabric-ca-client');
 const path = require('path');
 const { buildCAClient, registerAndEnrollUser, enrollAdmin } = require('../../test-application/javascript/CAUtil.js');

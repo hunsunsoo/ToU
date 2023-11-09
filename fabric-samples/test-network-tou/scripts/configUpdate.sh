@@ -16,11 +16,12 @@ fetchChannelConfig() {
   CHANNEL=$2
   OUTPUT=$3
 
-  setGlobals $ORG
+  setGlobals $ORG 0
+  setGlobalsCLI $ORG 0
 
   infoln "Fetching the most recent configuration block for the channel"
   set -x
-  peer channel fetch config config_block.pb -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com -c $CHANNEL --tls --cafile "$ORDERER_CA"
+  peer channel fetch config config_block.pb -o orderer.tou.com:7050 --ordererTLSHostnameOverride orderer.tou.com -c $CHANNEL --tls --cafile "$ORDERER_CA"
   { set +x; } 2>/dev/null
 
   infoln "Decoding config block to JSON and isolating config to ${OUTPUT}"
@@ -40,6 +41,11 @@ createConfigUpdate() {
   MODIFIED=$3
   OUTPUT=$4
 
+  infoln "In createConfigUpdate"
+  infoln "ORIGINAL : ${ORIGINAL}"
+  infoln "MODIFIED : ${MODIFIED}"
+  infoln "OUTPUT : ${OUTPUT}"
+
   set -x
   configtxlator proto_encode --input "${ORIGINAL}" --type common.Config --output original_config.pb
   configtxlator proto_encode --input "${MODIFIED}" --type common.Config --output modified_config.pb
@@ -55,7 +61,8 @@ createConfigUpdate() {
 signConfigtxAsPeerOrg() {
   ORG=$1
   CONFIGTXFILE=$2
-  setGlobals $ORG
+  setGlobals $ORG 0
+  setGlobalsCLI $ORG 0
   set -x
   peer channel signconfigtx -f "${CONFIGTXFILE}"
   { set +x; } 2>/dev/null
