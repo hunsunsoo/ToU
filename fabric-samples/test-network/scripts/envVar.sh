@@ -81,7 +81,7 @@ parsePeerConnectionParameters() {
   PEERS=""
   while [ "$#" -gt 0 ]; do
     setGlobals $1
-    PEER="peer0.org$1"
+    PEER="peer$2.org$1"
     ## Set peer addresses
     if [ -z "$PEERS" ]
     then
