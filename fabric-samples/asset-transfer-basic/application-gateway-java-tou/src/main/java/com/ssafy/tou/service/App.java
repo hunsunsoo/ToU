@@ -110,8 +110,8 @@ public class App {
 
 		// Get the smart contract from the network.
 		contract = network.getContract(CHAINCODE_NAME);
-	}
 
+	}
 	public void run() throws GatewayException, CommitException {
 		// Initialize a set of asset data on the ledger using the chaincode 'InitLedger' function.
 		initLedger();

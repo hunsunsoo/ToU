@@ -52,23 +52,7 @@ public class LedgerService {
 //    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public ResultTemplate<?> init() throws Exception {
-/*        // The gRPC client connection should be shared by all Gateway connections to
-        // this endpoint.
-        var channel = newGrpcConnection();
 
-        var builder = Gateway.newInstance().identity(newIdentity()).signer(newSigner()).connection(channel)
-                // Default timeouts for different gRPC calls
-                .evaluateOptions(options -> options.withDeadlineAfter(5, TimeUnit.SECONDS))
-                .endorseOptions(options -> options.withDeadlineAfter(15, TimeUnit.SECONDS))
-                .submitOptions(options -> options.withDeadlineAfter(5, TimeUnit.SECONDS))
-                .commitStatusOptions(options -> options.withDeadlineAfter(1, TimeUnit.MINUTES));
-
-        try (var gateway = builder.connect()) {
-            new com.ssafy.tou.service.App(gateway).run();
-        } finally {
-            channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
-        }
-        return null;*/
         App.main(null);
 
         return ResultTemplate.builder().status(200).data(null).build();
@@ -76,6 +60,8 @@ public class LedgerService {
 
 
     }
+
+
 
 //    private static ManagedChannel newGrpcConnection() throws IOException, CertificateException {
 //        var tlsCertReader = Files.newBufferedReader(TLS_CERT_PATH);
