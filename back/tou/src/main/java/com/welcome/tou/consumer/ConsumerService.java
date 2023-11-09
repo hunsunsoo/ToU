@@ -64,7 +64,7 @@ public class ConsumerService {
             return branch;
         }).collect(Collectors.toList());
 
-        List<ConsumerResponseDto> responseDto = DPbranchList.stream().map(dpBranch -> {
+        List<ConsumerResponseDto> distribution = DPbranchList.stream().map(dpBranch -> {
             return ConsumerResponseDto.builder()
                     .branchSeq(dpBranch.getBranchSeq())
                     .branchLocation(dpBranch.getBranchLocation())
@@ -75,6 +75,10 @@ public class ConsumerService {
                     .build();
         }).collect(Collectors.toList());
 
+        ConsumerProductResponseDto responseDto = ConsumerProductResponseDto.builder()
+                .productName(stock.getStockName())
+                .distribution(distribution)
+                .build();
 
 
         return ResultTemplate.builder().status(200).data(responseDto).build();
