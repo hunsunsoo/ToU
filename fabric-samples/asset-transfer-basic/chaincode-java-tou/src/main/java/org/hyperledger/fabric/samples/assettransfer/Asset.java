@@ -16,7 +16,7 @@ import com.owlike.genson.annotation.JsonProperty;
 public final class Asset {
 
     @Property()
-    private final Long assetId;
+    private final String assetId;
 
     @Property()
     private final Long stockSeq;
@@ -51,7 +51,7 @@ public final class Asset {
     @Property()
     private final String status;
 
-    public Long getAssetId() {
+    public String getAssetId() {
         return assetId;
     }
 
@@ -99,7 +99,7 @@ public final class Asset {
         return status;
     }
 
-    public Asset(@JsonProperty("assetId") final Long assetId, @JsonProperty("stockSeq") final Long stockSeq, @JsonProperty("statementSeq") final Long statementSeq, @JsonProperty("branchSeq") final Long branchSeq, @JsonProperty("branchLocation") final String branchLocation, @JsonProperty("branchName") final String branchName, @JsonProperty("branchContact") final String branchContact, @JsonProperty("stockName") final String stockName, @JsonProperty("stockQuantity") final Long stockQuantity, @JsonProperty("stockUnit") final String stockUnit, @JsonProperty("stockDate") final LocalDateTime stockDate, @JsonProperty("status") final String status) {
+    public Asset(@JsonProperty("assetId") final String assetId, @JsonProperty("stockSeq") final Long stockSeq, @JsonProperty("statementSeq") final Long statementSeq, @JsonProperty("branchSeq") final Long branchSeq, @JsonProperty("branchLocation") final String branchLocation, @JsonProperty("branchName") final String branchName, @JsonProperty("branchContact") final String branchContact, @JsonProperty("stockName") final String stockName, @JsonProperty("stockQuantity") final Long stockQuantity, @JsonProperty("stockUnit") final String stockUnit, @JsonProperty("stockDate") final LocalDateTime stockDate, @JsonProperty("status") final String status) {
         this.assetId = assetId;
         this.stockSeq = stockSeq;
         this.statementSeq = statementSeq;
