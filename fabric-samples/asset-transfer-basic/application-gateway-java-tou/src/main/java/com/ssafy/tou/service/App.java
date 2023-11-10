@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import com.ssafy.tou.common.utils.ResultTemplate;
 import com.ssafy.tou.domain.requestDto.StockRequestDto;
+import com.ssafy.tou.domain.requestDto.UpdateInfoRequestDto;
 import io.grpc.ManagedChannel;
 import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
@@ -232,6 +233,36 @@ public class App {
         }
 
         System.out.println("*** Transaction committed successfully");
+    }
+
+    public ResultTemplate updateAsset(UpdateInfoRequestDto request) {
+        try {
+            System.out.println("\n--> Async Submit Transaction: UpdateAsset");
+
+            var commit = contract.newProposal("UpdateAsset")
+                    .addArguments(assetId, "USED")
+                    .build()
+                    .endorse()
+                    .submitAsync();
+
+            var result = commit.getResult();
+            var oldOwner = new String(result, StandardCharsets.UTF_8);
+
+            System.out.println("*** Successfully submitted transaction to transfer ownership from " + oldOwner + " to Saptha");
+            System.out.println("*** Waiting for transaction commit");
+
+            var status = commit.getStatus();
+            if (!status.isSuccessful()) {
+                throw new RuntimeException("Transaction " + status.getTransactionId() +
+                                           " failed to commit with status code " + status.getCode());
+            }
+
+            System.out.println("*** Transaction committed successfully");
+            return ResultTemplate.builder().status(HttpStatus.OK.value()).data(prettyJson(result)).build();
+        }catch (Exception e){
+            return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
+
+        }
     }
 
     public ResultTemplate deleteAssetById(String assetId){

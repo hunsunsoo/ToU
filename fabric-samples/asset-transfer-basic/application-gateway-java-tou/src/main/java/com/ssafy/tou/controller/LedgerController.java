@@ -2,6 +2,7 @@ package com.ssafy.tou.controller;
 
 import com.ssafy.tou.common.utils.ResultTemplate;
 import com.ssafy.tou.domain.requestDto.StockRequestDto;
+import com.ssafy.tou.domain.requestDto.UpdateInfoRequestDto;
 import com.ssafy.tou.service.App;
 import com.ssafy.tou.service.LedgerService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,23 @@ public class LedgerController {
 
     }
 
-//    @GetMapping("/asset/unused")
+    @PostMapping("/asset")
+    public ResultTemplate createAsset(@RequestBody StockRequestDto request) {
+        return app.createAsset(request);
+    }
+
+//    used->unused 로
+    @PutMapping("/asset")
+    public ResultTemplate updateAsset(@RequestBody UpdateInfoRequestDto request){
+        return app.updateAsset(request);
+    }
+
+//    @DeleteMapping("/asset/{assetId}")
+//    public ResultTemplate deleteAssetById(@PathVariable String assetId) {
+//        return app.deleteAssetById(assetId);
+//    }
+
+    //    @GetMapping("/asset/unused")
 //    public ResultTemplate getAllUnusedAssets(){
 //
 //    }
@@ -42,22 +59,4 @@ public class LedgerController {
 //    public ResultTemplate getAllAssetsByBranchSeq(){
 //
 //    }
-
-
-    @PostMapping("/asset")
-    public ResultTemplate createAsset(@RequestBody StockRequestDto request) {
-        return app.createAsset(request);
-    }
-
-    //used->unused 로
-//    @PutMapping("/asset")
-//    public ResultTemplate updateAsset(){
-//
-//    }
-
-//    @DeleteMapping("/asset/{assetId}")
-//    public ResultTemplate deleteAssetById(@PathVariable String assetId) {
-//        return app.deleteAssetById(assetId);
-//    }
-
 }
