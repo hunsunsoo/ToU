@@ -41,6 +41,26 @@ public class StockService {
     private final AverageRepository averageRepository;
 
 
+    public ResultTemplate getAllStockList(UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch myBranch = reqWorker.getBranch();
+
+        List<Stock> list = stockRepository.findByBranchUnused(myBranch.getBranchSeq());
+
+        StockListResponseDto responseDto = StockListResponseDto.from(list.stream().map(stock -> {
+            String status = "";
+            if(stock.getInOutStatus() == Stock.InOutStatus.IN) status = "입고";
+            else if(stock.getInOutStatus() == Stock.InOutStatus.OUT) status = "출고";
+            return StockResponseDto.from(stock, status);
+        }).collect(Collectors.toList()));
+
+        return ResultTemplate.builder().status(200).data(responseDto).build();
+    }
+
+
     public ResultTemplate getStockList(UserDetails worker) {
         Long workerSeq = Long.parseLong(worker.getUsername());
         Worker reqWorker = workerRepository.findById(workerSeq)
@@ -51,7 +71,7 @@ public class StockService {
         List<Stock> list = stockRepository.findStockByBranchAndInOutStatusAndUseStatus(myBranch.getBranchSeq(), Stock.InOutStatus.IN, Stock.UseStatus.UNUSED);
 
         StockListResponseDto response = StockListResponseDto.from(list.stream().map(stock -> {
-            return StockResponseDto.from(stock);
+            return StockResponseDto.from(stock, "입고");
         }).collect(Collectors.toList()));
 
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(response).build();
@@ -71,7 +91,7 @@ public class StockService {
         }
 
         StockListResponseDto responseDto = StockListResponseDto.from(stockList.stream().map(stock -> {
-            return StockResponseDto.from(stock);
+            return StockResponseDto.from(stock, "출고");
         }).collect(Collectors.toList()));
 
         return ResultTemplate.builder().status(200).data(responseDto).build();

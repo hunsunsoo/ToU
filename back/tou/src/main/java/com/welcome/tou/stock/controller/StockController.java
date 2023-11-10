@@ -25,6 +25,11 @@ public class StockController {
 
     private final StockService stockService;
 
+    @GetMapping("/worker/list")
+    public ResultTemplate getAllStockList(@AuthenticationPrincipal UserDetails worker) {
+        return stockService.getAllStockList(worker);
+    }
+
     @GetMapping("/officials/list/in")
     public ResultTemplate getStockList(@AuthenticationPrincipal UserDetails worker){
         return stockService.getStockList(worker);
