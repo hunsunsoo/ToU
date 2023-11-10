@@ -116,9 +116,9 @@ public final class Asset {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + "@" + Integer.toHexString(hashCode()) +
-                "Asset{" +
-                "assetId=" + assetId + ", stockSeq=" + stockSeq + ", statementSeq=" + statementSeq + ", branchSeq=" + branchSeq + ", branchLocation='" + branchLocation + '\''
+        return this.getClass().getSimpleName() + "@" + Integer.toHexString(hashCode())
+                + "Asset{"
+                + "assetId=" + assetId + ", stockSeq=" + stockSeq + ", statementSeq=" + statementSeq + ", branchSeq=" + branchSeq + ", branchLocation='" + branchLocation + '\''
                 + ", branchName='" + branchName + '\'' + ", branchContact='" + branchContact + '\'' + ", stockName='" + stockName + '\'' + ", stockQuantity=" + stockQuantity + ", stockUnit='" + stockUnit + '\''
                 + ", stockDate=" + stockDate + ", status='" + status + '\'' + '}';
     }
