@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faTrashCan  } from "@fortawesome/sharp-light-svg-icons";
 import { faCheck  } from "@fortawesome/sharp-regular-svg-icons";
+import { faSquare } from "@fortawesome/sharp-light-svg-icons";
+
 
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import TraderSubtitle from "../../components/atoms/trader/TraderSubtitle";
@@ -11,29 +12,82 @@ import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import TraderInputTitle from "../../components/organisms/trader/TraderInputTitle";
 import TraderInfoTitle from "../../components/organisms/trader/TraderInfoTitle";
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
-import TraderItemSearchBox from "../../components/organisms/trader/TraderItemSearchBox";
+// import TraderItemSearchBox from "../../components/organisms/trader/TraderItemSearchBox";
 import TraderConfirmTable from "../../components/organisms/trader/TraderConfirmTable";
+import { customAxios } from "../../components/api/customAxios";
+import { StatementData } from "./../../types/TraderTypes";
 
 const TraderConfirmPage = () => {
   const navigate = useNavigate();
 
   const [companyName, setCompanyName] = useState("");
   const [section, setSection] = useState("");
-  const [managerName, setManagerName] = useState("");
-  const [disabled, setDisabled] = useState(true);
-  const [icon, setIcon] = useState(faPenToSquare);
-  const [tableIcon, setTableIcon] = useState(faPenToSquare);
-  const [isEditable, setIsEditable] = useState(false);
-  
+  const [isChecked, setIsChecked] = useState(false);
+  const [isDateChecked, setIsDateChecked] = useState(false);
+  const [isItemChecked, setIsItemChecked] = useState(false);
+  const [icon, setIcon] = useState(faSquare);
+  const [dateIcon, setDateIcon] = useState(faSquare);
+  const [tableIcon, setTableIcon] = useState(faSquare);
+
+  const [isValid, setIsValid] = useState(false);
+
+  const { billId } = useParams<{ billId: string }>();
+  const [statementData, setStatementData] = useState<StatementData | null>(
+    null
+  );
+
+  const [statementItemList, setStatementItemList] = useState([]);
+
+
+  useEffect(() => {
+    customAxios
+    .get(`/statement/worker/detail/${billId}`)
+      .then((res) => {
+        const data = res.data.data;
+        console.log(data)
+        setStatementData(data);
+
+        const formattedData = data.itemList.map((item: any, index: number) => {
+          return {
+            id: index,
+            category: item.stockName,
+            quantity: item.stockQuantity,
+            price: item.stockPrice
+          };
+      });
+      setStatementItemList(formattedData);
+      })
+    .catch((error) => {
+      console.error('해당하는 상품이 없습니다.', error);
+    });
+  }, []);
+
+
   const handleIconClick = () => {
-    setDisabled(!disabled);
-    setIcon(disabled ? faCheck : faPenToSquare);
+    setIsChecked(!isChecked);
+    setIcon(isChecked ? faSquare : faCheck);
+  };
+
+  
+  const handleDateIconClick = () => {
+    setIsDateChecked(!isDateChecked);
+    setDateIcon(isDateChecked ? faSquare : faCheck);
   };
   
   const handleItemIconClick = () => {
-    setIsEditable(!isEditable);
-    setTableIcon(isEditable ? faPenToSquare : faCheck);
+    setIsItemChecked(!isItemChecked);
+    setTableIcon(isItemChecked ? faSquare : faCheck);
   };
+
+  const checkValidity = () => {
+    setIsValid(isChecked && isDateChecked && isItemChecked);
+  };
+
+  useEffect(() => {
+    checkValidity();
+  }, [isChecked, isDateChecked, isItemChecked]);
+
+
 
   return (
     <StyledContainer>
@@ -57,23 +111,34 @@ const TraderConfirmPage = () => {
           <TraderInputTitle
             inputTitle="업체명"
             size="Large"
-            value="{companyName}"
+            value={statementData?.resInfo?.companyName}
             onChange={(e) => setCompanyName(e.target.value)}
-            disabled={disabled}
+            disabled={isChecked}
           />
           <TraderInputTitle
             inputTitle="관할 구역"
             size="Large"
-            value={section}
+            value={statementData?.resInfo?.branchName}
             onChange={(e) => setSection(e.target.value)}
-            disabled={disabled}
+            disabled={isChecked}
           />
-          <TraderInputTitle
-            inputTitle="담당자"
+           <StyledInfoTitle>
+            <TraderInfoTitle infoTitle="거래 정보" />
+            <StyledSpan>
+                <FontAwesomeIcon
+                  icon={dateIcon}
+                  size="xl"
+                  style={{ color: "#000000" }}
+                  onClick={handleDateIconClick}
+                />
+              </StyledSpan>
+           </StyledInfoTitle>
+           <TraderInputTitle
+            inputTitle="거래 일자"
             size="Large"
-            value={managerName}
-            onChange={(e) => setManagerName(e.target.value)}
-            disabled={disabled}
+            value={statementData?.tradeDate}
+            onChange={(e) => setSection(e.target.value)}
+            disabled={isDateChecked}
           />
           <StyledInfoTitle>
             <TraderInfoTitle infoTitle="품목 정보" />
@@ -86,19 +151,20 @@ const TraderConfirmPage = () => {
               />
             </StyledSpan>
           </StyledInfoTitle>
-          <TraderItemSearchBox/>
-          <TraderConfirmTable isEditable={isEditable}/>
+          {/* <TraderItemSearchBox/> */}
+          <TraderConfirmTable isItemChecked={isItemChecked} data={statementItemList}/>
         </MainPaddingContainer>
       </StyledBody>
       <StyledFooter>
         <TraderBtn
           size="Large"
-          color="Blue"
+          color={isValid ? "Blue" : "Grey"}
           onClick={() => {
-            navigate("/m/create/sign");
+            navigate(`/m/create/sign/${billId}`);
           }}
+          disabled={!isValid}
         >
-          다음
+          명세서 생성
         </TraderBtn>
       </StyledFooter>
     </StyledContainer>

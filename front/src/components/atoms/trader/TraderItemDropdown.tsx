@@ -1,38 +1,44 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 
 interface Item {
   seq: number;
   name: string;
+  date: Date; 
 }
 
-interface TraderDropdownProps {
+interface TraderItemDropdownProps {
   items: Item[];
   selectedItem: Item | null;
   onSelect: (item: Item) => void;
 }
 
-
-const TraderDropdown: React.FC<TraderDropdownProps> = ({ items, onSelect, selectedItem }) => {
+const TraderItemDropdown: React.FC<TraderItemDropdownProps> = ({
+  items,
+  onSelect,
+  selectedItem,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <DropdownContainer>
       <DropdownButton onClick={() => setIsOpen(!isOpen)}>
         {selectedItem?.name || "선택하세요"}
-        {isOpen ? <BiChevronUp  size = "30"/> : <BiChevronDown  size = "30"/>}
+        {isOpen ? <BiChevronUp size="30" /> : <BiChevronDown size="30" />}
       </DropdownButton>
       {isOpen && (
         <DropdownList>
           {items.map((item) => (
-            <DropdownListItem 
+            <DropdownListItem
               key={item.seq}
               onClick={() => {
                 onSelect(item);
                 setIsOpen(false);
-              }}>
-              {item.name}
+              }}
+            >
+              <ItemName>{item.name}</ItemName>
+              <ItemDate>{item.date.toLocaleString("ko-KR")}</ItemDate>
             </DropdownListItem>
           ))}
         </DropdownList>
@@ -40,7 +46,6 @@ const TraderDropdown: React.FC<TraderDropdownProps> = ({ items, onSelect, select
     </DropdownContainer>
   );
 };
-export default TraderDropdown;
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -56,23 +61,23 @@ const DropdownButton = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   background-color: transparent;
 `;
 
 const DropdownList = styled.ul`
- font-size: 16px;
+  font-size: 16px;
   position: absolute;
   top: 100%;
   width: 240px;
-    /* width: fit-content; // 추가 */
+  /* width: fit-content; // 추가 */
   border: 1px solid #ccc;
   border-radius: 4px;
   list-style: none;
   margin: 0;
   padding: 0;
   background-color: white;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 2;
 `;
 
@@ -84,4 +89,12 @@ const DropdownListItem = styled.li`
   }
 `;
 
+const ItemName = styled.span`
+  display: block;
+`;
 
+const ItemDate = styled.span`
+
+`;
+
+export default TraderItemDropdown;
