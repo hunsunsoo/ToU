@@ -199,7 +199,7 @@ public class App {
                     request.getStockSeq(), request.getStatementSeq(), request.getBranchSeq(),
                     request.getBranchLocation(), request.getBranchName(), request.getBranchContract(),
                     request.getStockName(), request.getStockQuantity(), request.getStockUnit(),
-                    request.getStockDate(), request.getStatus());
+                    request.getStockDate(), request.getInoutStatus(), request.getUseStatus());
 
             System.out.println("*** Transaction committed successfully");
             return ResultTemplate.builder().status(HttpStatus.OK.value()).data(prettyJson(evaluateResult)).build();

@@ -23,7 +23,8 @@ public class StockRequestDto {
     private String stockQuantity;
     private String stockUnit;
     private String stockDate;
-    private String status;
+    private String inoutStatus;
+    private String useStatus;
 
 
 }
