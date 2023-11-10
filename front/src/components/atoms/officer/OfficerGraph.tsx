@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { BiLineChart } from "react-icons/bi";
 import { ResponsiveLine } from "@nivo/line";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { UserInfoState } from "../../../store/State";
 import { customAxios } from "../../api/customAxios";
 
 const MyResponsiveLine = ({ data }: { data: any[] }) => (
@@ -151,7 +149,6 @@ const OfiicerGraph = () => {
         customAxios
           .get(`/stock/worker/${branchSeq}/receiving/price`)
           .then((res) => {
-            console.log("입고단가", res.data.data.productList);
             const transformedData = res.data.data.productList.map(
               (item: productList) => {
                 return {

@@ -32,11 +32,9 @@ const OfiicerStockTable = () => {
       
       if (branchSeq !== 0) {          
         // 재고 정보 가져오기
-        console.log(branchSeq);
         customAxios.get(`/stock/worker/dash/list/${branchSeq}`)
         .then((res) => {
           setStockItems(res.data.data.stockList);
-          console.log(res.data.data.stockList);
           setIsLoading(false);
         })
         .catch((res) => {

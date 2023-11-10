@@ -63,7 +63,6 @@ const OfficerCreatePage = () => {
     if (selectedCompanySeq) {
       customAxios.get(`client/worker/branch/list/${selectedCompanySeq}`)
         .then((res) => {
-          console.log(res.data.data.branchList);
           setBranchs(res.data.data.branchList);
         })
     }
@@ -88,11 +87,22 @@ const OfficerCreatePage = () => {
     };
 
     // company 목록 조회 API
-    customAxios.get('/client/worker/company/list')
-      .then((res) => {
-        // console.log(res.data.data.companyList);
+    const awaitCompanyList = async () => {
+      try {
+        const accessToken = await awaitToken();
+        if (!accessToken) {
+          return;
+        }
+
+        const res = await customAxios.get('/client/worker/company/list');
         setCompanys(res.data.data.companyList);
-      })
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    awaitCompanyList();
+
   }, []);
 
   // branch 선택
@@ -124,7 +134,6 @@ const OfficerCreatePage = () => {
     
     customAxios.post(`statement/worker`, body)
       .then((res) => {
-        console.log(res);
         if(res.status === 200) {
           toast.success("거래명세서 생성을 성공했습니다.", {
             duration: 1000,
@@ -142,7 +151,6 @@ const OfficerCreatePage = () => {
         }
       })
       .catch((res) => {
-        console.log(res);
         toast.error("서버 에러", {
           duration: 1000,
         });

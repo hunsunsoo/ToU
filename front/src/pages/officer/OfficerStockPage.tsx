@@ -39,7 +39,6 @@ const OfficerStockPage = () => {
   
   // 새로운 재고
   const [newStock, setNewStock] = useState<StockItems>();
-  console.log(newStock);
 
   useEffect(() => {
     // 토큰 들어오는거 기다리기
@@ -65,13 +64,11 @@ const OfficerStockPage = () => {
       try {
         const accessToken = await awaitToken();
         if (!accessToken) {
-          console.log("Token not found");
           return;
         }
 
         const res = await customAxios.get(`/stock/officials/list/in`);
         setStockItems(res.data.data.stockList);
-        console.log(res.data.data.stockList);
       } catch (error) {
         console.log(error);
       }
@@ -122,7 +119,6 @@ const OfficerStockPage = () => {
     }
     customAxios.post(`stock/officials`, body)
     .then((res) => {
-      console.log(res);
       if(res.status === 200) {
         toast.success("가공 공정을 성공했습니다.", {
           duration: 1000,
@@ -152,7 +148,6 @@ const OfficerStockPage = () => {
     
     customAxios.post(`stock/producer`, body)
     .then((res) => {
-      console.log(res);
       if(res.status === 200) {
         toast.success("재고 등록을 성공했습니다.", {
           duration: 1000,
@@ -185,7 +180,7 @@ const OfficerStockPage = () => {
           공정/재고 관리
         </OfficerTitle>
         <Line/>
-        { branchType != "PRODUCT"?
+        { branchType !== "PRODUCT"?
         <>
           <StyledP>
             • 기존 재고
@@ -202,7 +197,7 @@ const OfficerStockPage = () => {
          :
         null}
 
-        { branchType == "PRODUCT"?
+        { branchType === "PRODUCT"?
         <>
           <StyledP>
             • 재고 등록
