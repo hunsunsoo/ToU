@@ -3,31 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import {
-  UserInfoState
+  UserInfoState, CompanyInfoState
 } from "../../../store/State";
 import { ROUTES } from "../../../commons/Routes";
 
 const OfficerSideBar = () => {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(UserInfoState);
-  const setUserInfo = useSetRecoilState(UserInfoState);
+  const companyInfo = useRecoilValue(CompanyInfoState);
 
-  
-  const handleDropdownChange = (selectedValue: string) => {
-    const intValue = parseInt(selectedValue, 10);
-    console.log(intValue);
-    // setUserInfo((prevUserInfo: UserInfo) => ({
-    //   ...prevUserInfo,
-    //   selectedBranch: prevUserInfo.branchList.find(
-    //     (branch: BranchInfo) => branch.branchSeq === intValue
-    //   ),
-    // }));
-  };
+  const logoImageSrc = companyInfo.logoImage ? `/companyLogo/${companyInfo.logoImage}` : 'default-image-path';
 
   return (
   <SidebarContainer>
     {/* 이미지는 아직 안했음 */}
-    <RoundImage src="/emart.png" alt="Emart Logo" />
+    <RoundImage src={logoImageSrc} alt="회사 로고" />
     <CompInfo>
       <p>{userInfo.companyName}</p>
       <p>{userInfo.branchName}</p>
@@ -38,7 +28,7 @@ const OfficerSideBar = () => {
     <ListBtn onClick={() => navigate(ROUTES.OFFICER_CREATE)}>거래명세서 생성</ListBtn>
     <ListBtn onClick={() => navigate(ROUTES.OFFICER_MANAGE)}>거래명세서 관리</ListBtn>
     <ListBtn onClick={() => navigate(ROUTES.OFFICER_STOCK)}>공정/재고 관리</ListBtn>
-    <ListBtn onClick={() => navigate(ROUTES.OFFICER_NOTICE)}>공지사항 및 문의</ListBtn>
+    <ListBtn onClick={() => navigate(ROUTES.OFFICER_STOCKLIST)}>재고 목록 조회</ListBtn>
     <ListBtn>개인정보 수정</ListBtn>
   </SidebarContainer>
   )
