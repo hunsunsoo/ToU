@@ -9,7 +9,7 @@ interface statementList {
   companyName: string;
   myWorkerName?: string;
   otherWorkerName?: string;
-  productName: string;
+  itemName: string;
   totalPrice?: number;
   tradeDate?: string;
   statementStatus: string;
@@ -22,7 +22,7 @@ interface paramConfig {
   isMine: boolean;
   myWorkerName: string | null;
   otherWorkerName: string;
-  productName: string;
+  itemName: string;
   startDate: string;
   endDate: string;
   status: string;
@@ -31,6 +31,12 @@ interface paramConfig {
 interface OfficerDocTableProps {
   isSupply: boolean;
   params: paramConfig;
+}
+
+interface PageProps {
+  size: number;
+  startPage: number;
+  endPage: number;
 }
 
 const OfficerDocTable: React.FC<OfficerDocTableProps> = ({ isSupply, params  }) => {
@@ -61,9 +67,27 @@ const OfficerDocTable: React.FC<OfficerDocTableProps> = ({ isSupply, params  }) 
       });
     };
 
-    customAxios.get(`statement/worker/list/web`, { params: params })
+    const getRequestParams = () => {
+      const paramsObject: Record<string, any> = {};
+  
+      // 필요한 값이 있을 때만 paramsObject에 추가
+      if (params.page) paramsObject.page = params.page;
+      if (params.type) paramsObject.type = params.type;
+      if (params.companyName) paramsObject.companyName = params.companyName;
+      if (params.isMine !== undefined) paramsObject.isMine = params.isMine;
+      if (params.myWorkerName !== null) paramsObject.myWorkerName = params.myWorkerName;
+      if (params.otherWorkerName) paramsObject.otherWorkerName = params.otherWorkerName;
+      if (params.itemName) paramsObject.productName = params.itemName;
+      if (params.startDate) paramsObject.startDate = params.startDate;
+      if (params.endDate) paramsObject.endDate = params.endDate;
+      if (params.status) paramsObject.status = params.status;
+  
+      return paramsObject;
+    };
+
+    customAxios.get(`statement/worker/list/web`, { params: getRequestParams() })
       .then((res) => {
-        // console.log(res.data.data.statementList);
+        console.log(res);
         setStatements(res.data.data.statementList);
       })
     }, [params]);
@@ -91,7 +115,7 @@ const OfficerDocTable: React.FC<OfficerDocTableProps> = ({ isSupply, params  }) 
             ) : (
               <td>{statement.otherWorkerName}</td>
             )}
-            <td>{statement.productName}</td>
+            <td>{statement.itemName}</td>
             <td>{statement.totalPrice}</td>
             <td>{statement.tradeDate}</td>
             <td>{statement.statementStatus}</td>
