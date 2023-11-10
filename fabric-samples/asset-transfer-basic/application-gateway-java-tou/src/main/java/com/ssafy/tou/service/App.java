@@ -7,6 +7,7 @@ package com.ssafy.tou.service;/*
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
+import com.ssafy.tou.common.utils.ResultTemplate;
 import io.grpc.ManagedChannel;
 import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
@@ -22,6 +23,8 @@ import org.hyperledger.fabric.client.identity.Identity;
 import org.hyperledger.fabric.client.identity.Signer;
 import org.hyperledger.fabric.client.identity.Signers;
 import org.hyperledger.fabric.client.identity.X509Identity;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -33,6 +36,7 @@ import java.security.cert.CertificateException;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
+@Service
 public class App {
 	private static final String MSP_ID = System.getenv().getOrDefault("MSP_ID", "Org1MSP");
 	private static final String CHANNEL_NAME = System.getenv().getOrDefault("CHANNEL_NAME", "mychannel");
@@ -117,19 +121,19 @@ public class App {
 		initLedger();
 
 		// Return all the current assets on the ledger.
-		getAllAssets();
+//		getAllAssets();
 
 		// Create a new asset on the ledger.
-		createAsset();
+//		createAsset();
 
 		// Update an existing asset asynchronously.
-		transferAssetAsync();
+//		transferAssetAsync();
 
 		// Get the asset details by assetID.
-		readAssetById();
+//		readAssetById();
 
 		// Update an asset which does not exist.
-		updateNonExistentAsset();
+//		updateNonExistentAsset();
 	}
 	
 	/**
@@ -206,43 +210,19 @@ public class App {
 		System.out.println("*** Transaction committed successfully");
 	}
 
-	private void readAssetById() throws GatewayException {
-		System.out.println("\n--> Evaluate Transaction: ReadAsset, function returns asset attributes");
-
-		var evaluateResult = contract.evaluateTransaction("ReadAsset", assetId);
-		
-		System.out.println("*** Result:" + prettyJson(evaluateResult));
-	}
-
-	/**
-	 * submitTransaction() will throw an error containing details of any error
-	 * responses from the smart contract.
-	 */
-	private void updateNonExistentAsset() {
+	public ResultTemplate readAssetById(String assetId) {
 		try {
-			System.out.println("\n--> Submit Transaction: UpdateAsset asset70, asset70 does not exist and should return an error");
-			
-			contract.submitTransaction("UpdateAsset", "asset70", "blue", "5", "Tomoko", "300");
-			
-			System.out.println("******** FAILED to return an error");
-		} catch (EndorseException | SubmitException | CommitStatusException e) {
-			System.out.println("*** Successfully caught the error: ");
-			e.printStackTrace(System.out);
-			System.out.println("Transaction ID: " + e.getTransactionId());
+			System.out.println("\n--> Evaluate Transaction: ReadAsset, function returns asset attributes");
 
-			var details = e.getDetails();
-			if (!details.isEmpty()) {
-				System.out.println("Error Details:");
-				for (var detail : details) {
-					System.out.println("- address: " + detail.getAddress() + ", mspId: " + detail.getMspId()
-							+ ", message: " + detail.getMessage());
-				}
-			}
-		} catch (CommitException e) {
-			System.out.println("*** Successfully caught the error: " + e);
-			e.printStackTrace(System.out);
-			System.out.println("Transaction ID: " + e.getTransactionId());
-			System.out.println("Status code: " + e.getCode());
+			var evaluateResult = contract.evaluateTransaction("ReadAsset", assetId);
+
+			System.out.println("*** Result:" + prettyJson(evaluateResult));
+
+			return ResultTemplate.builder().status(HttpStatus.OK.value()).data(prettyJson(evaluateResult)).build();
+		}catch (Exception e){
+			return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();
 		}
 	}
+
+
 }
