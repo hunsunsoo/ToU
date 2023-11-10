@@ -56,12 +56,12 @@ public final class AssetTransfer implements ContractInterface {
     public void InitLedger(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
 
-        CreateAsset(ctx, "asset1", 1L, 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", LocalDateTime.now().minusMonths(6), "OUT");
-        CreateAsset(ctx, "asset2", 2L, 2L, 1L, "산본", "산본공장", "010-7387-7808", "문어", 2L, "kg", LocalDateTime.now().minusMonths(5), "OUT");
-        CreateAsset(ctx, "asset3", 3L, 3L, 1L, "산본", "산본공장", "010-7387-7808", "연어", 3L, "kg", LocalDateTime.now().minusMonths(4), "OUT");
-        CreateAsset(ctx, "asset4", 4L, 4L, 1L, "산본", "산본공장", "010-7387-7808", "고등어", 4L, "kg", LocalDateTime.now().minusMonths(3), "OUT");
-        CreateAsset(ctx, "asset5", 5L, 5L, 1L, "산본", "산본공장", "010-7387-7808", "새우", 5L, "kg", LocalDateTime.now().minusMonths(2), "OUT");
-        CreateAsset(ctx, "asset6", 6L, 6L, 1L, "산본", "산본공장", "010-7387-7808", "오징어", 6L, "kg", LocalDateTime.now().minusMonths(1), "OUT");
+        CreateAsset(ctx, "asset1", 1L, 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", LocalDateTime.of(2023, 4, 10, 0, 0), "OUT");
+        CreateAsset(ctx, "asset2", 2L, 2L, 1L, "산본", "산본공장", "010-7387-7808", "문어", 2L, "kg", LocalDateTime.of(2023, 5, 10, 0, 0), "OUT");
+        CreateAsset(ctx, "asset3", 3L, 3L, 1L, "산본", "산본공장", "010-7387-7808", "연어", 3L, "kg", LocalDateTime.of(2023, 6, 10, 0, 0), "OUT");
+        CreateAsset(ctx, "asset4", 4L, 4L, 1L, "산본", "산본공장", "010-7387-7808", "고등어", 4L, "kg", LocalDateTime.of(2023, 7, 10, 0, 0), "OUT");
+        CreateAsset(ctx, "asset5", 5L, 5L, 1L, "산본", "산본공장", "010-7387-7808", "새우", 5L, "kg", LocalDateTime.of(2023, 8, 10, 0, 0), "OUT");
+        CreateAsset(ctx, "asset6", 6L, 6L, 1L, "산본", "산본공장", "010-7387-7808", "오징어", 6L, "kg", LocalDateTime.of(2023, 9, 10, 0, 0), "OUT");
     }
 
     /**

@@ -11,6 +11,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -64,17 +65,17 @@ public final class AssetTransferTest {
             assetList = new ArrayList<KeyValue>();
 
             assetList.add(new MockKeyValue("asset1",
-                    "{ \"assetID\": \"asset1\", \"color\": \"blue\", \"size\": 5, \"owner\": \"Tomoko\", \"appraisedValue\": 300 }"));
+                    "{ \"assetID\": \"asset1\", \"quantity\": 1, \"location\": \"산본\", \"contact\": \"010-7387-7808\", \"product\": \"멸치\", \"amount\": 1, \"unit\": \"kg\", \"date\": \"" + LocalDateTime.of(2023, 4, 4, 0, 0) + "\", \"status\": \"OUT\" }"));
             assetList.add(new MockKeyValue("asset2",
-                    "{ \"assetID\": \"asset2\", \"color\": \"red\", \"size\": 5,\"owner\": \"Brad\", \"appraisedValue\": 400 }"));
+                    "{ \"assetID\": \"asset2\", \"quantity\": 2, \"location\": \"산본\", \"contact\": \"010-7387-7808\", \"product\": \"문어\", \"amount\": 2, \"unit\": \"kg\", \"date\": \"" + LocalDateTime.of(2023, 5, 10, 0, 0) + "\", \"status\": \"OUT\" }"));
             assetList.add(new MockKeyValue("asset3",
-                    "{ \"assetID\": \"asset3\", \"color\": \"green\", \"size\": 10,\"owner\": \"Jin Soo\", \"appraisedValue\": 500 }"));
+                    "{ \"assetID\": \"asset3\", \"quantity\": 3, \"location\": \"산본\", \"contact\": \"010-7387-7808\", \"product\": \"연어\", \"amount\": 3, \"unit\": \"kg\", \"date\": \"" + LocalDateTime.of(2023, 6, 10, 0, 0) + "\", \"status\": \"OUT\" }"));
             assetList.add(new MockKeyValue("asset4",
-                    "{ \"assetID\": \"asset4\", \"color\": \"yellow\", \"size\": 10,\"owner\": \"Max\", \"appraisedValue\": 600 }"));
+                    "{ \"assetID\": \"asset4\", \"quantity\": 4, \"location\": \"산본\", \"contact\": \"010-7387-7808\", \"product\": \"고등어\", \"amount\": 4, \"unit\": \"kg\", \"date\": \"" + LocalDateTime.of(2023, 7, 10, 0, 0) + "\", \"status\": \"OUT\" }"));
             assetList.add(new MockKeyValue("asset5",
-                    "{ \"assetID\": \"asset5\", \"color\": \"black\", \"size\": 15,\"owner\": \"Adrian\", \"appraisedValue\": 700 }"));
+                    "{ \"assetID\": \"asset5\", \"quantity\": 5, \"location\": \"산본\", \"contact\": \"010-7387-7808\", \"product\": \"새우\", \"amount\": 5, \"unit\": \"kg\", \"date\": \"" + LocalDateTime.of(2023, 8, 10, 0, 0) + "\", \"status\": \"OUT\" }"));
             assetList.add(new MockKeyValue("asset6",
-                    "{ \"assetID\": \"asset6\", \"color\": \"white\", \"size\": 15,\"owner\": \"Michel\", \"appraisedValue\": 800 }"));
+                    "{ \"assetID\": \"asset6\", \"quantity\": 6, \"location\": \"산본\", \"contact\": \"010-7387-7808\", \"product\": \"오징어\", \"amount\": 6, \"unit\": \"kg\", \"date\": \"" + LocalDateTime.of(2023, 9, 10, 0, 0) + "\", \"status\": \"OUT\" }"));
         }
 
         @Override
@@ -114,13 +115,17 @@ public final class AssetTransferTest {
             Context ctx = mock(Context.class);
             ChaincodeStub stub = mock(ChaincodeStub.class);
             when(ctx.getStub()).thenReturn(stub);
-            when(stub.getStringState("asset1"))
-                    .thenReturn("{ \"assetID\": \"asset1\", \"color\": \"blue\", \"size\": 5, \"owner\": \"Tomoko\", \"appraisedValue\": 300 }");
+
+            // JSON 문자열을 변경된 Asset 구조에 맞게 수정
+            String assetJson = "{ \"assetId\": \"asset1\", \"stockSeq\": 1, \"statementSeq\": 1, \"branchSeq\": 1, \"branchLocation\": \"산본\", \"branchName\": \"산본공장\", \"branchContact\": \"010-7387-7808\", \"stockName\": \"멸치\", \"stockQuantity\": 1, \"stockUnit\": \"kg\", \"stockDate\": \"2023-04-10T00:00:00\", \"status\": \"OUT\" }";
+            when(stub.getStringState("asset1")).thenReturn(assetJson);
 
             Asset asset = contract.ReadAsset(ctx, "asset1");
 
-            assertThat(asset).isEqualTo(new Asset("asset1", "blue", 5, "Tomoko", 300));
+            Asset expectedAsset = new Asset("asset1", 1L, 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", LocalDateTime.of(2023, 4, 10, 0, 0), "OUT");
+            assertThat(asset).isEqualTo(expectedAsset);
         }
+
 
         @Test
         public void whenAssetDoesNotExist() {
@@ -150,13 +155,16 @@ public final class AssetTransferTest {
         contract.InitLedger(ctx);
 
         InOrder inOrder = inOrder(stub);
-        inOrder.verify(stub).putStringState("asset1", "{\"appraisedValue\":300,\"assetID\":\"asset1\",\"color\":\"blue\",\"owner\":\"Tomoko\",\"size\":5}");
-        inOrder.verify(stub).putStringState("asset2", "{\"appraisedValue\":400,\"assetID\":\"asset2\",\"color\":\"red\",\"owner\":\"Brad\",\"size\":5}");
-        inOrder.verify(stub).putStringState("asset3", "{\"appraisedValue\":500,\"assetID\":\"asset3\",\"color\":\"green\",\"owner\":\"Jin Soo\",\"size\":10}");
-        inOrder.verify(stub).putStringState("asset4", "{\"appraisedValue\":600,\"assetID\":\"asset4\",\"color\":\"yellow\",\"owner\":\"Max\",\"size\":10}");
-        inOrder.verify(stub).putStringState("asset5", "{\"appraisedValue\":700,\"assetID\":\"asset5\",\"color\":\"black\",\"owner\":\"Adrian\",\"size\":15}");
 
+        // 각 asset에 대한 JSON 문자열을 변경된 Asset 구조에 맞게 수정
+        inOrder.verify(stub).putStringState("asset1", "{\"assetId\":\"asset1\",\"stockSeq\":1,\"statementSeq\":1,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"멸치\",\"stockQuantity\":1,\"stockUnit\":\"kg\",\"stockDate\":\"2023-04-10T00:00:00\",\"status\":\"OUT\"}");
+        inOrder.verify(stub).putStringState("asset2", "{\"assetId\":\"asset2\",\"stockSeq\":2,\"statementSeq\":2,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"문어\",\"stockQuantity\":2,\"stockUnit\":\"kg\",\"stockDate\":\"2023-05-10T00:00:00\",\"status\":\"OUT\"}");
+        inOrder.verify(stub).putStringState("asset3", "{\"assetId\":\"asset3\",\"stockSeq\":3,\"statementSeq\":3,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"연어\",\"stockQuantity\":3,\"stockUnit\":\"kg\",\"stockDate\":\"2023-06-10T00:00:00\",\"status\":\"OUT\"}");
+        inOrder.verify(stub).putStringState("asset4", "{\"assetId\":\"asset4\",\"stockSeq\":4,\"statementSeq\":4,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"고등어\",\"stockQuantity\":4,\"stockUnit\":\"kg\",\"stockDate\":\"2023-07-10T00:00:00\",\"status\":\"OUT\"}");
+        inOrder.verify(stub).putStringState("asset5", "{\"assetId\":\"asset5\",\"stockSeq\":5,\"statementSeq\":5,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"새우\",\"stockQuantity\":5,\"stockUnit\":\"kg\",\"stockDate\":\"2023-08-10T00:00:00\",\"status\":\"OUT\"}");
+        inOrder.verify(stub).putStringState("asset6", "{\"assetId\":\"asset6\",\"stockSeq\":6,\"statementSeq\":6,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"오징어\",\"stockQuantity\":6,\"stockUnit\":\"kg\",\"stockDate\":\"2023-09-10T00:00:00\",\"status\":\"OUT\"}");
     }
+
 
     @Nested
     class InvokeCreateAssetTransaction {
