@@ -21,7 +21,7 @@ public class WebStatementResponseDto {
     private String companyName;
     private String myWorkerName;
     private String otherWorkerName;
-    private String itemName;
+    private String productName;
     private String totalPrice;
     private LocalDateTime tradeDate;
     private Statement.StatementStatus statementStatus;
@@ -49,13 +49,13 @@ public class WebStatementResponseDto {
         List<Item> items = statement.getItems();
         if (items.size() != 0) {
             if(items.size() == 1) {
-                response.itemName = items.get(items.size() - 1).getStock().getStockName();
+                response.productName = items.get(items.size() - 1).getStock().getStockName();
             } else {
-                response.itemName = items.get(items.size() - 1).getStock().getStockName() + " 외 " + (items.size() - 1) + "건";
+                response.productName = items.get(items.size() - 1).getStock().getStockName() + " 외 " + (items.size() - 1) + "건";
             }
             response.totalPrice = totalPrice;
         } else {
-            response.itemName = "목록 없음";
+            response.productName = "목록 없음";
             response.totalPrice = "0";
         }
 
