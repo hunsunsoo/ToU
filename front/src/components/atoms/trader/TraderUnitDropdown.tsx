@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 
-const options = ["kg", "개"];
+interface TraderUnitDropdownProps {
+  selectedUnit: string;
+}
 
-const TraderUnitDropdown: React.FC = () => {
+const options = ["kg", "ton", "개", "마리"];
+
+const TraderUnitDropdown: React.FC<TraderUnitDropdownProps> = ({ selectedUnit }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options[0]);
+
+  useEffect(() => {
+    setSelectedOption(selectedUnit || options[0]);
+  }, [selectedUnit]);
+  
+  const handleSelect = (option: string) => {
+    setSelectedOption(option);
+    setIsOpen(false);
+  };
 
   return (
     <DropdownContainer>
@@ -31,6 +44,9 @@ const TraderUnitDropdown: React.FC = () => {
     </DropdownContainer>
   );
 };
+
+
+export default TraderUnitDropdown;
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -77,4 +93,3 @@ const DropdownListItem = styled.li`
   }
 `;
 
-export default TraderUnitDropdown;
