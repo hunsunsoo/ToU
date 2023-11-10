@@ -49,7 +49,7 @@ const ButtonStyles: Record<ButtonSize, ButtonStyle> = {
     borderRadius: "25px",
   },
   Large: {
-    height: "70px",
+    height: "60px",
     width: "100%",
     weight: "",
     fontSize: "30px",

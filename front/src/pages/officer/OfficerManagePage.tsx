@@ -13,7 +13,7 @@ interface paramConfig {
   isMine: boolean;
   myWorkerName: string | null;
   otherWorkerName: string;
-  productName: string;
+  itemName: string;
   startDate: string;
   endDate: string;
   status: string;
@@ -28,59 +28,72 @@ const OfficerManagePage = () => {
     isMine: false,
     myWorkerName: "",
     otherWorkerName: "",
-    productName: "",
+    itemName: "",
     startDate: "",
     endDate: "",
     status: "",
   });
 
-  const onClick = () => {
-
-  }
-
-  // 회사명 검색
-  const handleCompanyName = (value: string) => {
-    setParams((prevParams) => ({ ...prevParams, companyName: value }));
-  };
-
-  // 본사 담당자명 검색
-  const handleMyWorkerName = (value: string) => {
-    setParams((prevParams) => ({ ...prevParams, myWorkerName: value }));
-  };
-
-  // 거래처 담당자명 검색
-  const handleOtherWorkerName = (value: string) => {
-    setParams((prevParams) => ({ ...prevParams, otherWorkerName: value }));
-  };
-
+  const [searchParams, setSearchParams] = useState<paramConfig>({
+    page: 1,
+    type: "req",
+    companyName: "",
+    isMine: false,
+    myWorkerName: "",
+    otherWorkerName: "",
+    itemName: "",
+    startDate: "",
+    endDate: "",
+    status: "",
+  });
+  
   // 공급, 수급 변경
   const handleIsSupply = () => {
     setIsSupply((prevIsSupply) => !prevIsSupply);
 
-    const initialParams: paramConfig = {
-      page: 1,
-      type: isSupply ? "req" : "res",
-      companyName: "",
-      isMine: false,
-      myWorkerName: "",
-      otherWorkerName: "",
-      productName: "",
-      startDate: "",
-      endDate: "",
-      status: "",
-    };
-
-    setParams(initialParams);
-
     if (isSupply) setParams((prevParams) => ({ ...prevParams, type: "res" }));
     else setParams((prevParams) => ({ ...prevParams, type: "req" }));
   }
+  
+  // 회사명 검색
+  const handleCompanyName = (value: string) => {
+    setSearchParams((prevParams) => ({ ...prevParams, companyName: value }));
+  };
 
+  // 본사 담당자명 검색
+  const handleMyWorkerName = (value: string) => {
+    setSearchParams((prevParams) => ({ ...prevParams, myWorkerName: value }));
+  };
+
+  // 거래처 담당자명 검색
+  const handleOtherWorkerName = (value: string) => {
+    setSearchParams((prevParams) => ({ ...prevParams, otherWorkerName: value }));
+  };
+
+  // 거래 상태 드롭다운 검색
   const handleDropdownChange = (selectedValue: string) => {
-    const intValue = parseInt(selectedValue, 10);
-    // 나중에 이 int값을 seq넘버로 쓰면 됨
-    // char 혹은 string으로 올듯
-    console.log(intValue);
+    let unit: string;
+
+    switch (selectedValue) {
+      case "1":
+        unit = "PREPARING";
+        break;
+      case "2":
+        unit = "WAITING";
+        break;
+      case "3":
+        unit = "COMPLETION";
+        break;
+      case "4":
+        unit = "REFUSAL";
+        break;
+      case "5":
+        unit = "DELETE";
+        break;
+      default:
+        unit = "";
+    }
+    setSearchParams((prevParams) => ({ ...prevParams, status: unit }));
   };
 
   const getCurrentTime = () => {
@@ -95,6 +108,21 @@ const OfficerManagePage = () => {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     // return `${year}-${month}-${day}`;
   };
+
+  // 조회 버튼 클릭
+  const searchBtnClick = () => {
+    setParams(searchParams);
+  }
+
+  // 초기화 버튼 클릭
+  const searchBtnReset = () => {
+
+  }
+
+  // PDF 출력
+  const onClick = () => {
+
+  }
 
   return( 
     <MainDiv>
@@ -175,14 +203,14 @@ const OfficerManagePage = () => {
               isImg={false}
               isLarge={false}
               isActive={true}
-              onClick={onClick}>
+              onClick={searchBtnClick}>
               조회
             </OfficerBtn>
             <OfficerBtn
               isImg={false}
               isLarge={false}
               isActive={false}
-              onClick={onClick}>
+              onClick={searchBtnReset}>
               초기화
             </OfficerBtn> 
           </StyledBtn>

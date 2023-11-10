@@ -1,34 +1,56 @@
-import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Toaster } from "react-hot-toast";
 import TraderBillItem from "../../atoms/trader/TraderBillItem";
-import { customAxios } from "../../api/customAxios";
+import { BillType } from "../../../pages/trader/TraderGetListPage";
 
-const TraderBillItemList = () => {
-  const dates = ["2023.10.18", "2023.10.19"]; // 예시 날짜 데이터
+type TraderBillItemListProps = {
+  bills: BillType[];
+};
 
+const TraderBillItemList = ({ bills }: TraderBillItemListProps) => {
   const navigate = useNavigate();
 
-  const handleItemClick = (billId: number) => {
-    navigate(`/m/confirm/${billId}`);
+  // bills 배열을 날짜별로 그룹화하는 함수
+  const groupBillsByDate = (bills: BillType[]) => {
+    const groups: { [key: string]: BillType[] } = {};
+    bills.forEach((bill) => {
+      const date = new Date(bill.tradeDate).toLocaleDateString();
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(bill);
+    });
+    return groups;
   };
 
-  useEffect(() => {
-    customAxios
-      .get(`/statement/worker/list/preparing`)
-      .then((res) => console.log("getPreparing",res));
-  });
+  // 날짜별로 그룹화된 bills
+  const groupedBills = groupBillsByDate(bills);
 
   return (
-    <ItemListContainer>
-      {dates.map((date) => (
-        <div key={date}>
-          <DateHeader>{date}</DateHeader>
-          <TraderBillItem itemText="ㅎㅇ" onClick={() => handleItemClick(2)} />
-          <TraderBillItem itemText="ㅎㅇ" onClick={() => handleItemClick(1)} />
-        </div>
-      ))}
-    </ItemListContainer>
+    <>
+      <Toaster position="top-center" reverseOrder={false} />
+      {Object.keys(groupedBills).length > 0 ? (
+        <ItemListContainer>
+          {Object.entries(groupedBills).map(([date, bills]) => (
+            <div key={date}>
+              <DateHeader>
+                <span>{date}</span>
+              </DateHeader>
+              {bills.map((bill) => (
+                <TraderBillItem
+                  key={bill.statementSeq}
+                  itemText={`${bill.branchName} - ${bill.productsName}`}
+                  onClick={() => navigate(`/m/sign/${bill.statementSeq}`)}
+                />
+              ))}
+            </div>
+          ))}
+        </ItemListContainer>
+      ) : (
+        <NoItemsContainer>거래명세서가 존재하지 않습니다.</NoItemsContainer>
+      )}
+    </>
   );
 };
 
@@ -57,4 +79,9 @@ const DateHeader = styled.div`
     z-index: 1; // 선 위에 텍스트가 오도록 z-index 설정
     position: relative; // z-index 적용을 위해 position 지정
   }
+`;
+
+const NoItemsContainer = styled.div`
+  margin-top: 1rem;
+  text-align: center;
 `;
