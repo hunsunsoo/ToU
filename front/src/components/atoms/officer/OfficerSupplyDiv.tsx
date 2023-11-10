@@ -20,7 +20,6 @@ const OfficerSupplyDiv = () => {
     // 공급자 정보 조회
     customAxios.get(`statement/worker/detail/${billId}`)
     .then((res) => {
-       console.log(res);
        const { registrationNumber, workerName, branchName, branchLocation } = res.data.data.reqInfo;
       
        setSupply({ registrationNumber, workerName, branchName, branchLocation });

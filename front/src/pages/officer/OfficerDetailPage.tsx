@@ -11,11 +11,6 @@ import OfficerDetailTable from "../../components/atoms/officer/OfficerDetailTabl
 import OfficerBillDiv from "../../components/atoms/officer/OfficerBillDiv";
 import html2pdf from 'html2pdf.js';
 
-interface SumDiv {
-  SumKor: string;
-  SumNum: number;
-}
-
 interface Item {
   id: number;
   stockSeq?: number; // 물품 seq번호
@@ -32,7 +27,6 @@ interface Item {
 
 const OfficerDetailPage = () => {
   const { billId } = useParams<{ billId: string }>();
-  const [totalPrice, setTotalPrice] = useState<number>(0);
   const [items, setItems] = useState<Item[]>([]);
 
   useEffect(() => {
@@ -52,19 +46,24 @@ const OfficerDetailPage = () => {
         checkToken();
       });
     };
-    
+
     // 판매용 재고 목록 조회
-    customAxios.get(`statement/worker/detail/${billId}`)
-    .then((res) => {
-      console.log(res);
+    const awaitStockItems = async () => {
+      try {
+        const accessToken = await awaitToken();
+        if (!accessToken) {
+          return;
+        }
 
-      setItems(res.data.data.itemList);
-    })
-    .catch((res) => {
-      console.log(res);
-    })
+        const res = await customAxios.get(`statement/worker/detail/${billId}`);
+        setItems(res.data.data.itemList);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-
+    awaitStockItems();
+    
   }, [])
 
   // 한글로 숫자를 표시하는 함수
@@ -212,10 +211,6 @@ const StyledDivLeft = styled.div`
 
 const StyledDivRight = styled.div`
   min-width: 52%;
-`
-
-const StyledSpan = styled.span`
-  
 `
 
 const StyledSumDiv = styled.div`

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import OfficerInput from '../../atoms/officer/OfficerInput';
 import styled from 'styled-components';
-import OfficerCreateCalendar from '../../atoms/officer/OfficerCreateCalendar';
 
 interface StockItems {
   stockSeq?: number;
@@ -34,7 +33,6 @@ const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stoc
   const handleDropdownChange = (selectedValue: string) => {
     const intValue = parseInt(selectedValue, 10);
     setSelectedBranch(Number(selectedValue));
-    // console.log(intValue);
     if (branchSelectionCallback) {
       branchSelectionCallback(intValue);
     }
@@ -91,25 +89,6 @@ const OfficerInputDiv: React.FC<InputDivProps> = ({ isStockManage, isInput, stoc
       stockUnit: "kg",
     } as StockItems));
   }, []);
-
-  // 날짜 선택
-  const [selectedDate, setSelectedDate] = useState<Date | Date[] | null>(
-    new Date()
-  );
-
-  const handleDateChange = (date: Date | Date[] | null) => {
-    setSelectedDate(date);
-    if (date && updateStock) {
-      setNewStock((prevStock) => ({
-        ...(prevStock as StockItems),
-        stockDate: date as Date,
-      } as StockItems));
-      updateStock({
-        ...(newStock as StockItems),
-        stockDate: date as Date,
-      });
-    }
-  };
 
   if (!isStockManage) { // 재고관리 아닐때(거래명세서생성)
     return (
@@ -231,13 +210,6 @@ const SubDiv = styled.div`
 
 const StyledSpan = styled.span`
   display: inline-block;
-  min-width: 80px;
-  margin: 0 30px 0 20px;
-`
-const StyledSpan2 = styled.span`
-  display: flex;
-  align-items: center;
-  gap: 40px;
   min-width: 80px;
   margin: 0 30px 0 20px;
 `

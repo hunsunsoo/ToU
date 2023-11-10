@@ -1,58 +1,61 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useRecoilValue } from "recoil";
 import { styled } from "styled-components";
+import { UserInfoState } from "../../store/State";
 import OfficerSideBar from "../../components/organisms/officer/OfficerSideBar";
 import OfficerTitle from "../../components/atoms/officer/OfficerTitle";
 import OfficerBtn from "../../components/atoms/officer/OfficerBtn";
 import OfficerInput from '../../components/atoms/officer/OfficerInput';
 import OfficerDocTable from "../../components/atoms/officer/OfficerDocTable";
+import OfficerStockCalendar from '../../components/atoms/officer/OfficerStockCalendar';
+import html2pdf from 'html2pdf.js';
 
 interface paramConfig {
   page: number;
   type: "req" | "res";
-  companyName: string;
+  companyName?: string;
   isMine: boolean;
-  myWorkerName: string | null;
-  otherWorkerName: string;
-  itemName: string;
-  startDate: string;
-  endDate: string;
-  status: string;
+  myWorkerName?: string;
+  otherWorkerName?: string;
+  productName?: string;
+  startDate?: string;
+  endDate?: string;
+  status?: string;
 }
 
 const OfficerManagePage = () => {
+  const userInfo = useRecoilValue(UserInfoState);
+
   const [isSupply, setIsSupply] = useState(true);
   const [params, setParams] = useState<paramConfig>({
     page: 1,
     type: "req",
-    companyName: "",
     isMine: false,
-    myWorkerName: "",
-    otherWorkerName: "",
-    itemName: "",
-    startDate: "",
-    endDate: "",
-    status: "",
   });
 
   const [searchParams, setSearchParams] = useState<paramConfig>({
     page: 1,
-    type: "req",
-    companyName: "",
+    type: isSupply ? "req" : "res",
     isMine: false,
-    myWorkerName: "",
-    otherWorkerName: "",
-    itemName: "",
-    startDate: "",
-    endDate: "",
-    status: "",
+  });
+
+  const resetParams: paramConfig = ({
+    page: 1,
+    type: isSupply ? "req" : "res",
+    isMine: false,
   });
   
   // 공급, 수급 변경
   const handleIsSupply = () => {
     setIsSupply((prevIsSupply) => !prevIsSupply);
 
-    if (isSupply) setParams((prevParams) => ({ ...prevParams, type: "res" }));
-    else setParams((prevParams) => ({ ...prevParams, type: "req" }));
+    if (isSupply) {
+      setParams((prevParams) => ({ ...prevParams, type: "res" }));
+      setSearchParams((prevParams) => ({ ...prevParams, type: "res" }));
+    } else {
+      setParams((prevParams) => ({ ...prevParams, type: "req" }));
+      setSearchParams((prevParams) => ({ ...prevParams, type: "req" }));
+    }
   }
   
   // 회사명 검색
@@ -68,6 +71,11 @@ const OfficerManagePage = () => {
   // 거래처 담당자명 검색
   const handleOtherWorkerName = (value: string) => {
     setSearchParams((prevParams) => ({ ...prevParams, otherWorkerName: value }));
+  };
+
+  // 거래처 담당자명 검색
+  const handleProductName = (value: string) => {
+    setSearchParams((prevParams) => ({ ...prevParams, productName: value }));
   };
 
   // 거래 상태 드롭다운 검색
@@ -96,6 +104,48 @@ const OfficerManagePage = () => {
     setSearchParams((prevParams) => ({ ...prevParams, status: unit }));
   };
 
+  // 시작일 선택
+  const [selectedStartDate, setSelectedStartDate] = useState<Date | Date[] | null>(
+    new Date()
+  );
+    
+  // 시작일 변경
+  const handleStartDateChange = (date: Date | Date[] | null) => {
+    if (date instanceof Date) {
+      const dateString = date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      }).replace(/(\d+)\/(\d+)\/(\d+),?/, '$3-$1-$2 ').split(' ')[0];
+      setSelectedStartDate(date);
+      setSearchParams((prevParams) => ({ ...prevParams, startDate: dateString }));
+    }
+  };
+
+  // 마감일 선택
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | Date[] | null>(
+    new Date()
+  );
+    
+  // 마감일 변경
+  const handleEndDateChange = (date: Date | Date[] | null) => {
+    if (date instanceof Date) {
+      const dateString = date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      }).replace(/(\d+)\/(\d+)\/(\d+),?/, '$3-$1-$2 ').split(' ')[0];
+      setSelectedEndDate(date);
+      setSearchParams((prevParams) => ({ ...prevParams, endDate: dateString }));
+    }
+  };
+
   const getCurrentTime = () => {
     const now = new Date();
     const year = now.getFullYear();
@@ -116,13 +166,23 @@ const OfficerManagePage = () => {
 
   // 초기화 버튼 클릭
   const searchBtnReset = () => {
-
+    setParams(resetParams);
   }
 
-  // PDF 출력
-  const onClick = () => {
+  // pdf 저장 로직
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const handleGeneratePdf = () => {
+    const content = contentRef.current;
 
-  }
+    if (content) {
+      const set = {
+        margin: 10, // 여백을 원하는 값으로 조정
+        filename: 'certificate.pdf',
+      }
+      //@ts-ignore
+      html2pdf(content, set);
+    }
+  };
 
   return( 
     <MainDiv>
@@ -132,13 +192,13 @@ const OfficerManagePage = () => {
           거래명세서 관리
           {isSupply ? (
             <TagBtnDiv onClick={handleIsSupply}>
-              <TagActiveBtn>공급</TagActiveBtn>
-              <TagInActiveBtn>수급</TagInActiveBtn>
+              <TagActiveBtn>납품</TagActiveBtn>
+              <TagInActiveBtn>발주</TagInActiveBtn>
             </TagBtnDiv>
           ) : (
             <TagBtnDiv onClick={handleIsSupply}>
-              <TagInActiveBtn>공급</TagInActiveBtn>
-              <TagActiveBtn>수급</TagActiveBtn>
+              <TagInActiveBtn>납품</TagInActiveBtn>
+              <TagActiveBtn>발주</TagActiveBtn>
             </TagBtnDiv>
           )}
         </OfficerTitle>
@@ -189,13 +249,19 @@ const OfficerManagePage = () => {
           </StyledP>
           <StyledP>
             <StyledSpan>• 품목명</StyledSpan>
-            <OfficerInput size={"underwriter"} />
+            <OfficerInput 
+                  size={"underwriter"}
+                  value={params.productName}
+                  onChange={(e) => handleProductName(e.target.value)}
+                />
           </StyledP>
         </StyledDiv>
         <StyledDiv>
           <StyledP>
             <StyledSpan>• 거래 일시</StyledSpan>
-            <OfficerInput size={"underwriter"} />
+            <OfficerStockCalendar onChange={handleStartDateChange} value={selectedStartDate}/>
+            ~
+            <OfficerStockCalendar onChange={handleEndDateChange} value={selectedEndDate}/>
           </StyledP>
 
           <StyledBtn>
@@ -215,8 +281,13 @@ const OfficerManagePage = () => {
             </OfficerBtn> 
           </StyledBtn>
         </StyledDiv>
-        <OfficerDocTable isSupply={ isSupply } params={params}/>
-        <TimeP>{getCurrentTime()}</TimeP>
+        <div ref={contentRef}>
+          <div style={{display: "flex", justifyContent: "space-between"}}>
+            <div>{userInfo.companyName} {userInfo.branchName}</div>
+            <div>{getCurrentTime()}</div>
+          </div>
+          <OfficerDocTable isSupply={ isSupply } params={params} setParams={setParams}/>
+        </div>
 
         <Line/>
 
@@ -224,7 +295,7 @@ const OfficerManagePage = () => {
             isImg={false}
             isLarge={false}
             isActive={true}
-            onClick={onClick}>
+            onClick={handleGeneratePdf}>
             PDF 출력
           </OfficerBtn>
       </ContentDiv>
@@ -310,8 +381,4 @@ const StyledBtn = styled.div`
   width: 100%;
   margin-left: 150px;
   gap: 40px;
-`
-
-const TimeP = styled.p`
-  margin: 5px 0 5px 85%;
 `
