@@ -32,14 +32,32 @@ public class LedgerController {
         return app.getAllAssets();
 
     }
+
+//    @GetMapping("/asset/unused")
+//    public ResultTemplate getAllUnusedAssets(){
+//
+//    }
+
+//    @GetMapping("/asset/{branchSeq}")
+//    public ResultTemplate getAllAssetsByBranchSeq(){
+//
+//    }
+
+
     @PostMapping("/asset")
     public ResultTemplate createAsset(@RequestBody StockRequestDto request) {
         return app.createAsset(request);
     }
 
-    @DeleteMapping("/asset/{assetId}")
-    public ResultTemplate deleteAssetById(@PathVariable String assetId) {
-        return app.deleteAssetById(assetId);
-    }
+    //used->unused 로
+//    @PutMapping("/asset")
+//    public ResultTemplate updateAsset(){
+//
+//    }
+
+//    @DeleteMapping("/asset/{assetId}")
+//    public ResultTemplate deleteAssetById(@PathVariable String assetId) {
+//        return app.deleteAssetById(assetId);
+//    }
 
 }
