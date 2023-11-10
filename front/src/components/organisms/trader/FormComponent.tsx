@@ -35,19 +35,25 @@ const FormComponent: React.FC<FormComponentProps> = ({
     return dateString.split("T")[0];
   };
 
-  // 숫자를 현지화된 문자열로 변환하는 함수
   const formatNumber = (number: number) => {
     return new Intl.NumberFormat("ko-KR").format(number);
   };
 
-  const showSignatureStatus = status === "READY";
+  let signatureStatusMessage;
+  if (status === "WAITING") {
+    signatureStatusMessage = "공급자 수급자 서명 필요";
+  } else if (status === "PREPARING") {
+    signatureStatusMessage = "수급자 서명 필요";
+  } else if (status === "READY") {
+    signatureStatusMessage = "서명이 완료된 거래명세서입니다.";
+  }
 
   return (
     <Styles>
       <StyledTitle>
         <div>거래명세표</div>
-        {showSignatureStatus && (
-          <SignatureStatus>서명이 완료된 거래명세서입니다.</SignatureStatus>
+        {signatureStatusMessage && (
+          <SignatureStatus>{signatureStatusMessage}</SignatureStatus>
         )}
       </StyledTitle>
 
@@ -145,7 +151,6 @@ const FormComponent: React.FC<FormComponentProps> = ({
       <table>
         <thead>
           <tr>
-            {/* <th>상품코드</th> */}
             <th>품목명</th>
             <th>수량</th>
             <th>단가</th>
@@ -157,7 +162,6 @@ const FormComponent: React.FC<FormComponentProps> = ({
         <tbody>
           {statementData.itemList.map((item, index) => (
             <tr key={index}>
-              {/* <td>{item.stockCode}</td> */}
               <td>{item.stockName}</td>
               <td>
                 {formatNumber(item.stockQuantity)}

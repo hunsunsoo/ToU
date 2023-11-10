@@ -26,9 +26,9 @@ const TraderSignPage = () => {
       console.log(data);
       setStatementData(data);
 
-      if (data.reqInfo === null && data.resInfo === null) {
+      if (data.reqInfo.workerName === null && data.resInfo.workerName === null) {
         setStatus("WAITING");
-      } else if (data.resInfo === null) {
+      } else if (data.resInfo.workerName === null) {
         setStatus("PREPARING");
       } else {
         setStatus("READY");
@@ -40,9 +40,9 @@ const TraderSignPage = () => {
   const renderButtons = () => {
     // "메인으로" 버튼을 렌더링해야 하는 조건을 확인합니다.
     const shouldShowMainButton =
-      (statementData?.reqInfo && statementData?.resInfo) || // 첫 번째 조건: 둘 다 null이 아닐 때
-      statementData?.reqInfo?.branchSeq === currentBranchSeq; // 두 번째 조건: branchSeq가 같을 때
-
+      (statementData?.reqInfo?.workerName && statementData?.resInfo?.workerName) || // 첫 번째 조건: 둘 다 null이 아닐 때
+      (statementData?.reqInfo?.branchSeq === currentBranchSeq && statementData?.reqInfo?.workerName); // 두 번째 조건
+  
     if (shouldShowMainButton) {
       return (
         <TraderBtn size="Large" color="Blue">
@@ -50,9 +50,8 @@ const TraderSignPage = () => {
         </TraderBtn>
       );
     } else if (
-      statementData &&
-      statementData.reqInfo === null &&
-      statementData.resInfo === null
+      statementData?.reqInfo?.workerName === null &&
+      statementData?.resInfo?.workerName === null
     ) {
       // reqInfo와 resInfo가 모두 null일 때 "서명요청" 버튼을 렌더링합니다.
       return (
@@ -62,8 +61,8 @@ const TraderSignPage = () => {
       );
     } else if (
       statementData &&
-      statementData.reqInfo !== null &&
-      statementData.resInfo === null
+      statementData.reqInfo?.workerName !== null &&
+      statementData.resInfo?.workerName === null
     ) {
       // reqInfo는 데이터가 있고 resInfo가 null이면 "거절"과 "서명" 버튼을 렌더링합니다.
       return (
@@ -80,6 +79,7 @@ const TraderSignPage = () => {
     // 그 외의 경우에는 버튼을 렌더링하지 않습니다.
     return null;
   };
+  
 
   // 서명요청 핸들러
   const handleRequestSign = () => {
@@ -165,13 +165,3 @@ const StyledButtonContainer = styled.div`
   position: fixed;
   bottom: 0;
 `;
-
-// <TraderBtn size="LargeR2" color="Blue">
-//     서명
-// </TraderBtn>
-// <TraderBtn size="LargeL1" color="Grey">
-//     거절
-// </TraderBtn>
-// <TraderBtn size="Large" color="Blue">
-//     다음
-// </TraderBtn>

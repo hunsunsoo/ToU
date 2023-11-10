@@ -39,14 +39,13 @@ const TraderStatePage = () => {
             const list = res.data.data.statementList;
             console.log(res.data.data.statementList);
             setStatementList(list);
-            // 초기 렌더링에서는 모든 리스트를 보여줍니다.
             setFilteredStatementList(list);
           })
           .catch((error) => {
             console.error("Error fetching data: ", error);
           });
       } else {
-        setTimeout(checkToken, 1000); // 1초마다 토큰 체크
+        setTimeout(checkToken, 1000);
       }
     };
     checkToken();
