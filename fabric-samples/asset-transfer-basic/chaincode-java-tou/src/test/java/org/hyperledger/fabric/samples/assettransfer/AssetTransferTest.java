@@ -209,7 +209,8 @@ public final class AssetTransferTest {
         when(stub.getStateByRange("", "")).thenReturn(new MockAssetResultsIterator());
 
         String assets = contract.GetAllAssets(ctx);
-
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println(assets);
         assertThat(assets).isEqualTo("["
                 + "{\"assetId\":\"asset1\",\"stockSeq\":1,\"statementSeq\":1,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"멸치\",\"stockQuantity\":1,\"stockUnit\":\"kg\",\"stockDate\":\"2023-04-10T00:00:00\",\"status\":\"OUT\"},"
                 + "{\"assetId\":\"asset2\",\"stockSeq\":2,\"statementSeq\":2,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"문어\",\"stockQuantity\":2,\"stockUnit\":\"kg\",\"stockDate\":\"2023-05-10T00:00:00\",\"status\":\"OUT\"},"
