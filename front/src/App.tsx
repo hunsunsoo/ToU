@@ -26,7 +26,7 @@ import {
   O_DETAIL,
   O_MANAGE,
   O_STOCK,
-  O_NOTICE,
+  O_STOCKLIST,
 } from "./pages/Pages";
 import { ROUTES } from "./commons/Routes";
 import ShopperHeader from "./components/organisms/shopper/ShopperHeader";
@@ -92,7 +92,7 @@ const RoutesContainer = () => {
                 <Route path={ROUTES.OFFICER_CREATE} element={<O_CREATE />} />
                 <Route path={ROUTES.OFFICER_MANAGE} element={<O_MANAGE />} />
                 <Route path={ROUTES.OFFICER_STOCK} element={<O_STOCK />} />
-                <Route path={ROUTES.OFFICER_NOTICE} element={<O_NOTICE />} />
+                <Route path={ROUTES.OFFICER_STOCKLIST} element={<O_STOCKLIST />} />
                 <Route path={ROUTES.OFFICER_DETAIL} element={<O_DETAIL />} />
               </Routes>
             </OfficerContainer>

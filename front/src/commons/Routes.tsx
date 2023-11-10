@@ -24,5 +24,5 @@ export const ROUTES = {
   OFFICER_DETAIL: "/detail/:billId",
   OFFICER_MANAGE: "/manage",
   OFFICER_STOCK: "/stock",
-  OFFICER_NOTICE: "/notice",
+  OFFICER_STOCKLIST: "/stocklist",
 };

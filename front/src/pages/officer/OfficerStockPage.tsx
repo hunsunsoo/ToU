@@ -141,7 +141,7 @@ const OfficerStockPage = () => {
     })
   }
 
-  // 재고 수정(가공)
+  // 재고 수정(생산)
   const handleProduct = () => {
     const body = {
       stockName: newStock?.stockName,
@@ -303,6 +303,7 @@ const ContentDiv = styled.div`
 const Line = styled.div`
   height: 0px;
   border: 1px solid #666;
+  margin-top: 10px;
   margin-bottom: 20px;
 `
 
