@@ -1,12 +1,28 @@
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import TraderSubtitle from "../../components/atoms/trader/TraderSubtitle";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
-import styled from "styled-components";
-import TraderSearchBox from "../../components/organisms/trader/TraderSearchBox";
 import TraderBillItemList from "../../components/organisms/trader/TraderBillItemList";
-import TraderInterCalendarTitle from "../../components/organisms/trader/TraderInterCalendarTitle";
+import { customAxios } from "../../components/api/customAxios";
+
+export type BillType = {
+  statementSeq: number;
+  branchName: string;
+  productsName: string;
+  tradeDate: string;
+};
 
 const TraderGetListPage = () => {
+  const [bills, setBills] = useState<BillType[]>([]);
+
+  useEffect(() => {
+    customAxios.get("/statement/worker/list/preparing").then((res) => {
+      console.log(res);
+      setBills(res.data.data.statementList)
+    });
+  }, []);
+
   return (
     <StyledContainer>
       <StyledHeader>
@@ -14,9 +30,7 @@ const TraderGetListPage = () => {
         <TraderSubtitle subtitle="거래 명세서 불러오기" />
       </StyledHeader>
       <MainPaddingContainer>
-        <TraderSearchBox />
-        <TraderInterCalendarTitle/>
-        <TraderBillItemList />
+        <TraderBillItemList bills={bills} />
       </MainPaddingContainer>
     </StyledContainer>
   );

@@ -18,11 +18,13 @@ interface CompanyInfo {
   branchType: string;
   workerSeq: number;
   workerName: string;
+  branchSeq: number;
 }
 
 interface Item {
   stockSeq: number;
   stockCode: string;
+  stockName: string;
   stockQuantity: number;
   stockUnit: string;
   stockPrice: number;

@@ -57,6 +57,7 @@ export function UseAuth() {
       setTimeout(() => {
         window.location.reload();
       }, 1000);
+      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
