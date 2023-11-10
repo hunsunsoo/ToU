@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck  } from "@fortawesome/sharp-regular-svg-icons";
 import { faSquare } from "@fortawesome/sharp-light-svg-icons";
-
+import toast, { Toaster } from 'react-hot-toast';
 
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import TraderSubtitle from "../../components/atoms/trader/TraderSubtitle";
@@ -88,6 +88,19 @@ const TraderConfirmPage = () => {
   }, [isChecked, isDateChecked, isItemChecked]);
 
 
+      // 삭제 핸들러
+  const handleDelete = () => {
+    customAxios
+      .delete(`/statement/worker/${billId}`)
+      .then((response) => {
+        toast.success("거래명세서가 삭제 되었습니다.");
+      })
+      .catch((error) => {
+        toast.error("삭제에 실패했습니다.");
+      });
+      navigate(`/m/main`);
+  };
+
 
   return (
     <StyledContainer>
@@ -100,6 +113,7 @@ const TraderConfirmPage = () => {
           <StyledInfoTitle>
             <TraderInfoTitle infoTitle="인수자 정보" />
             <StyledSpan>
+              인수자 정보를 확인하세요
               <FontAwesomeIcon
                 icon={icon}
                 size="xl"
@@ -125,6 +139,7 @@ const TraderConfirmPage = () => {
            <StyledInfoTitle>
             <TraderInfoTitle infoTitle="거래 정보" />
             <StyledSpan>
+              거래 일자를 확인하세요
                 <FontAwesomeIcon
                   icon={dateIcon}
                   size="xl"
@@ -143,6 +158,7 @@ const TraderConfirmPage = () => {
           <StyledInfoTitle>
             <TraderInfoTitle infoTitle="품목 정보" />
             <StyledSpan>
+              품목 정보를 확인하세요
               <FontAwesomeIcon
                 icon={tableIcon}
                 size="xl"
@@ -152,15 +168,20 @@ const TraderConfirmPage = () => {
             </StyledSpan>
           </StyledInfoTitle>
           {/* <TraderItemSearchBox/> */}
-          <TraderConfirmTable isItemChecked={isItemChecked} data={statementItemList}/>
+          <StyledTable>
+            <TraderConfirmTable isItemChecked={isItemChecked} data={statementItemList}/>
+          </StyledTable>
         </MainPaddingContainer>
       </StyledBody>
       <StyledFooter>
+        <TraderBtn size="LargeL1" color="Grey" onClick={handleDelete}>
+            삭제
+        </TraderBtn>
         <TraderBtn
-          size="Large"
-          color={isValid ? "Blue" : "Grey"}
+          size="LargeR2"
+          color={isValid ? "Blue" : "BlueDisabled"}
           onClick={() => {
-            navigate(`/m/create/sign/${billId}`);
+            navigate(`/m/sign/${billId}`);
           }}
           disabled={!isValid}
         >
@@ -202,9 +223,14 @@ const StyledInfoTitle = styled.div`
 const StyledSpan = styled.span`
   display: inline-flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   height: 4vh;
-  width: 80px;
+  width: 16.5rem;
   border-bottom: 0.8px solid var(--festie-gray-600, #949494);
+  font-size: 0.9rem;
+  color: gray;
 `;
 
+const StyledTable = styled.div`
+  margin-top: 1rem;
+`

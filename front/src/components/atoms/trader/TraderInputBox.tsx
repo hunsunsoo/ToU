@@ -96,7 +96,6 @@ const StyledInput = styled.input<InputProps>`
     font-size: 16px;
     cursor: not-allowed;
     background-color: #f2f2f2;
-    // opacity: 0.5;
   `}
 
 `;
