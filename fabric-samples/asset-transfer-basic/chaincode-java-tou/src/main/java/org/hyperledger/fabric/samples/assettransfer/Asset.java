@@ -4,7 +4,6 @@
 
 package org.hyperledger.fabric.samples.assettransfer;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 import org.hyperledger.fabric.contract.annotation.DataType;
