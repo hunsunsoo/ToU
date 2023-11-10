@@ -22,8 +22,13 @@ public final class AssetTest {
         @Test
         public void isSymmetric() {
             LocalDateTime now = LocalDateTime.now();
-            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "IN", "UNUSED");
-            Asset assetB = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "IN", "UNUSED");
+            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1",
+                    "Branch1", "Contact1", "Stock1", 100L, "Unit1",
+                    now, "IN", "UNUSED");
+
+            Asset assetB = new Asset("asset1", 1L, 1L, 1L, "Location1",
+                    "Branch1", "Contact1", "Stock1", 100L, "Unit1",
+                    now, "IN", "UNUSED");
 
             assertThat(assetA).isEqualTo(assetB);
             assertThat(assetB).isEqualTo(assetA);

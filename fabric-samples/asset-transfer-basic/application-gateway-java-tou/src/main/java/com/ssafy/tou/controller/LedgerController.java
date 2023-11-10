@@ -19,7 +19,7 @@ public class LedgerController {
 
     @PostMapping("/init")
     public ResultTemplate<?> initLedger() throws Exception {
-        return ledgerService.init();
+        return app.run();
     }
 
 

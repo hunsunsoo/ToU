@@ -26,6 +26,7 @@ import org.hyperledger.fabric.client.identity.Identity;
 import org.hyperledger.fabric.client.identity.Signer;
 import org.hyperledger.fabric.client.identity.Signers;
 import org.hyperledger.fabric.client.identity.X509Identity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -63,24 +64,24 @@ public class App {
     private final String assetId = "asset" + Instant.now().toEpochMilli();
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void main(final String[] args) throws Exception {
-        // The gRPC client connection should be shared by all Gateway connections to
-        // this endpoint.
-        var channel = newGrpcConnection();
-
-        var builder = Gateway.newInstance().identity(newIdentity()).signer(newSigner()).connection(channel)
-                // Default timeouts for different gRPC calls
-                .evaluateOptions(options -> options.withDeadlineAfter(5, TimeUnit.SECONDS))
-                .endorseOptions(options -> options.withDeadlineAfter(15, TimeUnit.SECONDS))
-                .submitOptions(options -> options.withDeadlineAfter(5, TimeUnit.SECONDS))
-                .commitStatusOptions(options -> options.withDeadlineAfter(1, TimeUnit.MINUTES));
-
-        try (var gateway = builder.connect()) {
-            new App(gateway).run();
-        } finally {
-            channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
-        }
-    }
+//    public static void main(final String[] args) throws Exception {
+//        // The gRPC client connection should be shared by all Gateway connections to
+//        // this endpoint.
+//        var channel = newGrpcConnection();
+//
+//        var builder = Gateway.newInstance().identity(newIdentity()).signer(newSigner()).connection(channel)
+//                // Default timeouts for different gRPC calls
+//                .evaluateOptions(options -> options.withDeadlineAfter(5, TimeUnit.SECONDS))
+//                .endorseOptions(options -> options.withDeadlineAfter(15, TimeUnit.SECONDS))
+//                .submitOptions(options -> options.withDeadlineAfter(5, TimeUnit.SECONDS))
+//                .commitStatusOptions(options -> options.withDeadlineAfter(1, TimeUnit.MINUTES));
+//
+//        try (var gateway = builder.connect()) {
+//            new App(gateway).run();
+//        } finally {
+//            channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
+//        }
+//    }
 
     public static ManagedChannel newGrpcConnection() throws IOException, CertificateException {
         var tlsCertReader = Files.newBufferedReader(TLS_CERT_PATH);
@@ -111,6 +112,7 @@ public class App {
         }
     }
 
+    @Autowired
     public App(final Gateway gateway) {
         // Get a network instance representing the channel where the smart contract is
         // deployed.
@@ -121,9 +123,10 @@ public class App {
 
     }
 
-    public void run() throws GatewayException, CommitException {
+    public ResultTemplate run() throws GatewayException, CommitException {
         // Initialize a set of asset data on the ledger using the chaincode 'InitLedger' function.
         initLedger();
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(null).build();
 
         // Return all the current assets on the ledger.
 //		getAllAssets();

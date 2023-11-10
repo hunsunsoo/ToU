@@ -29,11 +29,11 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class LedgerService {
 
-    public ResultTemplate<?> init() throws Exception {
-        App.main(null);
-
-        return ResultTemplate.builder().status(200).data(null).build();
-    }
+//    public ResultTemplate<?> init() throws Exception {
+//        App.main(null);
+//
+//        return ResultTemplate.builder().status(200).data(null).build();
+//    }
 
 
 }
