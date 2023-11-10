@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { BiHomeAlt } from 'react-icons/bi';
 import { customAxios } from '../../api/customAxios';
@@ -15,6 +16,7 @@ interface StockList {
 
 // 재고 현황 조회
 const OfiicerStockTable = () => {
+  const navigate = useNavigate();
   const [stockItems, setStockItems] = useState<StockList[]>([]);
   const [branchSeq, setBranchSeq] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -54,8 +56,8 @@ const OfiicerStockTable = () => {
         null
       ) : (
         <>
-          <StyledTitle>
-            <BiHomeAlt color="#545A96" size={"30px"} style={{marginRight: "10px"}}/>재고 현황
+          <StyledTitle onClick={() => navigate('/stocklist')}>
+            <BiHomeAlt color="#545A96" size={"30px"} style={{marginRight: "10px"}} />재고 현황
           </StyledTitle>
           <StyledTable>
             <thead>
@@ -102,6 +104,7 @@ const StyledTitle = styled.div`
   font-size: 20px;
   font-weight: bold;
   color: #545A96;
+  cursor: pointer;
 `
 
 const StyledTable = styled.table`
