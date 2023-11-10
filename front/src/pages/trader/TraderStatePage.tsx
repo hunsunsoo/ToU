@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import TraderBtn from "../../components/atoms/trader/TraderBtn";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpToLine } from "@fortawesome/sharp-light-svg-icons";
+
+// import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import TraderRoleDropdown from "../../components/atoms/trader/TraderRoleDropdown";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
@@ -12,7 +15,7 @@ import { customAxios } from "../../components/api/customAxios";
 
 const TraderStatePage = () => {
   const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState("전체");
   const [statementList, setStatementList] = useState<
     TraderStateTableProps["statementList"]
@@ -21,8 +24,16 @@ const TraderStatePage = () => {
     TraderStateTableProps["statementList"]
   >([]);
 
-  const handleMainButtonClick = () => {
-    navigate("/m/main");
+  // const handleMainButtonClick = () => {
+  //   navigate("/m/main");
+  // };
+
+  // 맨 위로 스크롤하는 함수
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // 부드러운 스크롤 효과
+    });
   };
 
   useEffect(() => {
@@ -96,11 +107,16 @@ const TraderStatePage = () => {
         </StyledBody>
       </MainPaddingContainer>
 
-      <StyledFooter>
+      {/* <StyledFooter>
         <TraderBtn size="Large" color="Blue" onClick={handleMainButtonClick}>
           메인으로
         </TraderBtn>
-      </StyledFooter>
+      </StyledFooter> */}
+
+      {/* 맨 위로 스크롤하는 버튼 추가 */}
+      <StyledScrollToTopButton onClick={scrollToTop}>
+        <FontAwesomeIcon icon={faUpToLine} />
+      </StyledScrollToTopButton>
     </StyledContainer>
   );
 };
@@ -110,31 +126,45 @@ export default TraderStatePage;
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 188px);
 `;
 
 const StyledBody = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 60px;
+  margin-top: 139.5px;
 `;
 
 const StyledHeader = styled.div`
   width: 100%;
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 12;
   background-color: #fff;
 `;
 
-const StyledFooter = styled.div`
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-`;
+// const StyledFooter = styled.div`
+//   position: fixed;
+//   bottom: 0;
+//   width: 100%;
+// `;
 
 const StyledDiv = styled.div`
   text-align: center;
   margin: 1rem 0;
   font-weight: bold;
+`;
+
+// 맨 위로 스크롤하는 버튼의 스타일
+const StyledScrollToTopButton = styled.button`
+  position: fixed; // 버튼을 화면에 고정
+  bottom: 20px; // 아래쪽에서 20px 떨어진 위치에
+  right: 20px; // 오른쪽에서 20px 떨어진 위치에
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #3e41ff; // 배경색 설정
+  color: #ffffffff; // 글자색 설정
+  border: none; // 테두리 없음
+  border-radius: 50%;
+  cursor: pointer; // 커서 모양 변경
+  z-index: 100; // z-index를 통해 다른 요소들 위에 오도록 설정
 `;

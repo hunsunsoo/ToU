@@ -69,6 +69,7 @@ const TraderSectionPage = () => {
   useEffect(() => {
     if (selectedBranchSeq) {
       customAxios.get(`/statement/worker/list/completion`).then((res) => {
+
         const statements: Statement[] = res.data.data.statementList;
 
         const filteredStatements = statements.filter(

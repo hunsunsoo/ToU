@@ -26,7 +26,10 @@ const TraderSignPage = () => {
       console.log(data);
       setStatementData(data);
 
-      if (data.reqInfo.workerName === null && data.resInfo.workerName === null) {
+      if (
+        data.reqInfo.workerName === null &&
+        data.resInfo.workerName === null
+      ) {
         setStatus("WAITING");
       } else if (data.resInfo.workerName === null) {
         setStatus("PREPARING");
@@ -40,9 +43,11 @@ const TraderSignPage = () => {
   const renderButtons = () => {
     // "메인으로" 버튼을 렌더링해야 하는 조건을 확인합니다.
     const shouldShowMainButton =
-      (statementData?.reqInfo?.workerName && statementData?.resInfo?.workerName) || // 첫 번째 조건: 둘 다 null이 아닐 때
-      (statementData?.reqInfo?.branchSeq === currentBranchSeq && statementData?.reqInfo?.workerName); // 두 번째 조건
-  
+      (statementData?.reqInfo?.workerName &&
+        statementData?.resInfo?.workerName) || // 첫 번째 조건: 둘 다 null이 아닐 때
+      (statementData?.reqInfo?.branchSeq === currentBranchSeq &&
+        statementData?.reqInfo?.workerName); // 두 번째 조건
+
     if (shouldShowMainButton) {
       return (
         <TraderBtn size="Large" color="Blue">
@@ -55,9 +60,14 @@ const TraderSignPage = () => {
     ) {
       // reqInfo와 resInfo가 모두 null일 때 "서명요청" 버튼을 렌더링합니다.
       return (
-        <TraderBtn size="Large" color="Blue" onClick={handleRequestSign}>
-          서명요청
-        </TraderBtn>
+        <>
+          <TraderBtn size="LargeL1" color="Grey" onClick={handleDelete}>
+            삭제
+          </TraderBtn>
+          <TraderBtn size="LargeR2" color="Blue" onClick={handleRequestSign}>
+            서명요청
+          </TraderBtn>
+        </>
       );
     } else if (
       statementData &&
@@ -79,7 +89,6 @@ const TraderSignPage = () => {
     // 그 외의 경우에는 버튼을 렌더링하지 않습니다.
     return null;
   };
-  
 
   // 서명요청 핸들러
   const handleRequestSign = () => {
@@ -118,7 +127,7 @@ const TraderSignPage = () => {
   // 거절 핸들러
   const handleRefusal = () => {
     const requestBody = {
-      statementSeq: statementData?.statementSeq, // statementData가 유효한 경우 statementSeq 값을 사용
+      statementSeq: statementData?.statementSeq,
     };
 
     customAxios
@@ -130,6 +139,18 @@ const TraderSignPage = () => {
         toast.error("거절에 실패했습니다.");
       });
   };
+
+    // 삭제 핸들러
+    const handleDelete = () => {
+      customAxios
+        .delete(`/statement/worker/${billId}`)
+        .then((response) => {
+          toast.success("거래명세서가 삭제 되었습니다.");
+        })
+        .catch((error) => {
+          toast.error("삭제에 실패했습니다.");
+        });
+    };
 
   if (!statementData) return <div>Loading...</div>;
 

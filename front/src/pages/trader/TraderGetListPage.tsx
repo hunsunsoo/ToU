@@ -21,7 +21,7 @@ const TraderGetListPage = () => {
       console.log(res);
       setBills(res.data.data.statementList)
     });
-  });
+  }, []);
 
   return (
     <StyledContainer>
