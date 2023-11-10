@@ -38,4 +38,9 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
                    + "limit 5")
     List<Stock> findByBranchLimit5(@Param("branchSeq") Long branchSeq);
 
+    @Query(value = "select s from Stock s "
+            +"where s.branch.branchSeq = :branchSeq and s.useStatus = 'UNUSED' "
+            + "order by s.stockSeq ")
+    List<Stock> findByBranchUnused(@Param("branchSeq") Long branchSeq);
+
 }

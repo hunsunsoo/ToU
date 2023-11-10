@@ -36,6 +36,11 @@ public class ClientController {
         return clientService.getBranchListOfCompany(companySeq, worker);
     }
 
+    @GetMapping("/worker/branch/list")
+    public ResultTemplate<?> getBranchListByMyCompany(@AuthenticationPrincipal UserDetails worker) {
+        return clientService.getBranchListOfMyCompany(worker);
+    }
+
     @PostMapping("/login")
     public ResultTemplate<?> login(@RequestBody LoginRequestDto request) {
         return clientService.login(request);
