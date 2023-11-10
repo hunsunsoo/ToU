@@ -152,6 +152,29 @@ public class ClientService {
         return ResultTemplate.builder().status(HttpStatus.OK.value()).data(responseDto).build();
     }
 
+    public ResultTemplate<?> getBranchListOfMyCompany(UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Company myCompany = reqWorker.getCompany();
+
+        List<BranchResponseDto> branchList = branchRepository.findByCompanySeq(myCompany.getCompanySeq())
+                .stream()
+                .map(branch -> {
+                    return BranchResponseDto.builder().branchName(branch.getBranchName())
+                            .branchSeq(branch.getBranchSeq()).build();
+                }).collect(Collectors.toList());
+
+        BranchListResponseDto responseDto = BranchListResponseDto.builder()
+                .branchList(branchList)
+                .build();
+
+        return ResultTemplate.builder().status(HttpStatus.OK.value()).data(responseDto).build();
+    }
+
+
+
     @Transactional
     public ResultTemplate<?> login(LoginRequestDto request) {
         Worker worker = workerRepository.findByLoginId(request.getLoginId())
