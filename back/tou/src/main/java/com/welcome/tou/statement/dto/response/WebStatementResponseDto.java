@@ -51,7 +51,7 @@ public class WebStatementResponseDto {
             if(items.size() == 1) {
                 response.itemName = items.get(items.size() - 1).getStock().getStockName();
             } else {
-                response.itemName = items.get(items.size() - 1).getStock().getStockName() + " 외" + (items.size() - 1) + "건";
+                response.itemName = items.get(items.size() - 1).getStock().getStockName() + " 외 " + (items.size() - 1) + "건";
             }
             response.totalPrice = totalPrice;
         } else {
