@@ -51,7 +51,7 @@ public class StatementQueryRepository {
     }
 
     private BooleanExpression statusEq(Statement.StatementStatus status) {
-        return status != null ? statement.statementStatus.ne(Statement.StatementStatus.DELETE).and(statement.statementStatus.eq(status)) : null;
+        return status != null ? statement.statementStatus.ne(Statement.StatementStatus.DELETE).and(statement.statementStatus.eq(status)) : statement.statementStatus.ne(Statement.StatementStatus.DELETE);
     }
 
     private BooleanExpression isMine(boolean isMine, String type, Long workerSeq){
