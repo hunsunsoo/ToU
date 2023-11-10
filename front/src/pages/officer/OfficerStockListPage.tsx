@@ -2,20 +2,20 @@ import { styled } from "styled-components";
 import OfficerSideBar from "../../components/organisms/officer/OfficerSideBar";
 import OfficerTitle from "../../components/atoms/officer/OfficerTitle";
 
-const OfficerNoticePage = () => {
+const OfficerStockListPage = () => {
   return (
     <MainDiv>
       <OfficerSideBar/>
       <ContentDiv>
         <OfficerTitle>
-          공지사항
+          재고 목록 조회
         </OfficerTitle>
       </ContentDiv>
     </MainDiv>
   )
 }
 
-export default OfficerNoticePage
+export default OfficerStockListPage
 
 const MainDiv = styled.div`
   display: grid;
