@@ -12,6 +12,7 @@ const TraderMainPage = () => {
         <TraderMainCount />
         <TraderMainPageBtn />
       </MainPaddingContainer>
+      <StyledFooter>Contact : 어쩌구 저쩌구</StyledFooter>
     </StyledContainer>
   );
 };
@@ -21,4 +22,8 @@ export default TraderMainPage;
 const StyledContainer = styled.div`
   background-color: #ecf4ff;
   height: 100vh;
+`;
+const StyledFooter = styled.div`
+  text-align: center;
+  color: #ccc;
 `;

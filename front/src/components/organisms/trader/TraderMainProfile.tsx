@@ -28,7 +28,7 @@ export default TraderMainProfile;
 const StyledMainContainer = styled.div`
   padding: 0 1rem;
   height: 100%;
-  height: 28vh;
+  height: 24vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
