@@ -4,7 +4,6 @@
 
 package org.hyperledger.fabric.samples.assettransfer;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,12 +55,12 @@ public final class AssetTransfer implements ContractInterface {
     public void InitLedger(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
 
-        CreateAsset(ctx, "asset1", 1L, 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", LocalDateTime.of(2023, 4, 10, 0, 0), "OUT", "UNUSED");
-        CreateAsset(ctx, "asset2", 2L, 2L, 1L, "산본", "산본공장", "010-7387-7808", "문어", 2L, "kg", LocalDateTime.of(2023, 5, 10, 0, 0), "OUT", "UNUSED");
-        CreateAsset(ctx, "asset3", 3L, 3L, 1L, "산본", "산본공장", "010-7387-7808", "연어", 3L, "kg", LocalDateTime.of(2023, 6, 10, 0, 0), "OUT", "UNUSED");
-        CreateAsset(ctx, "asset4", 4L, 4L, 1L, "산본", "산본공장", "010-7387-7808", "고등어", 4L, "kg", LocalDateTime.of(2023, 7, 10, 0, 0), "OUT", "UNUSED");
-        CreateAsset(ctx, "asset5", 5L, 5L, 1L, "산본", "산본공장", "010-7387-7808", "새우", 5L, "kg", LocalDateTime.of(2023, 8, 10, 0, 0), "OUT", "UNUSED");
-        CreateAsset(ctx, "asset6", 6L, 6L, 1L, "산본", "산본공장", "010-7387-7808", "오징어", 6L, "kg", LocalDateTime.of(2023, 9, 10, 0, 0), "OUT", "UNUSED");
+        CreateAsset(ctx, "asset1", 1L, 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", "2023-04-10T00:00:00", "OUT", "UNUSED");
+        CreateAsset(ctx, "asset2", 2L, 2L, 1L, "산본", "산본공장", "010-7387-7808", "문어", 2L, "kg", "2023-05-10T00:00:00", "OUT", "UNUSED");
+        CreateAsset(ctx, "asset3", 3L, 3L, 1L, "산본", "산본공장", "010-7387-7808", "연어", 3L, "kg", "2023-06-10T00:00:00", "OUT", "UNUSED");
+        CreateAsset(ctx, "asset4", 4L, 4L, 1L, "산본", "산본공장", "010-7387-7808", "고등어", 4L, "kg", "2023-07-10T00:00:00", "OUT", "UNUSED");
+        CreateAsset(ctx, "asset5", 5L, 5L, 1L, "산본", "산본공장", "010-7387-7808", "새우", 5L, "kg", "2023-08-10T00:00:00", "OUT", "UNUSED");
+        CreateAsset(ctx, "asset6", 6L, 6L, 1L, "산본", "산본공장", "010-7387-7808", "오징어", 6L, "kg", "2023-09-10T00:00:00", "OUT", "UNUSED");
     }
 
     /**
@@ -72,7 +71,7 @@ public final class AssetTransfer implements ContractInterface {
     public Asset CreateAsset(final Context ctx, final String assetId, final Long stockSeq, final Long statementSeq,
                              final Long branchSeq, final String branchLocation, final String branchName,
                              final String branchContact, final String stockName, final Long stockQuantity,
-                             final String stockUnit, final LocalDateTime stockDate, final String inoutStatus, final String useStatus) {
+                             final String stockUnit, final String stockDate, final String inoutStatus, final String useStatus) {
         ChaincodeStub stub = ctx.getStub();
 
         if (AssetExists(ctx, assetId)) {

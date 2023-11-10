@@ -4,7 +4,6 @@
 
 package org.hyperledger.fabric.samples.assettransfer;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 import org.hyperledger.fabric.contract.annotation.DataType;
@@ -46,7 +45,7 @@ public final class Asset {
     private final String stockUnit;
 
     @Property()
-    private final LocalDateTime stockDate;
+    private final String stockDate;
 
     @Property()
     private final String inoutStatus;
@@ -95,7 +94,7 @@ public final class Asset {
         return stockUnit;
     }
 
-    public LocalDateTime getStockDate() {
+    public String getStockDate() {
         return stockDate;
     }
 
@@ -107,6 +106,7 @@ public final class Asset {
         return useStatus;
     }
 
+
     public Asset(@JsonProperty("assetId") final String assetId, @JsonProperty("stockSeq") final Long stockSeq,
                  @JsonProperty("statementSeq") final Long statementSeq, @JsonProperty("branchSeq") final Long branchSeq,
                  @JsonProperty("branchLocation") final String branchLocation, @JsonProperty("branchName") final String branchName,
@@ -114,6 +114,7 @@ public final class Asset {
                  @JsonProperty("stockQuantity") final Long stockQuantity, @JsonProperty("stockUnit") final String stockUnit,
                  @JsonProperty("stockDate") final LocalDateTime stockDate, @JsonProperty("inoutStatus") final String inoutStatus,
                  @JsonProperty("useStatus") final String useStatus) {
+
         this.assetId = assetId;
         this.stockSeq = stockSeq;
         this.statementSeq = statementSeq;
@@ -135,7 +136,7 @@ public final class Asset {
                 + "Asset{"
                 + "assetId=" + assetId + ", stockSeq=" + stockSeq + ", statementSeq=" + statementSeq + ", branchSeq=" + branchSeq + ", branchLocation='" + branchLocation + '\''
                 + ", branchName='" + branchName + '\'' + ", branchContact='" + branchContact + '\'' + ", stockName='" + stockName + '\'' + ", stockQuantity=" + stockQuantity + ", stockUnit='" + stockUnit + '\''
-                + ", stockDate=" + stockDate + ", inoutStatus='" + inoutStatus + '\'' + ", useStatus='" + useStatus + '\'' + '}';
+                + ", stockDate='" + stockDate + '\'' + ", inoutStatus='" + inoutStatus + '\'' + ", useStatus='" + useStatus + '\'' + '}';
     }
 
     @Override
