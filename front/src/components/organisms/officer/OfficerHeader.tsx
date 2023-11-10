@@ -10,6 +10,7 @@ const OfficerHeader: React.FC = () => {
   const logout = () => {
     // 토큰 삭제
     localStorage.removeItem("recoil-persist");
+    navigate('/');
     window.location.reload();
   };
 
