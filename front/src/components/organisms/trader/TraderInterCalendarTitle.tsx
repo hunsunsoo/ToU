@@ -2,13 +2,22 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import TraderInterCalendar from "../../atoms/trader/TraderInterCalendar";
 
-const TraderInterCalendarTitle = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | Date[] | null>(
-    new Date()
-  );
+// onDateChange에 대한 타입을 명시해야 합니다.
+// Date 객체 또는 null을 인자로 받는 함수 타입입니다.
+interface TraderInterCalendarTitleProps {
+  onDateChange: (date: Date | null) => void;
+}
 
-  const handleDateChange = (date: Date | Date[] | null) => {
+const TraderInterCalendarTitle: React.FC<TraderInterCalendarTitleProps> = ({
+  onDateChange,
+}) => {
+  // useState에 제네릭 타입을 추가합니다.
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+
+  // handleDateChange의 매개변수에 대한 타입을 지정합니다.
+  const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
+    onDateChange(date);
   };
 
   return (
@@ -22,8 +31,8 @@ const TraderInterCalendarTitle = () => {
 export default TraderInterCalendarTitle;
 
 const Container = styled.div`
-  padding-top:10px;
-  padding-bottom:20px;
+  padding-top: 10px;
+  padding-bottom: 20px;
   width: 100%;
   display: flex;
   align-items: center;

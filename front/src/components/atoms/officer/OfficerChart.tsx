@@ -48,6 +48,7 @@ const OfficerChart = () => {
     };
   checkToken();
   }, [branchSeq]); // branchSeq 값이 변경될 때마다 useEffect를 실행합니다.
+  
   return (
     <StyledContainer>
       <StyledTitle>
