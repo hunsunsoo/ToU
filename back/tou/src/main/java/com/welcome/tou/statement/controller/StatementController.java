@@ -88,4 +88,10 @@ public class StatementController {
                                              @AuthenticationPrincipal UserDetails worker) {
         return statementService.refuseStatement(request, worker);
     }
+
+    @DeleteMapping("/worker/{statementSeq}")
+    public ResultTemplate<?> refuseStatement(@PathVariable Long statementSeq,
+                                             @AuthenticationPrincipal UserDetails worker) {
+        return statementService.deleteStatement(statementSeq, worker);
+    }
  }
