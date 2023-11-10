@@ -33,7 +33,7 @@ const TraderLoginPage = () => {
     <StyledMainPaddingContainer>
       <LoginDiv>
         <StyledDiv>
-          <TextSpan> I D</TextSpan>
+          <TextSpan> ID</TextSpan>
           <StyleInput value={id} onChange={(e) => setId(e.target.value)} />
         </StyledDiv>
 
@@ -45,8 +45,8 @@ const TraderLoginPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </StyledDiv>
+        <Button onClick={handleLogin}>로그인</Button>
       </LoginDiv>
-      <button onClick={handleLogin}>로그인</button>
     </StyledMainPaddingContainer>
   );
 };
@@ -54,7 +54,13 @@ const TraderLoginPage = () => {
 export default TraderLoginPage;
 
 const StyledMainPaddingContainer = styled(MainPaddingContainer)`
-  background-color: #eff7ff;
+  background-image: linear-gradient(
+    0deg,
+    #6ea8ff 0%,
+    #acddff 68.85%,
+    #c8f5ff 100%
+  );
+
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -63,13 +69,19 @@ const StyledMainPaddingContainer = styled(MainPaddingContainer)`
 const LoginDiv = styled.div`
   display: flex;
   flex-direction: column;
-  height: 8%;
-  margin-left: 20%;
-  margin-top: 1%;
+  align-items: center;
 `;
 
 const StyledDiv = styled.div`
   display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  margin: 1rem 0;
+  height: 3rem;
+  width: 80%;
+  text-align: center;
+  border-radius: 100px;
 `;
 
 const TextSpan = styled.span`
@@ -78,6 +90,19 @@ const TextSpan = styled.span`
 `;
 
 const StyleInput = styled.input`
-  border: 1px solid #d9d9d9;
   width: 100%;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  height: 3rem;
+`;
+
+const Button = styled.button`
+  background-color: #fff;
+  border: none;
+  width: 80%;
+  height: 3rem;
+  margin: 1rem 0;
+  border-radius: 100px;
+  color: #3a89ff;
+  font-size: 1.4rem;
 `;
