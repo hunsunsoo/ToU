@@ -59,39 +59,39 @@ const TraderSectionPage = () => {
 
   useEffect(() => {
     customAxios
-      .get(`/statement/worker/list/completion`)
+      .get(`/client/worker/branch/list`)
       .then((res) => {
-        // setBranchs(res.data.data.branchList);
-        console.log(res)
+        console.log(res.data.data)
+        setBranchs(res.data.data.branchList);
       });
   }, [currentCompanySeq]);
 
-  // useEffect(() => {
-  //   if (selectedBranchSeq) {
-  //     customAxios.get(`/statement/worker/list/completion`).then((res) => {
-  //       const statements: Statement[] = res.data.data.statementList;
+  useEffect(() => {
+    if (selectedBranchSeq) {
+      customAxios.get(`/statement/worker/list/completion`).then((res) => {
+        const statements: Statement[] = res.data.data.statementList;
 
-  //       const filteredStatements = statements.filter(
-  //         (statement) =>
-  //           statement.reqBranchSeq === selectedBranchSeq ||
-  //           statement.resBranchSeq === selectedBranchSeq
-  //       );
+        const filteredStatements = statements.filter(
+          (statement) =>
+            statement.reqBranchSeq === selectedBranchSeq ||
+            statement.resBranchSeq === selectedBranchSeq
+        );
 
-  //       setTableData(
-  //         filteredStatements.map((statement) => ({
-  //           companyName: res.data.data.companyName,
-  //           productName: statement.productName,
-  //           tradeDate: statement.tradeDate,
-  //           workerName:
-  //             statement.reqBranchSeq === selectedBranchSeq
-  //               ? statement.resBranchName
-  //               : statement.reqBranchName,
-  //           statementSeq: statement.statementSeq,
-  //         }))
-  //       );
-  //     });
-  //   }
-  // }, [selectedBranchSeq]);
+        setTableData(
+          filteredStatements.map((statement) => ({
+            companyName: res.data.data.companyName,
+            productName: statement.productName,
+            tradeDate: statement.tradeDate,
+            workerName:
+              statement.reqBranchSeq === selectedBranchSeq
+                ? statement.resBranchName
+                : statement.reqBranchName,
+            statementSeq: statement.statementSeq,
+          }))
+        );
+      });
+    }
+  }, [selectedBranchSeq]);
 
   return (
     <StyledContainer>
