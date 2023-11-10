@@ -5,44 +5,36 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan  } from "@fortawesome/sharp-light-svg-icons";
 
 interface TraderConfirmTableProps {
-    isEditable: boolean;
+  isItemChecked: boolean;
+    data: Array<{ id: number; category: string; quantity: number; price: number; }>;
   } 
 
-const TraderConfirmTable: React.FC<TraderConfirmTableProps> = ({ isEditable }) => {
-  const initialData = [
-    { id: 1, category: '키즈피자', quantity: 10, price: 1000 },
-    { id: 2, category: '키즈피자', quantity: 20, price: 2000 },
-    { id: 3, category: '키즈피자', quantity: 3000, price: 3000000 }
-  ];
-  
-  const [data, setData] = useState(initialData);
+const TraderConfirmTable: React.FC<TraderConfirmTableProps> = ({ isItemChecked ,data }) => {
+
+  const [tableData, setTableData] = useState(data);
 
   const handleDelete = (id: number) => {
     const newData = data.filter(item => item.id !== id);
-    setData(newData);
+    setTableData(newData);
   };
   
 
   return (
     <div>
-     <StyledTable isEditable={isEditable}>
+     <StyledTable isItemChecked={isItemChecked}>
         <thead>
           <tr>
             <th>품목</th>
             <th>수량</th>
             <th>단가</th>
-            {isEditable && <th></th>}
           </tr>
         </thead>
         <tbody>
           {data.map(item => (
             <tr key={item.id}>
-              <td><input type="text" defaultValue={item.category} disabled={!isEditable} /></td>
-              <td><input type="number" defaultValue={item.quantity} disabled={!isEditable} /></td>
-              <td><input type="number" defaultValue={item.price} disabled={!isEditable} /></td>
-              {isEditable && (
-                <td><FontAwesomeIcon icon={faTrashCan} onClick={() => handleDelete(item.id)}/></td>
-              )}
+              <td><input type="text" defaultValue={item.category} disabled={true} /></td>
+              <td><input type="number" defaultValue={item.quantity} disabled={true} /></td>
+              <td><input type="number" defaultValue={item.price} disabled={true} /></td>
             </tr>
           ))}
         </tbody>
@@ -54,7 +46,7 @@ const TraderConfirmTable: React.FC<TraderConfirmTableProps> = ({ isEditable }) =
 export default TraderConfirmTable;
 
 
-const StyledTable = styled.table<{ isEditable: boolean }>`
+const StyledTable = styled.table<{ isItemChecked: boolean }>`
 
 
   width: 100%;
@@ -80,7 +72,7 @@ const StyledTable = styled.table<{ isEditable: boolean }>`
     padding: 4px 10px;
     border-bottom: 1px solid #ccc;
     text-align: center;
-    background-color: ${props => props.isEditable ? '#ffffff' : '#F5F5F5'};
+    background-color: ${props => props.isItemChecked ? '#F5F5F5' : '#ffffff'};
   }
 
   th {
@@ -98,7 +90,7 @@ const StyledTable = styled.table<{ isEditable: boolean }>`
     padding: 6px 10px;
     border: none;
     box-sizing: border-box;
-    background-color: ${props => props.isEditable ? '#ffffff' : '#F5F5F5'}; // 조건부 배경색 변경
+    background-color: ${props => props.isItemChecked ? '#F5F5F5' : '#ffffff'}; // 조건부 배경색 변경
 
     &:focus {
       outline: none;
