@@ -118,19 +118,9 @@ public final class Asset {
     public String toString() {
         return this.getClass().getSimpleName() + "@" + Integer.toHexString(hashCode()) +
                 "Asset{" +
-                "assetId=" + assetId +
-                ", stockSeq=" + stockSeq +
-                ", statementSeq=" + statementSeq +
-                ", branchSeq=" + branchSeq +
-                ", branchLocation='" + branchLocation + '\'' +
-                ", branchName='" + branchName + '\'' +
-                ", branchContact='" + branchContact + '\'' +
-                ", stockName='" + stockName + '\'' +
-                ", stockQuantity=" + stockQuantity +
-                ", stockUnit='" + stockUnit + '\'' +
-                ", stockDate=" + stockDate +
-                ", status='" + status + '\'' +
-                '}';
+                "assetId=" + assetId + ", stockSeq=" + stockSeq + ", statementSeq=" + statementSeq + ", branchSeq=" + branchSeq + ", branchLocation='" + branchLocation + '\''
+                + ", branchName='" + branchName + '\'' + ", branchContact='" + branchContact + '\'' + ", stockName='" + stockName + '\'' + ", stockQuantity=" + stockQuantity + ", stockUnit='" + stockUnit + '\''
+                + ", stockDate=" + stockDate + ", status='" + status + '\'' + '}';
     }
 
     @Override
@@ -147,18 +137,10 @@ public final class Asset {
             return false;
         }
         Asset other = (Asset) obj;
-        return Objects.equals(getAssetId(), other.getAssetId()) &&
-                Objects.equals(getStockSeq(), other.getStockSeq()) &&
-                Objects.equals(getStatementSeq(), other.getStatementSeq()) &&
-                Objects.equals(getBranchSeq(), other.getBranchSeq()) &&
-                Objects.equals(getBranchLocation(), other.getBranchLocation()) &&
-                Objects.equals(getBranchName(), other.getBranchName()) &&
-                Objects.equals(getBranchContact(), other.getBranchContact()) &&
-                Objects.equals(getStockName(), other.getStockName()) &&
-                Objects.equals(getStockQuantity(), other.getStockQuantity()) &&
-                Objects.equals(getStockUnit(), other.getStockUnit()) &&
-                Objects.equals(getStockDate(), other.getStockDate()) &&
-                Objects.equals(getStatus(), other.getStatus());
+        return Objects.equals(getAssetId(), other.getAssetId()) && Objects.equals(getStockSeq(), other.getStockSeq()) && Objects.equals(getStatementSeq(), other.getStatementSeq())
+                && Objects.equals(getBranchSeq(), other.getBranchSeq()) && Objects.equals(getBranchLocation(), other.getBranchLocation()) && Objects.equals(getBranchName(), other.getBranchName())
+                && Objects.equals(getBranchContact(), other.getBranchContact()) && Objects.equals(getStockName(), other.getStockName())
+                && Objects.equals(getStockQuantity(), other.getStockQuantity()) && Objects.equals(getStockUnit(), other.getStockUnit())
+                && Objects.equals(getStockDate(), other.getStockDate()) && Objects.equals(getStatus(), other.getStatus());
     }
-
-    }
+}
