@@ -386,7 +386,7 @@ const TraderCreatePage = () => {
           <StyledFooter>
             <TraderBtn
               size="Large"
-              color={isValid ? "Blue" : "Grey"}
+              color={isValid ? "Blue" : "BlueDisabled"}
               onClick={nextHandler}
               disabled={!isValid}
             >
@@ -473,7 +473,7 @@ const TraderCreatePage = () => {
           <StyledFooter>
             <TraderBtn
               size="Large"
-              color={showNextButton ? "Blue" : "Grey"}
+              color={showNextButton ? "Blue" : "BlueDisabled"}
               onClick={() => handleStatementCreate()}
               disabled={!showNextButton}
             >

@@ -18,7 +18,7 @@ type ButtonSize =
   | "Medium"
   | "Small";
 
-type ButtonColor = "Blue" | "Grey" | "White" | "Sky" | "Transparent";
+type ButtonColor = "Blue" | "BlueDisabled" | "Grey" | "White" | "Sky" | "Transparent";
 
 //사이즈, 마진, 폰트
 type ButtonStyle = {
@@ -36,6 +36,7 @@ type ButtonColorStyle = {
   border?: string;
   boxShadow?: string;
   color?: string;
+  opacity?: string;
 };
 
 const ButtonStyles: Record<ButtonSize, ButtonStyle> = {
@@ -102,6 +103,11 @@ const ButtonColors: Record<ButtonColor, ButtonColorStyle> = {
     backgroundColor: "#3479FF",
     color: "#FFFFFF",
   },
+  BlueDisabled: {
+    backgroundColor: "#3479FF",
+    color: "#FFFFFF",
+    opacity: "40%",
+  },
   Grey: {
     backgroundColor: "#CACACA",
     color: "#FFFFFF",
@@ -134,6 +140,7 @@ const StyledButton = styled.button<ButtonProps>`
   color: ${(props) => ButtonColors[props.color]?.color ?? "#000"};
   box-shadow: ${(props) => ButtonColors[props.color]?.boxShadow ?? "#000"};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  opacity: ${(props) => ButtonColors[props.color]?.opacity ?? "100%"};
 `;
 
 const TraderBtn = ({
