@@ -6,7 +6,7 @@ import imageByIndex from "./imageByIndex";
 type PropType = {
   slides: number[];
   options?: EmblaOptionsType;
-  thumbnails: any[]; // Assuming you are passing an array of any type, use a more specific type if possible
+  thumbnails: any[];
 };
 
 const EmblaCarousel: React.FC<PropType> = ({ slides, options, thumbnails }) => {

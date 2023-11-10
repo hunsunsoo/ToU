@@ -5,7 +5,7 @@ import { BooleanKeyframeTrack } from "three";
 interface TraderInputTitleProps {
   inputTitle: string;
   size: "X-Large" | "Large" | "Medium" | "Small";
-  value: string;
+  value: string | undefined;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
 }

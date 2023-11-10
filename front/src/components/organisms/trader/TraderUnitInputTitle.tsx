@@ -5,6 +5,7 @@ import TraderUnitInputBox from '../../molecules/trader/TraderUnitInputBox';
 interface TraderUnitInputTitleProps {
   inputTitle: string;
   value: string;
+  selectedUnit: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
