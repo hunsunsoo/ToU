@@ -255,40 +255,40 @@ public final class AssetTransferTest {
         }
     }
 
-    @Nested
-    class UpdateAssetTransaction {
-
-        @Test
-        public void whenAssetExists() {
-            AssetTransfer contract = new AssetTransfer();
-            Context ctx = mock(Context.class);
-            ChaincodeStub stub = mock(ChaincodeStub.class);
-            when(ctx.getStub()).thenReturn(stub);
-            when(stub.getStringState("asset1"))
-                    .thenReturn("{ \"assetID\": \"asset1\", \"color\": \"blue\", \"size\": 45, \"owner\": \"Arturo\", \"appraisedValue\": 60 }");
-
-            Asset asset = contract.UpdateAsset(ctx, "asset1", "pink", 45, "Arturo", 600);
-
-            assertThat(asset).isEqualTo(new Asset("asset1", "pink", 45, "Arturo", 600));
-        }
-
-        @Test
-        public void whenAssetDoesNotExist() {
-            AssetTransfer contract = new AssetTransfer();
-            Context ctx = mock(Context.class);
-            ChaincodeStub stub = mock(ChaincodeStub.class);
-            when(ctx.getStub()).thenReturn(stub);
-            when(stub.getStringState("asset1")).thenReturn("");
-
-            Throwable thrown = catchThrowable(() -> {
-                contract.TransferAsset(ctx, "asset1", "Alex");
-            });
-
-            assertThat(thrown).isInstanceOf(ChaincodeException.class).hasNoCause()
-                    .hasMessage("Asset asset1 does not exist");
-            assertThat(((ChaincodeException) thrown).getPayload()).isEqualTo("ASSET_NOT_FOUND".getBytes());
-        }
-    }
+//    @Nested
+//    class UpdateAssetTransaction {
+//
+//        @Test
+//        public void whenAssetExists() {
+//            AssetTransfer contract = new AssetTransfer();
+//            Context ctx = mock(Context.class);
+//            ChaincodeStub stub = mock(ChaincodeStub.class);
+//            when(ctx.getStub()).thenReturn(stub);
+//            when(stub.getStringState("asset1"))
+//                    .thenReturn("{ \"assetID\": \"asset1\", \"color\": \"blue\", \"size\": 45, \"owner\": \"Arturo\", \"appraisedValue\": 60 }");
+//
+//            Asset asset = contract.UpdateAsset(ctx, "asset1", "pink", 45, "Arturo", 600);
+//
+//            assertThat(asset).isEqualTo(new Asset("asset1", "pink", 45, "Arturo", 600));
+//        }
+//
+//        @Test
+//        public void whenAssetDoesNotExist() {
+//            AssetTransfer contract = new AssetTransfer();
+//            Context ctx = mock(Context.class);
+//            ChaincodeStub stub = mock(ChaincodeStub.class);
+//            when(ctx.getStub()).thenReturn(stub);
+//            when(stub.getStringState("asset1")).thenReturn("");
+//
+//            Throwable thrown = catchThrowable(() -> {
+//                contract.TransferAsset(ctx, "asset1", "순천공장");
+//            });
+//
+//            assertThat(thrown).isInstanceOf(ChaincodeException.class).hasNoCause()
+//                    .hasMessage("Asset asset1 does not exist");
+//            assertThat(((ChaincodeException) thrown).getPayload()).isEqualTo("ASSET_NOT_FOUND".getBytes());
+//        }
+//    }
 
     @Nested
     class DeleteAssetTransaction {
