@@ -124,8 +124,11 @@ public final class AssetTransfer implements ContractInterface {
 
         Asset asset = genson.deserialize(assetJSON, Asset.class);
 
-        Asset newAsset = new Asset(asset.getAssetId(), asset.getStockSeq(), asset.getStatementSeq(), asset.getBranchSeq(), asset.getBranchLocation(), asset.getBranchName(),
-                asset.getBranchContact(), asset.getStockName(), asset.getStockQuantity(), asset.getStockUnit(), asset.getStockDate(), asset.getInoutStatus(), newUseStatus);
+        Asset newAsset = new Asset(asset.getAssetId(), asset.getStockSeq(), asset.getStatementSeq(), asset.getBranchSeq(),
+                asset.getBranchLocation(), asset.getBranchName(),
+                asset.getBranchContact(), asset.getStockName(),
+                asset.getStockQuantity(), asset.getStockUnit(),
+                asset.getStockDate(), asset.getInoutStatus(), newUseStatus);
         // Use Genson to convert the Asset into string, sort it alphabetically and serialize it into a json string
         String sortedJson = genson.serialize(newAsset);
         stub.putStringState(assetId, sortedJson);

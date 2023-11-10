@@ -10,5 +10,4 @@ import lombok.NoArgsConstructor;
 public class UpdateInfoRequestDto {
 
     private String assetId;
-    private String newUseState;
 }

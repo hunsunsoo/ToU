@@ -259,15 +259,13 @@ public class App {
             System.out.println("\n--> Async Submit Transaction: UpdateAsset");
 
             var commit = contract.newProposal("UpdateAsset")
-                    .addArguments(assetId, "USED")
+                    .addArguments(request.getAssetId(), "USED")
                     .build()
                     .endorse()
                     .submitAsync();
 
             var result = commit.getResult();
-            var oldOwner = new String(result, StandardCharsets.UTF_8);
 
-            System.out.println("*** Successfully submitted transaction to transfer ownership from " + oldOwner + " to Saptha");
             System.out.println("*** Waiting for transaction commit");
 
             var status = commit.getStatus();
