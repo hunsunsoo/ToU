@@ -131,14 +131,9 @@ const OfficerItemTable: React.FC<OfficerItemTableProps> = ({ onSelectedSeqListCh
             <td>{selectedItem.note}</td>
           </tr>
         ))}
-        <tr onClick={openModal}>
+        <tr onClick={openModal} style={{cursor: "pointer"}}>
           <td></td>
-          <td>추가</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td colSpan={6}>추가</td>
         </tr>
       </tbody>
       <Modal

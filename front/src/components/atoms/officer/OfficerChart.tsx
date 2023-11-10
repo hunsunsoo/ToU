@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useEffect, useState } from "react";
 import { ResponsivePie } from "@nivo/pie";
 import styled from "styled-components";
 import { BiDoughnutChart } from "react-icons/bi";
-import { UserInfoState } from "../../../store/State";
 import { customAxios } from "../../api/customAxios";
 
 // 차트 데이터의 타입을 정의 (TypeScript를 사용하는 경우)
@@ -27,8 +25,6 @@ const OfficerChart = () => {
       const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
       setBranchSeq(storedValue && JSON.parse(storedValue)?.UserInfoState?.branchSeq);
       
-      console.log(branchSeq);
-
       if (accessToken) {
         customAxios.get(`statement/worker/${branchSeq}/trade/count`).then((res) => {
           // 서버로부터 받아온 데이터를 차트 데이터 형식으로 변환합니다.

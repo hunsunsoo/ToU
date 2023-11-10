@@ -50,7 +50,6 @@ const OfficeBillDiv = () => {
     // 판매용 재고 목록 조회
     customAxios.get(`statement/worker/detail/${billId}`)
     .then((res) => {
-      console.log(res);
       const updatedItems = res.data.data.itemList.map((item: Item) => {
         const { price1, price2 } = calculatePrice(item.stockTotalPrice, item.stockQuantity);
         return {
