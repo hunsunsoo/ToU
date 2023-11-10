@@ -1,10 +1,8 @@
-/*
- * SPDX-License-Identifier: Apache-2.0
- */
-
 package org.hyperledger.fabric.samples.assettransfer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -16,15 +14,16 @@ public final class AssetTest {
 
         @Test
         public void isReflexive() {
-            Asset asset = new Asset("asset1", "Blue", 20, "Guy", 100);
+            Asset asset = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", LocalDateTime.now(), "Active");
 
             assertThat(asset).isEqualTo(asset);
         }
 
         @Test
         public void isSymmetric() {
-            Asset assetA = new Asset("asset1", "Blue", 20, "Guy", 100);
-            Asset assetB = new Asset("asset1", "Blue", 20, "Guy", 100);
+            LocalDateTime now = LocalDateTime.now();
+            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
+            Asset assetB = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
 
             assertThat(assetA).isEqualTo(assetB);
             assertThat(assetB).isEqualTo(assetA);
@@ -32,9 +31,10 @@ public final class AssetTest {
 
         @Test
         public void isTransitive() {
-            Asset assetA = new Asset("asset1", "Blue", 20, "Guy", 100);
-            Asset assetB = new Asset("asset1", "Blue", 20, "Guy", 100);
-            Asset assetC = new Asset("asset1", "Blue", 20, "Guy", 100);
+            LocalDateTime now = LocalDateTime.now();
+            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
+            Asset assetB = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
+            Asset assetC = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
 
             assertThat(assetA).isEqualTo(assetB);
             assertThat(assetB).isEqualTo(assetC);
@@ -43,23 +43,24 @@ public final class AssetTest {
 
         @Test
         public void handlesInequality() {
-            Asset assetA = new Asset("asset1", "Blue", 20, "Guy", 100);
-            Asset assetB = new Asset("asset2", "Red", 40, "Lady", 200);
+            LocalDateTime now = LocalDateTime.now();
+            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
+            Asset assetB = new Asset("asset2", 2L, 2L, 2L, "Location2", "Branch2", "Contact2", "Stock2", 200L, "Unit2", now, "Inactive");
 
             assertThat(assetA).isNotEqualTo(assetB);
         }
 
         @Test
         public void handlesOtherObjects() {
-            Asset assetA = new Asset("asset1", "Blue", 20, "Guy", 100);
-            String assetB = "not a asset";
+            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", LocalDateTime.now(), "Active");
+            String assetB = "not an asset";
 
             assertThat(assetA).isNotEqualTo(assetB);
         }
 
         @Test
         public void handlesNull() {
-            Asset asset = new Asset("asset1", "Blue", 20, "Guy", 100);
+            Asset asset = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", LocalDateTime.now(), "Active");
 
             assertThat(asset).isNotEqualTo(null);
         }
@@ -67,8 +68,21 @@ public final class AssetTest {
 
     @Test
     public void toStringIdentifiesAsset() {
-        Asset asset = new Asset("asset1", "Blue", 20, "Guy", 100);
+        LocalDateTime now = LocalDateTime.now();
+        Asset asset = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
 
-        assertThat(asset.toString()).isEqualTo("Asset@e04f6c53 [assetID=asset1, color=Blue, size=20, owner=Guy, appraisedValue=100]");
+        assertThat(asset.toString()).contains("Asset@");
+        assertThat(asset.toString()).contains("assetId=asset1");
+        assertThat(asset.toString()).contains("stockSeq=1");
+        assertThat(asset.toString()).contains("statementSeq=1");
+        assertThat(asset.toString()).contains("branchSeq=1");
+        assertThat(asset.toString()).contains("branchLocation='Location1'");
+        assertThat(asset.toString()).contains("branchName='Branch1'");
+        assertThat(asset.toString()).contains("branchContact='Contact1'");
+        assertThat(asset.toString()).contains("stockName='Stock1'");
+        assertThat(asset.toString()).contains("stockQuantity=100");
+        assertThat(asset.toString()).contains("stockUnit='Unit1'");
+        assertThat(asset.toString()).contains("stockDate=" + now.toString());
+        assertThat(asset.toString()).contains("status='Active'");
     }
 }
