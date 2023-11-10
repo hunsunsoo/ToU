@@ -112,7 +112,7 @@ public final class Asset {
                  @JsonProperty("branchLocation") final String branchLocation, @JsonProperty("branchName") final String branchName,
                  @JsonProperty("branchContact") final String branchContact, @JsonProperty("stockName") final String stockName,
                  @JsonProperty("stockQuantity") final Long stockQuantity, @JsonProperty("stockUnit") final String stockUnit,
-                 @JsonProperty("stockDate") final LocalDateTime stockDate, @JsonProperty("inoutStatus") final String inoutStatus,
+                 @JsonProperty("stockDate") final String stockDate, @JsonProperty("inoutStatus") final String inoutStatus,
                  @JsonProperty("useStatus") final String useStatus) {
 
         this.assetId = assetId;

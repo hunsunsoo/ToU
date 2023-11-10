@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 public final class AssetTest {
 
     @Nested
@@ -20,14 +22,9 @@ public final class AssetTest {
 
         @Test
         public void isSymmetric() {
-            LocalDateTime now = LocalDateTime.now();
-            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1",
-                    "Branch1", "Contact1", "Stock1", 100L, "Unit1",
-                    now, "IN", "UNUSED");
+            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", "2023-04-10T00:00:00", "IN", "UNUSED");
+            Asset assetB = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", "2023-04-10T00:00:00", "IN", "UNUSED");
 
-            Asset assetB = new Asset("asset1", 1L, 1L, 1L, "Location1",
-                    "Branch1", "Contact1", "Stock1", 100L, "Unit1",
-                    now, "IN", "UNUSED");
 
 
             assertThat(assetA).isEqualTo(assetB);
