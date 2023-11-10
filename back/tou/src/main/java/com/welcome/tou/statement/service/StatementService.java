@@ -572,4 +572,25 @@ public class StatementService {
         }
     }
 
+    @Transactional
+    public ResultTemplate deleteStatement(Long statementSeq, UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker myWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch reqBranch = myWorker.getBranch();
+
+        Statement statement = statementRepository.findById(statementSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.STATEMENT_NOT_FOUND));
+
+        if(statement.getReqBranch() != reqBranch) {
+            throw new MismatchException(MismatchException.STATEMENT_IS_NOT_MINE);
+        }
+
+        statement.updateStatementStatus(Statement.StatementStatus.DELETE);
+        statementRepository.save(statement);
+
+        return ResultTemplate.builder().status(200).data("삭제 완료").build();
+    }
+
 }
