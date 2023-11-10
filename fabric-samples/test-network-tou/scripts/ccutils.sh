@@ -71,7 +71,7 @@ function checkCommitReadiness() {
   ORG=$1
   PEER=$4
   infoln "checkCommitReadiness ORG :  ${ORG}"
-   infoln "checkCommitReadiness PEER :  ${PEER}"
+  infoln "checkCommitReadiness PEER :  ${PEER}"
 
   setGlobals $ORG $PEER
   setGlobalsCLI $ORG $PEER
