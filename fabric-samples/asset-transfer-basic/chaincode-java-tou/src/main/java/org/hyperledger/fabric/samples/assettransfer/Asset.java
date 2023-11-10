@@ -49,7 +49,11 @@ public final class Asset {
     private final LocalDateTime stockDate;
 
     @Property()
-    private final String status;
+    private final String inoutStatus;
+
+    @Property()
+    private final String useStatus;
+
 
     public String getAssetId() {
         return assetId;
@@ -95,11 +99,15 @@ public final class Asset {
         return stockDate;
     }
 
-    public String getStatus() {
-        return status;
+    public String getInoutStatus() {
+        return inoutStatus;
     }
 
-    public Asset(@JsonProperty("assetId") final String assetId, @JsonProperty("stockSeq") final Long stockSeq, @JsonProperty("statementSeq") final Long statementSeq, @JsonProperty("branchSeq") final Long branchSeq, @JsonProperty("branchLocation") final String branchLocation, @JsonProperty("branchName") final String branchName, @JsonProperty("branchContact") final String branchContact, @JsonProperty("stockName") final String stockName, @JsonProperty("stockQuantity") final Long stockQuantity, @JsonProperty("stockUnit") final String stockUnit, @JsonProperty("stockDate") final LocalDateTime stockDate, @JsonProperty("status") final String status) {
+    public String getUseStatus() {
+        return useStatus;
+    }
+
+    public Asset(@JsonProperty("assetId") final String assetId, @JsonProperty("stockSeq") final Long stockSeq, @JsonProperty("statementSeq") final Long statementSeq, @JsonProperty("branchSeq") final Long branchSeq, @JsonProperty("branchLocation") final String branchLocation, @JsonProperty("branchName") final String branchName, @JsonProperty("branchContact") final String branchContact, @JsonProperty("stockName") final String stockName, @JsonProperty("stockQuantity") final Long stockQuantity, @JsonProperty("stockUnit") final String stockUnit, @JsonProperty("stockDate") final LocalDateTime stockDate, @JsonProperty("inoutStatus") final String inoutStatus, @JsonProperty("useStatus") final String useStatus) {
         this.assetId = assetId;
         this.stockSeq = stockSeq;
         this.statementSeq = statementSeq;
@@ -111,7 +119,8 @@ public final class Asset {
         this.stockQuantity = stockQuantity;
         this.stockUnit = stockUnit;
         this.stockDate = stockDate;
-        this.status = status;
+        this.inoutStatus = inoutStatus;
+        this.useStatus = useStatus;
     }
 
     @Override
@@ -120,12 +129,12 @@ public final class Asset {
                 + "Asset{"
                 + "assetId=" + assetId + ", stockSeq=" + stockSeq + ", statementSeq=" + statementSeq + ", branchSeq=" + branchSeq + ", branchLocation='" + branchLocation + '\''
                 + ", branchName='" + branchName + '\'' + ", branchContact='" + branchContact + '\'' + ", stockName='" + stockName + '\'' + ", stockQuantity=" + stockQuantity + ", stockUnit='" + stockUnit + '\''
-                + ", stockDate=" + stockDate + ", status='" + status + '\'' + '}';
+                + ", stockDate=" + stockDate + ", inoutStatus='" + inoutStatus + '\'' + ", useStatus='" + useStatus + '\'' + '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAssetId(), getStockSeq(), getStatementSeq(), getBranchSeq(), getBranchLocation(), getBranchName(), getBranchContact(), getStockName(), getStockQuantity(), getStockUnit(), getStockDate(), getStatus());
+        return Objects.hash(getAssetId(), getStockSeq(), getStatementSeq(), getBranchSeq(), getBranchLocation(), getBranchName(), getBranchContact(), getStockName(), getStockQuantity(), getStockUnit(), getStockDate(), getInoutStatus(), getUseStatus());
     }
 
     @Override
@@ -141,6 +150,6 @@ public final class Asset {
                 && Objects.equals(getBranchSeq(), other.getBranchSeq()) && Objects.equals(getBranchLocation(), other.getBranchLocation()) && Objects.equals(getBranchName(), other.getBranchName())
                 && Objects.equals(getBranchContact(), other.getBranchContact()) && Objects.equals(getStockName(), other.getStockName())
                 && Objects.equals(getStockQuantity(), other.getStockQuantity()) && Objects.equals(getStockUnit(), other.getStockUnit())
-                && Objects.equals(getStockDate(), other.getStockDate()) && Objects.equals(getStatus(), other.getStatus());
+                && Objects.equals(getStockDate(), other.getStockDate()) && Objects.equals(getInoutStatus(), other.getInoutStatus()) && Objects.equals(getUseStatus(), other.getUseStatus());
     }
 }

@@ -14,7 +14,7 @@ public final class AssetTest {
 
         @Test
         public void isReflexive() {
-            Asset asset = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", LocalDateTime.now(), "Active");
+            Asset asset = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", LocalDateTime.now(), "IN", "UNUSED");
 
             assertThat(asset).isEqualTo(asset);
         }
@@ -22,8 +22,8 @@ public final class AssetTest {
         @Test
         public void isSymmetric() {
             LocalDateTime now = LocalDateTime.now();
-            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
-            Asset assetB = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
+            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "IN", "UNUSED");
+            Asset assetB = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "IN", "UNUSED");
 
             assertThat(assetA).isEqualTo(assetB);
             assertThat(assetB).isEqualTo(assetA);
@@ -32,9 +32,9 @@ public final class AssetTest {
         @Test
         public void isTransitive() {
             LocalDateTime now = LocalDateTime.now();
-            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
-            Asset assetB = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
-            Asset assetC = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
+            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "IN", "UNUSED");
+            Asset assetB = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "IN", "UNUSED");
+            Asset assetC = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "IN", "UNUSED");
 
             assertThat(assetA).isEqualTo(assetB);
             assertThat(assetB).isEqualTo(assetC);
@@ -44,15 +44,15 @@ public final class AssetTest {
         @Test
         public void handlesInequality() {
             LocalDateTime now = LocalDateTime.now();
-            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
-            Asset assetB = new Asset("asset2", 2L, 2L, 2L, "Location2", "Branch2", "Contact2", "Stock2", 200L, "Unit2", now, "Inactive");
+            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "IN", "UNUSED");
+            Asset assetB = new Asset("asset2", 2L, 2L, 2L, "Location2", "Branch2", "Contact2", "Stock2", 200L, "Unit2", now, "OUT", "UNUSED");
 
             assertThat(assetA).isNotEqualTo(assetB);
         }
 
         @Test
         public void handlesOtherObjects() {
-            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", LocalDateTime.now(), "Active");
+            Asset assetA = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", LocalDateTime.now(), "IN", "UNUSED");
             String assetB = "not an asset";
 
             assertThat(assetA).isNotEqualTo(assetB);
@@ -60,7 +60,7 @@ public final class AssetTest {
 
         @Test
         public void handlesNull() {
-            Asset asset = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", LocalDateTime.now(), "Active");
+            Asset asset = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", LocalDateTime.now(), "IN", "UNUSED");
 
             assertThat(asset).isNotEqualTo(null);
         }
@@ -69,7 +69,7 @@ public final class AssetTest {
     @Test
     public void toStringIdentifiesAsset() {
         LocalDateTime now = LocalDateTime.now();
-        Asset asset = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "Active");
+        Asset asset = new Asset("asset1", 1L, 1L, 1L, "Location1", "Branch1", "Contact1", "Stock1", 100L, "Unit1", now, "IN", "UNUSED");
 
         assertThat(asset.toString()).contains("Asset@");
         assertThat(asset.toString()).contains("assetId=asset1");
@@ -83,6 +83,7 @@ public final class AssetTest {
         assertThat(asset.toString()).contains("stockQuantity=100");
         assertThat(asset.toString()).contains("stockUnit='Unit1'");
         assertThat(asset.toString()).contains("stockDate=" + now.toString());
-        assertThat(asset.toString()).contains("status='Active'");
+        assertThat(asset.toString()).contains("inoutStatus='IN'");
+        assertThat(asset.toString()).contains("useStatus='UNUSED'");
     }
 }

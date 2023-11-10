@@ -56,12 +56,12 @@ public final class AssetTransfer implements ContractInterface {
     public void InitLedger(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
 
-        CreateAsset(ctx, "asset1", 1L, 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", LocalDateTime.of(2023, 4, 10, 0, 0), "OUT");
-        CreateAsset(ctx, "asset2", 2L, 2L, 1L, "산본", "산본공장", "010-7387-7808", "문어", 2L, "kg", LocalDateTime.of(2023, 5, 10, 0, 0), "OUT");
-        CreateAsset(ctx, "asset3", 3L, 3L, 1L, "산본", "산본공장", "010-7387-7808", "연어", 3L, "kg", LocalDateTime.of(2023, 6, 10, 0, 0), "OUT");
-        CreateAsset(ctx, "asset4", 4L, 4L, 1L, "산본", "산본공장", "010-7387-7808", "고등어", 4L, "kg", LocalDateTime.of(2023, 7, 10, 0, 0), "OUT");
-        CreateAsset(ctx, "asset5", 5L, 5L, 1L, "산본", "산본공장", "010-7387-7808", "새우", 5L, "kg", LocalDateTime.of(2023, 8, 10, 0, 0), "OUT");
-        CreateAsset(ctx, "asset6", 6L, 6L, 1L, "산본", "산본공장", "010-7387-7808", "오징어", 6L, "kg", LocalDateTime.of(2023, 9, 10, 0, 0), "OUT");
+        CreateAsset(ctx, "asset1", 1L, 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", LocalDateTime.of(2023, 4, 10, 0, 0), "OUT", "UNUSED");
+        CreateAsset(ctx, "asset2", 2L, 2L, 1L, "산본", "산본공장", "010-7387-7808", "문어", 2L, "kg", LocalDateTime.of(2023, 5, 10, 0, 0), "OUT", "UNUSED");
+        CreateAsset(ctx, "asset3", 3L, 3L, 1L, "산본", "산본공장", "010-7387-7808", "연어", 3L, "kg", LocalDateTime.of(2023, 6, 10, 0, 0), "OUT", "UNUSED");
+        CreateAsset(ctx, "asset4", 4L, 4L, 1L, "산본", "산본공장", "010-7387-7808", "고등어", 4L, "kg", LocalDateTime.of(2023, 7, 10, 0, 0), "OUT", "UNUSED");
+        CreateAsset(ctx, "asset5", 5L, 5L, 1L, "산본", "산본공장", "010-7387-7808", "새우", 5L, "kg", LocalDateTime.of(2023, 8, 10, 0, 0), "OUT", "UNUSED");
+        CreateAsset(ctx, "asset6", 6L, 6L, 1L, "산본", "산본공장", "010-7387-7808", "오징어", 6L, "kg", LocalDateTime.of(2023, 9, 10, 0, 0), "OUT", "UNUSED");
     }
 
     /**
@@ -72,7 +72,7 @@ public final class AssetTransfer implements ContractInterface {
     public Asset CreateAsset(final Context ctx, final String assetId, final Long stockSeq, final Long statementSeq,
                              final Long branchSeq, final String branchLocation, final String branchName,
                              final String branchContact, final String stockName, final Long stockQuantity,
-                             final String stockUnit, final LocalDateTime stockDate, final String status) {
+                             final String stockUnit, final LocalDateTime stockDate, final String inoutStatus, final String useStatus) {
         ChaincodeStub stub = ctx.getStub();
 
         if (AssetExists(ctx, assetId)) {
@@ -82,7 +82,7 @@ public final class AssetTransfer implements ContractInterface {
         }
 
         Asset asset = new Asset(assetId, stockSeq, statementSeq, branchSeq, branchLocation, branchName,
-                branchContact, stockName, stockQuantity, stockUnit, stockDate, status);
+                branchContact, stockName, stockQuantity, stockUnit, stockDate, inoutStatus, useStatus);
         String assetJSON = genson.serialize(asset);
         stub.putStringState(assetId, assetJSON);
 
@@ -112,11 +112,32 @@ public final class AssetTransfer implements ContractInterface {
      * Updates the properties of an asset on the ledger.
      * @return the transferred asset
      */
+    @Transaction(intent = Transaction.TYPE.SUBMIT)
+    public Asset UpdateAsset(final Context ctx, final String assetId, final String newUseStatus) {
+        ChaincodeStub stub = ctx.getStub();
+        String assetJSON = stub.getStringState(assetId);
+
+        if (assetJSON == null || assetJSON.isEmpty()) {
+            String errorMessage = String.format("Asset %s does not exist", assetId);
+            System.out.println(errorMessage);
+            throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_NOT_FOUND.toString());
+        }
+
+        Asset asset = genson.deserialize(assetJSON, Asset.class);
+
+        Asset newAsset = new Asset(asset.getAssetId(), asset.getStockSeq(), asset.getStatementSeq(), asset.getBranchSeq(), asset.getBranchLocation(), asset.getBranchName(),
+                asset.getBranchContact(), asset.getStockName(), asset.getStockQuantity(), asset.getStockUnit(), asset.getStockDate(), asset.getInoutStatus(), newUseStatus);
+        // Use Genson to convert the Asset into string, sort it alphabetically and serialize it into a json string
+        String sortedJson = genson.serialize(newAsset);
+        stub.putStringState(assetId, sortedJson);
+        return newAsset;
+    }
+
+    /**
+     * Deletes asset on the ledger.
+     */
 //    @Transaction(intent = Transaction.TYPE.SUBMIT)
-//    public Asset UpdateAsset(final Context ctx, final String assetId, final Long stockSeq, final Long statementSeq,
-//                             final Long branchSeq, final String branchLocation, final String branchName,
-//                             final String branchContact, final String stockName, final Long stockQuantity,
-//                             final String stockUnit, final LocalDateTime stockDate, final String status) {
+//    public void DeleteAsset(final Context ctx, final String assetId) {
 //        ChaincodeStub stub = ctx.getStub();
 //
 //        if (!AssetExists(ctx, assetId)) {
@@ -125,29 +146,8 @@ public final class AssetTransfer implements ContractInterface {
 //            throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_NOT_FOUND.toString());
 //        }
 //
-//        Asset newAsset = new Asset(assetId, stockSeq, statementSeq, branchSeq, branchLocation, branchName,
-//                branchContact, stockName, stockQuantity, stockUnit, stockDate, status);
-//        // Use Genson to convert the Asset into string, sort it alphabetically and serialize it into a json string
-//        String sortedJson = genson.serialize(newAsset);
-//        stub.putStringState(assetId, sortedJson);
-//        return newAsset;
+//        stub.delState(assetId);
 //    }
-
-    /**
-     * Deletes asset on the ledger.
-     */
-    @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public void DeleteAsset(final Context ctx, final String assetId) {
-        ChaincodeStub stub = ctx.getStub();
-
-        if (!AssetExists(ctx, assetId)) {
-            String errorMessage = String.format("Asset %s does not exist", assetId);
-            System.out.println(errorMessage);
-            throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_NOT_FOUND.toString());
-        }
-
-        stub.delState(assetId);
-    }
 
     /**
      * Checks the existence of the asset on the ledger
@@ -165,27 +165,27 @@ public final class AssetTransfer implements ContractInterface {
      * Changes the owner of a asset on the ledger.
      * @return the old owner
      */
-    @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public String TransferAsset(final Context ctx, final String assetID, final Long stockSeq, final String newBranchName) {
-        ChaincodeStub stub = ctx.getStub();
-        String assetJSON = stub.getStringState(assetID);
-
-        if (assetJSON == null || assetJSON.isEmpty()) {
-            String errorMessage = String.format("Asset %s does not exist", assetID);
-            System.out.println(errorMessage);
-            throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_NOT_FOUND.toString());
-        }
-
-        Asset asset = genson.deserialize(assetJSON, Asset.class);
-
-        Asset newAsset = new Asset(asset.getAssetId(), asset.getStockSeq(), asset.getStatementSeq(), asset.getBranchSeq(), asset.getBranchLocation(), newBranchName,
-                asset.getBranchContact(), asset.getStockName(), asset.getStockQuantity(), asset.getStockUnit(), asset.getStockDate(), asset.getStatus());
-        // Use a Genson to conver the Asset into string, sort it alphabetically and serialize it into a json string
-        String sortedJson = genson.serialize(newAsset);
-        stub.putStringState(assetID, sortedJson);
-
-        return asset.getBranchName();
-    }
+//    @Transaction(intent = Transaction.TYPE.SUBMIT)
+//    public String TransferAsset(final Context ctx, final String assetID, final Long stockSeq, final String newBranchName) {
+//        ChaincodeStub stub = ctx.getStub();
+//        String assetJSON = stub.getStringState(assetID);
+//
+//        if (assetJSON == null || assetJSON.isEmpty()) {
+//            String errorMessage = String.format("Asset %s does not exist", assetID);
+//            System.out.println(errorMessage);
+//            throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_NOT_FOUND.toString());
+//        }
+//
+//        Asset asset = genson.deserialize(assetJSON, Asset.class);
+//
+//        Asset newAsset = new Asset(asset.getAssetId(), asset.getStockSeq(), asset.getStatementSeq(), asset.getBranchSeq(), asset.getBranchLocation(), newBranchName,
+//                asset.getBranchContact(), asset.getStockName(), asset.getStockQuantity(), asset.getStockUnit(), asset.getStockDate(), asset.getInoutStatus(), asset.getUseStatus());
+//        // Use a Genson to conver the Asset into string, sort it alphabetically and serialize it into a json string
+//        String sortedJson = genson.serialize(newAsset);
+//        stub.putStringState(assetID, sortedJson);
+//
+//        return asset.getBranchName();
+//    }
 
     /**
      * Retrieves all assets from the ledger.
