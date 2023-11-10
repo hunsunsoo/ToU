@@ -19,7 +19,6 @@ const OfficerDemandDiv = () => {
    // 수급자 정보 조회
    customAxios.get(`statement/worker/detail/${billId}`)
    .then((res) => {
-      console.log(res);
       const { branchName, branchLocation, branchContact } = res.data.data.resInfo;
 
       setDemand({ branchName, branchLocation, branchContact });
