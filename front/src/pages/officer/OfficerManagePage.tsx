@@ -34,8 +34,6 @@ const OfficerManagePage = () => {
     status: "",
   });
 
-  console.log(params);
-
   const onClick = () => {
 
   }
@@ -227,28 +225,29 @@ const TagBtnDiv = styled.div`
 `
 
 const TagActiveBtn = styled.button`
-  margin: 10px;
+  margin: 0 10px;
   width: 80px;
-  height: 40px;
+  height: 35px;
   background-color: #404DCD;
   border: 0;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
 `
 
 const TagInActiveBtn = styled.button`
-  margin: 10px;
+  margin: 0 10px;
   width: 80px;
-  height: 40px;
+  height: 35px;
   background-color: #CACACA;
   border: 0;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
 `
 
 const Line = styled.div`
   height: 0px;
   border: 1px solid #666;
+  margin-top: 10px;
   margin-bottom: 20px;
 `
 
