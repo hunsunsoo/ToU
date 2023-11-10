@@ -131,7 +131,7 @@ public class StatementService {
 
 
         //페이지네이션 page 수 , size, 정렬
-        PageRequest pageable = PageRequest.of(page - 1, 2,
+        PageRequest pageable = PageRequest.of(page - 1, 7,
                 Sort.by("statementSeq").ascending());
 
         //필터링 + pagenation
