@@ -167,9 +167,9 @@ const FormComponent: React.FC<FormComponentProps> = ({
                 {formatNumber(item.stockQuantity)}
                 {item.stockUnit}
               </td>
-              <td>{formatNumber(item.stockPrice)}</td>{" "}
+              <td>{formatNumber(item.stockPrice)}</td>
               {/* formatNumber 함수를 사용하여 단가 형식화 */}
-              <td>{formatNumber(item.stockTotalPrice)}</td>{" "}
+              <td>{formatNumber(item.stockTotalPrice)}</td>
               {/* formatNumber 함수를 사용하여 공급가액 형식화 */}
               <td>{item.note || "-"}</td>
             </tr>
