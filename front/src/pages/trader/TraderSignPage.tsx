@@ -140,17 +140,17 @@ const TraderSignPage = () => {
       });
   };
 
-    // 삭제 핸들러
-    const handleDelete = () => {
-      customAxios
-        .delete(`/statement/worker/${billId}`)
-        .then((response) => {
-          toast.success("거래명세서가 삭제 되었습니다.");
-        })
-        .catch((error) => {
-          toast.error("삭제에 실패했습니다.");
-        });
-    };
+  // 삭제 핸들러
+  const handleDelete = () => {
+    customAxios
+      .delete(`/statement/worker/${billId}`)
+      .then((response) => {
+        toast.success("거래명세서가 삭제 되었습니다.");
+      })
+      .catch((error) => {
+        toast.error("삭제에 실패했습니다.");
+      });
+  };
 
   if (!statementData) return <div>Loading...</div>;
 
