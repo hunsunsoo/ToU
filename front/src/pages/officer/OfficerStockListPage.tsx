@@ -1,9 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { styled } from "styled-components";
-import {
-  UserInfoState, CompanyInfoState
-} from "../../store/State";
+import { UserInfoState } from "../../store/State";
 import OfficerSideBar from "../../components/organisms/officer/OfficerSideBar";
 import OfficerTitle from "../../components/atoms/officer/OfficerTitle";
 import OfficerBtn from "../../components/atoms/officer/OfficerBtn";
@@ -21,7 +19,6 @@ interface StockList {
 
 const OfficerStockListPage = () => {
   const userInfo = useRecoilValue(UserInfoState);
-  const companyInfo = useRecoilValue(CompanyInfoState);
 
   const [isSupply, setIsSupply] = useState(true);
   const [inItems, setInItems] = useState<StockList[]>([]);
@@ -56,7 +53,6 @@ const OfficerStockListPage = () => {
       try {
         const accessToken = await awaitToken();
         if (!accessToken) {
-          console.log("Token not found");
           return;
         }
 
@@ -74,13 +70,11 @@ const OfficerStockListPage = () => {
       try {
         const accessToken = await awaitToken();
         if (!accessToken) {
-          console.log("Token not found");
           return;
         }
 
         const res = await customAxios.get(`/stock/worker/list/out`);
         setOutItems(res.data.data.stockList);
-        console.log(res.data.data.stockList);
       } catch (error) {
         console.log(error);
       }
@@ -297,8 +291,4 @@ const StyledTable = styled.table`
     background-color: rgba(217, 217, 217, 0.3);
   }
 
-`
-
-const TimeP = styled.p`
-  margin: 5px 0 5px 85%;
 `
