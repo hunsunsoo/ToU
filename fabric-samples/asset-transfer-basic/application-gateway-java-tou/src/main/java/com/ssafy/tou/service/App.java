@@ -14,6 +14,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hyperledger.fabric.client.CommitException;
 import org.hyperledger.fabric.client.CommitStatusException;
 import org.hyperledger.fabric.client.Contract;
@@ -42,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 
 
 @Service
+@Slf4j
 public class App {
     private static final String MSP_ID = System.getenv().getOrDefault("MSP_ID", "Org1MSP");
     private static final String CHANNEL_NAME = System.getenv().getOrDefault("CHANNEL_NAME", "mychannel");
@@ -194,6 +196,20 @@ public class App {
                                " BranchSeq, BranchLocation, BranchName, BranchContract," +
                                " StockName, StockQuantity, StockUnit, StockDate and Status");
 
+
+            System.out.println("AssetId : " + request.getAssetId());
+            System.out.println("StockSeq : " + request.getStockSeq());
+            System.out.println("StatementSeq : " + request.getStatementSeq());
+            System.out.println("BranchSeq : " + request.getBranchSeq());
+            System.out.println("BranchName : " + request.getBranchName());
+            System.out.println("Location : " + request.getBranchLocation());
+            System.out.println("Contract : " + request.getBranchContract());
+            System.out.println("StockName : " + request.getStockName());
+            System.out.println("Quantity : " + request.getStockQuantity());
+            System.out.println("StockUnit : " + request.getStockUnit());
+            System.out.println("StockDate : " + request.getStockDate());
+            System.out.println("InoutStatus : " + request.getInoutStatus());
+            System.out.println("UseStatus : " + request.getUseStatus());
 
             var evaluateResult = contract.submitTransaction("CreateAsset", request.getAssetId(),
                     request.getStockSeq(), request.getStatementSeq(), request.getBranchSeq(),
