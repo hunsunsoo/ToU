@@ -13,7 +13,7 @@ plugins {
     id 'java'
 }
 
-group = 'com.example'
+group = 'com.ssafy.tou'
 version = '0.0.1-SNAPSHOT'
 //sourceCompatibility = '11'
 
@@ -24,6 +24,7 @@ version = '0.0.1-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+
 
 dependencies {
     implementation 'org.hyperledger.fabric:fabric-gateway:1.1.1'
@@ -47,7 +48,9 @@ java {
 
 // Spring Boot 애플리케이션 실행을 위한 bootRun 태스크 설정
 bootRun {
+
     if (project.hasProperty('args')) {
         args project.args.split('\\s+')
     }
 }
+
