@@ -8,18 +8,12 @@ const TraderInfo: React.FC<TraderNameProps> = ({ workerName }) => {
   return (
     <StyledMainContainer>
       <StyledDiv>
-        <StyledSpan>어서오세요</StyledSpan>
-        <StyledText>{workerName || "어쩌구"} 님</StyledText>
-      </StyledDiv>
-      <StyledDiv>
-        <StyledSpan>서명필요</StyledSpan>
-        <StyledSpan>서명 대기중</StyledSpan>
-        <StyledSpan>거절된 문서</StyledSpan>
-      </StyledDiv>
-      <StyledDiv>
-        <StyledSpan>$$건</StyledSpan>
-        <StyledSpan>$$건</StyledSpan>
-        <StyledSpan>$$건</StyledSpan>
+        <StyledText>
+          <StyledSpan>
+            <StyledName>{workerName || "어쩌구"}</StyledName> 님
+          </StyledSpan>
+          , 안녕하세요
+        </StyledText>
       </StyledDiv>
     </StyledMainContainer>
   );
@@ -34,12 +28,15 @@ const StyledMainContainer = styled.div`
 `;
 
 const StyledSpan = styled.span`
-  font-size: 1.3rem;
+  font-size: 2rem;
+  font-weight: bold;
 `;
 
-const StyledText = styled.div`
-  font-weight: bold;
-  font-size: 2rem;
+const StyledText = styled.span`
+  font-size: 1.3rem;
+`;
+const StyledName = styled.span`
+  color: #3c67ff;
 `;
 
 const StyledDiv = styled.div`
