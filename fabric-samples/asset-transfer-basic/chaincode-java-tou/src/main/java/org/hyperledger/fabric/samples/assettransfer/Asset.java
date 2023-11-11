@@ -18,7 +18,7 @@ public final class Asset {
     private final String assetId;
 
     @Property()
-    private final Long stockSeq;
+    private final String previousAssetId;
 
     @Property()
     private final Long statementSeq;
@@ -58,8 +58,8 @@ public final class Asset {
         return assetId;
     }
 
-    public Long getStockSeq() {
-        return stockSeq;
+    public String getPreviousAssetId() {
+        return previousAssetId;
     }
 
     public Long getStatementSeq() {
@@ -107,7 +107,7 @@ public final class Asset {
     }
 
 
-    public Asset(@JsonProperty("assetId") final String assetId, @JsonProperty("stockSeq") final Long stockSeq,
+    public Asset(@JsonProperty("assetId") final String assetId, @JsonProperty("stockSeq") final String previousAssetId,
                  @JsonProperty("statementSeq") final Long statementSeq, @JsonProperty("branchSeq") final Long branchSeq,
                  @JsonProperty("branchLocation") final String branchLocation, @JsonProperty("branchName") final String branchName,
                  @JsonProperty("branchContact") final String branchContact, @JsonProperty("stockName") final String stockName,
@@ -116,7 +116,7 @@ public final class Asset {
                  @JsonProperty("useStatus") final String useStatus) {
 
         this.assetId = assetId;
-        this.stockSeq = stockSeq;
+        this.previousAssetId = previousAssetId;
         this.statementSeq = statementSeq;
         this.branchSeq = branchSeq;
         this.branchLocation = branchLocation;
@@ -134,14 +134,14 @@ public final class Asset {
     public String toString() {
         return this.getClass().getSimpleName() + "@" + Integer.toHexString(hashCode())
                 + "Asset{"
-                + "assetId=" + assetId + ", stockSeq=" + stockSeq + ", statementSeq=" + statementSeq + ", branchSeq=" + branchSeq + ", branchLocation='" + branchLocation + '\''
+                + "assetId=" + assetId + ", previousAssetId=" + previousAssetId + ", statementSeq=" + statementSeq + ", branchSeq=" + branchSeq + ", branchLocation='" + branchLocation + '\''
                 + ", branchName='" + branchName + '\'' + ", branchContact='" + branchContact + '\'' + ", stockName='" + stockName + '\'' + ", stockQuantity=" + stockQuantity + ", stockUnit='" + stockUnit + '\''
                 + ", stockDate='" + stockDate + '\'' + ", inoutStatus='" + inoutStatus + '\'' + ", useStatus='" + useStatus + '\'' + '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAssetId(), getStockSeq(), getStatementSeq(), getBranchSeq(), getBranchLocation(), getBranchName(), getBranchContact(), getStockName(), getStockQuantity(), getStockUnit(), getStockDate(), getInoutStatus(), getUseStatus());
+        return Objects.hash(getAssetId(), getPreviousAssetId(), getStatementSeq(), getBranchSeq(), getBranchLocation(), getBranchName(), getBranchContact(), getStockName(), getStockQuantity(), getStockUnit(), getStockDate(), getInoutStatus(), getUseStatus());
     }
 
     @Override
@@ -153,7 +153,7 @@ public final class Asset {
             return false;
         }
         Asset other = (Asset) obj;
-        return Objects.equals(getAssetId(), other.getAssetId()) && Objects.equals(getStockSeq(), other.getStockSeq()) && Objects.equals(getStatementSeq(), other.getStatementSeq())
+        return Objects.equals(getAssetId(), other.getAssetId()) && Objects.equals(getPreviousAssetId(), other.getPreviousAssetId()) && Objects.equals(getStatementSeq(), other.getStatementSeq())
                 && Objects.equals(getBranchSeq(), other.getBranchSeq()) && Objects.equals(getBranchLocation(), other.getBranchLocation()) && Objects.equals(getBranchName(), other.getBranchName())
                 && Objects.equals(getBranchContact(), other.getBranchContact()) && Objects.equals(getStockName(), other.getStockName())
                 && Objects.equals(getStockQuantity(), other.getStockQuantity()) && Objects.equals(getStockUnit(), other.getStockUnit())

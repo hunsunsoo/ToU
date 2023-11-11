@@ -13,7 +13,7 @@ public class StockRequestDto {
 
     private String assetId;
 
-    private String stockSeq;
+    private String previousAssetId;
     private String statementSeq;
     private String branchSeq;
     private String branchLocation;
