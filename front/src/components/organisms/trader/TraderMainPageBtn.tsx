@@ -44,7 +44,9 @@ const TraderMainPageBtn = () => {
           altText="World Map"
           color="#BCDBFF"
         >
-          구역별 거래<StyledSpan>내역 조회</StyledSpan>
+          <StyledBlack>
+            구역별 거래<StyledBlackdSpan>내역 조회</StyledBlackdSpan>
+          </StyledBlack>
         </TraderMainBtn>
       </StyledBottomBtn>
     </StyledComponent>
@@ -89,6 +91,15 @@ const StyledSpan = styled.div`
   font-weight: bold;
   font-size: 1.2rem;
 `;
+const StyledBlackdSpan = styled.div`
+  color: #000;
+  font-weight: bold;
+  font-size: 1.2rem;
+`;
+
+const StyledBlack = styled.div`
+  color: #000;
+`;
 
 const StyledBottomBtn = styled.div`
   display: flex;
@@ -97,6 +108,7 @@ const StyledBottomBtn = styled.div`
 
   & > div:first-child {
     flex: 2; // 첫 번째 자식에게 flex 값을 2로 설정
+    margin-right: 1rem;
   }
 
   & > div:last-child {

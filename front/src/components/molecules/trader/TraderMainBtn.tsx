@@ -17,7 +17,6 @@ const TraderMainBtn: React.FC<TraderMainBtnProps> = ({
   altText,
   children,
   color,
-  size,
 }) => {
   const navigate = useNavigate();
 
@@ -26,7 +25,7 @@ const TraderMainBtn: React.FC<TraderMainBtnProps> = ({
   };
 
   return (
-    <ButtonContent color={color}> 
+    <ButtonContent onClick={handleClick} color={color}> {/* Add onClick event here */}
       <StyledChildren>{children}</StyledChildren>
       <StyledImage src={iconSrc} alt={altText} />
     </ButtonContent>
