@@ -11,6 +11,11 @@ const OPTIONS: EmblaOptionsType = {};
 const SLIDE_COUNT = 4;
 const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
+interface coordinateConfig {
+  latitude: number;
+  longitude: number;
+}
+
 const ShopperMainPage = () => {
   const [thumbnails, setThumbnails] = useState([]);
   const [productName, setProductName] = useState("");
