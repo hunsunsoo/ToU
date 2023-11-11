@@ -62,17 +62,17 @@ public final class AssetTransferTest {
             assetList = new ArrayList<KeyValue>();
 
             assetList.add(new MockKeyValue("asset1",
-                    "{\"assetId\":\"asset1\",\"stockSeq\":1,\"statementSeq\":1,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"멸치\",\"stockQuantity\":1,\"stockUnit\":\"kg\",\"stockDate\":\"2023-04-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}"));
+                    "{\"assetId\":\"asset1\",\"previousAssetId\":\"1\",\"statementSeq\":1,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"멸치\",\"stockQuantity\":1,\"stockUnit\":\"kg\",\"stockDate\":\"2023-04-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}"));
             assetList.add(new MockKeyValue("asset2",
-                    "{\"assetId\":\"asset2\",\"stockSeq\":2,\"statementSeq\":2,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"문어\",\"stockQuantity\":2,\"stockUnit\":\"kg\",\"stockDate\":\"2023-05-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}"));
+                    "{\"assetId\":\"asset2\",\"previousAssetId\":\"2\",\"statementSeq\":2,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"문어\",\"stockQuantity\":2,\"stockUnit\":\"kg\",\"stockDate\":\"2023-05-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}"));
             assetList.add(new MockKeyValue("asset3",
-                    "{\"assetId\":\"asset3\",\"stockSeq\":3,\"statementSeq\":3,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"연어\",\"stockQuantity\":3,\"stockUnit\":\"kg\",\"stockDate\":\"2023-06-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}"));
+                    "{\"assetId\":\"asset3\",\"previousAssetId\":\"3\",\"statementSeq\":3,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"연어\",\"stockQuantity\":3,\"stockUnit\":\"kg\",\"stockDate\":\"2023-06-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}"));
             assetList.add(new MockKeyValue("asset4",
-                    "{\"assetId\":\"asset4\",\"stockSeq\":4,\"statementSeq\":4,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"고등어\",\"stockQuantity\":4,\"stockUnit\":\"kg\",\"stockDate\":\"2023-07-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}"));
+                    "{\"assetId\":\"asset4\",\"previousAssetId\":\"4\",\"statementSeq\":4,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"고등어\",\"stockQuantity\":4,\"stockUnit\":\"kg\",\"stockDate\":\"2023-07-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}"));
             assetList.add(new MockKeyValue("asset5",
-                    "{\"assetId\":\"asset5\",\"stockSeq\":5,\"statementSeq\":5,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"새우\",\"stockQuantity\":5,\"stockUnit\":\"kg\",\"stockDate\":\"2023-08-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}"));
+                    "{\"assetId\":\"asset5\",\"previousAssetId\":\"5\",\"statementSeq\":5,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"새우\",\"stockQuantity\":5,\"stockUnit\":\"kg\",\"stockDate\":\"2023-08-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}"));
             assetList.add(new MockKeyValue("asset6",
-                    "{\"assetId\":\"asset6\",\"stockSeq\":6,\"statementSeq\":6,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"오징어\",\"stockQuantity\":6,\"stockUnit\":\"kg\",\"stockDate\":\"2023-09-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}"));
+                    "{\"assetId\":\"asset6\",\"previousAssetId\":\"6\",\"statementSeq\":6,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"오징어\",\"stockQuantity\":6,\"stockUnit\":\"kg\",\"stockDate\":\"2023-09-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}"));
         }
 
         @Override
@@ -113,7 +113,7 @@ public final class AssetTransferTest {
             ChaincodeStub stub = mock(ChaincodeStub.class);
             when(ctx.getStub()).thenReturn(stub);
 
-            String assetJson = "{\"assetId\":\"asset1\",\"previousAssetId\":\"1:\",\"statementSeq\":1,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"멸치\",\"stockQuantity\":1,\"stockUnit\":\"kg\",\"stockDate\":\"2023-04-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}";
+            String assetJson = "{\"assetId\":\"asset1\",\"previousAssetId\":\"1\":,\"statementSeq\":1,\"branchSeq\":1,\"branchLocation\":\"산본\",\"branchName\":\"산본공장\",\"branchContact\":\"010-7387-7808\",\"stockName\":\"멸치\",\"stockQuantity\":1,\"stockUnit\":\"kg\",\"stockDate\":\"2023-04-10T00:00:00\",\"inoutStatus\":\"OUT\",\"useStatus\":\"UNUSED\"}";
             when(stub.getStringState("asset1")).thenReturn(assetJson);
 
             Asset asset = contract.ReadAsset(ctx, "asset1");
