@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
-import { MainPaddingContainer } from "../../../commons/style/mobileStyle/MobileLayoutStyle";
 import TraderImg from "../../atoms/trader/TraderImg";
 import TraderInfo from "../../atoms/trader/TraderInfo";
 import { UserInfoState, CompanyInfoState } from "../../../store/State";
@@ -12,7 +11,6 @@ const TraderMainProfile = () => {
 
   return (
     <StyledMainContainer>
-      <MainPaddingContainer>
         <StyledDiv>
           <TraderImg logoImage={companyInfo?.logoImage || undefined} />
           <TraderInfo workerName={userInfo?.workerName || undefined} />
@@ -21,7 +19,6 @@ const TraderMainProfile = () => {
             branchName={userInfo?.branchName || ""}
           />
         </StyledDiv>
-      </MainPaddingContainer>
     </StyledMainContainer>
   );
 };
@@ -29,11 +26,9 @@ const TraderMainProfile = () => {
 export default TraderMainProfile;
 
 const StyledMainContainer = styled.div`
-  background-image: linear-gradient(38deg, #297fff 3.34%, #98fff9 90.74%);
+  padding: 0 1rem;
   height: 100%;
-  color: #fff;
-  height: 40vh;
-  border-radius: 0px 0px 50px 50px;
+  height: 24vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

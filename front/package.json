@@ -12,6 +12,7 @@
     "@mediapipe/tasks-vision": "^0.10.7",
     "@nivo/line": "^0.83.0",
     "@nivo/pie": "^0.83.0",
+    "@react-google-maps/api": "^2.19.2",
     "@react-three/drei": "^9.88.7",
     "@react-three/fiber": "^8.15.8",
     "@testing-library/jest-dom": "^5.17.0",

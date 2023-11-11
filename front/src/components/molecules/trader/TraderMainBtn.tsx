@@ -1,15 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import TraderBtn from "../../atoms/trader/TraderBtn";
-import {AiOutlineRight} from "react-icons/ai";
-
 
 type TraderMainBtnProps = {
   route: string;
   iconSrc: string;
   altText: string;
+  color: string;
   children: React.ReactNode;
+  size?: string;
 };
 
 const TraderMainBtn: React.FC<TraderMainBtnProps> = ({
@@ -17,49 +16,44 @@ const TraderMainBtn: React.FC<TraderMainBtnProps> = ({
   iconSrc,
   altText,
   children,
+  color,
 }) => {
   const navigate = useNavigate();
 
+  const handleClick = () => {
+    navigate(route);
+  };
+
   return (
-    <TraderBtn
-      size="Main"
-      color="White"
-      onClick={() => {
-        navigate(route);
-      }}
-    >
-      <ButtonContent>
-        <StyledImage src={iconSrc} alt={altText} />
-        <StyledChildren>{children}</StyledChildren>
-        <StyledIcon><AiOutlineRight size = "20" color="#868686"/></StyledIcon>
-      </ButtonContent>
-    </TraderBtn>
+    <ButtonContent onClick={handleClick} color={color}> {/* Add onClick event here */}
+      <StyledChildren>{children}</StyledChildren>
+      <StyledImage src={iconSrc} alt={altText} />
+    </ButtonContent>
   );
 };
 
 export default TraderMainBtn;
 
 const ButtonContent = styled.div`
+  background-color: ${(props) => props.color || "#668bfe"};
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  margin: 0 1rem;
-  font-size: 1.3rem;
-  /* font-weight: bold; */
+  justify-content: center;
+  border-radius: 20px;
+  height: 100%;
+  width: 10rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  cursor: pointer;
 `;
 
 const StyledImage = styled.img`
-  width: 2.5rem;
-  height: auto;
-  margin-right: auto;
+  width: 3rem;
+  height: 3rem;
+  margin-top: 0.5rem;
 `;
 
 const StyledChildren = styled.div`
-  flex: 2;
-  text-align: left; 
-  padding: 0 1rem;
-`;
-
-const StyledIcon = styled.div`
-  margin-left: auto; 
+  color: #fff;
 `;
