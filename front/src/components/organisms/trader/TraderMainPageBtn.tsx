@@ -114,6 +114,7 @@ const StyledBlack = styled.div`
 
 const StyledText = styled.div`
   font-size: 1.3rem;
+
 `;
 
 const StyledBottomBtn = styled.div`
