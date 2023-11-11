@@ -157,7 +157,7 @@ function addOrg4 () {
   # Use the CLI container to create the configuration transaction needed to add
   # Org4 to the network
   infoln "Generating and submitting config tx to add Org4"
-  ${CONTAINER_CLI} exec cli ./scripts/org3-scripts/updateChannelConfig.sh $CHANNEL_NAME $CLI_DELAY $CLI_TIMEOUT $VERBOSE
+  ${CONTAINER_CLI} exec cli ./scripts/org4-scripts/updateChannelConfig.sh $CHANNEL_NAME $CLI_DELAY $CLI_TIMEOUT $VERBOSE
   if [ $? -ne 0 ]; then
     fatalln "ERROR !!!! Unable to create config tx"
   fi
@@ -189,7 +189,7 @@ COMPOSE_FILE_COUCH_BASE=compose/compose-couch-org4.yaml
 COMPOSE_FILE_COUCH_ORG4=compose/${CONTAINER_CLI}/docker-compose-couch-org4.yaml
 # use this as the default docker-compose yaml definition
 COMPOSE_FILE_BASE=compose/compose-org4.yaml
-COMPOSE_FILE_ORG4=compose/${CONTAINER_CLI}/docker-compose-org4yaml
+COMPOSE_FILE_ORG4=compose/${CONTAINER_CLI}/docker-compose-org4.yaml
 # certificate authorities compose file
 COMPOSE_FILE_CA_BASE=compose/compose-ca-org4.yaml
 COMPOSE_FILE_CA_ORG4=compose/${CONTAINER_CLI}/docker-compose-ca-org4.yaml
