@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 type TraderBranchProps = {
   companyName: string;
@@ -7,10 +8,14 @@ type TraderBranchProps = {
 
 const TraderBranch: React.FC<TraderBranchProps> = ({ companyName, branchName }) => {
     return (
-        <div>
+        <StyledDiv>
             {companyName} {branchName}
-        </div>
+        </StyledDiv>
     );
 };
 
 export default TraderBranch;
+
+const StyledDiv = styled.div`
+    font-size: 1.2rem;
+`
