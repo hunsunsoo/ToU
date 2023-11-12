@@ -15,7 +15,7 @@ export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/tlsca/tl
 export PEER0_ORG1_CA=${PWD}/organizations/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
 export PEER0_ORG2_CA=${PWD}/organizations/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
 export PEER0_ORG3_CA=${PWD}/organizations/peerOrganizations/org3.example.com/tlsca/tlsca.org3.example.com-cert.pem
-export PEER0_ORG3_CA=${PWD}/organizations/peerOrganizations/org3.example.com/tlsca/tlsca.org4.example.com-cert.pem
+export PEER0_ORG4_CA=${PWD}/organizations/peerOrganizations/org4example.com/tlsca/tlsca.org4.example.com-cert.pem
 
 export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
 export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
@@ -76,7 +76,7 @@ setGlobalsCLI() {
   elif [ $USING_ORG -eq 3 ]; then
     export CORE_PEER_ADDRESS=peer0.org3.example.com:11051
   elif [ $USING_ORG -eq 4 ]; then
-    export CORE_PEER_ADDRESS=peer0.org3.example.com:6051
+    export CORE_PEER_ADDRESS=peer0.org4.example.com:6051
   else
     errorln "ORG Unknown"
   fi
