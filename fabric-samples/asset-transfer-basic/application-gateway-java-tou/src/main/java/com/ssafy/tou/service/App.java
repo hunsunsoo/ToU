@@ -212,9 +212,9 @@ public class App {
             System.out.println("UseStatus : " + request.getUseStatus());
 
             var evaluateResult = contract.submitTransaction("CreateAsset", request.getAssetId(),
-                    request.getPreviousAssetId(), request.getStatementSeq(), request.getBranchSeq(),
+                    request.getPreviousAssetId(), String.valueOf(request.getStatementSeq()), String.valueOf(request.getBranchSeq()),
                     request.getBranchLocation(), request.getBranchName(), request.getBranchContract(),
-                    request.getStockName(), request.getStockQuantity(), request.getStockUnit(),
+                    request.getStockName(), String.valueOf(request.getStockQuantity()), request.getStockUnit(),
                     request.getStockDate(), request.getInoutStatus(), request.getUseStatus());
 
             System.out.println("*** Transaction committed successfully");
