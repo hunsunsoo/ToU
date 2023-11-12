@@ -14,6 +14,7 @@ import TraderInfoTitle from "../../components/organisms/trader/TraderInfoTitle";
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
 // import TraderItemSearchBox from "../../components/organisms/trader/TraderItemSearchBox";
 import TraderConfirmTable from "../../components/organisms/trader/TraderConfirmTable";
+import TraderConfirmInfoTitle from "../../components/organisms/trader/TraderConfirmInfoTitle";
 import { customAxios } from "../../components/api/customAxios";
 import { StatementData } from "./../../types/TraderTypes";
 
@@ -111,12 +112,12 @@ const TraderConfirmPage = () => {
       <StyledBody>
         <MainPaddingContainer>
           <StyledInfoTitle>
-            <TraderInfoTitle infoTitle="인수자 정보" />
+            <TraderConfirmInfoTitle infoTitle="인수자 정보" />
             <StyledSpan>
-              인수자 정보를 확인하세요
+              인수자 정보를 확인하세요.
               <FontAwesomeIcon
                 icon={icon}
-                size="xl"
+                size="2xl"
                 style={{ color: "#000000" }}
                 onClick={handleIconClick}
               />
@@ -137,12 +138,12 @@ const TraderConfirmPage = () => {
             disabled={isChecked}
           />
            <StyledInfoTitle>
-            <TraderInfoTitle infoTitle="거래 정보" />
+            <TraderConfirmInfoTitle infoTitle="거래 정보" />
             <StyledSpan>
-              거래 일자를 확인하세요
+              거래 일자를 확인하세요.
                 <FontAwesomeIcon
                   icon={dateIcon}
-                  size="xl"
+                  size="2xl"
                   style={{ color: "#000000" }}
                   onClick={handleDateIconClick}
                 />
@@ -156,12 +157,12 @@ const TraderConfirmPage = () => {
             disabled={isDateChecked}
           />
           <StyledInfoTitle>
-            <TraderInfoTitle infoTitle="품목 정보" />
+            <TraderConfirmInfoTitle infoTitle="품목 정보" />
             <StyledSpan>
-              품목 정보를 확인하세요
+              품목 정보를 확인하세요.
               <FontAwesomeIcon
                 icon={tableIcon}
-                size="xl"
+                size="2xl"
                 style={{ color: "#000000" }}
                 onClick= {handleItemIconClick}
               />
@@ -225,7 +226,7 @@ const StyledSpan = styled.span`
   align-items: center;
   justify-content: space-between;
   height: 4vh;
-  width: 16.5rem;
+  width: 22rem;
   border-bottom: 0.8px solid var(--festie-gray-600, #949494);
   font-size: 0.9rem;
   color: gray;

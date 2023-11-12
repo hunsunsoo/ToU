@@ -133,6 +133,8 @@ export const CalendarWrapper = styled.div<CalendarWrapperProps>`
 
   .react-calendar__tile--now {
     background: #ffff99bd;
+    margin-top: 0.3rem;
+    height: 3.125rem;
   }
 
   .react-calendar__tile--now:enabled:hover,
@@ -152,6 +154,8 @@ export const CalendarWrapper = styled.div<CalendarWrapperProps>`
   .react-calendar__tile--active {
     background: #006edc;
     color: white;
+    margin-top: 0.3rem;
+    height: 3.125rem;
   }
 
   .react-calendar__tile--active:enabled:hover,
@@ -162,7 +166,7 @@ export const CalendarWrapper = styled.div<CalendarWrapperProps>`
   .react-calendar__tile--rangeStart,
   .react-calendar__tile--rangeEnd {
     border-radius: 1rem;
-    background-color:#a9d4ff;
+    background-color:#2d8cec;
     color: #ffffff;
   }
 
@@ -174,10 +178,10 @@ export const CalendarWrapper = styled.div<CalendarWrapperProps>`
 
 
 export const DropdownButton = styled.button`
-  width: 240px;
-  height: 48px;
-  border: 0.8px solid var(--festie-gray-600, #949494);
-  border-radius: 10px;
+  height: 3rem;
+  width: 20rem;
+  border: transparent;
+  /* border-radius: 10px; */
   padding: 0px 12px;
   color: var(--festie-gray-800, #3a3a3a);
   font-family: SUIT Variable;
@@ -187,7 +191,7 @@ export const DropdownButton = styled.button`
   line-height: 140%;
   text-align: start;
   appearance: none;
-  background-color: white;
+  background-color: F3F4F5;
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 12px;

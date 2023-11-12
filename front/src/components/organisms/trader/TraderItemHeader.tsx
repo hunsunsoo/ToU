@@ -40,7 +40,7 @@ const StyledHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid var(--festie-gray-600, #717171);
   background-color: #fff;
   padding: 0.5rem 0;
 `;
