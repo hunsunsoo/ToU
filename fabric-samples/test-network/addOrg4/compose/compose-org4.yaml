@@ -40,7 +40,7 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org4.example.com:6051
       - CORE_PEER_LOCALMSPID=Org4MSP
       - CORE_METRICS_PROVIDER=prometheus
-      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0org1"}
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0org4"}
       - CORE_CHAINCODE_EXECUTETIMEOUT=300s      
     volumes:
         - ../../organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com:/etc/hyperledger/fabric

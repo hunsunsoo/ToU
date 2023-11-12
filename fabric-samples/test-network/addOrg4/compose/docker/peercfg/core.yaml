@@ -20,7 +20,7 @@ peer:
 
     # The Address at local network interface this Peer will listen on.
     # By default, it will listen on all network interfaces
-    listenAddress: 0.0.0.0:7051
+    listenAddress: 0.0.0.0:6051
 
     # The endpoint this peer uses to listen for inbound chaincode connections.
     # If this is commented-out, the listen address is selected to be
