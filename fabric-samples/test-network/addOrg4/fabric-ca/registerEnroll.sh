@@ -32,12 +32,12 @@ function createOrg4 {
 
 	infoln "Registering peer0"
   set -x
-	fabric-ca-client register --caname ca-org4 --id.name peer0org4 --id.secret peer0pw --id.type peer --tls.certfiles "${PWD}/fabric-ca/org4/tls-cert.pem"
+	fabric-ca-client register --caname ca-org4 --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles "${PWD}/fabric-ca/org4/tls-cert.pem"
   { set +x; } 2>/dev/null
 
   infoln "Registering user"
   set -x
-  fabric-ca-client register --caname ca-org4 --id.name user1org4 --id.secret user1pw --id.type client --tls.certfiles "${PWD}/fabric-ca/org4/tls-cert.pem"
+  fabric-ca-client register --caname ca-org4 --id.name user1 --id.secret user1pw --id.type client --tls.certfiles "${PWD}/fabric-ca/org4/tls-cert.pem"
   { set +x; } 2>/dev/null
 
   infoln "Registering the org admin"
@@ -67,6 +67,7 @@ function createOrg4 {
 
   mkdir "${PWD}/../organizations/peerOrganizations/org4.example.com/tlsca"
   cp "${PWD}/../organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls/tlscacerts/"* "${PWD}/../organizations/peerOrganizations/org4.example.com/tlsca/tlsca.org4.example.com-cert.pem"
+
 
   mkdir "${PWD}/../organizations/peerOrganizations/org4.example.com/ca"
   cp "${PWD}/../organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/msp/cacerts/"* "${PWD}/../organizations/peerOrganizations/org4.example.com/ca/ca.org4.example.com-cert.pem"
