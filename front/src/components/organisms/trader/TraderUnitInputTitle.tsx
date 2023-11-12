@@ -23,13 +23,14 @@ export default TraderUnitInputTitle;
 const Container = styled.div`
     width: 100%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 10px;
+    /* gap: 10px; */
     margin: 20px 0 20px 0;
 `;
 
 const InputTitle = styled.span`
-    margin-left: 10px;
-    font-size: 20px;
+    /* margin-left: 10px; */
+    font-size: 1rem;
 `;

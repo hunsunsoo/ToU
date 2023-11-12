@@ -54,17 +54,16 @@ const DropdownContainer = styled.div`
 `;
 
 const DropdownButton = styled.button`
-  height: 45px;
-  width: 90px;
+  height: 2.813rem;
+  width: 6rem;
   padding: 10px 15px;
-  border: 0.8px solid var(--festie-gray-600, #949494);
-  border-radius: 10px;
+  border: transparent;
   font-size: 18px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between; 
-  background-color: transparent;
+  background-color: #F3F4F5;
 `;
 
 const DropdownList = styled.ul`

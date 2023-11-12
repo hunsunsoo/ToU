@@ -52,25 +52,23 @@ const DropdownContainer = styled.div`
 `;
 
 const DropdownButton = styled.button`
-  height: 45px;
-  width: 240px;
+  height: 2.813rem;
+  width: 20rem;
   padding: 10px 15px;
-  border: 0.8px solid var(--festie-gray-600, #949494);
-  border-radius: 10px;
-  font-size: 16px;
+  border: transparent;
+  font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: transparent;
+  background-color: #F3F4F5;
 `;
 
 const DropdownList = styled.ul`
-  font-size: 16px;
+  font-size: 1rem;
   position: absolute;
   top: 100%;
-  width: 240px;
-  /* width: fit-content; // 추가 */
+  width: 20rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   list-style: none;

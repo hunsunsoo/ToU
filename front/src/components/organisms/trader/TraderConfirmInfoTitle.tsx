@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from "styled-components"
 
-interface TraderInfoTitleProps {
+interface TraderConfirmInfoTitleProps {
     infoTitle: string;
 }
 
-const TraderInfoTitle = ({infoTitle}:TraderInfoTitleProps) => {
+const TraderConfirmInfoTitle = ({infoTitle}:TraderConfirmInfoTitleProps) => {
     return (
         <StyledInfoHeader>
             <>{infoTitle}</>
@@ -13,19 +13,16 @@ const TraderInfoTitle = ({infoTitle}:TraderInfoTitleProps) => {
     );
 };
 
-export default TraderInfoTitle;
+export default TraderConfirmInfoTitle;
 
 const StyledInfoHeader = styled.div`
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
-    height: 7rem;
+    height: 4vh;
     width: 100%;
     display: flex;
-    text-align: center;
     align-items: center;
     /* padding-bottom: px; */
     border-bottom: 1px solid var(--festie-gray-600, #949494);
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+
 `;
