@@ -15,7 +15,18 @@ const TraderBillItemList = ({ bills }: TraderBillItemListProps) => {
   const groupBillsByDate = (bills: BillType[]) => {
     const groups: { [key: string]: BillType[] } = {};
     bills.forEach((bill) => {
-      const date = new Date(bill.tradeDate).toLocaleDateString();
+      // 날짜 형식을 '년 월 일'로 지정합니다.
+      const dateOptions: Intl.DateTimeFormatOptions = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+
+      const date = new Date(bill.tradeDate).toLocaleDateString(
+        "ko-KR",
+        dateOptions
+      );
+
       if (!groups[date]) {
         groups[date] = [];
       }
@@ -33,18 +44,20 @@ const TraderBillItemList = ({ bills }: TraderBillItemListProps) => {
       {Object.keys(groupedBills).length > 0 ? (
         <ItemListContainer>
           {Object.entries(groupedBills).map(([date, bills]) => (
-            <div key={date}>
+            <DateSection key={date}>
               <DateHeader>
-                <span>{date}</span>
+                <DateCircle />
+                <DateText>{date}</DateText>
               </DateHeader>
               {bills.map((bill) => (
                 <TraderBillItem
                   key={bill.statementSeq}
-                  itemText={`${bill.branchName} - ${bill.productsName}`}
+                  branchName={bill.branchName}
+                  productsName={bill.productsName}
                   onClick={() => navigate(`/m/sign/${bill.statementSeq}`)}
                 />
               ))}
-            </div>
+            </DateSection>
           ))}
         </ItemListContainer>
       ) : (
@@ -56,32 +69,36 @@ const TraderBillItemList = ({ bills }: TraderBillItemListProps) => {
 
 export default TraderBillItemList;
 
+const DateSection = styled.section`
+  background-color: #fff; // 배경색을 흰색으로 설정
+`;
+
 const ItemListContainer = styled.div`
   margin-top: 1rem;
+`;
+
+const DateCircle = styled.span`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #3a89ff; // 청색 원 배경색 설정
+  margin-right: 0.5rem; // 오른쪽 마진 추가
 `;
 
 const DateHeader = styled.div`
   display: flex;
   align-items: center;
-  margin: 1rem 0;
-  &:before,
-  &:after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background-color: #000;
-    margin: 0 1rem; // 양쪽 선 사이의 거리 조절
-  }
-  & > span {
-    background-color: #fff; // 텍스트 배경 색상 지정
-    padding: 0 1rem;
-    font-size: 1rem;
-    z-index: 1; // 선 위에 텍스트가 오도록 z-index 설정
-    position: relative; // z-index 적용을 위해 position 지정
-  }
+  padding: 0.5rem 1rem; // 패딩 추가
+  font-weight: bold;
 `;
 
 const NoItemsContainer = styled.div`
   margin-top: 1rem;
   text-align: center;
+`;
+
+const DateText = styled.span`
+  font-size: 1.3rem;
+  color: #3a89ff;
 `;
