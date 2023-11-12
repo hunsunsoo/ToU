@@ -27,7 +27,7 @@ MAX_RETRY=5
 . scripts/configUpdate.sh
 . scripts/utils.sh
 
-infoln "Creating config transaction to add org3 to network"
+infoln "Creating config transaction to add org4 to network"
 
 # Fetch the config for the channel, writing it to config.json
 fetchChannelConfig 1 ${CHANNEL_NAME} config.json
@@ -38,7 +38,7 @@ jq -s '.[0] * {"channel_group":{"groups":{"Application":{"groups": {"Org4MSP":.[
 { set +x; } 2>/dev/null
 
 # Compute a config update, based on the differences between config.json and modified_config.json, write it as a transaction to org3_update_in_envelope.pb
-createConfigUpdate ${CHANNEL_NAME} config.json modified_config.json org3_update_in_envelope.pb
+createConfigUpdate ${CHANNEL_NAME} config.json modified_config.json org4_update_in_envelope.pb
 
 infoln "Signing config transaction"
 signConfigtxAsPeerOrg 1 org4_update_in_envelope.pb
