@@ -107,7 +107,7 @@ public final class Asset {
     }
 
 
-    public Asset(@JsonProperty("assetId") final String assetId, @JsonProperty("stockSeq") final String previousAssetId,
+    public Asset(@JsonProperty("assetId") final String assetId, @JsonProperty("previousAssetId") final String previousAssetId,
                  @JsonProperty("statementSeq") final Long statementSeq, @JsonProperty("branchSeq") final Long branchSeq,
                  @JsonProperty("branchLocation") final String branchLocation, @JsonProperty("branchName") final String branchName,
                  @JsonProperty("branchContact") final String branchContact, @JsonProperty("stockName") final String stockName,
