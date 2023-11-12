@@ -107,7 +107,7 @@ const TraderConfirmPage = () => {
     <StyledContainer>
       <StyledHeader>
         <TraderHeader title="거래 명세서 검토" />
-        <TraderSubtitle subtitle="거래 품목 확인" />
+        {/* <TraderSubtitle subtitle="거래 품목 확인" /> */}
       </StyledHeader>
       <StyledBody>
         <MainPaddingContainer>
