@@ -157,16 +157,19 @@ queryInstalled 1
 ## approve the definition for org1
 approveForMyOrg 1
 
+## now approve also for org2
+approveForMyOrg 2
+
 ## check whether the chaincode definition is ready to be committed
 ## expect org1 to have approved and org2 not to
 checkCommitReadiness 1 "\"Org1MSP\": true" "\"Org2MSP\": false"
 checkCommitReadiness 2 "\"Org1MSP\": true" "\"Org2MSP\": false"
 
-## now approve also for org2
-approveForMyOrg 2
 
 #추가
 approveForMyOrg 3
+approveForMyOrg 4
+
 #추가끝
 
 
