@@ -13,7 +13,7 @@
 #
 ################################################################################
 Organizations:
-    - &Org3
+    - &Org4
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
         Name: Org4MSP
