@@ -176,11 +176,12 @@ checkCommitReadiness 1 "\"Org1MSP\": true" "\"Org2MSP\": true"
 checkCommitReadiness 2 "\"Org1MSP\": true" "\"Org2MSP\": true"
 #추가
 checkCommitReadiness 3 "\"Org1MSP\": true" "\"Org2MSP\": true"
+checkCommitReadiness 4 "\"Org1MSP\": true" "\"Org2MSP\": true"
 #추가 끝
 ## now that we know for sure both orgs have approved, commit the definition
 
 #3추가
-commitChaincodeDefinition 1 2 3
+commitChaincodeDefinition 1 2 3 4
 
 ## query on both orgs to see that the definition committed successfully
 queryCommitted 1
@@ -189,13 +190,17 @@ queryCommitted 2
 # 추가
 queryCommitted 3
 
+# 추가
+queryCommitted 4
+
+
 ## Invoke the chaincode - this does require that the chaincode have the 'initLedger'
 ## method defined
 if [ "$CC_INIT_FCN" = "NA" ]; then
   infoln "Chaincode initialization is not required"
 else
   #3추가
-  chaincodeInvokeInit 1 2 3
+  chaincodeInvokeInit 1 2 3 4
 fi
 
 exit 0
