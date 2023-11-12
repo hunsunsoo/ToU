@@ -6,6 +6,7 @@ import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.stock.domain.*;
 import com.welcome.tou.stock.dto.request.StockCreateByOfficialsRequestDto;
+import com.welcome.tou.stock.dto.request.StockCreateInBlockRequestDto;
 import com.welcome.tou.stock.dto.response.*;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,11 @@ import com.welcome.tou.stock.dto.request.ProductCreateRequestDto;
 import com.welcome.tou.stock.dto.request.StockCreateByProducerRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 
@@ -201,6 +204,33 @@ public class StockService {
                 Stock.UseStatus.UNUSED);
 
         stockRepository.save(newStock);
+
+        // 블록체인 서버 요청
+        RestTemplate restTemplate = new RestTemplate();
+        StockCreateInBlockRequestDto bcRequest = StockCreateInBlockRequestDto.builder()
+                .assetId(String.valueOf(newStock.getStockSeq()))
+                .previousAssetId("0")
+                .statementSeq(0L)
+                .branchSeq(branch.getBranchSeq())
+                .branchLocation(branch.getBranchLocation())
+                .branchName(branch.getBranchName())
+                .branchContract(branch.getBranchContact())
+                .stockName(newStock.getStockName())
+                .stockQuantity(newStock.getStockQuantity().longValue())
+                .stockUnit(newStock.getStockUnit())
+                .stockDate(newStock.getStockDate().toString())
+                .inoutStatus(newStock.getInOutStatus().name())
+                .useStatus(newStock.getUseStatus().name())
+                .build();
+
+        ResponseEntity<ResultTemplate> response = restTemplate.postForEntity(
+                "http://k9b310a.p.ssafy.io:8080/api/ledger/asset",
+                bcRequest,
+                ResultTemplate.class
+        );
+
+
+        System.out.println("Response from POST request: " + response.getBody());
 
         return ResultTemplate.builder().status(200).data("재고 추가 완료").build();
     }
