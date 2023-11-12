@@ -20,7 +20,7 @@ export default TraderSubtitle;
 const StyledSubtitle = styled.div`
     height: 5vh;
     width: 100%;
-    background-color: #EAF6FF;
+    background-color: #F0F0F0;
     font-size: 20px;
     /* font-weight: 500; */
     text-align: left;

@@ -15,6 +15,7 @@ import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import TraderUnitInputTitle from "../../components/organisms/trader/TraderUnitInputTitle";
 import { customAxios } from "../../components/api/customAxios";
 import toast, { Toaster } from 'react-hot-toast';
+import StepIndicator from "../../components/organisms/TraderStepIndicator";
 
 interface DropdownItem {
   seq: number;
@@ -180,8 +181,8 @@ const TraderCreatePage = () => {
     setReqStep(prevReqStep => prevReqStep + 1);
   })
 
-  const goBackToStep1 = () => {
-    setReqStep(1);
+  const goBackToStep = () => {
+    setReqStep(reqStep-1);
   };
 
 
@@ -357,29 +358,57 @@ const TraderCreatePage = () => {
           <StyledContainer>
           <StyledHeader>
             <TraderHeader title="거래 명세서 생성" />
-            <TraderSubtitle subtitle="거래 업체 등록" />
+            {/* <TraderSubtitle subtitle="거래 업체 등록" /> */}
           </StyledHeader>
     
           <StyledBody>
             <MainPaddingContainer>
-              <TraderInfoTitle infoTitle="인수자 정보" />
-              <TraderDropdownTitle
-                inputTitle="업체명"
-                items={companyDropdownItems}
-                selectedItem={selectedCompany}
-                onSelect={handleSelectCompany}
-              />
-              <TraderDropdownTitle
-                inputTitle="관할 구역"
-                items={branchDropdownItems}
-                selectedItem={selectedBranch}
-                onSelect={handleSelectBranch}
-              />
+            <StepIndicator steps={3} currentStep={1} />
+              <TraderInfoTitle infoTitle="인수자 정보 입력" />
+              <StyledBodyInfo>
+                <TraderDropdownTitle
+                  inputTitle="업체명"
+                  items={companyDropdownItems}
+                  selectedItem={selectedCompany}
+                  onSelect={handleSelectCompany}
+                />
+                <TraderDropdownTitle
+                  inputTitle="관할 구역"
+                  items={branchDropdownItems}
+                  selectedItem={selectedBranch}
+                  onSelect={handleSelectBranch}
+                />
+              </StyledBodyInfo>
+            </MainPaddingContainer>
+          </StyledBody>
+          <StyledFooter>
+            <TraderBtn
+              size="Large"
+              color={isValid ? "Blue" : "BlueDisabled"}
+              onClick={nextHandler}
+              disabled={!isValid}
+            >
+              다음
+            </TraderBtn>
+          </StyledFooter>
+        </StyledContainer>
+        ) : reqStep === 2 ? (
+          <StyledContainer>
+          <StyledHeader>
+          <TraderItemHeader title="거래 명세서 생성" onBack={goBackToStep} />
+            {/* <TraderSubtitle subtitle="거래 업체 등록" /> */}
+          </StyledHeader>
+    
+          <StyledBody>
+            <MainPaddingContainer>
+            <StepIndicator steps={3} currentStep={2} />
               <TraderInfoTitle infoTitle="거래 일자 등록" />
+              <StyledBodyInfo>
               <TraderCalendarTitle
                 selectedDate={selectedDate}
                 onDateChange={setSelectedDate}
               />
+              </StyledBodyInfo>
             </MainPaddingContainer>
           </StyledBody>
     
@@ -394,26 +423,24 @@ const TraderCreatePage = () => {
             </TraderBtn>
           </StyledFooter>
         </StyledContainer>
-        ) : reqStep === 2 ? (
+        ) : reqStep === 3 ? (
           <StyledItemContainer>
-
           <StyledItemHeader>
-            <TraderItemHeader title="거래 명세서 생성" onBack={goBackToStep1} />
-            <TraderSubtitle subtitle="거래 품목 등록" />
+            <TraderItemHeader title="거래 명세서 생성" onBack={goBackToStep} />
           </StyledItemHeader>
-    
           <StyledItemBody>
             <MainPaddingContainer>
+            <StepIndicator steps={3} currentStep={3} />
+            <StyledInfoTitle>
+                    <TraderInfoTitle infoTitle="품목 정보 입력" />
+                  </StyledInfoTitle>
               {items.map((item, index) => (
                 <div key={index}>
-                  <StyledInfoTitle>
-                    <TraderInfoTitle infoTitle="품목 정보" />
-                    <StyledSpan>
-                      ( {index + 1} / {items.length} )
-                    </StyledSpan>
-                  </StyledInfoTitle>
+                  <StyledSpan>
+                    ( {index + 1} / {items.length} )
+                  </StyledSpan>
                   <TraderItemDropdownTitle
-                    inputTitle="품목"
+                    inputTitle="품목명"
                     items={getAvailableItems()}
                     selectedItem={item.selectedStock}
                     onSelect={(dropdownItem) => handleSelectStock(index, dropdownItem)} />
@@ -502,6 +529,9 @@ const StyledHeader = styled.div`
 
 const StyledBody = styled.div``;
 
+const StyledBodyInfo = styled.div`
+  margin: 0 1rem 0 1rem
+  `;
 
 // 공통
 const StyledFooter = styled.div`
@@ -532,8 +562,8 @@ const StyledItemBody = styled.div`
 
 const StyledDeleteItem = styled.div`
   padding-top: 30px;
-  padding-bottom: 30px;
-  margin-bottom: 20px;
+  padding-bottom: 1.875rem;
+  margin-bottom: 1rem;
   display: flex;
   justify-content: center;
   border-bottom: 1px solid var(--festie-gray-600, #010000);
@@ -552,12 +582,14 @@ const StyledInfoTitle = styled.div`
 
 const StyledSpan = styled.span`
   display: inline-flex;
-  align-items: center;
+  margin-top: 1rem;
+  /* align-items: right; */
+  justify-content: right;
   height: 4vh;
-  width: 80px;
+  width: 100%;
   font-size: 20px;
   font-weight: bold;
-  border-bottom: 0.8px solid var(--festie-gray-600, #949494);
+  /* border-bottom: 0.8px solid var(--festie-gray-600, #949494); */
 `;
 
 const StyledTraderInputTitle = styled(TraderInputTitle)`

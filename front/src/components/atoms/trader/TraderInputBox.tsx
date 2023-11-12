@@ -22,7 +22,7 @@ type InputStyle = {
   borderRadius?: string;
 };
 
-type InputColor = "BlackStroke";
+type InputColor = "BlackStroke" | "Grey";
 
 type InputColorStyle = {
   border: string;
@@ -34,28 +34,28 @@ type InputColorStyle = {
 
 const InputStyles: Record<InputSize, InputStyle> = {
   "X-Large": {
-    height: "120px",
-    width: "240px",
-    fontSize: "16px",
-    borderRadius: "10px",
+    height: "7.5rem",
+    width: "20rem",
+    fontSize: "1rem",
+    borderRadius: "",
   },
   Large: {
-    height: "45px",
-    width: "240px",
-    fontSize: "16px",
-    borderRadius: "10px",
+    height: "2.813rem",
+    width: "20rem",
+    fontSize: "1rem",
+    borderRadius: "",
   },
   Medium: {
-    height: "45px",
+    height: "2.813rem",
     width: "200px",
     fontSize: "16px",
     borderRadius: "10px",
   },
   Small: {
-    height: "45px",
-    width: "140px",
-    fontSize: "16px",
-    borderRadius: "10px",
+    height: "2.813rem",
+    width: "13rem",
+    fontSize: "1rem",
+    borderRadius: "",
   },
 };
 
@@ -67,6 +67,13 @@ const InputColors: Record<InputColor, InputColorStyle> = {
     placeholderColor: "#797979",
     boxShadow: "0px 0px 4px 0px rgba(0, 0, 0, 0.70)",
   },
+  Grey:{
+    border: "transparent",
+    backgroundColor: "#F3F4F5",
+    color: "#000",
+    placeholderColor: "#797979",
+    boxShadow: "",
+  }
 };
 
 const StyledInput = styled.input<InputProps>`
@@ -76,15 +83,15 @@ const StyledInput = styled.input<InputProps>`
   border-radius: ${(props) => InputStyles[props.size]?.borderRadius ?? "12px"};
   box-sizing: border-box;
   padding: 0 8px;
-  border: ${(props) => InputColors[props.color || "BlackStroke"].border};
+  border: ${(props) => InputColors[props.color || "Grey"].border};
   background-color: ${(props) =>
-    InputColors[props.color || "BlackStroke"].backgroundColor};
-  color: ${(props) => InputColors[props.color || "BlackStroke"].color};
+    InputColors[props.color || "Grey"].backgroundColor};
+  color: ${(props) => InputColors[props.color || "Grey"].color};
   /* margin-right: 10px; */
 
   &::placeholder {
     color: ${(props) =>
-      InputColors[props.color || "BlackStroke"].placeholderColor};
+      InputColors[props.color || "Grey"].placeholderColor};
   }
   
   &:focus {
