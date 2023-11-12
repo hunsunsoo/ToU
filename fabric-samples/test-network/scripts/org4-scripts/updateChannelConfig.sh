@@ -42,6 +42,9 @@ createConfigUpdate ${CHANNEL_NAME} config.json modified_config.json org4_update_
 
 infoln "Signing config transaction"
 signConfigtxAsPeerOrg 1 org4_update_in_envelope.pb
+signConfigtxAsPeerOrg 2 org4_update_in_envelope.pb
+signConfigtxAsPeerOrg 3 org4_update_in_envelope.pb
+
 
 infoln "Submitting transaction from a different peer (peer0.org2) which also signs it"
 setGlobals 2
