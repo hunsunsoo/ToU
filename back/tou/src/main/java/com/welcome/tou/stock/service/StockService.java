@@ -4,6 +4,7 @@ package com.welcome.tou.stock.service;
 import com.welcome.tou.common.exception.InvalidStockException;
 import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
+import com.welcome.tou.statement.dto.request.StockUpdateInBlockRequestDto;
 import com.welcome.tou.stock.domain.*;
 import com.welcome.tou.stock.dto.request.StockCreateByOfficialsRequestDto;
 import com.welcome.tou.stock.dto.request.StockCreateInBlockRequestDto;
@@ -262,6 +263,10 @@ public class StockService {
 
         beforeStock.updateUseStatus(Stock.UseStatus.USED);
         stockRepository.save(beforeStock);
+        // 블록체인 asset 업데이트
+        RestTemplate restTemplate = new RestTemplate();
+        StockUpdateInBlockRequestDto bcUpdateRequest = StockUpdateInBlockRequestDto.builder().assetId(String.valueOf(beforeStock.getStockSeq())).build();
+        restTemplate.put("http://k9b310a.p.ssafy.io:8080/api/ledger/asset", bcUpdateRequest);
 
         Stock newStock = Stock.createStock(beforeStock.getBranch(),
                 beforeStock.getFromBranch(),
@@ -275,6 +280,30 @@ public class StockService {
                 Stock.UseStatus.UNUSED);
 
         stockRepository.save(newStock);
+
+        // 블록체인 asset 추가
+        StockCreateInBlockRequestDto bcCreateRequest = StockCreateInBlockRequestDto.builder()
+                .assetId(String.valueOf(newStock.getStockSeq()))
+                .previousAssetId(String.valueOf(newStock.getStockSeq()))
+                .statementSeq(0L)
+                .branchSeq(branch.getBranchSeq())
+                .branchLocation(branch.getBranchLocation())
+                .branchName(branch.getBranchName())
+                .branchContract(branch.getBranchContact())
+                .stockName(newStock.getStockName())
+                .stockQuantity(newStock.getStockQuantity().longValue())
+                .stockUnit(newStock.getStockUnit())
+                .stockDate(newStock.getStockDate().toString())
+                .inoutStatus(newStock.getInOutStatus().name())
+                .useStatus(newStock.getUseStatus().name())
+                .build();
+
+        ResponseEntity<ResultTemplate> response = restTemplate.postForEntity(
+                "http://k9b310a.p.ssafy.io:8080/api/ledger/asset",
+                bcCreateRequest,
+                ResultTemplate.class
+        );
+        System.out.println("Response from POST request: " + response.getBody());
 
         return ResultTemplate.builder().status(200).data("공정 처리가 완료되었습니다.").build();
     }

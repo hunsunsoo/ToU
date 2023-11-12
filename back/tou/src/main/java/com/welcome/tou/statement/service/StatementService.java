@@ -558,11 +558,11 @@ public class StatementService {
             }
 
             st.updateUseStatus(Stock.UseStatus.USED);
+            stockRepository.save(st);
             // 블록체인 asset 업데이트
             RestTemplate restTemplate = new RestTemplate();
             StockUpdateInBlockRequestDto bcUpdateRequest = StockUpdateInBlockRequestDto.builder().assetId(String.valueOf(st.getStockSeq())).build();
             restTemplate.put("http://k9b310a.p.ssafy.io:8080/api/ledger/asset", bcUpdateRequest);
-            stockRepository.save(st);
 
             Stock newStock = Stock.createStock(
                     branch,
