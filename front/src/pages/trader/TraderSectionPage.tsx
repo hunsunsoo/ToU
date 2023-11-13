@@ -58,18 +58,15 @@ const TraderSectionPage = () => {
   };
 
   useEffect(() => {
-    customAxios
-      .get(`/client/worker/branch/list`)
-      .then((res) => {
-        console.log(res.data.data)
-        setBranchs(res.data.data.branchList);
-      });
+    customAxios.get(`/client/worker/branch/list`).then((res) => {
+      console.log(res.data.data);
+      setBranchs(res.data.data.branchList);
+    });
   }, [currentCompanySeq]);
 
   useEffect(() => {
     if (selectedBranchSeq) {
       customAxios.get(`/statement/worker/list/completion`).then((res) => {
-
         const statements: Statement[] = res.data.data.statementList;
 
         const filteredStatements = statements.filter(
@@ -99,15 +96,16 @@ const TraderSectionPage = () => {
       <StyledHeader>
         <TraderHeader title="거래 명세서 내역 조회" />
       </StyledHeader>
-
-      <MainPaddingContainer>
+      <StyledDiv>
         <TraderDropdownTitle
           inputTitle="관할 구역"
           items={branchDropdownItems}
           selectedItem={selectedBranch}
           onSelect={handleSelectBranch}
         />
-        <TraderSectionFilter />
+      </StyledDiv>
+      <StyledMainPaddingContainer>
+        {/* <TraderSectionFilter /> */}
 
         {!selectedBranch && <p>관할 구역을 선택해주세요.</p>}
 
@@ -118,7 +116,7 @@ const TraderSectionPage = () => {
         {selectedBranch && tableData.length > 0 && (
           <TraderSectionTable data={tableData} />
         )}
-      </MainPaddingContainer>
+      </StyledMainPaddingContainer>
     </StyledContainer>
   );
 };
@@ -128,6 +126,8 @@ export default TraderSectionPage;
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
+  background-color: #f0f0f0;
+  height: 100vh;
 `;
 
 const StyledHeader = styled.div`
@@ -135,4 +135,17 @@ const StyledHeader = styled.div`
   position: sticky;
   top: 0;
   z-index: 12;
+`;
+
+const StyledMainPaddingContainer = styled(MainPaddingContainer)`
+  background-color: #fff; // 내부 박스 배경색으로 흰색을 설정합니다.
+  margin: 1rem; // 상하좌우 여백을 줍니다.
+  border-radius: 20px; // 모서리를 둥글게 처리합니다.
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // 그림자 효과를 추가합니다.
+  overflow-y: scroll;
+  height: 100%;
+`;
+
+const StyledDiv = styled.div`
+  margin: 0 1rem; // 상하좌우 여백을 줍니다.
 `;

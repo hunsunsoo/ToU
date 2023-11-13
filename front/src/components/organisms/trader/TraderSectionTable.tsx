@@ -2,8 +2,20 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { TableRow } from "../../../pages/trader/TraderSectionPage";
+import TraderBillItem from "../../atoms/trader/TraderBillItem";
 
-const TraderSectionTable: React.FC<{ data: TableRow[] }> = ({ data }) => {
+type BillType = {
+  statementSeq: number;
+  workerName: string; // 또는 branchName
+  productName: string; // 또는 productsName
+  tradeDate: string;
+};
+
+type TraderSectionTableProps = {
+  data: BillType[];
+};
+
+const TraderSectionTable: React.FC<TraderSectionTableProps> = ({ data }) => {
   const navigate = useNavigate();
 
   // 날짜와 시간을 분리하는 함수
@@ -15,43 +27,89 @@ const TraderSectionTable: React.FC<{ data: TableRow[] }> = ({ data }) => {
     navigate(`/m/sign/${statementSeq}`);
   };
 
+  const groupBillsByDate = (bills: BillType[]) => {
+    const groups: { [key: string]: BillType[] } = {};
+    bills.forEach((bill) => {
+      // 날짜 형식을 '년 월 일'로 지정
+      const dateOptions: Intl.DateTimeFormatOptions = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+
+      const date = new Date(bill.tradeDate).toLocaleDateString(
+        "ko-KR",
+        dateOptions
+      );
+
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(bill);
+    });
+    return groups;
+  };
+  // 날짜별로 그룹화된 bills
+  const groupedBills = groupBillsByDate(data);
   return (
-    <Table>
-      <thead>
-        <tr>
-          <th>거래처</th>
-          <th>품목</th>
-          <th>거래일시</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((row, index) => (
-          <tr key={index} onClick={() => handleRowClick(row.statementSeq)}>
-            <td>{row.workerName}</td>{" "}
-            {/* 거래처 이름을 workerName으로 표시합니다. */}
-            <td>{row.productName}</td>
-            <td>{formatDate(row.tradeDate)}</td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+    <>
+      {Object.keys(groupedBills).length > 0 ? (
+        <ItemListContainer>
+          {Object.entries(groupedBills).map(([date, bills]) => (
+            <DateSection key={date}>
+              <DateHeader>
+                <DateCircle />
+                <DateText>{date}</DateText>
+              </DateHeader>
+              {bills.map((bill) => (
+                <TraderBillItem
+                  key={bill.statementSeq}
+                  branchName={bill.workerName}
+                  productsName={bill.productName}
+                  onClick={() => navigate(`/m/confirm/${bill.statementSeq}`)}
+                />
+              ))}
+            </DateSection>
+          ))}
+        </ItemListContainer>
+      ) : (
+        <NoItemsContainer>거래명세서가 존재하지 않습니다.</NoItemsContainer>
+      )}
+    </>
   );
 };
-
 export default TraderSectionTable;
 
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
+const DateSection = styled.section`
+  background-color: #fff; // 배경색을 흰색으로 설정
+`;
 
-  th,
-  td {
-    border: 1px solid black;
-    padding: 10px;
-    text-align: center;
-  }
+const ItemListContainer = styled.div`
+  margin-top: 1rem;
+`;
 
-  th {
-    background-color: #f2f2f2;
-  }
+const DateCircle = styled.span`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #3a89ff; // 청색 원 배경색 설정
+  margin-right: 0.5rem; // 오른쪽 마진 추가
+`;
+
+const DateHeader = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem; // 패딩 추가
+  font-weight: bold;
+`;
+
+const NoItemsContainer = styled.div`
+  margin-top: 1rem;
+  text-align: center;
+`;
+
+const DateText = styled.span`
+  font-size: 1.3rem;
+  color: #3a89ff;
 `;
