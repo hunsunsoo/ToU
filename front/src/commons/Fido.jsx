@@ -63,6 +63,10 @@ const Fido = () => {
   const [userHandle, setUserHandle] = useState("");
   const [username, setUsername] = useState("");
 
+  const [clientDataJSON, setClientDataJSON] = useState("");
+  const [attestationObject, setAttestationObject] = useState("");
+  const [clientExtension, setClientExtension] = useState("");
+
   const storedValue = localStorage.getItem("recoil-persist");
   const accessToken = storedValue ? JSON.parse(storedValue)?.UserInfoState?.accessToken : undefined;
 
@@ -89,39 +93,47 @@ const Fido = () => {
   }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행됨을 의미합니다.
 
 
-  const zzz = () => {
-    axios.post("https://tou.kr/api/webauthn/attestation/options")
-    .then((response)=>{
-      console.log(response)
-      const options = response.data;
-      let ccOptions = {
-        ...options,
-        challenge: decodeBase64url(options.challenge),
-        user: {
-            id: decodeBase64url(userHandle),
-            name: username,
-            displayName: username,
-        },
-        excludeCredentials: options.excludeCredentials.map((credential) => ({
-            ...credential,
-            id: decodeBase64url(credential.id),
-        })),
-        authenticatorSelection: {
-            requireResidentKey: true,
-            userVerification: "discouraged",
-        },
-      };
+  const zzz = async () => {
+    const optionsResponse = await axios.post("https://tou.kr/api/webauthn/attestation/options")
+    const options = optionsResponse.data;
 
-      const credential = navigator.credentials.create({
-        publicKey: ccOptions,
-      })
-      console.log("Created credential: ", credential);
-    })
-    .catch((error)=>{
-      console.log(error);
-    })
+    let ccOptions = {
+      ...options,
+      challenge: decodeBase64url(options.challenge),
+      user: {
+          id: decodeBase64url(userHandle),
+          name: username,
+          displayName: username,
+      },
+      excludeCredentials: options.excludeCredentials.map((credential) => ({
+          ...credential,
+          id: decodeBase64url(credential.id),
+      })),
+      authenticatorSelection: {
+          requireResidentKey: true,
+          userVerification: "discouraged",
+      },
+    };
 
+    const credential = await navigator.credentials.create({
+      publicKey: ccOptions,
+    });
+
+    setClientDataJSON(credential.response.clientDataJSON);
+    setAttestationObject(encodeBase64url(credential.response.attestationObject));
+    setClientExtension(JSON.stringify(credential.getClientExtensionResults));
+
+    const body = {
+      userHandle : userHandle,
+      username : username,
+      clientDataJSON : clientDataJSON,
+      attestationObject : attestationObject,
+      clientExtension : clientExtension,
+    }
+    const response = await customAxios.post("webauthn/enroll", body);
+    console.log(response)
   }
+
 
   return (
     <div>
