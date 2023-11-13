@@ -23,4 +23,5 @@ export default TraderUnitInputBox;
 
 const Container = styled.div`
     display: flex;
+    width: 100%;
 `;

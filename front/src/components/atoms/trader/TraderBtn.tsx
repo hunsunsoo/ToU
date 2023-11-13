@@ -104,9 +104,9 @@ const ButtonColors: Record<ButtonColor, ButtonColorStyle> = {
     color: "#FFFFFF",
   },
   BlueDisabled: {
-    backgroundColor: "#3479FF",
-    color: "#FFFFFF",
-    opacity: "40%",
+    backgroundColor: "#a8c4fb",
+    color: "rgb(255, 255, 255)",
+    // opacity: "",
   },
   Grey: {
     backgroundColor: "#CACACA",
@@ -115,8 +115,8 @@ const ButtonColors: Record<ButtonColor, ButtonColorStyle> = {
   White: {
     backgroundColor: "#FFFFFF",
     color: "#000000",
-    border: "0.8px solid var(--festie-gray-600, #ffffff)",
-    boxShadow: "3px 3px 10px 0px rgba(0, 0, 0, 0.3)",
+    border: "1px solid #949494",
+    boxShadow: "0px 2px 2px 0px rgba(0, 0, 0, 0.25)",
   },
   Sky: {
     backgroundColor: "#EAF6FF",

@@ -55,22 +55,22 @@ const DropdownContainer = styled.div`
 
 const DropdownButton = styled.button`
   height: 2.813rem;
-  width: 6rem;
+  width: 100%;
   padding: 10px 15px;
-  border: transparent;
+  border: 1px solid #ccc;
   font-size: 18px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between; 
-  background-color: #F3F4F5;
+  background-color: #ffffff;
 `;
 
 const DropdownList = styled.ul`
   font-size: 16px;
   position: absolute;
   top: 100%;
-  width: 90px;
+  width: 100%;
   /* width: fit-content; // 추가 */
   /* left: 50%; // 추가
   transform: translateX(-50%); // 추가 */
