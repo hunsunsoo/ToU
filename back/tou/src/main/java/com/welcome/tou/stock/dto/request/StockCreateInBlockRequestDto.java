@@ -17,11 +17,13 @@ public class StockCreateInBlockRequestDto {
     private Long branchSeq;
     private String branchLocation;
     private String branchName;
-    private String branchContract;
+    private String branchContact;
     private String stockName;
     private Long stockQuantity;
     private String stockUnit;
     private String stockDate;
     private String inoutStatus;
     private String useStatus;
+    private double latitude;
+    private double longitude;
 }
