@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { styled } from "styled-components";
 import { BiSolidUser, BiSolidLockAlt } from 'react-icons/bi';
 import { UseAuth } from "../../commons/UseAuth";
-import fido from '../../commons/Fido';
+import Fido from '../../commons/Fido';
 
 // import OfficerHeader from "../../components/organisms/officer/OfficerHeader";
 import OfficerBtn from "../../components/atoms/officer/OfficerBtn";
@@ -49,11 +49,7 @@ const OfficerLoginPage = () => {
             onClick={() => login(id, password)}>
             로그인
           </OfficerBtn>
-          <OfficerBtn
-            isImg={false}
-            onClick={() => fido()}>
-            등록
-          </OfficerBtn>
+          <Fido />
         </LoginBtnDiv>
       </GridDiv>
       <GridDiv>
