@@ -129,7 +129,7 @@ const Fido = () => {
       username : username,
       clientDataJSON : credential.response.clientDataJSON,
       attestationObject : encodeBase64url(credential.response.attestationObject),
-      clientExtension : JSON.stringify(credential.getClientExtensionResults),
+      clientExtension : JSON.stringify(credential.getClientExtensionResults()),
     });
     console.log(response)
   }
