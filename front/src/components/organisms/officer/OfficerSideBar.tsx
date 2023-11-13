@@ -6,6 +6,7 @@ import {
   UserInfoState
 } from "../../../store/State";
 import { ROUTES } from "../../../commons/Routes";
+import Fido from "../../../commons/Fido";
 
 const OfficerSideBar = () => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const OfficerSideBar = () => {
     <ListBtn onClick={() => navigate(ROUTES.OFFICER_STOCK)}>공정/재고 관리</ListBtn>
     <ListBtn onClick={() => navigate(ROUTES.OFFICER_NOTICE)}>공지사항 및 문의</ListBtn>
     <ListBtn>개인정보 수정</ListBtn>
+    <Fido />
   </SidebarContainer>
   )
 }
