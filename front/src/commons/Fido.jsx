@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { customAxios } from "../components/api/customAxios";
 // import { decodeBase64url, encodeBase64url } from "./base64url.js"
 
 const lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
@@ -68,12 +69,13 @@ const Fido = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://k9b310.p.ssafy.io:8080/webauthn/user-handle", {
-          headers: {
-            AUTHORIZATION: 'Bearer ' + `${accessToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
+        // const response = await axios.get("https://tou.kr/api/webauthn/user-handle", {
+        //   headers: {
+        //     AUTHORIZATION: 'Bearer ' + `${accessToken}`,
+        //     'Content-Type': 'application/json'
+        //   }
+        // });
+        const response = await customAxios.get("webauthn/user-handle");
 
         console.log(response.data);
         setUserHandle(response.data.data.userHandle);
