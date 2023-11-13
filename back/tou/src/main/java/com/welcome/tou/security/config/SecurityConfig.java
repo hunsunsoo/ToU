@@ -66,7 +66,6 @@ public class SecurityConfig {
             }))
             .attestationOptionsEndpoint()
             .rp()
-            .id("https://tou.kr")
             .name("to-u-worker-auth")
             .and()
             .pubKeyCredParams(
