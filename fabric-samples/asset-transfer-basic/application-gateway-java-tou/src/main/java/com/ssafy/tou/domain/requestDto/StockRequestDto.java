@@ -25,6 +25,8 @@ public class StockRequestDto {
     private String stockDate;
     private String inoutStatus;
     private String useStatus;
+    private double latitude;
+    private double longitude;
 
 
 }
