@@ -1,16 +1,20 @@
 package com.welcome.tou.stock.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.welcome.tou.common.exception.FailTransactionExcepction;
 import com.welcome.tou.common.exception.InvalidStockException;
 import com.welcome.tou.common.exception.MismatchException;
 import com.welcome.tou.common.exception.NotFoundException;
+import com.welcome.tou.consumer.dto.FabricAssetDto;
 import com.welcome.tou.statement.dto.request.StockUpdateInBlockRequestDto;
 import com.welcome.tou.stock.domain.*;
 import com.welcome.tou.stock.dto.request.StockCreateByOfficialsRequestDto;
 import com.welcome.tou.stock.dto.request.StockCreateInBlockRequestDto;
 import com.welcome.tou.stock.dto.response.*;
 import lombok.extern.java.Log;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -302,10 +306,30 @@ public class StockService {
 
         stockRepository.save(newStock);
 
+        // 이전 블록 조회
+        ObjectMapper objectMapper = new ObjectMapper();
+        String url = "http://k9b310a.p.ssafy.io:8080/api/ledger/asset/" + beforeStock.getStockSeq();
+
+        ResponseEntity<ResultTemplate<String>> fabricRes = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<ResultTemplate<String>>() {
+        });
+
+        if(fabricRes.getBody().getStatus() != 200) {
+            throw new NotFoundException(NotFoundException.ASSET_ID_NOT_FOUND);
+        }
+
+        String data = fabricRes.getBody().getData();
+        FabricAssetDto asset = null;
+
+        try {
+            asset = objectMapper.readValue(data, FabricAssetDto.class);
+        } catch (JsonProcessingException e) {
+            return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data("Json을 asset으로 변환하는데 실패했습니다.").build();
+        }
+
         // 블록체인 asset 추가
         StockCreateInBlockRequestDto bcCreateRequest = StockCreateInBlockRequestDto.builder()
                 .assetId(String.valueOf(newStock.getStockSeq()))
-                .previousAssetId(String.valueOf(beforeStock.getStockSeq()))
+                .previousAssetId(String.valueOf(asset.getPreviousAssetId()))
                 .statementSeq(0L)
                 .branchSeq(branch.getBranchSeq())
                 .branchLocation(branch.getBranchLocation())
