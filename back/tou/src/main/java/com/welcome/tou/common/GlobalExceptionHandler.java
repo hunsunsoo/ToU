@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({NotFoundException.class, MismatchException.class,
-            InvalidTradeException.class, BadRequestException.class, InvalidStockException.class})
+            InvalidTradeException.class, BadRequestException.class, InvalidStockException.class, FailTransactionExcepction.class})
     public ResultTemplate<?> handlerBadRequestExceptions(Exception e) {
         log.error("error", e);
         return ResultTemplate.builder().status(HttpStatus.BAD_REQUEST.value()).data(e.getMessage()).build();

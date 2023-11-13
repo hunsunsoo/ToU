@@ -1,27 +1,30 @@
 package com.welcome.tou.statement.service;
 
 import com.welcome.tou.client.domain.*;
-import com.welcome.tou.common.exception.BadRequestException;
-import com.welcome.tou.common.exception.InvalidTradeException;
-import com.welcome.tou.common.exception.MismatchException;
-import com.welcome.tou.common.exception.NotFoundException;
+import com.welcome.tou.common.exception.*;
 import com.welcome.tou.common.utils.ResultTemplate;
 import com.welcome.tou.statement.domain.*;
 import com.welcome.tou.statement.dto.request.RefuseStatementRequestDto;
 import com.welcome.tou.statement.dto.request.SignStatementRequestDto;
 import com.welcome.tou.statement.dto.request.StatementCreateRequestDto;
+import com.welcome.tou.statement.dto.request.StockUpdateInBlockRequestDto;
 import com.welcome.tou.statement.dto.response.*;
 import com.welcome.tou.stock.domain.Stock;
 import com.welcome.tou.stock.domain.StockRepository;
+import com.welcome.tou.stock.dto.request.StockCreateInBlockRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.awt.print.Pageable;
 import java.text.DecimalFormat;
@@ -555,6 +558,23 @@ public class StatementService {
 
             st.updateUseStatus(Stock.UseStatus.USED);
             stockRepository.save(st);
+            // 블록체인 asset 업데이트
+            RestTemplate restTemplate = new RestTemplate();
+            StockUpdateInBlockRequestDto bcUpdateRequest = StockUpdateInBlockRequestDto.builder()
+                    .assetId(String.valueOf(st.getStockSeq()))
+                    .build();
+
+            HttpEntity<StockUpdateInBlockRequestDto> requestEntity = new HttpEntity<>(bcUpdateRequest);
+            ResponseEntity<ResultTemplate> res = restTemplate.exchange(
+                    "http://k9b310a.p.ssafy.io:8080/api/ledger/asset",
+                    HttpMethod.PUT,
+                    requestEntity,
+                    ResultTemplate.class
+            );
+
+            if (res.getBody().getStatus() != 200) {
+                throw new FailTransactionExcepction(FailTransactionExcepction.UPDATE_TRANSACTION_FAIL);
+            }
 
             Stock newStock = Stock.createStock(
                     branch,
@@ -569,6 +589,36 @@ public class StatementService {
                     Stock.UseStatus.UNUSED);
 
             stockRepository.save(newStock);
+
+            // 블록체인 asset 추가
+            StockCreateInBlockRequestDto bcCreateRequest = StockCreateInBlockRequestDto.builder()
+                    .assetId(String.valueOf(newStock.getStockSeq()))
+                    .previousAssetId(String.valueOf(st.getStockSeq()))
+                    .statementSeq(statementSeq)
+                    .branchSeq(branch.getBranchSeq())
+                    .branchLocation(branch.getBranchLocation())
+                    .branchName(branch.getBranchName())
+                    .branchContact(branch.getBranchContact())
+                    .stockName(newStock.getStockName())
+                    .stockQuantity(newStock.getStockQuantity().longValue())
+                    .stockUnit(newStock.getStockUnit())
+                    .stockDate(newStock.getStockDate().toString())
+                    .inoutStatus(newStock.getInOutStatus().name())
+                    .useStatus(newStock.getUseStatus().name())
+                    .latitude(branch.getLatitude().doubleValue())
+                    .longitude(branch.getLongitude().doubleValue())
+                    .build();
+
+            ResponseEntity<ResultTemplate> response = restTemplate.postForEntity(
+                    "http://k9b310a.p.ssafy.io:8080/api/ledger/asset",
+                    bcCreateRequest,
+                    ResultTemplate.class
+            );
+
+            if(response.getBody().getStatus() != 200){
+                throw new FailTransactionExcepction(FailTransactionExcepction.CREATE_TRANSACTION_FAIL);
+            }
+
         }
     }
 
