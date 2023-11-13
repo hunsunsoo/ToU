@@ -203,19 +203,21 @@ public class App {
             System.out.println("BranchSeq : " + request.getBranchSeq());
             System.out.println("BranchName : " + request.getBranchName());
             System.out.println("Location : " + request.getBranchLocation());
-            System.out.println("Contract : " + request.getBranchContract());
+            System.out.println("Contact : " + request.getBranchContact());
             System.out.println("StockName : " + request.getStockName());
             System.out.println("Quantity : " + request.getStockQuantity());
             System.out.println("StockUnit : " + request.getStockUnit());
             System.out.println("StockDate : " + request.getStockDate());
             System.out.println("InoutStatus : " + request.getInoutStatus());
             System.out.println("UseStatus : " + request.getUseStatus());
+            System.out.println("request.getLatitude() = " + request.getLatitude());
+            System.out.println("request.getLongitude() = " + request.getLongitude());
 
             var evaluateResult = contract.submitTransaction("CreateAsset", request.getAssetId(),
-                    request.getPreviousAssetId(), request.getStatementSeq(), request.getBranchSeq(),
-                    request.getBranchLocation(), request.getBranchName(), request.getBranchContract(),
-                    request.getStockName(), request.getStockQuantity(), request.getStockUnit(),
-                    request.getStockDate(), request.getInoutStatus(), request.getUseStatus());
+                    request.getPreviousAssetId(), String.valueOf(request.getStatementSeq()), String.valueOf(request.getBranchSeq()),
+                    request.getBranchLocation(), request.getBranchName(), request.getBranchContact(),
+                    request.getStockName(), String.valueOf(request.getStockQuantity()), request.getStockUnit(),
+                    request.getStockDate(), request.getInoutStatus(), request.getUseStatus(), String.valueOf(request.getLatitude()), String.valueOf(request.getLongitude()));
 
             System.out.println("*** Transaction committed successfully");
             return ResultTemplate.builder().status(HttpStatus.OK.value()).data(prettyJson(evaluateResult)).build();

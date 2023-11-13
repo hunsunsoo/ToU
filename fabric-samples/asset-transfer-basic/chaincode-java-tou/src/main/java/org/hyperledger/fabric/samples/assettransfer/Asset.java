@@ -53,6 +53,12 @@ public final class Asset {
     @Property()
     private final String useStatus;
 
+    @Property()
+    private final double latitude;
+
+    @Property()
+    private final double longitude;
+
 
     public String getAssetId() {
         return assetId;
@@ -106,14 +112,23 @@ public final class Asset {
         return useStatus;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
 
-    public Asset(@JsonProperty("assetId") final String assetId, @JsonProperty("stockSeq") final String previousAssetId,
+    public double getLongitude() {
+        return longitude;
+    }
+
+
+    public Asset(@JsonProperty("assetId") final String assetId, @JsonProperty("previousAssetId") final String previousAssetId,
                  @JsonProperty("statementSeq") final Long statementSeq, @JsonProperty("branchSeq") final Long branchSeq,
                  @JsonProperty("branchLocation") final String branchLocation, @JsonProperty("branchName") final String branchName,
                  @JsonProperty("branchContact") final String branchContact, @JsonProperty("stockName") final String stockName,
                  @JsonProperty("stockQuantity") final Long stockQuantity, @JsonProperty("stockUnit") final String stockUnit,
                  @JsonProperty("stockDate") final String stockDate, @JsonProperty("inoutStatus") final String inoutStatus,
-                 @JsonProperty("useStatus") final String useStatus) {
+                 @JsonProperty("useStatus") final String useStatus, @JsonProperty("latitude") final double latitude,
+                 @JsonProperty("longitude") final double longitude) {
 
         this.assetId = assetId;
         this.previousAssetId = previousAssetId;
@@ -128,6 +143,8 @@ public final class Asset {
         this.stockDate = stockDate;
         this.inoutStatus = inoutStatus;
         this.useStatus = useStatus;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     @Override
@@ -136,12 +153,13 @@ public final class Asset {
                 + "Asset{"
                 + "assetId=" + assetId + ", previousAssetId=" + previousAssetId + ", statementSeq=" + statementSeq + ", branchSeq=" + branchSeq + ", branchLocation='" + branchLocation + '\''
                 + ", branchName='" + branchName + '\'' + ", branchContact='" + branchContact + '\'' + ", stockName='" + stockName + '\'' + ", stockQuantity=" + stockQuantity + ", stockUnit='" + stockUnit + '\''
-                + ", stockDate='" + stockDate + '\'' + ", inoutStatus='" + inoutStatus + '\'' + ", useStatus='" + useStatus + '\'' + '}';
+                + ", stockDate='" + stockDate + '\'' + ", inoutStatus='" + inoutStatus + '\'' + ", useStatus='" + useStatus + '\''
+                + ", latitude=" + latitude + ", longitude=" + longitude + '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAssetId(), getPreviousAssetId(), getStatementSeq(), getBranchSeq(), getBranchLocation(), getBranchName(), getBranchContact(), getStockName(), getStockQuantity(), getStockUnit(), getStockDate(), getInoutStatus(), getUseStatus());
+        return Objects.hash(getAssetId(), getPreviousAssetId(), getStatementSeq(), getBranchSeq(), getBranchLocation(), getBranchName(), getBranchContact(), getStockName(), getStockQuantity(), getStockUnit(), getStockDate(), getInoutStatus(), getUseStatus(), getLatitude(), getLongitude());
     }
 
     @Override
@@ -157,6 +175,9 @@ public final class Asset {
                 && Objects.equals(getBranchSeq(), other.getBranchSeq()) && Objects.equals(getBranchLocation(), other.getBranchLocation()) && Objects.equals(getBranchName(), other.getBranchName())
                 && Objects.equals(getBranchContact(), other.getBranchContact()) && Objects.equals(getStockName(), other.getStockName())
                 && Objects.equals(getStockQuantity(), other.getStockQuantity()) && Objects.equals(getStockUnit(), other.getStockUnit())
-                && Objects.equals(getStockDate(), other.getStockDate()) && Objects.equals(getInoutStatus(), other.getInoutStatus()) && Objects.equals(getUseStatus(), other.getUseStatus());
+                && Objects.equals(getStockDate(), other.getStockDate()) && Objects.equals(getInoutStatus(), other.getInoutStatus()) && Objects.equals(getUseStatus(), other.getUseStatus())
+                && Objects.equals(getLatitude(), other.getLatitude()) && Objects.equals(getLongitude(), other.getLatitude());
     }
+
+
 }
