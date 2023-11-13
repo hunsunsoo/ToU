@@ -13,7 +13,7 @@ export const CalendarWrapper = styled.div<CalendarWrapperProps>`
   display: ${(props) => (props.OpenYN ? "block" : "none")};
 
   .react-calendar {
-    width: 21.875rem;
+    width: 100%;
     max-width: 100%;
     background: white;
     border: 1px solid #a0a096;
@@ -179,7 +179,7 @@ export const CalendarWrapper = styled.div<CalendarWrapperProps>`
 
 export const DropdownButton = styled.button`
   height: 3rem;
-  width: 20rem;
+  width: 100%;
   border: transparent;
   /* border-radius: 10px; */
   padding: 0px 12px;

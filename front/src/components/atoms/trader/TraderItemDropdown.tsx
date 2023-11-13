@@ -49,11 +49,12 @@ const TraderItemDropdown: React.FC<TraderItemDropdownProps> = ({
 
 const DropdownContainer = styled.div`
   position: relative;
+  width: 100%
 `;
 
 const DropdownButton = styled.button`
   height: 2.813rem;
-  width: 20rem;
+  width: 100%;
   padding: 10px 15px;
   border: transparent;
   font-size: 1rem;
@@ -68,7 +69,7 @@ const DropdownList = styled.ul`
   font-size: 1rem;
   position: absolute;
   top: 100%;
-  width: 20rem;
+  width: 100%;
   border: 1px solid #ccc;
   border-radius: 4px;
   list-style: none;
