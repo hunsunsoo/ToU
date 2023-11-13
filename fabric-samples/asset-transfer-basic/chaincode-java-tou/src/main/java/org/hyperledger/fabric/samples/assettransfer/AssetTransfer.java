@@ -55,12 +55,12 @@ public final class AssetTransfer implements ContractInterface {
     public void InitLedger(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
 
-        CreateAsset(ctx, "42", "0", 0L, 7L, "인천광역시 남동구 소래역로 12", "남해씨푸드 소래포구항 지점", "02-446-4644", "문어", 2000L, "kg", "2023-09-11 03:12:12", "OUT", "USED");
-        CreateAsset(ctx, "75", "42", 5L, 10L, "경기 광명시 소하동 911-28", "(주)재호물산 가공공장 소래포구점", "02-557-5751", "문어", 2000L, "kg", "2023-09-15 16:00:00", "IN", "USED");
-        CreateAsset(ctx, "106", "42", 0L, 10L, "경기 광명시 소하동 911-28", "(주)재호물산 가공공장 소래포구점", "02-557-5751", "익힌 문어", 2000L, "kg", "2023-09-15 16:00:00", "OUT", "USED");
-        CreateAsset(ctx, "126", "106", 17L, 8L, "경기도 수원시 권선구 경수대로54번길 47", "남해씨푸드 수원점", "02-883-8835", "익힌 문어", 2000L, "kg", "2023-10-17 16:00:00", "IN", "USED");
-        CreateAsset(ctx, "133", "106", 0L, 8L, "경기도 수원시 권선구 경수대로54번길 47", "남해씨푸드 수원점", "02-883-8835", "신선한 문어 숙회", 3000L, "kg", "2023-10-22 17:49:00", "OUT", "USED");
-        CreateAsset(ctx, "138", "133", 20L, 6L, "인천광역시 미추홀구 인주대로 317", "동림수산 인천점", "02-557-5755", "신선한 문어 숙회", 3000L, "kg", "2023-10-23 16:00:00", "IN", "UNUSED");
+        CreateAsset(ctx, "42", "0", 0L, 7L, "인천광역시 남동구 소래역로 12", "남해씨푸드 소래포구항 지점", "02-446-4644", "문어", 2000L, "kg", "2023-09-11 03:12:12", "OUT", "USED", 37.3987460000, 126.7371284000);
+        CreateAsset(ctx, "75", "42", 5L, 10L, "경기 광명시 소하동 911-28", "(주)재호물산 가공공장 소래포구점", "02-557-5751", "문어", 2000L, "kg", "2023-09-15 16:00:00", "IN", "USED", 37.4466655000, 126.8842785000);
+        CreateAsset(ctx, "106", "42", 0L, 10L, "경기 광명시 소하동 911-28", "(주)재호물산 가공공장 소래포구점", "02-557-5751", "익힌 문어", 2000L, "kg", "2023-09-15 16:00:00", "OUT", "USED", 37.4466655000, 126.8842785000);
+        CreateAsset(ctx, "126", "106", 17L, 8L, "경기도 수원시 권선구 경수대로54번길 47", "남해씨푸드 수원점", "02-883-8835", "익힌 문어", 2000L, "kg", "2023-10-17 16:00:00", "IN", "USED", 37.2342049000, 127.0237130000);
+        CreateAsset(ctx, "133", "106", 0L, 8L, "경기도 수원시 권선구 경수대로54번길 47", "남해씨푸드 수원점", "02-883-8835", "신선한 문어 숙회", 3000L, "kg", "2023-10-22 17:49:00", "OUT", "USED", 37.2342049000, 127.0237130000);
+        CreateAsset(ctx, "138", "133", 20L, 6L, "인천광역시 미추홀구 인주대로 317", "동림수산 인천점", "02-557-5755", "신선한 문어 숙회", 3000L, "kg", "2023-10-23 16:00:00", "IN", "UNUSED", 37.4521048000, 126.6717581000);
     }
 
     /**
@@ -71,7 +71,7 @@ public final class AssetTransfer implements ContractInterface {
     public Asset CreateAsset(final Context ctx, final String assetId, final String previousAssetId, final Long statementSeq,
                              final Long branchSeq, final String branchLocation, final String branchName,
                              final String branchContact, final String stockName, final Long stockQuantity,
-                             final String stockUnit, final String stockDate, final String inoutStatus, final String useStatus) {
+                             final String stockUnit, final String stockDate, final String inoutStatus, final String useStatus, final double latitude, final double longitude) {
         ChaincodeStub stub = ctx.getStub();
 
         if (AssetExists(ctx, assetId)) {
@@ -81,7 +81,7 @@ public final class AssetTransfer implements ContractInterface {
         }
 
         Asset asset = new Asset(assetId, previousAssetId, statementSeq, branchSeq, branchLocation, branchName,
-                branchContact, stockName, stockQuantity, stockUnit, stockDate, inoutStatus, useStatus);
+                branchContact, stockName, stockQuantity, stockUnit, stockDate, inoutStatus, useStatus, latitude, longitude);
         String assetJSON = genson.serialize(asset);
         stub.putStringState(assetId, assetJSON);
 
@@ -128,7 +128,7 @@ public final class AssetTransfer implements ContractInterface {
                 asset.getBranchLocation(), asset.getBranchName(),
                 asset.getBranchContact(), asset.getStockName(),
                 asset.getStockQuantity(), asset.getStockUnit(),
-                asset.getStockDate(), asset.getInoutStatus(), newUseStatus);
+                asset.getStockDate(), asset.getInoutStatus(), newUseStatus, asset.getLatitude(), asset.getLongitude());
         // Use Genson to convert the Asset into string, sort it alphabetically and serialize it into a json string
         String sortedJson = genson.serialize(newAsset);
         stub.putStringState(assetId, sortedJson);

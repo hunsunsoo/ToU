@@ -118,7 +118,7 @@ public final class AssetTransferTest {
 
             Asset asset = contract.ReadAsset(ctx, "asset1");
 
-            Asset expectedAsset = new Asset("asset1", "1", 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", "2023-04-10T00:00:00", "OUT", "UNUSED");
+            Asset expectedAsset = new Asset("asset1", "1", 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", "2023-04-10T00:00:00", "OUT", "UNUSED", 1.0, 1.0);
             assertThat("PASS").isEqualTo("PASS");
 //            assertThat(asset).isEqualTo(expectedAsset);
         }
@@ -176,7 +176,7 @@ public final class AssetTransferTest {
                     .thenReturn("{ \"assetId\": \"asset1\", \"previousAssetId\": \"1\", \"statementSeq\": 1, \"branchSeq\": 1, \"branchLocation\": \"산본\", \"branchName\": \"산본공장\", \"branchContact\": \"010-7387-7808\", \"stockName\": \"멸치\", \"stockQuantity\": 1, \"stockUnit\": \"kg\", \"stockDate\": \"2023-04-10T00:00:00\", \"inoutStatus\": \"OUT\", \"useStatus\": \"사용\" }");
 
             Throwable thrown = catchThrowable(() -> {
-                contract.CreateAsset(ctx, "asset1", "1", 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", "2023-04-10T00:00:00", "OUT", "사용");
+                contract.CreateAsset(ctx, "asset1", "1", 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", "2023-04-10T00:00:00", "OUT", "사용", 1.0, 1.0);
             });
 
             assertThat(thrown).isInstanceOf(ChaincodeException.class).hasNoCause()
@@ -192,9 +192,9 @@ public final class AssetTransferTest {
             when(ctx.getStub()).thenReturn(stub);
             when(stub.getStringState("asset1")).thenReturn("");
 
-            Asset asset = contract.CreateAsset(ctx, "asset1", "1", 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", "2023-04-10T00:00:00", "OUT", "사용");
+            Asset asset = contract.CreateAsset(ctx, "asset1", "1", 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", "2023-04-10T00:00:00", "OUT", "사용", 1.0, 1.0);
 
-            assertThat(asset).isEqualTo(new Asset("asset1", "1", 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", "2023-04-10T00:00:00", "OUT", "사용"));
+            assertThat(asset).isEqualTo(new Asset("asset1", "1", 1L, 1L, "산본", "산본공장", "010-7387-7808", "멸치", 1L, "kg", "2023-04-10T00:00:00", "OUT", "사용", 1.0, 1.0));
         }
     }
 
