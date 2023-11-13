@@ -73,7 +73,7 @@ const Fido = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://k9b310.p.ssafy.io:8080/api/webauthn/user-handle", {
+        const response = await axios.get("https://k9b310.p.ssafy.io/api/webauthn/user-handle", {
           headers: {
             AUTHORIZATION: 'Bearer ' + `${accessToken}`,
             'Content-Type': 'application/json'
@@ -94,7 +94,7 @@ const Fido = () => {
 
 
   const zzz = async () => {
-    const optionsResponse = await axios.post("http://k9b310.p.ssafy.io:8080/api/webauthn/attestation/options")
+    const optionsResponse = await axios.post("https://k9b310.p.ssafy.io/api/webauthn/attestation/options")
     const options = optionsResponse.data;
 
     let ccOptions = {
@@ -123,7 +123,7 @@ const Fido = () => {
     // setAttestationObject(encodeBase64url(credential.response.attestationObject));
     // setClientExtension(JSON.stringify(credential.getClientExtensionResults));
 
-    const response = await axios.get("http://k9b310.p.ssafy.io:8080/api/webauthn/enroll", {
+    const response = await axios.get("https://k9b310.p.ssafy.io/api/webauthn/enroll", {
         userHandle : userHandle,
         username : username,
         clientDataJSON : encodeBase64url(credential.response.clientDataJSON),
