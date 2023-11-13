@@ -127,7 +127,7 @@ const Fido = () => {
     const response = await customAxios.post("webauthn/enroll", {
       userHandle : userHandle,
       username : username,
-      clientDataJSON : credential.response.clientDataJSON,
+      clientDataJSON : encodeBase64url(credential.response.clientDataJSON),
       attestationObject : encodeBase64url(credential.response.attestationObject),
       clientExtension : JSON.stringify(credential.getClientExtensionResults()),
     });
