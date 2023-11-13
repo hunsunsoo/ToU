@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/webauthn")
+@RequestMapping("/api/webauthn")
 public class WebAuthnController {
 
     private WebAuthnAuthenticatorManager webAuthnAuthenticatorManager;
