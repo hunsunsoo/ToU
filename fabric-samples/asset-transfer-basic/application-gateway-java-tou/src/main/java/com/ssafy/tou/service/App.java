@@ -210,8 +210,8 @@ public class App {
             System.out.println("StockDate : " + request.getStockDate());
             System.out.println("InoutStatus : " + request.getInoutStatus());
             System.out.println("UseStatus : " + request.getUseStatus());
-            System.out.println("request.getLatitude() = " + request.getLatitude());
-            System.out.println("request.getLongitude() = " + request.getLongitude());
+            System.out.println("Latitude = " + request.getLatitude());
+            System.out.println("Longitude = " + request.getLongitude());
 
             var evaluateResult = contract.submitTransaction("CreateAsset", request.getAssetId(),
                     request.getPreviousAssetId(), String.valueOf(request.getStatementSeq()), String.valueOf(request.getBranchSeq()),
