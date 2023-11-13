@@ -57,13 +57,13 @@ const DropdownButton = styled.button`
   height: 2.813rem;
   width: 100%;
   padding: 10px 15px;
-  border: transparent;
+  border: 1px solid #ccc;
   font-size: 18px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between; 
-  background-color: #F3F4F5;
+  background-color: #ffffff;
 `;
 
 const DropdownList = styled.ul`

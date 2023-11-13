@@ -14,6 +14,7 @@ export const CalendarWrapper = styled.div<CalendarWrapperProps>`
 
   .react-calendar {
     width: 100%;
+    /* height: 90%; */
     max-width: 100%;
     background: white;
     border: 1px solid #a0a096;
@@ -180,8 +181,8 @@ export const CalendarWrapper = styled.div<CalendarWrapperProps>`
 export const DropdownButton = styled.button`
   height: 3rem;
   width: 100%;
-  border: transparent;
-  /* border-radius: 10px; */
+  border: 1px solid #ccc;
+  background-color: #ffffff;
   padding: 0px 12px;
   color: var(--festie-gray-800, #3a3a3a);
   font-family: SUIT Variable;

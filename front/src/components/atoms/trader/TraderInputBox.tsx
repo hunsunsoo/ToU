@@ -67,13 +67,13 @@ const InputColors: Record<InputColor, InputColorStyle> = {
     placeholderColor: "#797979",
     boxShadow: "0px 0px 4px 0px rgba(0, 0, 0, 0.70)",
   },
-  Grey:{
-    border: "transparent",
-    backgroundColor: "#F3F4F5",
+  Grey: {
+    border: "1px solid #ccc",
+    backgroundColor: "#ffffff",
     color: "#000",
     placeholderColor: "#797979",
     boxShadow: "",
-  }
+  },
 };
 
 const StyledInput = styled.input<InputProps>`
