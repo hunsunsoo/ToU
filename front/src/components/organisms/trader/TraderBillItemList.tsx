@@ -15,7 +15,7 @@ const TraderBillItemList = ({ bills }: TraderBillItemListProps) => {
   const groupBillsByDate = (bills: BillType[]) => {
     const groups: { [key: string]: BillType[] } = {};
     bills.forEach((bill) => {
-      // 날짜 형식을 '년 월 일'로 지정합니다.
+      // 날짜 형식을 '년 월 일'로 지정
       const dateOptions: Intl.DateTimeFormatOptions = {
         year: "numeric",
         month: "long",
@@ -54,7 +54,7 @@ const TraderBillItemList = ({ bills }: TraderBillItemListProps) => {
                   key={bill.statementSeq}
                   branchName={bill.branchName}
                   productsName={bill.productsName}
-                  onClick={() => navigate(`/m/sign/${bill.statementSeq}`)}
+                  onClick={() => navigate(`/m/confirm/${bill.statementSeq}`)}
                 />
               ))}
             </DateSection>

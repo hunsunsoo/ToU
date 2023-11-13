@@ -1,9 +1,7 @@
-import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFingerprint } from "@fortawesome/sharp-light-svg-icons";
-
 import styled from "styled-components";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import { UseAuth } from "../../commons/UseAuth";
@@ -33,7 +31,7 @@ const TraderLoginPage = () => {
 
   return (
     <StyledMainPaddingContainer>
-      <StyledMsg>로그인..</StyledMsg>
+      <StyledMsg>Welcome !</StyledMsg>
       <LoginDiv>
         <StyledDiv>
           <TextSpan> ID</TextSpan>
@@ -63,11 +61,9 @@ export default TraderLoginPage;
 
 const StyledMainPaddingContainer = styled(MainPaddingContainer)`
   background-color: #ecf4ff;
-
   height: 100vh;
   display: flex;
   flex-direction: column;
-
   display: flex;
   justify-content: space-around;
 
@@ -163,5 +159,5 @@ const StyledMsg = styled.div`
   font-size: 2rem;
   font-weight: bold;
   color: #6187e5;
-
+  margin-left: 1rem;
 `;

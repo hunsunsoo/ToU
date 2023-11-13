@@ -152,17 +152,17 @@ const OfficerChart = () => {
         legends={[
           {
             anchor: "bottom",
-            direction: "row",
+            direction: "column",
             justify: false,
-            translateX: 0,
-            translateY: 45,
+            translateX: 140,
+            translateY: 80,
             itemsSpacing: 0,
             itemWidth: 70,
             itemHeight: 18,
             itemTextColor: "#999",
-            itemDirection: "top-to-bottom",
+            itemDirection: "right-to-left",
             itemOpacity: 1,
-            symbolSize: 18,
+            symbolSize: 12,
             symbolShape: "circle",
             effects: [
               {
