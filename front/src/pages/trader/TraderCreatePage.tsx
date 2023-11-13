@@ -15,7 +15,7 @@ import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import TraderUnitInputTitle from "../../components/organisms/trader/TraderUnitInputTitle";
 import { customAxios } from "../../components/api/customAxios";
 import toast, { Toaster } from 'react-hot-toast';
-import StepIndicator from "../../components/organisms/TraderStepIndicator";
+import StepIndicator from "../../components/organisms/trader/TraderStepIndicator";
 
 interface DropdownItem {
   seq: number;
