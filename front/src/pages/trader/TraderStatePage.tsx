@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpToLine } from "@fortawesome/sharp-light-svg-icons";
-
-// import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import TraderRoleDropdown from "../../components/atoms/trader/TraderRoleDropdown";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
@@ -23,10 +21,6 @@ const TraderStatePage = () => {
   const [filteredStatementList, setFilteredStatementList] = useState<
     TraderStateTableProps["statementList"]
   >([]);
-
-  // const handleMainButtonClick = () => {
-  //   navigate("/m/main");
-  // };
 
   // 맨 위로 스크롤하는 함수
   const scrollToTop = () => {
@@ -106,12 +100,6 @@ const TraderStatePage = () => {
           )}
         </StyledBody>
       </MainPaddingContainer>
-
-      {/* <StyledFooter>
-        <TraderBtn size="Large" color="Blue" onClick={handleMainButtonClick}>
-          메인으로
-        </TraderBtn>
-      </StyledFooter> */}
 
       {/* 맨 위로 스크롤하는 버튼 추가 */}
       <StyledScrollToTopButton onClick={scrollToTop}>

@@ -43,7 +43,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
   if (status === "WAITING") {
     signatureStatusMessage = "공급자 수급자 서명 필요";
   } else if (status === "PREPARING") {
-    signatureStatusMessage = "수급자 서명 필요";
+    signatureStatusMessage = "거래처의 서명이 필요한 문서입니다.";
   } else if (status === "READY") {
     signatureStatusMessage = "서명이 완료된 거래명세서입니다.";
   }
