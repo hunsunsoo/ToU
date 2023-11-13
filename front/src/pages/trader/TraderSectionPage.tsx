@@ -2,7 +2,6 @@ import styled from "styled-components";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import TraderDropdownTitle from "../../components/organisms/trader/TraderDropdownTitle";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
-import TraderSectionFilter from "../../components/molecules/trader/TraderSectionFilter";
 import TraderSectionTable from "../../components/organisms/trader/TraderSectionTable";
 import { useRecoilValue } from "recoil";
 import { CompanyInfoState } from "../../store/State";

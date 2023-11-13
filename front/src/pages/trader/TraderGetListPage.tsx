@@ -56,4 +56,5 @@ const StyledMainPaddingContainer = styled(MainPaddingContainer)`
   border-radius: 20px; // 모서리를 둥글게 처리합니다.
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // 그림자 효과를 추가합니다.
   overflow-y: scroll;
+  height: 100%;
 `;

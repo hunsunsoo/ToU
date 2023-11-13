@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { TableRow } from "../../../pages/trader/TraderSectionPage";
 import TraderBillItem from "../../atoms/trader/TraderBillItem";
 
 type BillType = {
@@ -17,15 +16,6 @@ type TraderSectionTableProps = {
 
 const TraderSectionTable: React.FC<TraderSectionTableProps> = ({ data }) => {
   const navigate = useNavigate();
-
-  // 날짜와 시간을 분리하는 함수
-  const formatDate = (dateString: string) => {
-    return dateString.split("T")[0]; // 'T'를 기준으로 문자열을 분리하고 날짜 부분만 반환합니다.
-  };
-
-  const handleRowClick = (statementSeq: number) => {
-    navigate(`/m/sign/${statementSeq}`);
-  };
 
   const groupBillsByDate = (bills: BillType[]) => {
     const groups: { [key: string]: BillType[] } = {};
