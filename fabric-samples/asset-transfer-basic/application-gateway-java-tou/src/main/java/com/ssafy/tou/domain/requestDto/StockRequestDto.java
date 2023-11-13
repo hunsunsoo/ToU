@@ -18,7 +18,7 @@ public class StockRequestDto {
     private Long branchSeq;
     private String branchLocation;
     private String branchName;
-    private String branchContract;
+    private String branchContact;
     private String stockName;
     private Long stockQuantity;
     private String stockUnit;

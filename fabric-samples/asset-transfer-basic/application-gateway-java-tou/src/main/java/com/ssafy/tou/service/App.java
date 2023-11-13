@@ -203,7 +203,7 @@ public class App {
             System.out.println("BranchSeq : " + request.getBranchSeq());
             System.out.println("BranchName : " + request.getBranchName());
             System.out.println("Location : " + request.getBranchLocation());
-            System.out.println("Contract : " + request.getBranchContract());
+            System.out.println("Contract : " + request.getBranchContact());
             System.out.println("StockName : " + request.getStockName());
             System.out.println("Quantity : " + request.getStockQuantity());
             System.out.println("StockUnit : " + request.getStockUnit());
@@ -213,7 +213,7 @@ public class App {
 
             var evaluateResult = contract.submitTransaction("CreateAsset", request.getAssetId(),
                     request.getPreviousAssetId(), String.valueOf(request.getStatementSeq()), String.valueOf(request.getBranchSeq()),
-                    request.getBranchLocation(), request.getBranchName(), request.getBranchContract(),
+                    request.getBranchLocation(), request.getBranchName(), request.getBranchContact(),
                     request.getStockName(), String.valueOf(request.getStockQuantity()), request.getStockUnit(),
                     request.getStockDate(), request.getInoutStatus(), request.getUseStatus());
 
