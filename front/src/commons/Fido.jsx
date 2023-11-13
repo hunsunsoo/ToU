@@ -73,13 +73,13 @@ const Fido = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get("https://tou.kr/api/webauthn/user-handle", {
-        //   headers: {
-        //     AUTHORIZATION: 'Bearer ' + `${accessToken}`,
-        //     'Content-Type': 'application/json'
-        //   }
-        // });
-        const response = await customAxios.get("webauthn/user-handle");
+        const response = await axios.get("http://k9b310.p.ssafy.io:8080/api/webauthn/user-handle", {
+          headers: {
+            AUTHORIZATION: 'Bearer ' + `${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        // const response = await customAxios.get("webauthn/user-handle");
 
         console.log(response.data);
         setUserHandle(response.data.data.userHandle);
@@ -94,7 +94,8 @@ const Fido = () => {
 
 
   const zzz = async () => {
-    const optionsResponse = await axios.post("https://tou.kr/api/webauthn/attestation/options")
+    // const optionsResponse = await axios.post("https://tou.kr/api/webauthn/attestation/options");
+    const optionsResponse = await axios.post("http://k9b310.p.ssafy.io:8080/api/webauthn/attestation/options");
     const options = optionsResponse.data;
 
     let ccOptions = {
@@ -124,13 +125,25 @@ const Fido = () => {
     // setClientExtension(JSON.stringify(credential.getClientExtensionResults));
 
 
-    const response = await customAxios.post("webauthn/enroll", {
-      userHandle : userHandle,
-      username : username,
-      clientDataJSON : encodeBase64url(credential.response.clientDataJSON),
-      attestationObject : encodeBase64url(credential.response.attestationObject),
-      clientExtension : JSON.stringify(credential.getClientExtensionResults()),
-    });
+    const response = await axios.get("http://k9b310.p.ssafy.io:8080/api/webauthn/enroll",{
+        userHandle : userHandle,
+        username : username,
+        clientDataJSON : encodeBase64url(credential.response.clientDataJSON),
+        attestationObject : encodeBase64url(credential.response.attestationObject),
+        clientExtension : JSON.stringify(credential.getClientExtensionResults()),
+      }, {
+        headers: {
+          AUTHORIZATION: 'Bearer ' + `${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+    // const response = await customAxios.post("webauthn/enroll", {
+    //   userHandle : userHandle,
+    //   username : username,
+    //   clientDataJSON : encodeBase64url(credential.response.clientDataJSON),
+    //   attestationObject : encodeBase64url(credential.response.attestationObject),
+    //   clientExtension : JSON.stringify(credential.getClientExtensionResults()),
+    // });
     console.log(response)
   }
 
