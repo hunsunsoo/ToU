@@ -63,9 +63,9 @@ const Fido = () => {
   const [userHandle, setUserHandle] = useState("");
   const [username, setUsername] = useState("");
 
-  const [clientDataJSON, setClientDataJSON] = useState("");
-  const [attestationObject, setAttestationObject] = useState("");
-  const [clientExtension, setClientExtension] = useState("");
+  // const [clientDataJSON, setClientDataJSON] = useState("");
+  // const [attestationObject, setAttestationObject] = useState("");
+  // const [clientExtension, setClientExtension] = useState("");
 
   const storedValue = localStorage.getItem("recoil-persist");
   const accessToken = storedValue ? JSON.parse(storedValue)?.UserInfoState?.accessToken : undefined;
@@ -119,16 +119,16 @@ const Fido = () => {
       publicKey: ccOptions,
     });
 
-    setClientDataJSON(credential.response.clientDataJSON);
-    setAttestationObject(encodeBase64url(credential.response.attestationObject));
-    setClientExtension(JSON.stringify(credential.getClientExtensionResults));
+    // setClientDataJSON(credential.response.clientDataJSON);
+    // setAttestationObject(encodeBase64url(credential.response.attestationObject));
+    // setClientExtension(JSON.stringify(credential.getClientExtensionResults));
 
     const body = {
       userHandle : userHandle,
       username : username,
-      clientDataJSON : clientDataJSON,
-      attestationObject : attestationObject,
-      clientExtension : clientExtension,
+      clientDataJSON : credential.response.clientDataJSON,
+      attestationObject : encodeBase64url(credential.response.attestationObject),
+      clientExtension : JSON.stringify(credential.getClientExtensionResults),
     }
     const response = await customAxios.post("webauthn/enroll", body);
     console.log(response)
