@@ -153,8 +153,8 @@ public final class Asset {
                 + "Asset{"
                 + "assetId=" + assetId + ", previousAssetId=" + previousAssetId + ", statementSeq=" + statementSeq + ", branchSeq=" + branchSeq + ", branchLocation='" + branchLocation + '\''
                 + ", branchName='" + branchName + '\'' + ", branchContact='" + branchContact + '\'' + ", stockName='" + stockName + '\'' + ", stockQuantity=" + stockQuantity + ", stockUnit='" + stockUnit + '\''
-                + ", stockDate='" + stockDate + '\'' + ", inoutStatus='" + inoutStatus + '\'' + ", useStatus='" + useStatus + '\'' +
-                ", latitude=" + latitude + ", longitude=" + longitude + '}';
+                + ", stockDate='" + stockDate + '\'' + ", inoutStatus='" + inoutStatus + '\'' + ", useStatus='" + useStatus + '\''
+                + ", latitude=" + latitude + ", longitude=" + longitude + '}';
     }
 
     @Override
