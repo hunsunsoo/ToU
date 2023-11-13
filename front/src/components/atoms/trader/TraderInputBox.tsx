@@ -35,13 +35,13 @@ type InputColorStyle = {
 const InputStyles: Record<InputSize, InputStyle> = {
   "X-Large": {
     height: "7.5rem",
-    width: "20rem",
+    width: "100%",
     fontSize: "1rem",
     borderRadius: "",
   },
   Large: {
     height: "2.813rem",
-    width: "20rem",
+    width: "100%",
     fontSize: "1rem",
     borderRadius: "",
   },
@@ -53,7 +53,7 @@ const InputStyles: Record<InputSize, InputStyle> = {
   },
   Small: {
     height: "2.813rem",
-    width: "13rem",
+    width: "100%",
     fontSize: "1rem",
     borderRadius: "",
   },
@@ -67,13 +67,13 @@ const InputColors: Record<InputColor, InputColorStyle> = {
     placeholderColor: "#797979",
     boxShadow: "0px 0px 4px 0px rgba(0, 0, 0, 0.70)",
   },
-  Grey:{
-    border: "transparent",
-    backgroundColor: "#F3F4F5",
+  Grey: {
+    border: "1px solid #ccc",
+    backgroundColor: "#ffffff",
     color: "#000",
     placeholderColor: "#797979",
     boxShadow: "",
-  }
+  },
 };
 
 const StyledInput = styled.input<InputProps>`

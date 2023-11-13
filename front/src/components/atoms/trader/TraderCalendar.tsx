@@ -57,5 +57,6 @@ export default TraderCalendar;
 
 const CalendarContainer = styled.div`
   position: relative;
+  width: 100%;
 `;
 
