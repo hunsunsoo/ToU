@@ -186,7 +186,7 @@ public class StatementService {
                         price.updateAndGet(v -> v + itemTotalPrice);
                     });
                     return WebStatementResponseDto.from(statement, type,
-                            new DecimalFormat("#,###.00").format(price.get()));
+                            new DecimalFormat("#,###").format(price.get()));
                 })
                 .collect(Collectors.toList());
 
