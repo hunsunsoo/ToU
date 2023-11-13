@@ -14,6 +14,7 @@ import com.welcome.tou.common.utils.ResultTemplate;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
@@ -31,10 +32,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/webauthn")
 public class WebAuthnController {
 
+    @Autowired
     private WebAuthnAuthenticatorManager webAuthnAuthenticatorManager;
 
+    @Autowired
     private WebAuthnRegistrationRequestValidator registrationRequestValidator;
 
+    @Autowired
     private ChallengeRepository challengeRepository;
 
     private AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
@@ -63,23 +67,23 @@ public class WebAuthnController {
 
 
     @PostMapping(value = "/enroll")
-    public ResultTemplate<?> create(@RequestBody WebAuthnUserEnrollDto request) {
+    public ResultTemplate<?> create(HttpServletRequest servletRequest, @RequestBody WebAuthnUserEnrollDto request) {
         try {
             WebAuthnRegistrationRequestValidationResponse registrationRequestValidationResponse;
             try {
                 registrationRequestValidationResponse = registrationRequestValidator.validate(
-                        (HttpServletRequest) request,
+                        servletRequest,
                         request.getClientDataJSON(),
                         request.getAttestationObject(),
                         request.getTransports(),
                         request.getClientExtension()
                 );
             } catch (WebAuthnException | WebAuthnAuthenticationException e) {
-                return ResultTemplate.builder().status(499).data("오류").build();
+                return ResultTemplate.builder().status(499).data(e.getMessage()).build();
             }
 
             var username = request.getUsername();
-
+            System.out.println("여기여");
             var authenticator = new WebAuthnAuthenticatorImpl(
                     "authenticator",
                     username,
@@ -97,7 +101,7 @@ public class WebAuthnController {
                 return ResultTemplate.builder().status(499).data("오류2").build();
             }
         } catch (RuntimeException ex) {
-            return ResultTemplate.builder().status(499).data("오류3").build();
+            return ResultTemplate.builder().status(499).data(ex.getMessage()).build();
         }
 
         return ResultTemplate.builder().status(200).data("등록 완료").build();
