@@ -66,6 +66,7 @@ public class SecurityConfig {
             }))
             .attestationOptionsEndpoint()
             .rp()
+            .id("https://k9b310.p.ssafy.io")
             .name("to-u-worker-auth")
             .and()
             .pubKeyCredParams(

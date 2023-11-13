@@ -79,7 +79,7 @@ public class WebAuthnController {
                         request.getClientExtension()
                 );
             } catch (WebAuthnException | WebAuthnAuthenticationException e) {
-                return ResultTemplate.builder().status(499).data(e.getMessage()).build();
+                return ResultTemplate.builder().status(499).data(e.getMessage() + "여기11").build();
             }
 
             var username = request.getUsername();
@@ -98,10 +98,10 @@ public class WebAuthnController {
             try {
                 webAuthnAuthenticatorManager.createAuthenticator(authenticator);
             } catch (IllegalArgumentException ex) {
-                return ResultTemplate.builder().status(499).data("오류2").build();
+                return ResultTemplate.builder().status(499).data(ex.getMessage() + "여기22").build();
             }
         } catch (RuntimeException ex) {
-            return ResultTemplate.builder().status(499).data(ex.getMessage()).build();
+            return ResultTemplate.builder().status(499).data(ex.getMessage() + "여기333").build();
         }
 
         return ResultTemplate.builder().status(200).data("등록 완료").build();
