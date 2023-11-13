@@ -123,14 +123,14 @@ const Fido = () => {
     // setAttestationObject(encodeBase64url(credential.response.attestationObject));
     // setClientExtension(JSON.stringify(credential.getClientExtensionResults));
 
-    const body = {
+
+    const response = await customAxios.post("webauthn/enroll", {
       userHandle : userHandle,
       username : username,
       clientDataJSON : credential.response.clientDataJSON,
       attestationObject : encodeBase64url(credential.response.attestationObject),
       clientExtension : JSON.stringify(credential.getClientExtensionResults),
-    }
-    const response = await customAxios.post("webauthn/enroll", body);
+    });
     console.log(response)
   }
 
