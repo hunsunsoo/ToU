@@ -26,6 +26,8 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     private static final String NO_CHECK_URL_LOGIN = "/api/client/login";
     private static final String NO_CHECK_URL_CONSUMER = "/api/consumer";
+    private static final String NO_CHECK_URL_WEBAUTHN_ATTESTATION = "/webauthn/attestation/options";
+    private static final String NO_CHECK_URL_WEBAUTHN_ASSERTION = "/webauthn/assertion/options";
 
     private final JwtService jwtService;
     private final WorkerRepository workerRepository;
@@ -43,6 +45,16 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
         // 소비자 요청
         if (request.getRequestURI().contains(NO_CHECK_URL_CONSUMER)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (request.getRequestURI().contains(NO_CHECK_URL_WEBAUTHN_ASSERTION)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (request.getRequestURI().contains(NO_CHECK_URL_WEBAUTHN_ATTESTATION)) {
             filterChain.doFilter(request, response);
             return;
         }
