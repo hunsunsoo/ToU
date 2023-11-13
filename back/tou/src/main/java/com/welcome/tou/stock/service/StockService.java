@@ -305,7 +305,7 @@ public class StockService {
         // 블록체인 asset 추가
         StockCreateInBlockRequestDto bcCreateRequest = StockCreateInBlockRequestDto.builder()
                 .assetId(String.valueOf(newStock.getStockSeq()))
-                .previousAssetId(String.valueOf(newStock.getStockSeq()))
+                .previousAssetId(String.valueOf(beforeStock.getStockSeq()))
                 .statementSeq(0L)
                 .branchSeq(branch.getBranchSeq())
                 .branchLocation(branch.getBranchLocation())
