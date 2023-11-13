@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.welcome.tou.client.domain.Branch;
 import com.welcome.tou.client.domain.BranchRepository;
 import com.welcome.tou.common.exception.InvalidDistributionCodeException;
+import com.welcome.tou.common.exception.InvalidStockException;
 import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.common.utils.ResultTemplate;
 import com.welcome.tou.consumer.dto.*;
@@ -93,6 +94,13 @@ public class ConsumerService {
     }
 
     public ResultTemplate<?> getDistributionProcessByFabric(Long articleSeq) {
+        Stock stock = stockRepository.findById(articleSeq)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 상품입니다."));
+
+        if(stock.getBranch().getBranchType() != Branch.BranchType.SELL) {
+            throw new InvalidStockException(InvalidStockException.STOCK_IS_NOT_SELL);
+        }
+
         RestTemplate restTemplate = new RestTemplate();
         ObjectMapper objectMapper = new ObjectMapper();
 
