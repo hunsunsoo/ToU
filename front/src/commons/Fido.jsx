@@ -118,7 +118,7 @@ const Fido = () => {
     const credential = await navigator.credentials.create({
       publicKey: ccOptions,
     });
-
+    console.log(credential);
     // setClientDataJSON(credential.response.clientDataJSON);
     // setAttestationObject(encodeBase64url(credential.response.attestationObject));
     // setClientExtension(JSON.stringify(credential.getClientExtensionResults));
