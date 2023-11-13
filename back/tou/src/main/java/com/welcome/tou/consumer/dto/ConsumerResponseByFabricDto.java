@@ -1,4 +1,4 @@
-package com.welcome.tou.consumer;
+package com.welcome.tou.consumer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,13 +12,14 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 @Builder
 @Data
-public class ConsumerResponseDto {
+public class ConsumerResponseByFabricDto {
 
     private Long branchSeq;
     private String branchLocation;
     private String branchName;
     private String branchType;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private double latitude;
+    private double longitude;
+    private String stockDate;
 
 }

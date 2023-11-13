@@ -1,5 +1,6 @@
-package com.welcome.tou.consumer;
+package com.welcome.tou.consumer.dto;
 
+import com.welcome.tou.consumer.dto.ConsumerResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

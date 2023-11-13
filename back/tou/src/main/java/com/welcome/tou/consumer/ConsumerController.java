@@ -23,4 +23,8 @@ public class ConsumerController {
         return consumerService.getDistributionProcess(articleSeq);
     }
 
+    @GetMapping("/fabric/{articleSeq}")
+    public ResultTemplate<?> getDistributionProcessByFabric(@PathVariable Long articleSeq){
+        return consumerService.getDistributionProcessByFabric(articleSeq);
+    }
 }
