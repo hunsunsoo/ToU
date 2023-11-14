@@ -5,6 +5,7 @@ version: '2.1'
 volumes:
   pgdata:
   walletstore:
+  src_volume:
 
 networks:
   mynetwork.com:
@@ -50,6 +51,7 @@ services:
       - ${EXPLORER_PROFILE_DIR_PATH}:/opt/explorer/app/platform/fabric/connection-profile
       - ${FABRIC_CRYPTO_PATH}:/tmp/crypto
       - walletstore:/opt/explorer/wallet
+      - src_volume:/opt/explorer/client/src
     ports:
       - ${PORT:-9999}:${PORT:-9999}
     depends_on:
