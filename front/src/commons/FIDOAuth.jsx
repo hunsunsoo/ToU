@@ -70,7 +70,7 @@ const FIDOAuth = ({workerName}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/webauthn/user-handle", {
+        const response = await axios.get("https://k9b310.p.ssafy.io/api/webauthn/user-handle", {
           headers: {
             AUTHORIZATION: 'Bearer ' + `${accessToken}`,
             'Content-Type': 'application/json'
@@ -91,7 +91,7 @@ const FIDOAuth = ({workerName}) => {
   }, []);
 
   const WebAuthnFido2Sign = async () => {
-    const optionsResponse = await axios.post("http://localhost:8080/api/webauthn/assertion/options")
+    const optionsResponse = await axios.post("https://k9b310.p.ssafy.io/api/webauthn/assertion/options")
     const { rpId, challenge, extensions, timeout } = await optionsResponse.data;
 
     const credential = await navigator.credentials.get({
