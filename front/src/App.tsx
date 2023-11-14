@@ -18,6 +18,7 @@ import {
   T_MAIN,
   T_SECTION,
   T_SIGN,
+  T_SIGNCHECK,
   T_STATE,
   // O_EDIT,
   O_LOGIN,
@@ -74,6 +75,7 @@ const RoutesContainer = () => {
               <Route path={ROUTES.TRADER_GETLIST} element={<T_GETLIST />} />
               <Route path={ROUTES.TRADER_SECTION} element={<T_SECTION />} />
               <Route path={ROUTES.TRADER_SIGN} element={<T_SIGN />} />
+              <Route path={ROUTES.TRADER_SIGNCHECK} element={<T_SIGNCHECK />} />
               <Route path={ROUTES.TRADER_STATE} element={<T_STATE />} />
             </Routes>
           </TraderContainer>

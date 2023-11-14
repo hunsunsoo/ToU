@@ -14,6 +14,7 @@ export const ROUTES = {
   TRADER_GETLIST: "list",
   TRADER_SECTION: "section",
   TRADER_SIGN: "sign/:billId",
+  TRADER_SIGNCHECK: "signcheck/:billId",
   TRADER_STATE: "state",
 
   // Officer
