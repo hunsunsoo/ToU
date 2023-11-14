@@ -175,14 +175,14 @@ const fadeInLeft = keyframes`
   }
   to {
     opacity: 0;
-    transform: translateX(10rem);
+    transform: translateX(5rem);
   }
 `;
 
 const StyledAniLogin = styled.div`
-  animation: ${fadeInLeft} 1s ease-out 0s both;
+  animation: ${fadeInLeft} 0.8s ease-out 0s both;
 `
 
 const StyledAniLogin2 = styled.div`
-  animation: ${fadeInLeft} 1s ease-out 0.3s both;
+  animation: ${fadeInLeft} 0.8s ease-out 0.3s both;
 `

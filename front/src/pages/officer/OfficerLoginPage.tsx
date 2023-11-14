@@ -13,10 +13,8 @@ const OfficerLoginPage = () => {
   const webLogin = ((id: string, password: string) => {
     login(id, password);
     setTimeout(() => {
-      
     }, 1000);
   })
-  
   
 
   const [id, setId] = useState('');
