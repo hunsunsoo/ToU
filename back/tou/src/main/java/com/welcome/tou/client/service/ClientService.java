@@ -2,6 +2,7 @@ package com.welcome.tou.client.service;
 
 import com.welcome.tou.client.domain.*;
 import com.welcome.tou.client.dto.request.CompanyCreateDto;
+import com.welcome.tou.client.dto.request.PassAuthRequestDto;
 import com.welcome.tou.client.dto.request.LoginRequestDto;
 import com.welcome.tou.client.dto.response.*;
 import com.welcome.tou.common.exception.MismatchException;
@@ -40,6 +41,7 @@ public class ClientService {
     private final BranchRepository branchRepository;
     private final StatementRepository statementRepository;
     private final ItemRepository itemRepository;
+    private final PassRepository passRepository;
 
     private final JwtService jwtService;
 
@@ -206,6 +208,51 @@ public class ClientService {
                 .build();
 
         return ResultTemplate.builder().status(200).data(loginResponseDto).build();
+    }
+
+    @Transactional
+    public ResultTemplate<?> loginByPass(PassAuthRequestDto request) {
+        Pass myPass = passRepository.findByPassId(request.getPassId())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.PASS_NOT_FOUND));
+
+        Worker worker = workerRepository.findById(myPass.getWorkerSeq())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        String accessToken = jwtService.createAccessToken(worker);
+        String refreshToken = jwtService.createRefreshToken();
+
+        worker.updateRefreshToken(refreshToken);
+        workerRepository.save(worker);
+
+        Company myCompany = worker.getCompany();
+
+        Branch myBranch = worker.getBranch();
+
+        LoginResponseDto loginResponseDto = LoginResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .worker(AccessWorkerInfoResponseDto.builder().workerName(worker.getWorkerName()).loginId(worker.getLoginId()).role(worker.getRole().name()).build())
+                .company(AccessCompanyInfoResponseDto.from(myCompany))
+                .branch(AccessBranchInfoResponseDto.from(myBranch))
+                .build();
+
+        return ResultTemplate.builder().status(200).data(loginResponseDto).build();
+    }
+
+    @Transactional
+    public ResultTemplate<?> passAuth(PassAuthRequestDto request, UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Pass myPass = passRepository.findByPassId(request.getPassId())
+                .orElseThrow(() -> new NotFoundException(NotFoundException.PASS_NOT_FOUND));
+
+        if(reqWorker.getWorkerSeq() != myPass.getWorkerSeq()) {
+            throw new MismatchException(MismatchException.PASS_IS_NOT_MINE);
+        }
+
+        return ResultTemplate.builder().status(200).data("AUTHENTICATED").build();
     }
 
 
