@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { useParams } from "react-router-dom";
 import EmblaCarousel from "./EmblaCarousel";
 import { EmblaOptionsType } from "embla-carousel-react";
 import { MainPaddingContainer } from "./../../commons/style/mobileStyle/MobileLayoutStyle";
@@ -11,17 +12,13 @@ const OPTIONS: EmblaOptionsType = {};
 const SLIDE_COUNT = 4;
 const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
-interface coordinateConfig {
-  latitude: number;
-  longitude: number;
-}
-
 const ShopperMainPage = () => {
+  const { productSeq } = useParams<{ productSeq: string }>();
   const [thumbnails, setThumbnails] = useState([]);
   const [productName, setProductName] = useState("");
 
   useEffect(() => {
-    customAxios.get(`/consumer/140`).then((res) => {
+    customAxios.get(`/consumer/fabric/${productSeq}`).then((res) => {
       console.log(res);
       setThumbnails(res.data.data.distribution);
       setProductName(res.data.data.productName);

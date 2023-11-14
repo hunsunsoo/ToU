@@ -54,9 +54,9 @@ export function UseAuth() {
         logoImage: res.data.data.company.logoImage,
       }));
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 1000);
       console.log(res);
       return res;
     } catch (error) {
