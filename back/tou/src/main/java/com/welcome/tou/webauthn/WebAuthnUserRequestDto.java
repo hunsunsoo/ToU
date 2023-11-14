@@ -5,20 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Builder
 @Data
-public class WebAuthnUserEnrollDto {
+public class WebAuthnUserRequestDto {
 
     private String userHandle;
     private String username;
     private String webAuthnChallenge;
-    private String clientDataJSON;
-    private String attestationObject;
-    private Set<String> transports;
-    private String clientExtension;
+    private List<String> webAuthnCredentialIds;
 
 }
