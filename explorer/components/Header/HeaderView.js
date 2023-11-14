@@ -517,7 +517,7 @@ export class HeaderView extends Component {
 			dropdownOpen
 		} = this.state;
 		const links = [
-			{ to: '/', label: 'DASHBOARD', exact: true },
+			{ to: '/', label: '대시보드', exact: true },
 			{ to: '/network', label: 'NETWORK' },
 			{ to: '/blocks', label: 'BLOCKS' },
 			{ to: '/transactions', label: 'TRANSACTIONS' },
