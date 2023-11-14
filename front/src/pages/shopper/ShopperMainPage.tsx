@@ -11,22 +11,20 @@ const OPTIONS: EmblaOptionsType = {};
 const SLIDE_COUNT = 4;
 const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
-interface coordinateConfig {
-  latitude: number;
-  longitude: number;
-}
-
 const ShopperMainPage = () => {
   const [thumbnails, setThumbnails] = useState([]);
   const [productName, setProductName] = useState("");
 
   useEffect(() => {
-    customAxios.get(`/consumer/140`).then((res) => {
+    // customAxios.get(`/consumer/140`).then((res) => {
+    customAxios.get(`/consumer/fabric/189`).then((res) => {
       console.log(res);
       setThumbnails(res.data.data.distribution);
       setProductName(res.data.data.productName);
     });
   }, []);
+
+  // console.log(thumbnails);
 
   return (
     <StyledMainPaddingContainer>
