@@ -10,7 +10,6 @@ const TraderMainPage = () => {
   const navigate = useNavigate();
 
   const logout = () => {
-    // 토큰 삭제
     localStorage.removeItem("recoil-persist");
     navigate('/m/login');
     window.location.reload();
@@ -21,7 +20,9 @@ const TraderMainPage = () => {
       <StyledLogout>
            <MdLogout size="1.5rem" color="#0a3145" onClick={logout}/>
       </StyledLogout>
-      <TraderMainProfile />
+      <StyledAni1>
+        <TraderMainProfile />
+      </StyledAni1>
       <MainPaddingContainer>
         <StyledAni2>
         <TraderMainCount />
@@ -34,6 +35,25 @@ const TraderMainPage = () => {
 };
 
 export default TraderMainPage;
+
+
+
+const StyledContainer = styled.div`
+  background-color: #ecf4ff;
+  height: 100vh;
+  
+`;
+
+const StyledFooter = styled.div`
+  text-align: center;
+  color: #ccc;
+`;
+
+const StyledLogout = styled.div`
+  padding-top: 1rem;
+  display: flex;
+  justify-content: flex-end; 
+`;
 
 const fadeInUp = keyframes`
   from {
@@ -54,23 +74,20 @@ const fadeIn = keyframes`
     opacity: 1;
   }
 `
-
-const StyledContainer = styled.div`
-  background-color: #ecf4ff;
-  height: 100vh;
-  
+const fadeInRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-4rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 `;
 
-const StyledFooter = styled.div`
-  text-align: center;
-  color: #ccc;
-`;
-
-const StyledLogout = styled.div`
-  padding-top: 1rem;
-  display: flex;
-  justify-content: flex-end; 
-`;
+const StyledAni1 = styled.div`
+  animation: ${fadeInRight} 0.8s ease-out 0.1s both;
+`
 
 const StyledAni2 = styled.div`
   animation: ${fadeIn} 0.8s ease-out 0.4s both;

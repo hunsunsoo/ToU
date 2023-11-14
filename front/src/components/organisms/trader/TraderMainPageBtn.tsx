@@ -16,7 +16,9 @@ const TraderMainPageBtn = () => {
             altText="Card Index Dividers"
             color="#668BFE"
           >
-            거래명세서 <StyledSpan>불러오기</StyledSpan>
+            <StyledText>
+              거래명세서 <StyledSpan>불러오기</StyledSpan>
+            </StyledText>
           </TraderMainBtn>
           {/* </StyledAni4> */}
           {/* <StyledAni5> */}
@@ -26,7 +28,10 @@ const TraderMainPageBtn = () => {
             altText="Card Index Dividers"
             color="#0687FF"
           >
-            거래명세서 <StyledSpan>작성하기</StyledSpan>
+            <StyledText>
+              거래명세서
+              <StyledSpan>작성하기</StyledSpan>
+            </StyledText>
           </TraderMainBtn>
           {/* </StyledAni5> */}
         </StyledBtn>
@@ -66,6 +71,7 @@ const StyledComponent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  margin-top: 1.2rem;
 `;
 
 const StyledCreateDiv = styled.div`
@@ -73,7 +79,7 @@ const StyledCreateDiv = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 15rem;
+  height: 13.4rem;
   border-radius: 20px;
   padding: 1rem;
   box-sizing: border-box;
@@ -83,6 +89,7 @@ const StyledCreateDiv = styled.div`
 const StyledTitle = styled.div`
   font-weight: bold;
   margin-bottom: 0.5rem;
+  font-size: 1.3rem;
 `;
 
 const StyledBtn = styled.div`
@@ -95,16 +102,21 @@ const StyledBtn = styled.div`
 const StyledSpan = styled.div`
   color: #fff;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.6rem;
 `;
 const StyledBlackdSpan = styled.div`
   color: #000;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.6rem;
 `;
 
 const StyledBlack = styled.div`
   color: #000;
+`;
+
+const StyledText = styled.div`
+  font-size: 1.3rem;
+
 `;
 
 const StyledBottomBtn = styled.div`
