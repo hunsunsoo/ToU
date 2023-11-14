@@ -11,7 +11,7 @@ type ShopperTitleProps = {
 const ShopperTitle: React.FC<ShopperTitleProps> = ({ title }) => {
     return (
         <StyledContainer>
-            "{title}"의 유통과정을 보여드릴게욧 -0- ;;
+            {title}
         </StyledContainer>
     );
 };
@@ -21,4 +21,5 @@ export default ShopperTitle;
 const StyledContainer = styled.div`
     font-weight: bold;
     text-align: center;
+    font-size: 20px;
 `;

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { customAxios } from "../components/api/customAxios";
-// import { decodeBase64url, encodeBase64url } from "./base64url.js"
+import toast, { Toaster } from "react-hot-toast";
 
 const lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 let reverseLookup = new Uint8Array(256);
@@ -58,14 +57,12 @@ function encodeBase64url(arrayBuffer) {
 }
 
 
-const Fido = () => {
+const FIDOAuth = ({workerName}) => {
 
   const [userHandle, setUserHandle] = useState("");
   const [username, setUsername] = useState("");
-
-  // const [clientDataJSON, setClientDataJSON] = useState("");
-  // const [attestationObject, setAttestationObject] = useState("");
-  // const [clientExtension, setClientExtension] = useState("");
+  const [webAuthnChallenge, setWebAuthnChallenge] = useState("");
+  const [webAuthnCredentialIds, setWebAuthnCredentialIds] = useState([]);
 
   const storedValue = localStorage.getItem("recoil-persist");
   const accessToken = storedValue ? JSON.parse(storedValue)?.UserInfoState?.accessToken : undefined;
@@ -79,78 +76,56 @@ const Fido = () => {
             'Content-Type': 'application/json'
           }
         });
-        // const response = await customAxios.get("webauthn/user-handle");
 
         console.log(response.data);
         setUserHandle(response.data.data.userHandle);
         setUsername(response.data.data.username);
+        setWebAuthnChallenge(response.data.data.webAuthnChallenge);
+        setWebAuthnCredentialIds(response.data.data.webAuthnCredentialIds);
       } catch (error) {
-        console.error("오류입니다", error);
+        console.error("axios error", error);
       }
     };
 
     fetchData();
-  }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행됨을 의미합니다.
+  }, []);
 
+  const WebAuthnFido2Sign = async () => {
+    const optionsResponse = await axios.post("https://k9b310.p.ssafy.io/api/webauthn/assertion/options")
+    const { rpId, challenge, extensions, timeout } = await optionsResponse.data;
 
-  const zzz = async () => {
-    const optionsResponse = await axios.post("https://k9b310.p.ssafy.io/api/webauthn/attestation/options")
-    const options = optionsResponse.data;
-
-    let ccOptions = {
-      ...options,
-      challenge: decodeBase64url(options.challenge),
-      user: {
-          id: decodeBase64url(userHandle),
-          name: username,
-          displayName: username,
+    const credential = await navigator.credentials.get({
+      publicKey: {
+        challenge: decodeBase64url(challenge),
+        rpId,
+        timeout,
+        userVerification: "preferred",
+        extensions,
       },
-      excludeCredentials: options.excludeCredentials.map((credential) => ({
-          ...credential,
-          id: decodeBase64url(credential.id),
-      })),
-      authenticatorSelection: {
-          requireResidentKey: true,
-          userVerification: "discouraged",
-      },
-    };
-
-    const credential = await navigator.credentials.create({
-      publicKey: ccOptions,
     });
-    console.log(credential);
-    // setClientDataJSON(credential.response.clientDataJSON);
-    // setAttestationObject(encodeBase64url(credential.response.attestationObject));
-    // setClientExtension(JSON.stringify(credential.getClientExtensionResults));
 
-    const response = await axios.post("https://k9b310.p.ssafy.io/api/webauthn/enroll", {
-        userHandle : userHandle,
-        username : username,
-        clientDataJSON : encodeBase64url(credential.response.clientDataJSON),
-        attestationObject : encodeBase64url(credential.response.attestationObject),
-        clientExtension : JSON.stringify(credential.getClientExtensionResults()),
-      }, {
-        headers: {
-          AUTHORIZATION: 'Bearer ' + `${accessToken}`,
-          'Content-Type': 'application/json'
-        }
+    if(credential) {
+      toast.success("Passkey 서명 완료", {
+        duration: 2000,
       });
-    // const response = await customAxios.post("webauthn/enroll", {
-    //   userHandle : userHandle,
-    //   username : username,
-    //   clientDataJSON : encodeBase64url(credential.response.clientDataJSON),
-    //   attestationObject : encodeBase64url(credential.response.attestationObject),
-    //   clientExtension : JSON.stringify(credential.getClientExtensionResults()),
-    // });
-    console.log(response)
+      setTimeout(() => {
+      }, 2000);
+    }
+}
+
+  const buttonStyle = {
+    backgroundColor: '#404DCD',
+    color: 'white',
+    padding: '10px',
+    margin: '10px',
+    border: 'none',
   }
-
-
   return (
     <div>
-      <button onClick={zzz}> 등록</button>
+        <Toaster />
+        <button onClick={WebAuthnFido2Sign} style={buttonStyle}>PASSKEY 서명</button>
     </div>
   );
       
 }
-export default Fido;
+export default FIDOAuth;
