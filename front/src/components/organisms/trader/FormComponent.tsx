@@ -30,6 +30,8 @@ const FormComponent: React.FC<FormComponentProps> = ({
     signatureStatusMessage = "서명이 완료된 거래명세서입니다.";
   }
 
+  console.log(statementData);
+
   return (
     <Styles>
       <StyledTitle>
@@ -144,6 +146,14 @@ const FormComponent: React.FC<FormComponentProps> = ({
           ))}
         </tbody>
       </table>
+      {statementData.resInfo?.branchType === "SELL" ?
+      <>
+        {statementData.itemList.map((item, index) => (
+          <img src={`https://chart.apis.google.com/chart?cht=qr&chs=200x200&chl=https://k9b310.p.ssafy.io/product/${item.stockSeq}`} alt="QR" />
+        ))}
+        <p style={{height: "30px"}}></p>
+      </>
+      : null}
     </Styles>
   );
 };
