@@ -73,13 +73,9 @@ export const Thumb: React.FC<ThumbProps> = ({
           <div>
             {nameParts.map((part, index) => (
               <React.Fragment key={index}>
-                {part}
-                {index < nameParts.length - 1 && <br />}
               </React.Fragment>
             ))}
           </div>
-          {stockDateFormatted}
-          {/* <p>{branchLocation}</p> */}
         </div>
       </Button>
     </div>
