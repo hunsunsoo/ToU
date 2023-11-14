@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { styled } from "styled-components";
 import useEmblaCarousel, { EmblaOptionsType } from "embla-carousel-react";
 import { Thumb } from "./EmblaCarouselThumbsButton";
 import imageByIndex from "./imageByIndex";
@@ -356,62 +355,12 @@ const MapContainer: React.FC<MapContainerProps> = ({ center, index }) => {
           position={center}
           icon={{
             url: getMarkerUrl(index),
-            // scaledSize: new window.google.maps.Size(20, 20),
           }}
         />
       </GoogleMap>
     </LoadScript>
   );
 };
-
-// 현위치 구글맵 API
-// const MapLocation: React.FC = (thumbnails) => {
-//   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
-
-//   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-
-//   // 위치 정보 받아오기
-//   // 지금은 버튼인데 그냥 useEffect에 박으면 현위치 바로 가져올듯
-
-//   useEffect(() => {
-//     if (navigator.geolocation) {
-//       navigator.geolocation.getCurrentPosition(
-//         (position) => {
-//           const { latitude, longitude } = position.coords;
-//           setCurrentLocation({ lat: latitude, lng: longitude });
-//         },
-//         (error) => {
-//           console.error('Error getting current location:', error);
-//         }
-//       );
-//     } else {
-//       console.error('Geolocation is not supported by this browser.');
-//     }
-//   }, [])
-
-//   if (!apiKey) {
-//     console.error('Google Maps API key is not defined.');
-//     return null; // 또는 에러 처리를 할 수 있는 다른 방식으로 수정
-//   }
-
-//   return (
-//     <div>
-//       <LoadScript googleMapsApiKey={apiKey}>
-//         <GoogleMap
-//           mapContainerStyle={{ width: '100%', height: '400px' }}
-//           center={currentLocation}
-//           zoom={15}
-//           options={{
-//             styles: mapStyles,
-//           }}
-//         >
-//           <Marker position={currentLocation} />
-
-//         </GoogleMap>
-//       </LoadScript>
-//     </div>
-//   );
-// };
 
 const EmblaCarousel: React.FC<PropType> = ({
   slides,
@@ -487,6 +436,7 @@ const EmblaCarousel: React.FC<PropType> = ({
         console.log("모달상태" + isModalOpen);
       }
     }, 1000);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [thumbnails]);
 
   // 모달 내용을 조건부로 설정
@@ -568,10 +518,7 @@ const EmblaCarousel: React.FC<PropType> = ({
                 onClick={() => onThumbClick(index)}
                 selected={index === selectedIndex}
                 index={index}
-                branchName={thumbnail.branchName}
-                branchLocation={thumbnail.branchLocation}
                 branchType={thumbnail.branchType}
-                stockDate={thumbnail.stockDate}
                 key={index}
               />
             ))}
@@ -583,19 +530,3 @@ const EmblaCarousel: React.FC<PropType> = ({
 };
 
 export default EmblaCarousel;
-
-const SlideToggleLabel = styled.label`
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 20px;
-  background-color: blue;
-  border-radius: 10px;
-  cursor: pointer;
-`;
-
-const SlideToggleInput = styled.input`
-  opacity: 0;
-  width: 0;
-  height: 0;
-`;
