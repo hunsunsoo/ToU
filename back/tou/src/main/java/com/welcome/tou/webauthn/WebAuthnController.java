@@ -10,6 +10,11 @@ import com.webauthn4j.springframework.security.exception.WebAuthnAuthenticationE
 import com.webauthn4j.util.Base64UrlUtil;
 import com.webauthn4j.util.UUIDUtil;
 import com.webauthn4j.util.exception.WebAuthnException;
+import com.welcome.tou.client.domain.Pass;
+import com.welcome.tou.client.domain.PassRepository;
+import com.welcome.tou.client.domain.Worker;
+import com.welcome.tou.client.domain.WorkerRepository;
+import com.welcome.tou.common.exception.NotFoundException;
 import com.welcome.tou.common.utils.ResultTemplate;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +46,9 @@ public class WebAuthnController {
 
     @Autowired
     private ChallengeRepository challengeRepository;
+
+    private final PassRepository passRepository;
+    private final WorkerRepository workerRepository;
 
     private AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
 
@@ -74,7 +82,17 @@ public class WebAuthnController {
 
 
     @PostMapping(value = "/enroll")
-    public ResultTemplate<?> create(HttpServletRequest servletRequest, @RequestBody WebAuthnUserEnrollDto request) {
+    public ResultTemplate<?> create(HttpServletRequest servletRequest, @RequestBody WebAuthnUserEnrollDto request,
+                                    @AuthenticationPrincipal UserDetails worker) {
+
+        var username = request.getUsername();
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker reqWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Pass newPass = Pass.createPass(reqWorker, request.getUserPass());
+        passRepository.save(newPass);
+
         try {
             WebAuthnRegistrationRequestValidationResponse registrationRequestValidationResponse;
             try {
@@ -89,7 +107,6 @@ public class WebAuthnController {
                 return ResultTemplate.builder().status(499).data(e.getMessage()).build();
             }
 
-            var username = request.getUsername();
             var authenticator = new WebAuthnAuthenticatorImpl(
                     "authenticator",
                     username,

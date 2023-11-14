@@ -1,6 +1,7 @@
 package com.welcome.tou.client.controller;
 
 import com.welcome.tou.client.dto.request.CompanyCreateDto;
+import com.welcome.tou.client.dto.request.PassAuthRequestDto;
 import com.welcome.tou.client.dto.request.LoginRequestDto;
 import com.welcome.tou.client.service.ClientService;
 import com.welcome.tou.common.utils.ResultTemplate;
@@ -46,6 +47,15 @@ public class ClientController {
         return clientService.login(request);
     }
 
+    @PostMapping("/pass-login")
+    public ResultTemplate<?> loginByPass(@RequestBody PassAuthRequestDto request) {
+        return clientService.loginByPass(request);
+    }
+
+    @PostMapping("/pass-auth")
+    public ResultTemplate<?> passAuth(@RequestBody PassAuthRequestDto request, @AuthenticationPrincipal UserDetails worker) {
+        return clientService.passAuth(request, worker);
+    }
 
     @PostMapping("/company")
     public ResultTemplate addCompany(@RequestBody CompanyCreateDto request) {
