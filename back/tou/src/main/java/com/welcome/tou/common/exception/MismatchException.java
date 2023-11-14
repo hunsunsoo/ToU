@@ -10,6 +10,8 @@ public class MismatchException extends RuntimeException {
 
     public static final String STATEMENT_IS_NOT_MINE = "해당 거래명세서를 삭제할 권한이 없습니다.";
 
+    public static final String PASS_IS_NOT_MINE = "해당 패스키의 인증자와 서명자가 일치하지 않습니다.";
+
     public MismatchException(String message){
         super(message);
     }

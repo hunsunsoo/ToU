@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Builder
 @Data
-public class LoginByPassRequestDto {
+public class PassAuthRequestDto {
 
     private String passId;
 }
