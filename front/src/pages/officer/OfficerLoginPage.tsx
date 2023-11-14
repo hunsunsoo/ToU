@@ -9,6 +9,13 @@ import OfficerBtn from "../../components/atoms/officer/OfficerBtn";
 
 const OfficerLoginPage = () => {
   const { login } = UseAuth();
+
+  const webLogin = ((id: string, password: string) => {
+    login(id, password);
+    setTimeout(() => {
+      
+    }, 1000);
+  })
   
   
 
@@ -46,7 +53,7 @@ const OfficerLoginPage = () => {
         <LoginBtnDiv>
           <OfficerBtn
             isImg={false}
-            onClick={() => login(id, password)}>
+            onClick={() => webLogin(id, password)}>
             로그인
           </OfficerBtn>
           <OfficerBtn
