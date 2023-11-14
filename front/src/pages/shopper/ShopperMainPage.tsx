@@ -27,6 +27,7 @@ const ShopperMainPage = () => {
       setThumbnails(res.data.data.distribution);
       setProductName(res.data.data.productName);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 토글버튼
@@ -121,7 +122,3 @@ const StyledMainPaddingContainer = styled(MainPaddingContainer)`
   width: 100%;
   justify-content: space-around;
 `;
-
-// <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Package.png" alt="Package" width="25" height="25" />
-//
-
