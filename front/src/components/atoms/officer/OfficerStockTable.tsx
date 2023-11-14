@@ -92,9 +92,10 @@ const StockTableDiv = styled.div`
   height: 65%;
   /* border: 1px solid black; */
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
+  border-radius: 10px;
   margin: 0 20px 20px 20px;
   padding: 20px;
+  background-color: white;
 `
 
 const StyledTitle = styled.div`

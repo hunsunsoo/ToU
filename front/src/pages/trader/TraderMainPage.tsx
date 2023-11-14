@@ -90,5 +90,5 @@ const StyledAni1 = styled.div`
 `
 
 const StyledAni2 = styled.div`
-  animation: ${fadeIn} 0.8s ease-out 0.4s both;
+  animation: ${fadeInRight} 0.8s ease-out 0.4s both;
 `

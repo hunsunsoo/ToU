@@ -32,6 +32,7 @@ const MainDiv = styled.div`
   grid-template-columns: 1fr 5fr;
   height: calc(100vh - 40px);
   overflow: hidden;
+  background-color: #f8f8f8;
 `;
 
 const DashboardDiv = styled.div`

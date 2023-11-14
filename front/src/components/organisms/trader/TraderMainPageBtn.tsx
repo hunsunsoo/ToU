@@ -188,7 +188,7 @@ const fadeInLeft = keyframes`
 `;
 
 const StyledAni3 = styled.div`
-  animation: ${fadeInUp} 0.8s ease-out 0.8s both;
+  animation: ${fadeInRight} 0.8s ease-out 0.8s both;
 `
 
 const StyledAni4 = styled.div`
@@ -200,7 +200,7 @@ const StyledAni5 = styled.div`
 `
 
 const StyledAni6 = styled.div`
-  animation: ${fadeInUp2} 0.5s ease-out 1.5s both;
+  animation: ${fadeInRight} 0.5s ease-out 1.5s both;
 `
 
 const StyledAni7 = styled.div`
