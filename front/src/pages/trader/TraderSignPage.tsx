@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import toast, { Toaster } from "react-hot-toast";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import { customAxios } from "../../components/api/customAxios";
 import { StatementData } from "./../../types/TraderTypes";
@@ -13,19 +13,12 @@ import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import { UserInfoState } from "../../store/State";
 
 const TraderSignPage = () => {
-  const [statementData, setStatementData] = useState<StatementData | null>(
-    null
-  );
-  const [status, setStatus] = useState<string>("");
-  const { billId } = useParams<{ billId: string }>();
-  const currentBranchSeq = useRecoilValue(UserInfoState).branchSeq;
-
-  useEffect(() => {
+  // 상태 업데이트 함수
+  const fetchStatementData = () => {
     customAxios.get(`/statement/worker/detail/${billId}`).then((res) => {
       const data = res.data.data;
-      console.log(data);
       setStatementData(data);
-
+      // 상태 업데이트 로직
       if (
         data.reqInfo.workerName === null &&
         data.resInfo.workerName === null
@@ -37,8 +30,21 @@ const TraderSignPage = () => {
         setStatus("READY");
       }
     });
+  };
+
+  const [statementData, setStatementData] = useState<StatementData | null>(
+    null
+  );
+  const [status, setStatus] = useState<string>("");
+  const { billId } = useParams<{ billId: string }>();
+  const currentBranchSeq = useRecoilValue(UserInfoState).branchSeq;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchStatementData();
+    // 의존성 배열에 fetchStatementData를 포함하지 않아야 합니다.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [billId]);
 
   const renderButtons = () => {
     // "메인으로" 버튼을 렌더링해야 하는 조건을 확인합니다.
@@ -50,7 +56,7 @@ const TraderSignPage = () => {
 
     if (shouldShowMainButton) {
       return (
-        <TraderBtn size="Large" color="Blue">
+        <TraderBtn size="Large" color="Blue" onClick={handleMainRedirect}>
           메인으로
         </TraderBtn>
       );
@@ -90,6 +96,11 @@ const TraderSignPage = () => {
     return null;
   };
 
+  // 메인으로 이동 핸들러
+  const handleMainRedirect = () => {
+    navigate("/m/main");
+  };
+
   // 서명요청 핸들러
   const handleRequestSign = () => {
     const requestBody = {
@@ -101,6 +112,7 @@ const TraderSignPage = () => {
       .post("/statement/worker/sign", requestBody)
       .then((response) => {
         toast.success("서명요청을 보냈습니다.");
+        fetchStatementData();
       })
       .catch((error) => {
         toast.error("서명요청에 실패했습니다.");
@@ -118,6 +130,7 @@ const TraderSignPage = () => {
       .post("/statement/worker/sign", requestBody)
       .then((response) => {
         toast.success("서명을 완료했습니다.");
+        fetchStatementData();
       })
       .catch((error) => {
         toast.error("서명에 실패했습니다.");
@@ -134,6 +147,7 @@ const TraderSignPage = () => {
       .post("/statement/worker/refusal", requestBody)
       .then((response) => {
         toast.success("거절 되었습니다.");
+        fetchStatementData();
       })
       .catch((error) => {
         toast.error("거절에 실패했습니다.");
@@ -146,13 +160,16 @@ const TraderSignPage = () => {
       .delete(`/statement/worker/${billId}`)
       .then((response) => {
         toast.success("거래명세서가 삭제 되었습니다.");
+        setTimeout(() => {
+          navigate("/m/state/"); // 2초 후에 페이지 이동
+        }, 2000); // 2000밀리초(2초) 대기
       })
       .catch((error) => {
         toast.error("삭제에 실패했습니다.");
       });
   };
 
-  if (!statementData) return <div>Loading...</div>;
+  if (!statementData) return <Loader />;
 
   return (
     <StyledContainer>
@@ -185,4 +202,80 @@ const StyledButtonContainer = styled.div`
   width: 100%;
   position: fixed;
   bottom: 0;
+`;
+
+const loaderAnimation = keyframes`
+  0%, 100% {
+    box-shadow: -10px -10px 0 5px,
+                -10px -10px 0 5px,
+                -10px -10px 0 5px,
+                -10px -10px 0 5px;
+  }
+  8.33% {
+    box-shadow: -10px -10px 0 5px,
+                10px -10px 0 5px,
+                10px -10px 0 5px,
+                10px -10px 0 5px;
+  }
+
+    16.66% {
+      box-shadow: -10px -10px 0 5px, 10px -10px 0 5px, 10px 10px 0 5px,
+        10px 10px 0 5px;
+    }
+    24.99% {
+      box-shadow: -10px -10px 0 5px, 10px -10px 0 5px, 10px 10px 0 5px,
+        -10px 10px 0 5px;
+    }
+    33.32% {
+      box-shadow: -10px -10px 0 5px, 10px -10px 0 5px, 10px 10px 0 5px,
+        -10px -10px 0 5px;
+    }
+    41.65% {
+      box-shadow: 10px -10px 0 5px, 10px -10px 0 5px, 10px 10px 0 5px,
+        10px -10px 0 5px;
+    }
+    49.98% {
+      box-shadow: 10px 10px 0 5px, 10px 10px 0 5px, 10px 10px 0 5px,
+        10px 10px 0 5px;
+    }
+    58.31% {
+      box-shadow: -10px 10px 0 5px, -10px 10px 0 5px, 10px 10px 0 5px,
+        -10px 10px 0 5px;
+    }
+    66.64% {
+      box-shadow: -10px -10px 0 5px, -10px -10px 0 5px, 10px 10px 0 5px,
+        -10px 10px 0 5px;
+    }
+    74.97% {
+      box-shadow: -10px -10px 0 5px, 10px -10px 0 5px, 10px 10px 0 5px,
+        -10px 10px 0 5px;
+    }
+    83.3% {
+      box-shadow: -10px -10px 0 5px, 10px 10px 0 5px, 10px 10px 0 5px,
+        -10px 10px 0 5px;
+    }
+    91.63% {
+      box-shadow: -10px -10px 0 5px, -10px 10px 0 5px, -10px 10px 0 5px,
+        -10px 10px 0 5px;
+    }
+    100% {
+      box-shadow: -10px -10px 0 5px, -10px -10px 0 5px, -10px -10px 0 5px,
+        -10px -10px 0 5px;
+    }
+  
+`;
+
+const Loader = styled.span`
+  height: 5px;
+  width: 5px;
+  color: #787878;
+  box-shadow: -10px -10px 0 5px, -10px -10px 0 5px, -10px -10px 0 5px,
+    -10px -10px 0 5px;
+  animation: ${loaderAnimation} 6s infinite;
+
+  /* 중앙 정렬을 위한 스타일 */
+  position: fixed; /* 또는 absolute */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;

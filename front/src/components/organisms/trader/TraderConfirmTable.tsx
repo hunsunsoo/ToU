@@ -78,8 +78,8 @@ const StyledTable = styled.table<{ isItemChecked: boolean }>`
   th {
     text-align: center;
     padding: 8px 12px;
-    background-color: #eaf3ff;
-    border-top:  0.5px solid #484848;
+    background-color: #ffffff;
+    /* border-top:  0.5px solid #484848; */
     border-bottom: 1px solid #484848;
   }
 

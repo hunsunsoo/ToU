@@ -49,28 +49,27 @@ const TraderItemDropdown: React.FC<TraderItemDropdownProps> = ({
 
 const DropdownContainer = styled.div`
   position: relative;
+  width: 100%
 `;
 
 const DropdownButton = styled.button`
-  height: 45px;
-  width: 240px;
+  height: 2.813rem;
+  width: 100%;
   padding: 10px 15px;
-  border: 0.8px solid var(--festie-gray-600, #949494);
-  border-radius: 10px;
-  font-size: 16px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: transparent;
+  background-color: #ffffff;
 `;
 
 const DropdownList = styled.ul`
-  font-size: 16px;
+  font-size: 1rem;
   position: absolute;
   top: 100%;
-  width: 240px;
-  /* width: fit-content; // 추가 */
+  width: 100%;
   border: 1px solid #ccc;
   border-radius: 4px;
   list-style: none;
