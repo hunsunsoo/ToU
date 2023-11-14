@@ -507,6 +507,7 @@ const EmblaCarousel: React.FC<PropType> = ({
         <BranchLocationComponent
           key={selectedIndex}
           location={thumbnails[selectedIndex].branchLocation}
+          date={thumbnails[selectedIndex].stockDate}
         />
       )}
 

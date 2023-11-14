@@ -67,7 +67,6 @@ const Button = styled.button`
   background-color: #fff;
   padding: 0.5rem;
   border-radius: 12px;
-  box-shadow: 2px 3px 3px 0px rgba(0, 0, 0, 0.1);
 `;
 
 const Image = styled.img`
