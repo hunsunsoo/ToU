@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { UserInfoState, CompanyInfoState } from "../store/State";
 
 const lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 let reverseLookup = new Uint8Array(256);
@@ -57,42 +59,27 @@ function encodeBase64url(arrayBuffer) {
 }
 
 
-const FIDOAuth = ({workerName}) => {
+const FIDOAuth = () => {
+  const LOCALHOST = "http://localhost:8080/api/";
+  const SERVER_TOU = "https://k9b310.p.ssafy.io/api/";
+
+  const userInfo = useRecoilValue(UserInfoState);
+  const accessToken = userInfo.accessToken;
+  const setUserInfo = useSetRecoilState(UserInfoState);
+  const setCompanyInfo = useSetRecoilState(CompanyInfoState);
 
   const [userHandle, setUserHandle] = useState("");
   const [username, setUsername] = useState("");
   const [webAuthnChallenge, setWebAuthnChallenge] = useState("");
   const [webAuthnCredentialIds, setWebAuthnCredentialIds] = useState([]);
 
-  const storedValue = localStorage.getItem("recoil-persist");
-  const accessToken = storedValue ? JSON.parse(storedValue)?.UserInfoState?.accessToken : undefined;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("https://k9b310.p.ssafy.io/api/webauthn/user-handle", {
-          headers: {
-            AUTHORIZATION: 'Bearer ' + `${accessToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
 
-        console.log(response.data);
-        setUserHandle(response.data.data.userHandle);
-        setUsername(response.data.data.username);
-        setWebAuthnChallenge(response.data.data.webAuthnChallenge);
-        setWebAuthnCredentialIds(response.data.data.webAuthnCredentialIds);
-      } catch (error) {
-        console.error("axios error", error);
-      }
-    };
 
-    fetchData();
-  }, []);
-
-  const WebAuthnFido2Sign = async () => {
-    const optionsResponse = await axios.post("https://k9b310.p.ssafy.io/api/webauthn/assertion/options")
+  const WebAuthnFido2Login = async () => {
+    const optionsResponse = await axios.post(SERVER_TOU + "webauthn/assertion/options")
     const { rpId, challenge, extensions, timeout } = await optionsResponse.data;
+    console.log(optionsResponse);
 
     const credential = await navigator.credentials.get({
       publicKey: {
@@ -103,15 +90,41 @@ const FIDOAuth = ({workerName}) => {
         extensions,
       },
     });
+    console.log(credential)
+    
+    const fidoLoginResponse = await axios.post(SERVER_TOU + "client/pass-login",{
+        passId : credential.id
+    })
+
+    setUserInfo(() => ({
+        accessToken: fidoLoginResponse.data.data.accessToken,
+        workerSeq: fidoLoginResponse.data.data.worker.workerSeq,
+        workerName: fidoLoginResponse.data.data.worker.workerName,
+        workerRole: fidoLoginResponse.data.data.worker.role,
+        branchSeq: fidoLoginResponse.data.data.branch.branchSeq,
+        branchName: fidoLoginResponse.data.data.branch.branchName,
+        branchType: fidoLoginResponse.data.data.branch.branchType,
+        companySeq: fidoLoginResponse.data.data.company.companySeq,
+        companyName: fidoLoginResponse.data.data.company.companyName,
+      }));
+
+      setCompanyInfo(() => ({
+        companySeq: fidoLoginResponse.data.data.company.companySeq,
+        companyName: fidoLoginResponse.data.data.company.companyName,
+        registrationNumber: fidoLoginResponse.data.data.company.registrationNumber,
+        companyLocation: fidoLoginResponse.data.data.company.companyLocation,
+        companyContact: fidoLoginResponse.data.data.company.companyContact,
+        logoImage: fidoLoginResponse.data.data.company.logoImage,
+      }));
 
     if(credential) {
-      toast.success("Passkey 서명 완료", {
-        duration: 2000,
-      });
-      setTimeout(() => {
-      }, 2000);
+        toast.success("Passkey 서명 완료", {
+            duration: 2000,
+        });
+        setTimeout(() => {
+        }, 2000);
     }
-}
+  }
 
   const buttonStyle = {
     backgroundColor: '#404DCD',
@@ -123,7 +136,7 @@ const FIDOAuth = ({workerName}) => {
   return (
     <div>
         <Toaster />
-        <button onClick={WebAuthnFido2Sign} style={buttonStyle}>PASSKEY 서명</button>
+        <button onClick={WebAuthnFido2Login} style={buttonStyle}>PASSKEY 로그인</button>
     </div>
   );
       

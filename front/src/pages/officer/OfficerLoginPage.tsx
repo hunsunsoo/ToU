@@ -6,6 +6,7 @@ import Fido from '../../commons/FIDOEnroll';
 
 // import OfficerHeader from "../../components/organisms/officer/OfficerHeader";
 import OfficerBtn from "../../components/atoms/officer/OfficerBtn";
+import FIDOAuth from '../../commons/FIDOAuth';
 
 const OfficerLoginPage = () => {
   const { login } = UseAuth();
@@ -56,7 +57,7 @@ const OfficerLoginPage = () => {
             onClick={() => webLogin(id, password)}>
             로그인
           </OfficerBtn>
-
+          <FIDOAuth />
         </LoginBtnDiv>
       </GridDiv>
       <GridDiv>
