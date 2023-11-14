@@ -1,18 +1,7 @@
-import { useState } from "react";
-import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
-
 import { StatementData } from "../../../types/TraderTypes";
 import {
-  Table,
-  TableRow,
-  TableCell,
-  TableHeader,
   StyledDiv,
-  StyledSpan,
-  StyledSection,
-  Styles,
   StyledTitle,
-  SignatureStatus,
   StyledDate,
 } from "./FormComponentStyle";
 
@@ -25,12 +14,6 @@ const FormComponent: React.FC<FormComponentProps> = ({
   statementData,
   status,
 }) => {
-  const [expandedSection, setExpandedSection] = useState<string | null>(null);
-
-  const toggleSection = (section: string) => {
-    setExpandedSection(expandedSection === section ? null : section);
-  };
-
   const formatDate = (dateString: string) => {
     return dateString.split("T")[0];
   };
@@ -39,146 +22,53 @@ const FormComponent: React.FC<FormComponentProps> = ({
     return new Intl.NumberFormat("ko-KR").format(number);
   };
 
-  let signatureStatusMessage;
-  if (status === "WAITING") {
-    signatureStatusMessage = "공급자 수급자 서명 필요";
-  } else if (status === "PREPARING") {
-    signatureStatusMessage = "거래처의 서명이 필요한 문서입니다.";
-  } else if (status === "READY") {
-    signatureStatusMessage = "서명이 완료된 거래명세서입니다.";
-  }
-
   return (
-    <Styles>
+    <>
       <StyledTitle>
         <div>거래명세표</div>
-        {signatureStatusMessage && (
-          <SignatureStatus>{signatureStatusMessage}</SignatureStatus>
-        )}
       </StyledTitle>
 
-      <StyledSection
-        data-expanded={expandedSection === "request" ? "true" : "false"}
-        onClick={() => toggleSection("request")}
-      >
+      <div>
         <StyledDiv>
           <strong>요청 정보 (공급자)</strong>
-          <StyledSpan>
-            {expandedSection === "request" ? "닫기" : "펼쳐보기"}
-            {expandedSection === "request" ? (
-              <HiChevronUp />
-            ) : (
-              <HiChevronDown />
-            )}
-          </StyledSpan>
         </StyledDiv>
+        <div>회사명{statementData?.reqInfo?.companyName}</div>
+        <div>사업자 등록번호{statementData?.reqInfo?.registrationNumber}</div>
+        <div>지점명{statementData?.reqInfo?.branchName}</div>
+        <div>연락처{statementData?.reqInfo?.branchContact}</div>
+        <div>담당자{statementData?.reqInfo?.workerName}</div>
+      </div>
 
-        <Table>
-          <tbody>
-            <TableRow>
-              <TableHeader>회사명</TableHeader>
-              <TableCell>{statementData?.reqInfo?.companyName}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>사업자 등록번호</TableHeader>
-              <TableCell>
-                {statementData?.reqInfo?.registrationNumber}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>지점명</TableHeader>
-              <TableCell>{statementData?.reqInfo?.branchName}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>연락처</TableHeader>
-              <TableCell>{statementData?.reqInfo?.branchContact}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>담당자</TableHeader>
-              <TableCell>{statementData?.reqInfo?.workerName}</TableCell>
-            </TableRow>
-          </tbody>
-        </Table>
-      </StyledSection>
-
-      <StyledSection
-        data-expanded={expandedSection === "response" ? "true" : "false"}
-        onClick={() => toggleSection("response")}
-      >
+      <div>
         <StyledDiv>
-          <strong>응답 정보 (인수자/수급자)</strong>
-          <StyledSpan>
-            {expandedSection === "response" ? "닫기" : "펼쳐보기"}
-            {expandedSection === "response" ? (
-              <HiChevronUp />
-            ) : (
-              <HiChevronDown />
-            )}
-          </StyledSpan>
+          <strong>응답 정보</strong>
         </StyledDiv>
-
-        <Table>
-          <tbody>
-            <TableRow>
-              <TableHeader>회사명</TableHeader>
-              <TableCell>{statementData?.resInfo?.companyName}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>사업자 등록번호</TableHeader>
-              <TableCell>
-                {statementData?.resInfo?.registrationNumber}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>지점명</TableHeader>
-              <TableCell>{statementData?.resInfo?.branchName}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>연락처</TableHeader>
-              <TableCell>{statementData?.resInfo?.branchContact}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>담당자</TableHeader>
-              <TableCell>{statementData?.resInfo?.workerName}</TableCell>
-            </TableRow>
-          </tbody>
-        </Table>
-      </StyledSection>
+        <div>회사명{statementData?.resInfo?.companyName}</div>
+        <div>사업자 등록번호{statementData?.resInfo?.registrationNumber}</div>
+        <div>지점명{statementData?.resInfo?.branchName}</div>
+        <div>연락처{statementData?.resInfo?.branchContact}</div>
+        <div>담당자{statementData?.resInfo?.workerName}</div>
+      </div>
 
       <StyledDiv>
         <strong>품목정보</strong>
       </StyledDiv>
-      <table>
-        <thead>
-          <tr>
-            <th>품목명</th>
-            <th>수량</th>
-            <th>단가</th>
-            <th>공급가액</th>
-            <th>비고</th>
-          </tr>
-        </thead>
+      {statementData.itemList.map((item, index) => (
+        <div key={index}>
+          {item.stockName}
 
-        <tbody>
-          {statementData.itemList.map((item, index) => (
-            <tr key={index}>
-              <td>{item.stockName}</td>
-              <td>
-                {formatNumber(item.stockQuantity)}
-                {item.stockUnit}
-              </td>
-              <td>{formatNumber(item.stockPrice)}</td>
-              {/* formatNumber 함수를 사용하여 단가 형식화 */}
-              <td>{formatNumber(item.stockTotalPrice)}</td>
-              {/* formatNumber 함수를 사용하여 공급가액 형식화 */}
-              <td>{item.note || "-"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          {formatNumber(item.stockQuantity)}
+          {item.stockUnit}
 
+          {formatNumber(item.stockPrice)}
+          {/* formatNumber 함수를 사용하여 단가 형식화 */}
+          {formatNumber(item.stockTotalPrice)}
+          {/* formatNumber 함수를 사용하여 공급가액 형식화 */}
+          {item.note || "-"}
+        </div>
+      ))}
       <StyledDate>{formatDate(statementData.tradeDate)}</StyledDate>
-    </Styles>
+    </>
   );
 };
 
