@@ -25,6 +25,7 @@ import java.util.Optional;
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     private static final String NO_CHECK_URL_LOGIN = "/api/client/login";
+    private static final String NO_CHECK_URL_PASS_LOGIN = "/api/client/pass-login";
     private static final String NO_CHECK_URL_CONSUMER = "/api/consumer";
     private static final String NO_CHECK_URL_WEBAUTHN_ATTESTATION = "/webauthn/attestation/options";
     private static final String NO_CHECK_URL_WEBAUTHN_ASSERTION = "/webauthn/assertion/options";
@@ -39,6 +40,11 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
         // 로그인 요청에 대해서는 다음 필터 호출
         if (request.getRequestURI().equals(NO_CHECK_URL_LOGIN)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (request.getRequestURI().equals(NO_CHECK_URL_PASS_LOGIN)) {
             filterChain.doFilter(request, response);
             return;
         }
