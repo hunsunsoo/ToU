@@ -6,7 +6,8 @@ import {
   UserInfoState, CompanyInfoState
 } from "../../../store/State";
 import { ROUTES } from "../../../commons/Routes";
-import Fido from "../../../commons/Fido";
+import FidoEnroll from "../../../commons/FIDOEnroll";
+import FidoAuth from "../../../commons/FIDOAuth";
 
 const OfficerSideBar = () => {
   const navigate = useNavigate();
@@ -24,6 +25,8 @@ const OfficerSideBar = () => {
       <p>{userInfo.branchName}</p>
     </CompInfo>
     <p>{userInfo.workerName}</p>
+    <FidoEnroll workerName={userInfo.workerName} />
+    <FidoAuth workerName={userInfo.workerName} />
     <Line />
     <ListBtn onClick={() => navigate(ROUTES.OFFICER_MAIN)}>메인페이지</ListBtn>
     <ListBtn onClick={() => navigate(ROUTES.OFFICER_CREATE)}>거래명세서 생성</ListBtn>
@@ -31,7 +34,7 @@ const OfficerSideBar = () => {
     <ListBtn onClick={() => navigate(ROUTES.OFFICER_STOCK)}>공정/재고 관리</ListBtn>
     <ListBtn onClick={() => navigate(ROUTES.OFFICER_STOCKLIST)}>재고 목록 조회</ListBtn>
     <ListBtn>개인정보 수정</ListBtn>
-    <Fido />
+    
   </SidebarContainer>
   )
 }
