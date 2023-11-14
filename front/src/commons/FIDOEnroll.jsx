@@ -57,7 +57,9 @@ function encodeBase64url(arrayBuffer) {
 }
 
 
-const Fido = ({workerName}) => {
+const Fido = () => {
+  const LOCALHOST = "http://localhost:8080/api/";
+  const SERVER_TOU = "https://k9b310.p.ssafy.io/api/";
 
   const [userHandle, setUserHandle] = useState("");
   const [username, setUsername] = useState("");
@@ -66,11 +68,12 @@ const Fido = ({workerName}) => {
 
   const storedValue = localStorage.getItem("recoil-persist");
   const accessToken = storedValue ? JSON.parse(storedValue)?.UserInfoState?.accessToken : undefined;
+  const workerName = storedValue ? JSON.parse(storedValue)?.UserInfoState?.workerName : undefined;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://k9b310.p.ssafy.io/api/webauthn/user-handle", {
+        const response = await axios.get(SERVER_TOU+"webauthn/user-handle", {
           headers: {
             AUTHORIZATION: 'Bearer ' + `${accessToken}`,
             'Content-Type': 'application/json'
@@ -91,7 +94,7 @@ const Fido = ({workerName}) => {
   }, []);
 
   const WebAuthnFido2Enroll = async () => {
-  const optionsResponse = await axios.post("https://k9b310.p.ssafy.io/api/webauthn/attestation/options")
+  const optionsResponse = await axios.post(SERVER_TOU+"webauthn/attestation/options")
   const options = await optionsResponse.data;
 
   const credential = await navigator.credentials.create({
@@ -113,10 +116,12 @@ const Fido = ({workerName}) => {
       },
     },
   });
+  console.log(credential)
 
-  const response = await axios.post("https://k9b310.p.ssafy.io/api/webauthn/enroll", {
+  const response = await axios.post(SERVER_TOU+"webauthn/enroll", {
       userHandle : userHandle,
       username : username,
+      userPass : credential.id,
       webAuthnChallenge : webAuthnChallenge,
       webAuthnCredentialIds : webAuthnCredentialIds,
       clientDataJSON : encodeBase64url(credential.response.clientDataJSON),
