@@ -10,6 +10,7 @@ type ThumbProps = {
   branchName: string;
   branchLocation: string;
   branchType: BranchType; // 이 부분을 수정
+  stockDate: string;
 };
 
 const IMAGES = {
@@ -40,12 +41,15 @@ export const Thumb: React.FC<ThumbProps> = ({
   index,
   onClick,
   branchName,
-  branchLocation,
+  // branchLocation,
   branchType,
+  stockDate,
 }) => {
   // branchName을 공백을 기준으로 배열로 변환
   const nameParts = branchName.split(" ");
   const imageInfo = IMAGES[branchType];
+
+  const stockDateFormatted = stockDate.substring(0, 10);
 
   return (
     <div
@@ -74,6 +78,7 @@ export const Thumb: React.FC<ThumbProps> = ({
               </React.Fragment>
             ))}
           </div>
+          {stockDateFormatted}
           {/* <p>{branchLocation}</p> */}
         </div>
       </Button>

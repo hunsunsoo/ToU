@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { styled } from "styled-components";
 import useEmblaCarousel, { EmblaOptionsType } from "embla-carousel-react";
 import { Thumb } from "./EmblaCarouselThumbsButton";
 import imageByIndex from "./imageByIndex";
@@ -18,6 +19,7 @@ type MapContainerProps = {
     lat: number;
     lng: number;
   };
+  index: number;
 };
 
 const mapStyles: Array<google.maps.MapTypeStyle> =
@@ -306,10 +308,11 @@ const mapStyles: Array<google.maps.MapTypeStyle> =
   }
 ];
 
-const MapContainer: React.FC<MapContainerProps> = ({ center }) => {
+const MapContainer: React.FC<MapContainerProps> = ({ center, index }) => {
   const containerStyle = {
     width: '100%',
     height: '350px',
+    
   };
   
   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -319,8 +322,24 @@ const MapContainer: React.FC<MapContainerProps> = ({ center }) => {
     return null; // 또는 에러 처리를 할 수 있는 다른 방식으로 수정
   }
 
+  const getMarkerUrl = (index: number) => {
+    // 여기서 index 값을 기반으로 조건을 걸어 적절한 이미지 URL을 반환해
+    switch (index) {
+      case 0:
+        return "/Marker1.png";
+      case 1:
+        return "/Marker2.png";
+      case 2:
+        return "/Marker3.png";
+      case 3:
+        return "/Marker4.png";
+      default:
+        return ""; // 기본값 설정 or 에러 처리
+    }
+  };
+
   return (
-    <LoadScript googleMapsApiKey={apiKey} >
+    <LoadScript googleMapsApiKey={apiKey}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
@@ -332,13 +351,12 @@ const MapContainer: React.FC<MapContainerProps> = ({ center }) => {
           streetViewControl: false, // 스트릿뷰 버튼
           fullscreenControl: false, // 전체화면 버튼
         }}
-
       >
-        <MarkerF 
+        <MarkerF
           position={center} 
           icon={{
-            url: "/11.png",
-            // scaledSize: new google.maps.Size(40, 40),
+            url: getMarkerUrl(index),
+            // scaledSize: new window.google.maps.Size(20, 20),
           }}
         />
       </GoogleMap>
@@ -403,6 +421,15 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options, thumbnails }) => {
     dragFree: true,
   });
 
+  // 토글버튼
+  const [viewEarth, setViewEarth] = useState(false);
+  const onChange = useCallback(() => {
+    // checked 상태를 토글
+    setViewEarth(!viewEarth);
+  }, [viewEarth]);
+
+  console.log(thumbnails);
+
   const onThumbClick = useCallback(
     (index: number) => {
       if (!emblaMainApi || !emblaThumbsApi) return;
@@ -430,9 +457,9 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options, thumbnails }) => {
   // 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
   // 모달 함수
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  // const openModal = () => {
+  //   setIsModalOpen(true);
+  // };
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -454,7 +481,7 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options, thumbnails }) => {
 
     setTimeout(() => {
       if (thumbnails[3] && ( // thumbnails[3]가 존재하는 경우에만 실행
-        Math.abs(currentLocation.lat - thumbnails[3].latitude) > 0.01 || 
+        Math.abs(currentLocation.lat - thumbnails[3].latitude) > 0.01 ||
         Math.abs(currentLocation.lng - thumbnails[3].longitude) > 0.01)) {
           setIsModalOpen(true);
           console.log("모달상태"+isModalOpen);
@@ -469,9 +496,6 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options, thumbnails }) => {
   ) ? (
     // 경고창이 뜰 경우
     <div style={{textAlign: "center"}}>
-      {/* <img src='../../../pulic/alertModal.png' alt="" />
-      <img src='../../../../pulic/alertModal.png' alt="" />
-      <img src='../../pulic/alertModal.png' alt="" /> */}
       <div style={{textAlign: "end", cursor: "pointer"}}>
         <FontAwesomeIcon icon={faXmark} onClick={closeModal} style={{fontSize: "30px"}}/>
       </div>
@@ -483,26 +507,62 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options, thumbnails }) => {
     null
   );
 
+  const SlideToggleSlider = styled.span<{ viewEarth: boolean }>`
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+  transform: ${(props) => (props.viewEarth ? "translateX(20px)" : "translateX(0)")};
+`;
+
+
   return (
     <div className="embla">
+      {/* <button onClick={toggleViewEarth}> 지도 토글버튼 </button> */}
+      <SlideToggleLabel className="slide-toggle">
+        <SlideToggleInput type="checkbox" onChange={onChange} checked={viewEarth} />
+        <SlideToggleSlider className="slider" viewEarth={viewEarth}></SlideToggleSlider>
+      </SlideToggleLabel>
       {/* 케러셀 구글맵 API */}
       <div className="embla__viewport" ref={emblaMainRef}>
         <div className="embla__container">
 
-          {thumbnails.map((thumbnail, index) => (
-            <div key={index} className="embla__slide">
-              <div className="embla__slide__number">
-                <span>{index + 1}</span>
+          {viewEarth ?  
+          <>
+            {thumbnails.map((thumbnail, index) => (
+              <div key={index} className="embla__slide">
+                <div className="embla__slide__number">
+                  <span>{index + 1}</span>
+                </div>
+                <MapContainer
+                  key={index}
+                  center={{
+                    lat: thumbnail.latitude,
+                    lng: thumbnail.longitude,
+                  }}
+                  index={index}
+                />
               </div>
-              <MapContainer
-                key={index}
-                center={{
-                  lat: thumbnail.latitude,
-                  lng: thumbnail.longitude,
-                }}
-              />
-            </div>
-          ))}
+            ))}
+          </>
+            :
+          <>
+            {slides.map((index) => (
+              <div className="embla__slide" key={index}>
+                <img
+                  className="embla__slide__img"
+                  src={imageByIndex(index)}
+                  alt="Your alt text"
+                />
+              </div>
+            ))}
+          </>}
+
         </div>
       </div>
       
@@ -530,6 +590,7 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options, thumbnails }) => {
                 branchName={thumbnail.branchName}
                 branchLocation={thumbnail.branchLocation}
                 branchType={thumbnail.branchType}
+                stockDate={thumbnail.stockDate}
                 key={index}
               />
             ))}
@@ -541,3 +602,20 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options, thumbnails }) => {
 };
 
 export default EmblaCarousel;
+
+const SlideToggleLabel = styled.label`
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  background-color: blue;
+  border-radius: 10px;
+  cursor: pointer;
+`;
+
+const SlideToggleInput = styled.input`
+  opacity: 0;
+  width: 0;
+  height: 0;
+`;
+
