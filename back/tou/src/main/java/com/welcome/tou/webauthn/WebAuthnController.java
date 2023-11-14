@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -56,13 +57,19 @@ public class WebAuthnController {
     }
 
     @GetMapping(value = "/user-handle")
-    public ResultTemplate<?> getUserHandle(@AuthenticationPrincipal UserDetails worker) {
-        var userHandle = Base64UrlUtil.encodeToString(UUIDUtil.convertUUIDToBytes(UUID.randomUUID()));
-        Map<String, String> userInfo = new HashMap<>();
-        userInfo.put("userHandle", userHandle);
-        userInfo.put("username", worker.getUsername());
+    public ResultTemplate<?> getUserHandle(HttpServletRequest request ,@AuthenticationPrincipal UserDetails worker) {
+        var challenge = challengeRepository.loadOrGenerateChallenge(request);
 
-        return ResultTemplate.builder().status(200).data(userInfo).build();
+        var userHandle = Base64UrlUtil.encodeToString(UUIDUtil.convertUUIDToBytes(UUID.randomUUID()));
+
+        WebAuthnUserRequestDto responseDto = WebAuthnUserRequestDto.builder()
+                .userHandle(userHandle)
+                .username(worker.getUsername())
+                .webAuthnChallenge(Base64UrlUtil.encodeToString(challenge.getValue()))
+                .webAuthnCredentialIds(getCredentialIds())
+                .build();
+
+        return ResultTemplate.builder().status(200).data(responseDto).build();
     }
 
 
@@ -79,11 +86,10 @@ public class WebAuthnController {
                         request.getClientExtension()
                 );
             } catch (WebAuthnException | WebAuthnAuthenticationException e) {
-                return ResultTemplate.builder().status(499).data(e.getMessage() + "여기11").build();
+                return ResultTemplate.builder().status(499).data(e.getMessage()).build();
             }
 
             var username = request.getUsername();
-            System.out.println("여기여");
             var authenticator = new WebAuthnAuthenticatorImpl(
                     "authenticator",
                     username,
@@ -98,10 +104,10 @@ public class WebAuthnController {
             try {
                 webAuthnAuthenticatorManager.createAuthenticator(authenticator);
             } catch (IllegalArgumentException ex) {
-                return ResultTemplate.builder().status(499).data(ex.getMessage() + "여기22").build();
+                return ResultTemplate.builder().status(499).data(ex.getMessage()).build();
             }
         } catch (RuntimeException ex) {
-            return ResultTemplate.builder().status(499).data(ex.getMessage() + "여기333").build();
+            return ResultTemplate.builder().status(499).data(ex.getMessage()).build();
         }
 
         return ResultTemplate.builder().status(200).data("등록 완료").build();
