@@ -41,7 +41,7 @@ export default OfficerDemandDiv;
 
 const StyledDemandDiv = styled.div`
   text-align: center;
-  border: 1px solid black;
+  border: 0.5px solid gray;
   font-weight: normal;
   color: black;
   font-size: 20px;
