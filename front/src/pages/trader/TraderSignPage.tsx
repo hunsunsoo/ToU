@@ -11,6 +11,7 @@ import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import { UserInfoState } from "../../store/State";
+import FIDOSign from "../../commons/FIDOSign";
 
 const TraderSignPage = () => {
   // 상태 업데이트 함수
@@ -102,31 +103,40 @@ const TraderSignPage = () => {
   };
 
   // 서명요청 핸들러
-  const handleRequestSign = () => {
+  const handleRequestSign = async () => {
+    const isAuth = await FIDOSign();
+
     const requestBody = {
       statementSeq: statementData?.statementSeq, // statementData가 유효한 경우 statementSeq 값을 사용
       type: "SELL", // 요청 본문에 들어가야 하는 type 값
     };
 
-    customAxios
-      .post("/statement/worker/sign", requestBody)
-      .then((response) => {
-        toast.success("서명요청을 보냈습니다.");
-        fetchStatementData();
-      })
-      .catch((error) => {
+    if(isAuth === true) {
+      customAxios
+        .post("/statement/worker/sign", requestBody)
+        .then((response) => {
+          toast.success("서명요청을 보냈습니다.");
+          fetchStatementData();
+        })
+        .catch((error) => {
+          toast.error("서명요청에 실패했습니다.");
+        });
+      } else {
         toast.error("서명요청에 실패했습니다.");
-      });
+      }
   };
 
   // 서명 응답 핸들러
-  const handleResponseSign = () => {
+  const handleResponseSign = async () => {
+    const isAuth = await FIDOSign();
+
     const requestBody = {
       statementSeq: statementData?.statementSeq,
       type: "BUY",
     };
 
-    customAxios
+    if(isAuth === true) {
+      customAxios
       .post("/statement/worker/sign", requestBody)
       .then((response) => {
         toast.success("서명을 완료했습니다.");
@@ -135,6 +145,10 @@ const TraderSignPage = () => {
       .catch((error) => {
         toast.error("서명에 실패했습니다.");
       });
+    } else {
+      toast.error("서명에 실패했습니다.");
+    }
+    
   };
 
   // 거절 핸들러

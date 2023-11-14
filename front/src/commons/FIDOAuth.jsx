@@ -35,28 +35,6 @@ function decodeBase64url(base64url) {
     return arrayBuffer;
 }
 
-function encodeBase64url(arrayBuffer) {
-    let uint8Array = new Uint8Array(arrayBuffer);
-    const length = uint8Array.length;
-    let base64url = "";
-
-    for (let i = 0; i < length; i += 3) {
-        base64url += lookup[uint8Array[i] >> 2];
-        base64url += lookup[((uint8Array[i] & 3) << 4) | (uint8Array[i + 1] >> 4)];
-        base64url += lookup[((uint8Array[i + 1] & 15) << 2) | (uint8Array[i + 2] >> 6)];
-        base64url += lookup[uint8Array[i + 2] & 63];
-    }
-
-    switch (length % 3) {
-        case 1:
-            base64url = base64url.substring(0, base64url.length - 2);
-            break;
-        case 2:
-            base64url = base64url.substring(0, base64url.length - 1);
-            break;
-    }
-    return base64url;
-}
 
 
 const FIDOAuth = () => {
@@ -116,14 +94,6 @@ const FIDOAuth = () => {
         companyContact: fidoLoginResponse.data.data.company.companyContact,
         logoImage: fidoLoginResponse.data.data.company.logoImage,
       }));
-
-    if(credential) {
-        toast.success("Passkey 서명 완료", {
-            duration: 2000,
-        });
-        setTimeout(() => {
-        }, 2000);
-    }
   }
 
   const buttonStyle = {
