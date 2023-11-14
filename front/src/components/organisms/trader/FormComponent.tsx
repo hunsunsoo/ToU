@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import { StatementData } from "../../../types/TraderTypes";
 import {
   Table,
@@ -23,6 +24,13 @@ const FormComponent: React.FC<FormComponentProps> = ({
 }) => {
   const formatNumber = (number: number) => {
     return new Intl.NumberFormat("ko-KR").format(number);
+  };
+
+  const getTotalStockQuantity = () => {
+    return statementData.itemList.reduce(
+      (acc, item) => acc + item.stockQuantity,
+      0
+    );
   };
 
   let signatureStatusMessage;
@@ -75,7 +83,9 @@ const FormComponent: React.FC<FormComponentProps> = ({
               {statementData?.reqInfo?.workerName ? (
                 statementData.reqInfo.workerName
               ) : (
-                <span style={{ color: "red" }}>서명필요</span>
+                <span style={{ color: "red", fontWeight: "bold" }}>
+                  서명필요
+                </span>
               )}
             </TableCell>
           </TableRow>
@@ -112,7 +122,9 @@ const FormComponent: React.FC<FormComponentProps> = ({
               {statementData?.resInfo?.workerName ? (
                 statementData.resInfo.workerName
               ) : (
-                <span style={{ color: "red" }}>서명필요</span>
+                <span style={{ color: "red", fontWeight: "bold" }}>
+                  서명필요
+                </span>
               )}
             </TableCell>
           </TableRow>
@@ -138,12 +150,22 @@ const FormComponent: React.FC<FormComponentProps> = ({
                 {formatNumber(item.stockQuantity)}
                 {item.stockUnit}
               </td>
-              <td>{formatNumber(item.stockPrice)}</td>
+              <td>{formatNumber(item.stockPrice)}원</td>
               {/* formatNumber 함수를 사용하여 단가 형식화 */}
-              <td>{formatNumber(item.stockTotalPrice)}</td>
+              <td>{formatNumber(item.stockTotalPrice)}원</td>
               {/* formatNumber 함수를 사용하여 공급가액 형식화 */}
             </tr>
           ))}
+        </tbody>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <StyledTotal>총 금액</StyledTotal>
+            <StyledTotal>
+              {formatNumber(statementData.totalPrice)}원
+            </StyledTotal>
+          </tr>
         </tbody>
       </table>
       {statementData.resInfo?.branchType === "SELL" ?
@@ -159,3 +181,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
 };
 
 export default FormComponent;
+
+const StyledTotal = styled.td`
+  font-weight: bold;
+`;

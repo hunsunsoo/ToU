@@ -7,10 +7,7 @@ type ThumbProps = {
   selected: boolean;
   index: number;
   onClick: () => void;
-  branchName: string;
-  branchLocation: string;
-  branchType: BranchType; // 이 부분을 수정
-  stockDate: string;
+  branchType: BranchType; //
 };
 
 const IMAGES = {
@@ -40,16 +37,9 @@ export const Thumb: React.FC<ThumbProps> = ({
   selected,
   index,
   onClick,
-  branchName,
-  // branchLocation,
   branchType,
-  stockDate,
 }) => {
-  // branchName을 공백을 기준으로 배열로 변환
-  const nameParts = branchName.split(" ");
   const imageInfo = IMAGES[branchType];
-
-  const stockDateFormatted = stockDate.substring(0, 10);
 
   return (
     <div
@@ -62,24 +52,11 @@ export const Thumb: React.FC<ThumbProps> = ({
         className="embla-thumbs__slide__button"
         type="button"
       >
-        <div className="embla-thumbs__slide__number">
-          <span>{index + 1}</span>
-        </div>
         <div className="embla-thumbs__slide__info">
           <StyledBranchType>
             {imageInfo ? imageInfo.text : branchType}
           </StyledBranchType>
           {imageInfo && <Image src={imageInfo.src} alt={imageInfo.alt} />}
-          <div>
-            {nameParts.map((part, index) => (
-              <React.Fragment key={index}>
-                {part}
-                {index < nameParts.length - 1 && <br />}
-              </React.Fragment>
-            ))}
-          </div>
-          {stockDateFormatted}
-          {/* <p>{branchLocation}</p> */}
         </div>
       </Button>
     </div>
@@ -88,11 +65,12 @@ export const Thumb: React.FC<ThumbProps> = ({
 
 const Button = styled.button`
   background-color: #fff;
-  padding: 1rem 0.3rem;
+  padding: 0.5rem;
+  border-radius: 12px;
 `;
 
 const Image = styled.img`
-  width: 4rem;
+  width: 3rem;
   height: auto;
 `;
 
