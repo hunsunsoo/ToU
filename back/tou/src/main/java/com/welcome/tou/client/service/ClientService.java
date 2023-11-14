@@ -215,8 +215,7 @@ public class ClientService {
         Pass myPass = passRepository.findByPassId(request.getPassId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.PASS_NOT_FOUND));
 
-        Worker worker = workerRepository.findById(myPass.getWorkerSeq())
-                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+        Worker worker = myPass.getWorker();
 
         String accessToken = jwtService.createAccessToken(worker);
         String refreshToken = jwtService.createRefreshToken();

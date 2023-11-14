@@ -96,6 +96,7 @@ public class SecurityConfig {
 //            .anyRequest().permitAll();
             .requestMatchers("/api/consumer/**").permitAll()
             .requestMatchers("/api/client/login").permitAll()
+            .requestMatchers("/api/client/pass-login").permitAll()
             .requestMatchers("/api/webauthn/**").permitAll()
             .requestMatchers("/api/client/company").hasRole("SELLER")
             .anyRequest().authenticated()
