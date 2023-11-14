@@ -1,6 +1,6 @@
 export const ROUTES = {
   // Shopper
-  SHOPPER_URL: "/product/*",
+  SHOPPER_URL: "/product/:productSeq",
   SHOPPER_MAIN: "",
   SHOPPER_INFO: "info",
 
