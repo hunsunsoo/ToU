@@ -12,6 +12,7 @@ type PropType = {
   slides: number[];
   options?: EmblaOptionsType;
   thumbnails: any[];
+  viewEarth: boolean;
 };
 
 type MapContainerProps = {
@@ -413,20 +414,13 @@ const MapContainer: React.FC<MapContainerProps> = ({ center, index }) => {
 //   );
 // };
 
-const EmblaCarousel: React.FC<PropType> = ({ slides, options, thumbnails }) => {
+const EmblaCarousel: React.FC<PropType> = ({ slides, options, thumbnails, viewEarth }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
     containScroll: "keepSnaps",
     dragFree: true,
   });
-
-  // 토글버튼
-  const [viewEarth, setViewEarth] = useState(false);
-  const onChange = useCallback(() => {
-    // checked 상태를 토글
-    setViewEarth(!viewEarth);
-  }, [viewEarth]);
 
   console.log(thumbnails);
 
@@ -507,27 +501,8 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options, thumbnails }) => {
     null
   );
 
-  const SlideToggleSlider = styled.span<{ viewEarth: boolean }>`
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  border-radius: 50%;
-  transition: 0.4s;
-  transform: ${(props) => (props.viewEarth ? "translateX(20px)" : "translateX(0)")};
-`;
-
-
   return (
     <div className="embla">
-      {/* <button onClick={toggleViewEarth}> 지도 토글버튼 </button> */}
-      <SlideToggleLabel className="slide-toggle">
-        <SlideToggleInput type="checkbox" onChange={onChange} checked={viewEarth} />
-        <SlideToggleSlider className="slider" viewEarth={viewEarth}></SlideToggleSlider>
-      </SlideToggleLabel>
       {/* 케러셀 구글맵 API */}
       <div className="embla__viewport" ref={emblaMainRef}>
         <div className="embla__container">
@@ -565,9 +540,6 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options, thumbnails }) => {
 
         </div>
       </div>
-      
-      {/* 현 위치 구글맵 API */}
-      {/* <MapLocation /> */}
 
       {/* 모달 */}
       <Modal
