@@ -1,8 +1,15 @@
 import { StatementData } from "../../../types/TraderTypes";
 import {
+  Table,
+  TableRow,
+  TableCell,
+  TableHeader,
   StyledDiv,
+  Styles,
   StyledTitle,
+  SignatureStatus,
   StyledDate,
+  Line,
 } from "./FormComponentStyle";
 
 interface FormComponentProps {
@@ -14,61 +21,130 @@ const FormComponent: React.FC<FormComponentProps> = ({
   statementData,
   status,
 }) => {
-  const formatDate = (dateString: string) => {
-    return dateString.split("T")[0];
-  };
-
   const formatNumber = (number: number) => {
     return new Intl.NumberFormat("ko-KR").format(number);
   };
 
+  let signatureStatusMessage;
+  if (status === "READY") {
+    signatureStatusMessage = "서명이 완료된 거래명세서입니다.";
+  }
+
   return (
-    <>
+    <Styles>
       <StyledTitle>
         <div>거래명세표</div>
+        {signatureStatusMessage && (
+          <SignatureStatus>{signatureStatusMessage}</SignatureStatus>
+        )}
       </StyledTitle>
 
-      <div>
-        <StyledDiv>
-          <strong>요청 정보 (공급자)</strong>
-        </StyledDiv>
-        <div>회사명{statementData?.reqInfo?.companyName}</div>
-        <div>사업자 등록번호{statementData?.reqInfo?.registrationNumber}</div>
-        <div>지점명{statementData?.reqInfo?.branchName}</div>
-        <div>연락처{statementData?.reqInfo?.branchContact}</div>
-        <div>담당자{statementData?.reqInfo?.workerName}</div>
-      </div>
+      <StyledDate>
+        <div>4020-1214-{statementData.statementSeq}</div>
+        <div>{statementData.tradeDate}</div>
+      </StyledDate>
+      <Line />
+      <Table>
+        <tbody>
+          <TableRow>
+            <TableHeader>요청정보</TableHeader>
+            <TableHeader>회사명</TableHeader>
+            <TableCell>{statementData?.reqInfo?.companyName}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>지점명</TableHeader>
+            <TableCell>{statementData?.reqInfo?.branchName}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>사업자 등록번호</TableHeader>
+            <TableCell>{statementData?.reqInfo?.registrationNumber}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>연락처</TableHeader>
+            <TableCell>{statementData?.reqInfo?.branchContact}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>담당자</TableHeader>
+            <TableCell>
+              {statementData?.reqInfo?.workerName ? (
+                statementData.reqInfo.workerName
+              ) : (
+                <span style={{ color: "red" }}>서명필요</span>
+              )}
+            </TableCell>
+          </TableRow>
+        </tbody>
+      </Table>
+      <Line />
+      <Table>
+        <tbody>
+          <TableRow>
+            <TableHeader>응답정보</TableHeader>
+            <TableHeader>회사명</TableHeader>
+            <TableCell>{statementData?.resInfo?.companyName}</TableCell>
+          </TableRow>
 
-      <div>
-        <StyledDiv>
-          <strong>응답 정보</strong>
-        </StyledDiv>
-        <div>회사명{statementData?.resInfo?.companyName}</div>
-        <div>사업자 등록번호{statementData?.resInfo?.registrationNumber}</div>
-        <div>지점명{statementData?.resInfo?.branchName}</div>
-        <div>연락처{statementData?.resInfo?.branchContact}</div>
-        <div>담당자{statementData?.resInfo?.workerName}</div>
-      </div>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>지점명</TableHeader>
+            <TableCell>{statementData?.resInfo?.branchName}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>사업자 등록번호</TableHeader>
+            <TableCell>{statementData?.resInfo?.registrationNumber}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>연락처</TableHeader>
+            <TableCell>{statementData?.resInfo?.branchContact}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>담당자</TableHeader>
+            <TableCell>
+              {statementData?.resInfo?.workerName ? (
+                statementData.resInfo.workerName
+              ) : (
+                <span style={{ color: "red" }}>서명필요</span>
+              )}
+            </TableCell>
+          </TableRow>
+        </tbody>
+      </Table>
+      <Line />
 
-      <StyledDiv>
-        <strong>품목정보</strong>
-      </StyledDiv>
-      {statementData.itemList.map((item, index) => (
-        <div key={index}>
-          {item.stockName}
+      <table>
+        <thead>
+          <tr>
+            <th>품목명</th>
+            <th>수량</th>
+            <th>단가</th>
+            <th>공급가액</th>
+          </tr>
+        </thead>
 
-          {formatNumber(item.stockQuantity)}
-          {item.stockUnit}
-
-          {formatNumber(item.stockPrice)}
-          {/* formatNumber 함수를 사용하여 단가 형식화 */}
-          {formatNumber(item.stockTotalPrice)}
-          {/* formatNumber 함수를 사용하여 공급가액 형식화 */}
-          {item.note || "-"}
-        </div>
-      ))}
-      <StyledDate>{formatDate(statementData.tradeDate)}</StyledDate>
-    </>
+        <tbody>
+          {statementData.itemList.map((item, index) => (
+            <tr key={index}>
+              <td>{item.stockName}</td>
+              <td>
+                {formatNumber(item.stockQuantity)}
+                {item.stockUnit}
+              </td>
+              <td>{formatNumber(item.stockPrice)}</td>
+              {/* formatNumber 함수를 사용하여 단가 형식화 */}
+              <td>{formatNumber(item.stockTotalPrice)}</td>
+              {/* formatNumber 함수를 사용하여 공급가액 형식화 */}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Styles>
   );
 };
 

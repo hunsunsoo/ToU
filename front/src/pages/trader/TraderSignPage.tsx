@@ -187,8 +187,8 @@ const TraderSignPage = () => {
 export default TraderSignPage;
 
 const StyledMainPaddingContainer = styled(MainPaddingContainer)`
-  height: calc(100vh - 63px);
-  margin-bottom: 80px;
+  height: 100vh;
+  margin-bottom: 60px;
 `;
 
 const StyledTraderHeader = styled.div`
