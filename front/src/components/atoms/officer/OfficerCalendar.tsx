@@ -66,10 +66,10 @@ export default OfficerCalendar;
 
 const CalendarDiv = styled.div`
   height: 82%;
-  border: 1px solid black;
   border-radius: 30px;
   margin: 20px 0 20px 20px;
   padding: 20px;
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
 `
 
 const StyledTitle = styled.div`

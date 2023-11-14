@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import OfficerSideBar from "../../components/organisms/officer/OfficerSideBar";
 import OfficerCalendar from "../../components/atoms/officer/OfficerCalendar";
 import OfficerGraph from "../../components/atoms/officer/OfficerGraph";
