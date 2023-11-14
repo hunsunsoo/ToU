@@ -13,6 +13,8 @@ import com.welcome.tou.security.jwt.filter.JwtAuthenticationProcessingFilter;
 import com.welcome.tou.security.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,6 +42,9 @@ public class SecurityConfig {
     private final WorkerRepository workerRepository;
     private final CorsConfig corsConfig;
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     /**
      *  security webauthn을 사용한 인증을 처리하는 역할
      */
@@ -54,19 +59,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
         /**
          *  WebAuthn Login
          */
         http.apply(WebAuthnLoginConfigurer.webAuthnLogin())
-            // .defaultSuccessUrl("/", true)
             .failureHandler(((request, response, exception) -> {
                 log.error("Webauthn 인증 에러");
-                // 에러던지기
             }))
             .attestationOptionsEndpoint()
             .rp()
-            .id("https://k9b310.p.ssafy.io")
             .name("to-u-worker-auth")
             .and()
             .pubKeyCredParams(
@@ -87,8 +89,6 @@ public class SecurityConfig {
             .formLogin().disable()
             .httpBasic().disable()
             .csrf().disable()
-//            .headers().frameOptions().disable()
-//            .and()
             .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfig.corsConfigurationSource()))
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
@@ -108,12 +108,6 @@ public class SecurityConfig {
             // Disable "X-Frame-Options" to allow cross-origin iframe access
             headers.frameOptions(Customizer.withDefaults()).disable();
         });
-
-        // As WebAuthn has its own CSRF protection mechanism (challenge), CSRF token is disabled here
-//        http.csrf(csrf -> {
-//            csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-//            csrf.ignoringRequestMatchers("/webauthn/**");
-//        });
 
         return http.getOrBuild();
     }
