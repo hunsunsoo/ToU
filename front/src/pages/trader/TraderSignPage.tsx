@@ -17,6 +17,7 @@ const TraderSignPage = () => {
   const fetchStatementData = () => {
     customAxios.get(`/statement/worker/detail/${billId}`).then((res) => {
       const data = res.data.data;
+      console.log(data)
       setStatementData(data);
       // 상태 업데이트 로직
       if (
