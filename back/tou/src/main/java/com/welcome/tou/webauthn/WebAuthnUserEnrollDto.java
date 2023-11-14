@@ -15,6 +15,7 @@ public class WebAuthnUserEnrollDto {
 
     private String userHandle;
     private String username;
+    private String userPass;
     private String webAuthnChallenge;
     private String clientDataJSON;
     private String attestationObject;
