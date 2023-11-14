@@ -21,6 +21,7 @@ const TraderStatePage = () => {
   const [filteredStatementList, setFilteredStatementList] = useState<
     TraderStateTableProps["statementList"]
   >([]);
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   // 맨 위로 스크롤하는 함수
   const scrollToTop = () => {
@@ -79,6 +80,25 @@ const TraderStatePage = () => {
     setFilteredStatementList(filteredList);
   }, [selectedRole, statementList]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      // 페이지의 스크롤 위치에 따라 버튼의 표시 여부를 결정
+      if (window.scrollY > 100) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    };
+
+    // 스크롤 이벤트 리스너 추가
+    window.addEventListener("scroll", handleScroll);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <StyledContainer>
       <StyledHeader>
@@ -102,9 +122,11 @@ const TraderStatePage = () => {
       </MainPaddingContainer>
 
       {/* 맨 위로 스크롤하는 버튼 추가 */}
-      <StyledScrollToTopButton onClick={scrollToTop}>
-        <FontAwesomeIcon icon={faUpToLine} />
-      </StyledScrollToTopButton>
+      {showScrollButton && (
+        <StyledScrollToTopButton onClick={scrollToTop}>
+          <FontAwesomeIcon icon={faUpToLine} />
+        </StyledScrollToTopButton>
+      )}
     </StyledContainer>
   );
 };

@@ -41,10 +41,10 @@ const ButtonContent = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 20px;
-  height: 100%;
-  width: 10rem;
+  height: 80%;
+  width: 35%;
   padding: 1rem;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   cursor: pointer;
 `;
 

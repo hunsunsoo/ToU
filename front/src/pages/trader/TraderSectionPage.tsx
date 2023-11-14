@@ -138,7 +138,7 @@ const StyledHeader = styled.div`
 
 const StyledMainPaddingContainer = styled(MainPaddingContainer)`
   background-color: #fff; // 내부 박스 배경색으로 흰색을 설정합니다.
-  margin: 1rem; // 상하좌우 여백을 줍니다.
+  margin: 0 1rem 1rem 1rem; // 상하좌우 여백을 줍니다.
   border-radius: 20px; // 모서리를 둥글게 처리합니다.
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // 그림자 효과를 추가합니다.
   overflow-y: scroll;
