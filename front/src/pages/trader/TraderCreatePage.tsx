@@ -129,8 +129,6 @@ const TraderCreatePage = () => {
           ...stockDetails,
           stockTotalPrice: stockDetails.stockQuantity * stockDetails.stockPrice,
           selectedStock: dropdownItem,
-          // 드롭다운에서 선택된 품목명도 반영할 수 있습니다.
-          // stockName: dropdownItem.name,
         };
         return updatedItems;
       });    
@@ -270,7 +268,7 @@ const TraderCreatePage = () => {
       setTimeout(() => {
       }, 1000);
     })
-}
+  }
 
   const checkValidity = () => {
     const isCompanySelected = selectedCompany !== null;
@@ -286,9 +284,8 @@ const TraderCreatePage = () => {
 
 
   useEffect(() => {
-    // 모든 항목이 유효한지 검사합니다.
+    // 모든 항목이 유효한지 검사.
     const allItemsValid = items.every(item => {
-      // 선택된 품목과 각 입력 필드가 유효한지 검사
       const isValidStock = item.stockSeq > -1;
       const isValidQuantity = item.stockQuantity> 0;
       const isValidPrice = item.stockPrice > 0;
@@ -317,7 +314,6 @@ const TraderCreatePage = () => {
       });
     });
   };
-
  
 
   const addItem = () => {
