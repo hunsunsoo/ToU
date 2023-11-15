@@ -64,21 +64,29 @@ const RoutesContainer = () => {
       <Route
         path={ROUTES.TRADER_URL}
         element={
-          <TraderContainer>
-            <MobileGlobalStyle />
-            <Routes>
-              <Route path={ROUTES.TRADER_LANDING} element={<T_LANDING />} />
-              <Route path={ROUTES.TRADER_MAIN} element={<T_MAIN />} />
-              <Route path={ROUTES.TRADER_LOGIN} element={<T_LOGIN />} />
-              <Route path={ROUTES.TRADER_CONFIRM} element={<T_CONFIRM />} />
-              <Route path={ROUTES.TRADER_CREATE} element={<T_CREATE />} />
-              <Route path={ROUTES.TRADER_GETLIST} element={<T_GETLIST />} />
-              <Route path={ROUTES.TRADER_SECTION} element={<T_SECTION />} />
-              <Route path={ROUTES.TRADER_SIGN} element={<T_SIGN />} />
-              <Route path={ROUTES.TRADER_SIGNCHECK} element={<T_SIGNCHECK />} />
-              <Route path={ROUTES.TRADER_STATE} element={<T_STATE />} />
-            </Routes>
-          </TraderContainer>
+          useRecoilValue(UserInfoState)?.accessToken != null ? (
+            <TraderContainer>
+              <MobileGlobalStyle />
+              <Routes>
+                <Route path={ROUTES.TRADER_LANDING} element={<T_LANDING />} />
+                <Route path={ROUTES.TRADER_MAIN} element={<T_MAIN />} />
+                <Route path={ROUTES.TRADER_CONFIRM} element={<T_CONFIRM />} />
+                <Route path={ROUTES.TRADER_CREATE} element={<T_CREATE />} />
+                <Route path={ROUTES.TRADER_GETLIST} element={<T_GETLIST />} />
+                <Route path={ROUTES.TRADER_SECTION} element={<T_SECTION />} />
+                <Route path={ROUTES.TRADER_SIGN} element={<T_SIGN />} />
+                <Route path={ROUTES.TRADER_SIGNCHECK} element={<T_SIGNCHECK />} />
+                <Route path={ROUTES.TRADER_STATE} element={<T_STATE />} />
+              </Routes>
+            </TraderContainer>
+          ) : (
+            <TraderContainer>
+              <MobileGlobalStyle />
+              <Routes>
+                <Route path={ROUTES.TRADER_LOGIN} element={<T_LOGIN />} />
+              </Routes>
+            </TraderContainer>
+          )
         }
       />
 
