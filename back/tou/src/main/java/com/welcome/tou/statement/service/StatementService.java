@@ -453,6 +453,9 @@ public class StatementService {
 
         Statement newStatement = Statement.createStatement(reqBranch, resBranch, Statement.StatementStatus.PREPARING, request.getTradeDate());
         statementRepository.save(newStatement);
+        if(request.getItems().size() == 0) {
+            throw new InvalidTradeException(InvalidTradeException.WE_NEED_ITEMS);
+        }
 
         for (int i = 0; i < request.getItems().size(); i++) {
             Stock stock = stockRepository.findById(request.getItems().get(i))
