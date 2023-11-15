@@ -40,7 +40,7 @@ export default TraderMainPage;
 
 const StyledContainer = styled.div`
   background-color: #ecf4ff;
-  height: 110vh;
+  height: 100vh;
   
 `;
 

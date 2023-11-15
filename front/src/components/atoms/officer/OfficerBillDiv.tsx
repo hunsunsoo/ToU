@@ -91,7 +91,7 @@ const Table = styled.table`
   color: black;
 
   td {
-    border: 1px solid black;
+    border: 0.5px solid gray;
     height: 40px;
     /* padding: 0 10px; */
 

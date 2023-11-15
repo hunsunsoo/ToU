@@ -63,7 +63,7 @@ const StyledTable = styled.table`
   margin: 10px;
   height: calc(100% - 10px);
   width: calc(100% - 10px);
-  border: 1px solid black;
+  border: 0.1px solid gray;
   border-collapse: collapse;
   font-weight: normal;
   color: black;

@@ -105,35 +105,40 @@ const OfficerDetailPage = () => {
   // pdf 저장 로직
   const contentRef = useRef<HTMLDivElement | null>(null);
   const handleGeneratePdf = () => {
-    const content = contentRef.current;
+    var content = contentRef.current;
 
     if (content) {
-      const set = {
+      var options = {
         margin: 10, // 여백을 원하는 값으로 조정
         filename: 'certificate.pdf',
-      }
+        // orientation: "landscape",
+        jsPDF: { orientation: 'landscape' },
+      };
+
       //@ts-ignore
-      html2pdf(content, set);
+      html2pdf().set(options).from(content).save();
     }
+    console.log(contentRef.current);
   };
 
 
-  const onClick = () => {
+  console.log(contentRef.current);
+  // const onClick = () => {
 
-  }
+  // }
 
   return( 
     <MainDiv>
       <OfficerSideBar/>
-      <div ref={contentRef}>
       <ContentDiv>
         <OfficerTitle>
           거래명세서 상세보기
         </OfficerTitle>
         <Line/>
+        <div ref={contentRef}>
         <StyledDiv>
           <StyledDivLeft>
-            <p>• 거래명세서 확인</p>
+            <p style={{height:"20px"}}></p>
             <OfficerDemandDiv />
           </StyledDivLeft>
           <StyledDivRight>
@@ -146,8 +151,9 @@ const OfficerDetailPage = () => {
         </StyledSumDiv>
         <OfficerDetailTable />
         <OfficerBillDiv />
+        </div>
         <BtnDiv>
-          <OfficerBtn
+          {/* <OfficerBtn
             isImg={false}
             isLarge={false}
             isActive={false}
@@ -168,11 +174,17 @@ const OfficerDetailPage = () => {
               isActive={true}
               onClick={handleGeneratePdf}>
               PDF 저장
-            </OfficerBtn> 
-          </BtnDivSub>
+            </OfficerBtn>
+          </BtnDivSub> */}
+          <OfficerBtn
+            isImg={false}
+            isLarge={false}
+            isActive={true}
+            onClick={handleGeneratePdf}>
+            PDF 저장
+          </OfficerBtn>
         </BtnDiv>
       </ContentDiv>
-      </div>
     </MainDiv>
   )
 }
@@ -218,7 +230,7 @@ const StyledSumDiv = styled.div`
   justify-content: space-between;
   padding: 10px 50px;
   margin-top: 10px;
-  border: 1px solid black;
+  border: 0.1px solid gray;
   color: black;
   font-size: 27px;
   font-weight: normal;

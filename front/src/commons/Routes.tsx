@@ -1,8 +1,8 @@
 export const ROUTES = {
   // Shopper
   SHOPPER_URL: "/product/*",
-  SHOPPER_MAIN: "",
-  SHOPPER_INFO: "info",
+  SHOPPER_MAIN: "/:productSeq",
+  SHOPPER_INFO: "/info",
 
   // Trader
   TRADER_URL: "/m/*",

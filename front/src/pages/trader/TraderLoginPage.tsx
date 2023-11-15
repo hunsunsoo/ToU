@@ -5,6 +5,7 @@ import { faFingerprint } from "@fortawesome/sharp-light-svg-icons";
 import styled, { keyframes } from "styled-components";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import { UseAuth } from "../../commons/UseAuth";
+import FIDOAuth from "../../commons/FIDOAuth";
 
 const TraderLoginPage = () => {
   const navigate = useNavigate();
@@ -53,10 +54,12 @@ const TraderLoginPage = () => {
         </StyledDiv>
         <Button onClick={handleLogin}>로그인</Button>
         <OrSeparator>또는</OrSeparator>
+        {/* 정훈이혀어어어어엉어엉 여기 겉 바(BIO) 속 FI */}
         <BiometricButton>
           <Icon icon={faFingerprint} />
           생체인증 로그인
         </BiometricButton>
+        <FIDOAuth />
       </LoginDiv>
     </StyledMainPaddingContainer>
   );

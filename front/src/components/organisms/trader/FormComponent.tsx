@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
-
+import styled from "styled-components";
 import { StatementData } from "../../../types/TraderTypes";
 import {
   Table,
@@ -8,12 +6,11 @@ import {
   TableCell,
   TableHeader,
   StyledDiv,
-  StyledSpan,
-  StyledSection,
   Styles,
   StyledTitle,
   SignatureStatus,
   StyledDate,
+  Line,
 } from "./FormComponentStyle";
 
 interface FormComponentProps {
@@ -25,28 +22,23 @@ const FormComponent: React.FC<FormComponentProps> = ({
   statementData,
   status,
 }) => {
-  const [expandedSection, setExpandedSection] = useState<string | null>(null);
-
-  const toggleSection = (section: string) => {
-    setExpandedSection(expandedSection === section ? null : section);
-  };
-
-  const formatDate = (dateString: string) => {
-    return dateString.split("T")[0];
-  };
-
   const formatNumber = (number: number) => {
     return new Intl.NumberFormat("ko-KR").format(number);
   };
 
+  const getTotalStockQuantity = () => {
+    return statementData.itemList.reduce(
+      (acc, item) => acc + item.stockQuantity,
+      0
+    );
+  };
+
   let signatureStatusMessage;
-  if (status === "WAITING") {
-    signatureStatusMessage = "공급자 수급자 서명 필요";
-  } else if (status === "PREPARING") {
-    signatureStatusMessage = "거래처의 서명이 필요한 문서입니다.";
-  } else if (status === "READY") {
+  if (status === "READY") {
     signatureStatusMessage = "서명이 완료된 거래명세서입니다.";
   }
+
+  console.log(statementData);
 
   return (
     <Styles>
@@ -57,97 +49,89 @@ const FormComponent: React.FC<FormComponentProps> = ({
         )}
       </StyledTitle>
 
-      <StyledSection
-        data-expanded={expandedSection === "request" ? "true" : "false"}
-        onClick={() => toggleSection("request")}
-      >
-        <StyledDiv>
-          <strong>요청 정보 (공급자)</strong>
-          <StyledSpan>
-            {expandedSection === "request" ? "닫기" : "펼쳐보기"}
-            {expandedSection === "request" ? (
-              <HiChevronUp />
-            ) : (
-              <HiChevronDown />
-            )}
-          </StyledSpan>
-        </StyledDiv>
+      <StyledDate>
+        <div>4020-1214-{statementData.statementSeq}</div>
+        <div>{statementData.tradeDate}</div>
+      </StyledDate>
+      <Line />
+      <Table>
+        <tbody>
+          <TableRow>
+            <TableHeader>요청정보</TableHeader>
+            <TableHeader>회사명</TableHeader>
+            <TableCell>{statementData?.reqInfo?.companyName}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>지점명</TableHeader>
+            <TableCell>{statementData?.reqInfo?.branchName}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>사업자 등록번호</TableHeader>
+            <TableCell>{statementData?.reqInfo?.registrationNumber}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>연락처</TableHeader>
+            <TableCell>{statementData?.reqInfo?.branchContact}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>담당자</TableHeader>
+            <TableCell>
+              {statementData?.reqInfo?.workerName ? (
+                statementData.reqInfo.workerName
+              ) : (
+                <span style={{ color: "red", fontWeight: "bold" }}>
+                  서명필요
+                </span>
+              )}
+            </TableCell>
+          </TableRow>
+        </tbody>
+      </Table>
+      <Line />
+      <Table>
+        <tbody>
+          <TableRow>
+            <TableHeader>응답정보</TableHeader>
+            <TableHeader>회사명</TableHeader>
+            <TableCell>{statementData?.resInfo?.companyName}</TableCell>
+          </TableRow>
 
-        <Table>
-          <tbody>
-            <TableRow>
-              <TableHeader>회사명</TableHeader>
-              <TableCell>{statementData?.reqInfo?.companyName}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>사업자 등록번호</TableHeader>
-              <TableCell>
-                {statementData?.reqInfo?.registrationNumber}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>지점명</TableHeader>
-              <TableCell>{statementData?.reqInfo?.branchName}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>연락처</TableHeader>
-              <TableCell>{statementData?.reqInfo?.branchContact}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>담당자</TableHeader>
-              <TableCell>{statementData?.reqInfo?.workerName}</TableCell>
-            </TableRow>
-          </tbody>
-        </Table>
-      </StyledSection>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>지점명</TableHeader>
+            <TableCell>{statementData?.resInfo?.branchName}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>사업자 등록번호</TableHeader>
+            <TableCell>{statementData?.resInfo?.registrationNumber}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>연락처</TableHeader>
+            <TableCell>{statementData?.resInfo?.branchContact}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHeader></TableHeader>
+            <TableHeader>담당자</TableHeader>
+            <TableCell>
+              {statementData?.resInfo?.workerName ? (
+                statementData.resInfo.workerName
+              ) : (
+                <span style={{ color: "red", fontWeight: "bold" }}>
+                  서명필요
+                </span>
+              )}
+            </TableCell>
+          </TableRow>
+        </tbody>
+      </Table>
+      <Line />
 
-      <StyledSection
-        data-expanded={expandedSection === "response" ? "true" : "false"}
-        onClick={() => toggleSection("response")}
-      >
-        <StyledDiv>
-          <strong>응답 정보 (인수자/수급자)</strong>
-          <StyledSpan>
-            {expandedSection === "response" ? "닫기" : "펼쳐보기"}
-            {expandedSection === "response" ? (
-              <HiChevronUp />
-            ) : (
-              <HiChevronDown />
-            )}
-          </StyledSpan>
-        </StyledDiv>
-
-        <Table>
-          <tbody>
-            <TableRow>
-              <TableHeader>회사명</TableHeader>
-              <TableCell>{statementData?.resInfo?.companyName}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>사업자 등록번호</TableHeader>
-              <TableCell>
-                {statementData?.resInfo?.registrationNumber}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>지점명</TableHeader>
-              <TableCell>{statementData?.resInfo?.branchName}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>연락처</TableHeader>
-              <TableCell>{statementData?.resInfo?.branchContact}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>담당자</TableHeader>
-              <TableCell>{statementData?.resInfo?.workerName}</TableCell>
-            </TableRow>
-          </tbody>
-        </Table>
-      </StyledSection>
-
-      <StyledDiv>
-        <strong>품목정보</strong>
-      </StyledDiv>
       <table>
         <thead>
           <tr>
@@ -155,7 +139,6 @@ const FormComponent: React.FC<FormComponentProps> = ({
             <th>수량</th>
             <th>단가</th>
             <th>공급가액</th>
-            <th>비고</th>
           </tr>
         </thead>
 
@@ -167,19 +150,38 @@ const FormComponent: React.FC<FormComponentProps> = ({
                 {formatNumber(item.stockQuantity)}
                 {item.stockUnit}
               </td>
-              <td>{formatNumber(item.stockPrice)}</td>
+              <td>{formatNumber(item.stockPrice)}원</td>
               {/* formatNumber 함수를 사용하여 단가 형식화 */}
-              <td>{formatNumber(item.stockTotalPrice)}</td>
+              <td>{formatNumber(item.stockTotalPrice)}원</td>
               {/* formatNumber 함수를 사용하여 공급가액 형식화 */}
-              <td>{item.note || "-"}</td>
             </tr>
           ))}
         </tbody>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <StyledTotal>총 금액</StyledTotal>
+            <StyledTotal>
+              {formatNumber(statementData.totalPrice)}원
+            </StyledTotal>
+          </tr>
+        </tbody>
       </table>
-
-      <StyledDate>{formatDate(statementData.tradeDate)}</StyledDate>
+      {statementData.resInfo?.branchType === "SELL" ?
+      <>
+        {statementData.itemList.map((item, index) => (
+          <img src={`https://chart.apis.google.com/chart?cht=qr&chs=200x200&chl=https://k9b310.p.ssafy.io/product/${item.stockSeq}`} alt="QR" />
+        ))}
+        <p style={{height: "30px"}}></p>
+      </>
+      : null}
     </Styles>
   );
 };
 
 export default FormComponent;
+
+const StyledTotal = styled.td`
+  font-weight: bold;
+`;

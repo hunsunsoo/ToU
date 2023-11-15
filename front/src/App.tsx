@@ -52,7 +52,7 @@ const RoutesContainer = () => {
         element={
           <ShopperContainer isMain={location.pathname === "/product"}>
             <MobileGlobalStyle />
-            <ShopperHeader />
+            {/* <ShopperHeader /> */}
             <Routes>
               <Route path={ROUTES.SHOPPER_MAIN} element={<S_MAIN />} />
               <Route path={ROUTES.SHOPPER_INFO} element={<S_INFO />} />
