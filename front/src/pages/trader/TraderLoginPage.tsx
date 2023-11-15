@@ -55,11 +55,11 @@ const TraderLoginPage = () => {
         <Button onClick={handleLogin}>로그인</Button>
         <OrSeparator>또는</OrSeparator>
         {/* 정훈이혀어어어어엉어엉 여기 겉 바(BIO) 속 FI */}
-        <BiometricButton>
+        {/* <BiometricButton>
           <Icon icon={faFingerprint} />
           생체인증 로그인
-        </BiometricButton>
-        <FIDOAuth />
+        </BiometricButton> */}
+        <FIDOAuth isWeb={false}/>
       </LoginDiv>
     </StyledMainPaddingContainer>
   );

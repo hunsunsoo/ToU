@@ -75,6 +75,21 @@ const OfficerDetailTable = () => {
     })
   }, [])
 
+  // 가격 표기 형식 변환
+  const formatPrice = (x: number) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  // 날짜 표기 형식 변환
+  const formatDateString = (dateString: string | undefined) => {
+    if (!dateString) {
+      return ""; // 또는 원하는 기본값을 반환할 수 있어
+    }
+    const formattedDate = new Date(dateString);
+    return formattedDate.toISOString().replace("T", " ").split(".")[0];
+  };
+
+
   return (
     <StyledTable>
       <thead>
@@ -94,12 +109,12 @@ const OfficerDetailTable = () => {
           <tr key={item.id}>
             {/* 나중가면 id값이 아니라 seq로 바꿔야댐 */}
             <td>{item.id}</td>
-            <td>{item.date}</td>
+            <td>{formatDateString(item.date)}</td>
             <td>{item.stockName}</td>
             <td>{item.stockQuantity}</td>
-            <td>{item.stockPrice1}</td>
-            <td>{item.stockTotalPrice}</td>
-            <td>{item.stockPrice2}</td>
+            <td>{formatPrice(item.stockPrice1)}</td>
+            <td>{formatPrice(item.stockTotalPrice)}</td>
+            <td>{formatPrice(item.stockPrice2)}</td>
             <td>{item.state}</td>
           </tr>
         ))}
