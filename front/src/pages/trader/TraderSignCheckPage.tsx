@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled, { keyframes, css } from 'styled-components';
+import toast, { Toaster } from "react-hot-toast";
 
 import { customAxios } from "../../components/api/customAxios";
 import { StatementData } from "./../../types/TraderTypes";
@@ -8,6 +9,7 @@ import { StatementData } from "./../../types/TraderTypes";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
+import FIDOSign from "../../commons/FIDOSign";
 
 interface AnimatedTextProps {
     start: boolean;
@@ -74,6 +76,30 @@ const TraderSignCheckPage = () => {
   const companyName = branchInfo ? branchInfo[0] : "";
   const branchName = branchInfo ? branchInfo[1] : "";
 
+    // 서명요청 핸들러
+  const handleRequestSign = async () => {
+    const isAuth = await FIDOSign();
+
+    const requestBody = {
+      statementSeq: statementData?.statementSeq, // statementData가 유효한 경우 statementSeq 값을 사용
+      type: "SELL", // 요청 본문에 들어가야 하는 type 값
+    };
+
+    if(isAuth === true) {
+      customAxios
+        .post("/statement/worker/sign", requestBody)
+        .then((response) => {
+          fetchStatementData();
+          handleSend();
+        })
+        .catch((error) => {
+        });
+      } else {
+      toast.error("서명요청에 실패했습니다.");
+    }
+  };
+
+
   const handleSend = () => {
     setAnimateActivate(true);
     setRemoveBar(true);
@@ -105,6 +131,8 @@ const TraderSignCheckPage = () => {
   useEffect(() => {
     fetchStatementData();
   }, [billId]);
+
+
 
   return (
     <StyledContainer start={backgroundChange}>
