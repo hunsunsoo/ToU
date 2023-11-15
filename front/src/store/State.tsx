@@ -5,7 +5,6 @@ const { persistAtom } = recoilPersist();
 
 type UserInfo = {
   accessToken: string | null;
-  workerSeq: number | null;
   workerName: string | null;
   workerRole: string | null;
   branchSeq: number | null;
@@ -29,7 +28,6 @@ export const UserInfoState = atom<UserInfo>({
   key: "UserInfoState",
   default: {
     accessToken: null,
-    workerSeq: null,
     workerName: null,
     workerRole: null,
     branchSeq: null,
