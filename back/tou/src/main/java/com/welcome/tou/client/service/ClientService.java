@@ -246,7 +246,7 @@ public class ClientService {
         Pass myPass = passRepository.findByPassId(request.getPassId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.PASS_NOT_FOUND));
 
-        if(reqWorker.getWorkerSeq() != myPass.getWorkerSeq()) {
+        if(reqWorker.getWorkerSeq() != myPass.getWorker().getWorkerSeq()) {
             throw new MismatchException(MismatchException.PASS_IS_NOT_MINE+String.valueOf(reqWorker.getWorkerSeq())+"패스사람:"+String.valueOf(myPass.getWorkerSeq()));
         }
 
