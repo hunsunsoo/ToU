@@ -15,9 +15,26 @@ interface Schedule {
   reqORres: number;
 }
 
+const Modal = ({ isOpen, onClose, schedule }: { isOpen: boolean; onClose: () => void; schedule: Schedule }) => {
+  if (!isOpen) {
+    return null;
+  }
+
+  return (
+    <div>
+      {/* 모달 내용 작성 */}
+      <div>{/* 여기에 schedule 정보를 표시하는 내용을 추가해주세요 */}</div>
+      <button onClick={onClose}>닫기</button>
+    </div>
+  );
+};
+
 const OfficerCalendar = () => {
   const [scheduleList, setScheduleList] = useState<Schedule[]>([]);
-  const [highlightedBranch, setHighlightedBranch] = useState<string | null>(null);
+  const [highlightedBranch, setHighlightedBranch] = useState<string[] | null>([]);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   useEffect(() => {
@@ -33,18 +50,22 @@ const OfficerCalendar = () => {
   const tileContent = ({ date, view }: { date: Date; view: string }) => {
     if (view === 'month') {
       const dateKey = date.toISOString().split('T')[0];
-      const hasSchedule = scheduleList.some((schedule) => {
-        if (schedule.tradeDate.split('T')[0] === dateKey) {
-          setHighlightedBranch(schedule.branchName);
-          return true;
-        }
-        return false;
-      });
+      const branchesForDate = scheduleList
+        .filter((schedule) => schedule.tradeDate.split('T')[0] === dateKey)
+        .map((schedule) => schedule.branchName);
 
-      if (hasSchedule) {
+      // setHighlightedBranch(branchesForDate);
+
+      const scheduleCount = branchesForDate.length;
+
+      if (scheduleCount > 0) {
         return (
           <StyledHighlightedBranch>
-            {highlightedBranch}
+            {branchesForDate.map((branch, index) => (
+              <StyledTile key={index}>
+                + {scheduleCount}
+              </StyledTile>
+            ))}
           </StyledHighlightedBranch>
         );
       }
@@ -52,12 +73,31 @@ const OfficerCalendar = () => {
     return null;
   };
 
+  // const handleTileClick = (date: Date) => {
+  //   setSelectedDate(date);
+
+  //   // 선택된 날짜에 해당하는 스케줄을 찾기
+  //   const dateKey = date.toISOString().split('T')[0];
+  //   const scheduleForDate = scheduleList.find((schedule) => schedule.tradeDate.split('T')[0] === dateKey) || null;
+    
+  //   // 찾은 스케줄을 상태 변수에 저장
+  //   setSelectedSchedule(scheduleForDate);
+
+  //   // 모달 열기
+  //   setIsModalOpen(true);
+  // };
+
+  // const handleCloseModal = () => {
+  //   setIsModalOpen(false);
+  // };
+
   return (
     <CalendarDiv>
       <StyledTitle>
-        <BiCalendar color="#545A96" size={"30px"} style={{marginRight: "10px"}}/>일정 관리
+        <BiCalendar color="#545A96" size={"30px"} style={{ marginRight: "10px" }} />일정 관리
       </StyledTitle>
       <Calendar tileContent={tileContent} />
+      {/* <Modal isOpen={isModalOpen} onClose={handleCloseModal} schedule={selectedSchedule || ({} as Schedule)} /> */}
     </CalendarDiv>
   );
 };
@@ -82,7 +122,16 @@ const StyledTitle = styled.div`
 `
 
 const StyledHighlightedBranch = styled.div`
-  color: #ff0000;
-  font-size: 11px;
+  color: #3700ff;
+  font-size: 10px;
   font-weight: bold;
 `;
+
+const StyledTile = styled.div`
+  /* border: 1px solid black; */
+  background-color: #005B9E;
+  color: white;
+  width: 30px;
+  margin-top: 15px;
+  font-weight: lighter;
+`

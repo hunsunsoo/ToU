@@ -41,9 +41,10 @@ const StyledButtonLarge = styled.div<ButtonProps>`
     text-align: center;
     cursor: pointer;
     height: 40px;
-    width: 180px;
-    font-size: 25px;
+    width: 150px;
+    font-size: 20px;
     color: #fff;
+    border-radius: 15px;
     background-color: #404DCD;
 `;
 
