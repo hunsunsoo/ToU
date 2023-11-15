@@ -40,7 +40,7 @@ export default TraderMainPage;
 
 const StyledContainer = styled.div`
   background-color: #ecf4ff;
-  height: 100vh;
+  height: 110vh;
   
 `;
 
@@ -51,6 +51,7 @@ const StyledFooter = styled.div`
 
 const StyledLogout = styled.div`
   padding-top: 1rem;
+  padding-right: 1rem;
   display: flex;
   justify-content: flex-end; 
 `;

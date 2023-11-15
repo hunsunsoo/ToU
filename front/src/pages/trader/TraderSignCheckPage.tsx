@@ -128,11 +128,6 @@ const TraderSignCheckPage = () => {
             {flipStage === 2 && <TextComponent key="text2" start={flipStage === 2}>보내는 중</TextComponent>}
             {flipStage === 3 && <TextComponent key="text3" start={flipStage === 3}>보냈어요 !</TextComponent>}
           </FlipContainer>
-          {/* <FlipContainer start={flipAnimationStart}>
-            <TextFront>보낼까요?</TextFront>
-            <TextBack start={showStar}>보내는 중</TextBack>
-            <TextLast start={showBar}>보냈어요</TextLast>
-           </FlipContainer> */}
         </AnimatedText>
       </StyledMainPaddingContainer>
       <AnimatedFooter start={removeBar} end={showBar}>
@@ -157,7 +152,7 @@ const StyledContainer = styled.div<StyledContainerProps>`
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-image: ${props => props.start ? 'linear-gradient(0deg, #FFF 6.72%, #DFF3FF 45.32%, #FFF 86.41%);' : 'none'};
+  background-image: ${props => props.start ? 'linear-gradient(0deg, #FFF 6.72%, #CEEDFF 37.49%, #FFF 85.23%);' : 'none'};
 `;
 
 const StyledTraderHeader = styled.div`
@@ -295,24 +290,6 @@ const FlipContainer = styled.div`
   /* perspective: 1000px; */
   /* transform-style: preserve-3d; */
 `;
-
-const TextFront = styled.div`
-  backface-visibility: hidden;
-  transform: rotateX(0deg);
-`;
-
-const TextBack = styled.div<StarProps>`
-  backface-visibility: hidden;
-  transform: rotateX(180deg);
-  animation: ${props => props.start ? css `${fadeOut} 0.6s ease-in-out forwards` : 'none'};
-`;
-
-const TextLast = styled.div<ShowTextProps>`
-  backface-visibility: hidden;
-  transform: rotateX(180deg);
-  display: ${props => props.start ? 'block' : 'none'};
-  animation: ${props => props.start ? css `${fadeIn} 0.4s ease-in-out forwards` : 'none'};
-`
 
 const AnimatedText = styled.div<AnimatedTextProps>`
   text-align: center;
