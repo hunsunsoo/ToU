@@ -24,7 +24,7 @@ const TraderLoginPage = () => {
 
       // API 호출 후 응답의 status가 200이면 페이지를 이동합니다.
       if (res && res.status === 200) {
-        setTimeout(() => navigate("/m/main"), 800);
+        setTimeout(() => navigate("/m"), 800);
       } else {
         console.log("로그인 실패");
         setIsLoggingIn(false);

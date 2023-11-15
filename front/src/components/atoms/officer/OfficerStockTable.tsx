@@ -8,7 +8,7 @@ interface StockList {
   stockName: string;
   fromCompanyName: string;
   fromBranchName: string;
-  stockDate: Date;
+  stockDate: string;
   stockPrice: number;
   stockQuantity: number;
   stockUnit: string;
@@ -47,6 +47,28 @@ const OfiicerStockTable = () => {
     checkToken();
   }, [branchSeq]);
 
+  // 가격 표기 형식 변환
+  const formatPrice = (x: number) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  // 날짜 표기 형식 변환
+  const formatDateString = (dateString: string | undefined) => {
+    if (!dateString) {
+      return "";
+    }
+  
+    const formattedDate = new Date(dateString);
+    const year = formattedDate.getFullYear();
+    const month = (formattedDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = formattedDate.getDate().toString().padStart(2, "0");
+    const hours = formattedDate.getHours().toString().padStart(2, "0");
+    const minutes = formattedDate.getMinutes().toString().padStart(2, "0");
+  
+    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+  };
+
+
   return (
     <StockTableDiv>
       {isLoading ? (
@@ -59,22 +81,22 @@ const OfiicerStockTable = () => {
           </StyledTitle>
           <StyledTable>
             <thead>
-              <tr>
+              <tr style={{color: "black", backgroundColor: "#f2f2f2"}}>
                 <th>품명</th>
                 <th>입고업체</th>
-                <th>입고일시</th>
                 <th>입고단가</th>
                 <th>입고수량</th>
+                <th>입고일시</th>
               </tr>
             </thead>
             <tbody>
               {stockItems?.map((item, index) => (
-                <tr key={index}>
+                <tr key={index} style={{fontWeight: "lighter", backgroundColor: index % 2 === 1 ? "#f2f2f2" : ""}}>
                   <td>{item.stockName}</td>
                   <td>{item.fromCompanyName}</td>
-                  <td>{item.stockDate.toLocaleString('en-US', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
-                  <td>{item.stockPrice} 원</td>
-                  <td>{item.stockQuantity} {item.stockUnit}</td>
+                  <td>{formatPrice(item.stockPrice)} 원</td>
+                  <td>{formatPrice(item.stockQuantity)} {item.stockUnit}</td>
+                  <td>{formatDateString(item.stockDate)}</td>
                 </tr>
               ))}
             </tbody>

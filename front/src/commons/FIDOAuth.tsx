@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import styled from 'styled-components';
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { UserInfoState, CompanyInfoState } from "../store/State";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -44,6 +45,7 @@ interface FIDOAuthProps {
 
 
 const FIDOAuth: React.FC<FIDOAuthProps> = ({ isWeb }) => {
+  const navigate = useNavigate();
   const LOCALHOST = "http://localhost:8080/api/";
   const SERVER_TOU = "https://k9b310.p.ssafy.io/api/";
 
@@ -100,6 +102,10 @@ const FIDOAuth: React.FC<FIDOAuthProps> = ({ isWeb }) => {
           companyContact: fidoLoginResponse.data.data.company.companyContact,
           logoImage: fidoLoginResponse.data.data.company.logoImage,
         }));
+
+        if(!isWeb){
+          setTimeout(() => navigate("/m"), 800); 
+        }
       } else {
         console.error("Credential is undefined");
       }
@@ -112,10 +118,13 @@ const FIDOAuth: React.FC<FIDOAuthProps> = ({ isWeb }) => {
     <>
         <Toaster />
         {isWeb ? 
-          <StyledButton onClick={WebAuthnFido2Login}>PASSKEY 로그인</StyledButton>
+          <StyledButton onClick={WebAuthnFido2Login}>
+            <Icon icon={faFingerprint} />
+            PASSKEY
+          </StyledButton>
         : 
           <StyledButtonMobile onClick={WebAuthnFido2Login}>
-            <Icon icon={faFingerprint} />
+            <Icon2 icon={faFingerprint} />
             PASSKEY 로그인
           </StyledButtonMobile>
         }
@@ -130,11 +139,12 @@ export default FIDOAuth;
     align-items: center;
     text-align: center;
     background-color: #404DCD;
+    border-radius: 15px;
     color: white;
     padding: 10px;
     margin-top: 10px;
     border: none;
-    width: 180px;
+    width: 150px;
     height: 40px;
     font-size: 20px;
     left: 5px;
@@ -142,15 +152,15 @@ export default FIDOAuth;
   `
 
   const Button = styled.button`
-  background-color: #3a89ff;
-  border: none;
-  width: 80%;
-  height: 3rem;
-  margin: 1rem 0;
-  border-radius: 100px;
-  color: #fff;
-  font-size: 1.5rem;
-  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); // 그림자 추가
+    background-color: #3a89ff;
+    border: none;
+    width: 80%;
+    height: 3rem;
+    margin: 1rem 0;
+    border-radius: 100px;
+    color: #fff;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); // 그림자 추가
   `;
 
   const StyledButtonMobile = styled(Button)`
@@ -166,6 +176,11 @@ export default FIDOAuth;
 
   // FontAwesome 아이콘 컴포넌트에 스타일을 추가
   const Icon = styled(FontAwesomeIcon)`
+    margin-right: 0.5rem; // 아이콘과 텍스트 사이의 간격
+    color: white; // 아이콘 색상 설정
+  `;
+
+  const Icon2 = styled(FontAwesomeIcon)`
     margin-right: 0.5rem; // 아이콘과 텍스트 사이의 간격
     color: #3a89ff; // 아이콘 색상 설정
   `;
