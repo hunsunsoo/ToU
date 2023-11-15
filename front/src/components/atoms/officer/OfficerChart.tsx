@@ -183,10 +183,12 @@ export default OfficerChart;
 
 const StyledContainer = styled.div`
   width: 100%;
-  border: 1px solid black;
-  border-radius: 30px;
+  /* border: 1px solid black; */
+  border-radius: 10px;
   margin: 20px 0 20px 20px;
   padding: 20px;
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
+  background-color: white;
 `;
 
 const StyledTitle = styled.div`

@@ -11,6 +11,7 @@ export { default as T_CREATE } from './trader/TraderCreatePage';
 export { default as T_GETLIST } from './trader/TraderGetListPage';
 export { default as T_SECTION } from './trader/TraderSectionPage';
 export { default as T_SIGN } from './trader/TraderSignPage';
+export { default as T_SIGNCHECK } from './trader/TraderSignCheckPage';
 export { default as T_STATE } from './trader/TraderStatePage';
 
 // Officer (App3)

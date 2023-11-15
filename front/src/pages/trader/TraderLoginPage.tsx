@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFingerprint } from "@fortawesome/sharp-light-svg-icons";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import { UseAuth } from "../../commons/UseAuth";
 import FIDOAuth from "../../commons/FIDOAuth";
@@ -15,25 +15,30 @@ const TraderLoginPage = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 
+  const [isLoggingIn, setIsLoggingIn] = useState(false); 
+
   const handleLogin = async () => {
+    setIsLoggingIn(true);
     try {
       const res = await login(id, password);
 
       // API 호출 후 응답의 status가 200이면 페이지를 이동합니다.
       if (res && res.status === 200) {
-        navigate("/m/main");
+        setTimeout(() => navigate("/m/main"), 800);
       } else {
         console.log("로그인 실패");
+        setIsLoggingIn(false);
       }
     } catch (error) {
       console.log("로그인 중 에러 발생:", error);
+      setIsLoggingIn(false);
     }
   };
 
   return (
     <StyledMainPaddingContainer>
-      <StyledMsg>Welcome !</StyledMsg>
-      <LoginDiv>
+      <StyledMsg as={isLoggingIn ? StyledAniLogin2 : undefined}>Welcome !</StyledMsg>
+      <LoginDiv as={isLoggingIn ? StyledAniLogin : undefined}>
         <StyledDiv>
           <TextSpan> ID</TextSpan>
           <StyleInput value={id} onChange={(e) => setId(e.target.value)} />
@@ -164,3 +169,23 @@ const StyledMsg = styled.div`
   color: #6187e5;
   margin-left: 1rem;
 `;
+
+
+const fadeInLeft = keyframes`
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(5rem);
+  }
+`;
+
+const StyledAniLogin = styled.div`
+  animation: ${fadeInLeft} 0.8s ease-out 0s both;
+`
+
+const StyledAniLogin2 = styled.div`
+  animation: ${fadeInLeft} 0.8s ease-out 0.3s both;
+`
