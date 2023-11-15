@@ -23,6 +23,7 @@ const OfficerLoginPage = () => {
 
   return (
     <MainDiv>
+      <GridDiv></GridDiv>
       <GridDiv>
         <LeftImage
           src="/ToU_Web.png"
@@ -59,12 +60,13 @@ const OfficerLoginPage = () => {
           <FIDOAuth isWeb={true}/>
         </LoginBtnDiv>
       </GridDiv>
-      <GridDiv>
+      <GridDiv></GridDiv>
+      {/* <GridDiv>
         <RightImage
           src="/WebMainPic.png" 
           alt="" 
         />
-      </GridDiv>
+      </GridDiv> */}
     </MainDiv>
   );
 };
@@ -73,7 +75,7 @@ export default OfficerLoginPage;
 
 const MainDiv = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 0.6fr 2fr 0.4fr;
   height: calc(100vh - 40px);
   overflow: hidden;
 `
