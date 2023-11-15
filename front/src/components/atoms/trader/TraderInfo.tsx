@@ -24,7 +24,7 @@ export default TraderInfo;
 const StyledMainContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
 `;
 
 const StyledSpan = styled.span`

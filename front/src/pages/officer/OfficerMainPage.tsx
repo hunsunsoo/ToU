@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import OfficerSideBar from "../../components/organisms/officer/OfficerSideBar";
 import OfficerCalendar from "../../components/atoms/officer/OfficerCalendar";
 import OfficerGraph from "../../components/atoms/officer/OfficerGraph";
@@ -32,6 +32,7 @@ const MainDiv = styled.div`
   grid-template-columns: 1fr 5fr;
   height: calc(100vh - 40px);
   overflow: hidden;
+  background-color: #f8f8f8;
 `;
 
 const DashboardDiv = styled.div`
