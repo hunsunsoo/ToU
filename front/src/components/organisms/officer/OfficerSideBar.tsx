@@ -79,6 +79,7 @@ const ListBtn = styled.div`
   align-items: center;
   height: 45px;
   margin: 10px;
+  font-size: 17px;
   cursor: pointer;
 
   &:hover {
