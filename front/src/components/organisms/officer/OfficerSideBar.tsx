@@ -20,10 +20,10 @@ const OfficerSideBar = () => {
     {/* 이미지는 아직 안했음 */}
     <RoundImage src={logoImageSrc} alt="회사 로고" />
     <CompInfo>
-      <p>{userInfo.companyName}</p>
-      <p>{userInfo.branchName}</p>
+      {/* <p>{userInfo.companyName}</p> */}
+      <StyledP>{userInfo.branchName}</StyledP>
     </CompInfo>
-    <p>{userInfo.workerName}</p>
+    <StyledP>{userInfo.workerName}</StyledP>
     <FidoEnroll />
     <Line />
     <ListBtn onClick={() => navigate(ROUTES.OFFICER_MAIN)}>메인페이지</ListBtn>
@@ -62,12 +62,9 @@ const CompInfo = styled.div`
   margin-top: 10px;
 `
 
-const Dropdown = styled.select`
-  /* width: 100%; */
-  padding: 4px;
-  position: relative;
-  left: 10px;
-  font-size: 13px;
+const StyledP = styled.p`
+  font-size: 18px;
+  margin: 7px;
 `
 
 const Line = styled.div`
@@ -83,4 +80,10 @@ const ListBtn = styled.div`
   height: 45px;
   margin: 10px;
   cursor: pointer;
+
+  &:hover {
+    scale: 1.05;
+    font-weight: bold;
+  }
+
 `

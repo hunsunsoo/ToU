@@ -197,7 +197,20 @@ const OfficerDocTable: React.FC<OfficerDocTableProps> = ({ isSupply, params, set
                   minute: '2-digit',
                   hour12: false,
                 }).replace(/(\d+)\/(\d+)\/(\d+),?/, '$3-$1-$2 ')}</td>
-                <td>{statement.statementStatus}</td>
+                {/* <td>{statement.statementStatus}</td> */}
+                <td>
+                  {statement.statementStatus === "PREPARING"
+                    ? "거래 준비중"
+                    : statement.statementStatus === "WAITING"
+                    ? "서명 대기중"
+                    : statement.statementStatus === "COMPLETION"
+                    ? "거래 완료"
+                    : statement.statementStatus === "REFUSAL"
+                    ? "거절"
+                    : statement.statementStatus === "DELETE"
+                    ? "삭제"
+                    : null /* 만약 다른 상태에 대한 처리가 필요하면 여기에 추가하세요 */}
+                </td>
               </tr>
             ))
           ) : (

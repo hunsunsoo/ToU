@@ -35,7 +35,6 @@ export function UseAuth() {
 
       setUserInfo(() => ({
         accessToken: res.data.data.accessToken,
-        workerSeq: res.data.data.worker.workerSeq,
         workerName: res.data.data.worker.workerName,
         workerRole: res.data.data.worker.role,
         branchSeq: res.data.data.branch.branchSeq,
@@ -57,7 +56,6 @@ export function UseAuth() {
       // setTimeout(() => {
       //   window.location.reload();
       // }, 1000);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
