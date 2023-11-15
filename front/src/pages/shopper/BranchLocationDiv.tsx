@@ -4,11 +4,13 @@ import styled from "styled-components";
 type BranchLocationComponentProps = {
   location: string;
   date: string;
+  branch: string;
 };
 
 const BranchLocationComponent: React.FC<BranchLocationComponentProps> = ({
   location,
   date,
+  branch,
 }) => {
   // 날짜 변환
   const formatDate = (dateString: string) => {
@@ -22,8 +24,9 @@ const BranchLocationComponent: React.FC<BranchLocationComponentProps> = ({
 
   return (
     <BranchLocationDiv>
-      <StyledDiv>{location}</StyledDiv>
       <StyledDiv>{formatDate(date)}</StyledDiv>
+      <StyledDiv>{branch}</StyledDiv>
+      <StyledDiv>{location}</StyledDiv>
     </BranchLocationDiv>
   );
 };
