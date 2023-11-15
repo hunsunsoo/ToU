@@ -6,15 +6,15 @@ export const ROUTES = {
 
   // Trader
   TRADER_URL: "/m/*",
-  TRADER_LANDING: "",
-  TRADER_MAIN: "main",
-  TRADER_LOGIN: "login",
-  TRADER_CONFIRM: "confirm/:billId",
-  TRADER_CREATE: "create",
-  TRADER_GETLIST: "list",
-  TRADER_SECTION: "section",
-  TRADER_SIGN: "sign/:billId",
-  TRADER_STATE: "state",
+  TRADER_LANDING: "/landing",
+  TRADER_MAIN: "/",
+  TRADER_LOGIN: "/",
+  TRADER_CONFIRM: "/confirm/:billId",
+  TRADER_CREATE: "/create",
+  TRADER_GETLIST: "/list",
+  TRADER_SECTION: "/section",
+  TRADER_SIGN: "/sign/:billId",
+  TRADER_STATE: "/state",
 
   // Officer
   OFFICER_URL: "/*",

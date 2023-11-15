@@ -95,7 +95,7 @@ const RightImage = styled.img`
 
 const LoginDiv = styled.div`
   display: flex;
-  height: 8%;
+  height: 7%;
   margin-left: 20%;
   margin-top: 1%;
 `
@@ -105,8 +105,8 @@ const LoginIconDIv = styled.div`
   background-color: #F0F0F0;
   border: 3px solid #D9D9D9;
   align-items: center;
-  padding: 10px 10px 10px 15px;
-  font-size: 25px;
+  padding: 10px 0px 10px 15px;
+  font-size: 20px;
   
 `
 
@@ -122,5 +122,5 @@ const StyleInput = styled.input`
 `
 
 const LoginBtnDiv = styled.div`
-  margin: 3% 0 0 50%;
+  margin: 3% 0 0 52%;
 `
