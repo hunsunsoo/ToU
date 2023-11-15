@@ -13,7 +13,7 @@ public class Pass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pass_seq", unique = true, nullable = false)
-    private Long workerSeq;
+    private Long passSeq;
 
     // 사업체 참조키
     @ManyToOne(fetch = FetchType.LAZY)

@@ -248,7 +248,7 @@ public class ClientService {
                 .orElseThrow(() -> new NotFoundException(NotFoundException.PASS_NOT_FOUND));
 
         if(reqWorker.getWorkerSeq() != myPass.getWorker().getWorkerSeq()) {
-            throw new MismatchException(MismatchException.PASS_IS_NOT_MINE+String.valueOf(reqWorker.getWorkerSeq())+"패스사람:"+String.valueOf(myPass.getWorkerSeq()));
+            throw new MismatchException(MismatchException.PASS_IS_NOT_MINE+String.valueOf(reqWorker.getWorkerSeq())+"패스사람:"+String.valueOf(myPass.getWorker().getWorkerSeq()));
         }
 
         return ResultTemplate.builder().status(200).data("AUTHENTICATED").build();
