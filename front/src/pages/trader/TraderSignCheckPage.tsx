@@ -61,8 +61,8 @@ const TraderSignCheckPage = () => {
 
   const navigate = useNavigate();
 
-  const goToMain = () => {
-    navigate('/m/main');
+  const goToState = () => {
+    navigate('/m/state');
   };
 
   const fetchStatementData = () => {
@@ -89,7 +89,6 @@ const TraderSignCheckPage = () => {
       customAxios
         .post("/statement/worker/sign", requestBody)
         .then((response) => {
-          fetchStatementData();
           handleSend();
         })
         .catch((error) => {
@@ -133,7 +132,6 @@ const TraderSignCheckPage = () => {
   }, [billId]);
 
 
-
   return (
     <StyledContainer start={backgroundChange}>
         <AnimatedHeader start={removeBar} end={showBar}>
@@ -160,12 +158,12 @@ const TraderSignCheckPage = () => {
       </StyledMainPaddingContainer>
       <AnimatedFooter start={removeBar} end={showBar}>
         <StyledFooter start={removeBar} end={showBar}>
-            <TraderBtn size="Large" color="Blue" onClick={() => handleSend()}>
+            <TraderBtn size="Large" color="Blue" onClick={() => handleRequestSign()}>
                 보내기
             </TraderBtn>
         </StyledFooter>
         <StyledFooter2 start={removeBar} end={showBar}>
-            <TraderBtn size="Large" color="Blue" onClick={() => goToMain()}>
+            <TraderBtn size="Large" color="Blue" onClick={() => goToState()}>
                 확인
             </TraderBtn>
         </StyledFooter2>

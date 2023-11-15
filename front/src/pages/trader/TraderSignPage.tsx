@@ -72,7 +72,7 @@ const TraderSignPage = () => {
           <TraderBtn size="LargeL1" color="Grey" onClick={handleDelete}>
             삭제
           </TraderBtn>
-          <TraderBtn size="LargeR2" color="Blue" onClick={handleRequestSign}>
+          <TraderBtn size="LargeR2" color="Blue" onClick={handleCheckRedirect}>
             서명요청
           </TraderBtn>
         </>
@@ -101,6 +101,10 @@ const TraderSignPage = () => {
   // 메인으로 이동 핸들러
   const handleMainRedirect = () => {
     navigate("/m/main");
+  };
+
+  const handleCheckRedirect = () => {
+    navigate(`/m/signcheck/${billId}`);
   };
 
   // 서명요청 핸들러
