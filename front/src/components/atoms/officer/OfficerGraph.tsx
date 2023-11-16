@@ -122,7 +122,8 @@ const OfiicerGraph = () => {
       }
     };
     checkToken();
-  }, [chartData]);
+  }, [branchSeq]);
+
 
   return (
     <GraphDiv>
@@ -136,15 +137,11 @@ const OfiicerGraph = () => {
       </StyledTitle>
 
       <div style={{ height: "300px" }}>
-        {chartData ? (
-          chartData.length > 0 ? (
-            <MyResponsiveLine data={chartData} />
-          ) : (
-            null
-          )
-        ) : (
-          <p>로딩 중...</p>
-        )}
+      {chartData && chartData.length > 0 ? (
+        <MyResponsiveLine data={chartData} />
+      ) : (
+        <p>로딩 중...</p>
+      )}
       </div>
     </GraphDiv>
   );
