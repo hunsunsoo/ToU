@@ -29,7 +29,6 @@ const TraderMainPage = () => {
         </StyledAni2>
         <TraderMainPageBtn />
       </MainPaddingContainer>
-      <StyledFooter>Contact : 어쩌구 저쩌구</StyledFooter>
     </StyledContainer>
   );
 };
@@ -42,11 +41,6 @@ const StyledContainer = styled.div`
   background-color: #ecf4ff;
   height: 100vh;
   
-`;
-
-const StyledFooter = styled.div`
-  text-align: center;
-  color: #ccc;
 `;
 
 const StyledLogout = styled.div`
