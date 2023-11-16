@@ -132,6 +132,8 @@ const TraderSignPage = () => {
         type: "BUY",
       };
 
+      console.log(requestBody);
+      console.log(accessToken);
       customAxios
         .post("/statement/worker/sign", requestBody, {
           headers: { Authorization: `Bearer ${accessToken}` },
