@@ -283,7 +283,7 @@ const TraderCreatePage = () => {
         });
     }
   };
-  
+
   const checkValidity = () => {
     const isCompanySelected = selectedCompany !== null;
     const isBranchSelected = selectedBranch !== null;
@@ -365,9 +365,9 @@ const TraderCreatePage = () => {
     console.log("selectedStockSeqs:", selectedSeqList);
   }, [selectedSeqList]);
 
-  // 가격 표기 형식 변환
+  // 가격 표기 형식 변환 및 '원' 단위 추가
   const formatPrice = (number: number) => {
-    return new Intl.NumberFormat("ko-KR").format(number);
+    return `${new Intl.NumberFormat("ko-KR").format(number)} 원`;
   };
 
   return (
@@ -465,7 +465,7 @@ const TraderCreatePage = () => {
                   />
                   <TraderUnitInputTitle
                     inputTitle="수량"
-                    value={formatPrice(item.stockQuantity)}
+                    value={`${formatPrice(item.stockQuantity)}`}
                     selectedUnit={item.stockUnit}
                     onChange={(e) =>
                       handleInputChange(index, "stockQuantity", e.target.value)
@@ -474,7 +474,7 @@ const TraderCreatePage = () => {
                   <TraderInputTitle
                     inputTitle="단가"
                     size="Large"
-                    value={formatPrice(item.stockPrice)}
+                    value={`${formatPrice(item.stockPrice)}`}
                     onChange={(e) =>
                       handleInputChange(index, "stockPrice", e.target.value)
                     }
@@ -482,7 +482,7 @@ const TraderCreatePage = () => {
                   <TraderInputTitle
                     inputTitle="금액"
                     size="Large"
-                    value={formatPrice(item.stockTotalPrice)}
+                    value={`${formatPrice(item.stockTotalPrice)}`}
                     onChange={(e) =>
                       handleInputChange(
                         index,
@@ -491,6 +491,7 @@ const TraderCreatePage = () => {
                       )
                     }
                   />
+
                   <StyledTraderInputTitle
                     inputTitle="비고"
                     size="X-Large"
