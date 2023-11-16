@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpToLine } from "@fortawesome/sharp-light-svg-icons";
+
 import TraderRoleDropdown from "../../components/atoms/trader/TraderRoleDropdown";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
@@ -11,45 +12,51 @@ import TraderStateTable from "../../components/organisms/trader/TraderStateTable
 import { TraderStateTableProps } from "../../types/TraderTypes";
 import { customAxios } from "../../components/api/customAxios";
 
+interface Statement {
+  reqORres: number;
+  statementSeq: number;
+  branchName: string;
+  productName: string;
+  tradeDate: string;
+  statementStatus: string;
+}
+
 const TraderStatePage = () => {
   const location = useLocation();
   const [selectedRole, setSelectedRole] = useState("전체");
-  const [statementList, setStatementList] = useState<
-    TraderStateTableProps["statementList"]
-  >([]);
-  const [filteredStatementList, setFilteredStatementList] = useState<
-    TraderStateTableProps["statementList"]
-  >([]);
+  const [sortOption, setSortOption] = useState("latest");
+  const [sortedStatementList, setSortedStatementList] = useState<Statement[]>(
+    []
+  );
+  const [statementList, setStatementList] = useState<Statement[]>([]);
   const [showScrollButton, setShowScrollButton] = useState(false);
 
   // 맨 위로 스크롤하는 함수
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // 부드러운 스크롤 효과
+      behavior: "smooth",
     });
   };
 
   useEffect(() => {
-    // 토큰 들어오는거 기다리기
     const checkToken = () => {
       const storedValue = localStorage.getItem("recoil-persist");
       const accessToken =
         storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
 
       if (accessToken) {
-    customAxios
-      .get("/statement/worker/list/app")
-      .then((res) => {
-        const list = res.data.data.statementList;
-        console.log(list);
-        setStatementList(list);
-        setFilteredStatementList(list);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-    } else {
+        customAxios
+          .get("/statement/worker/list/app")
+          .then((res) => {
+            const list = res.data.data.statementList;
+            setStatementList(list);
+            setSortedStatementList(list); // 초기에는 정렬되지 않은 상태로 설정
+          })
+          .catch((error) => {
+            console.error("Error fetching data: ", error);
+          });
+      } else {
         setTimeout(checkToken, 1000);
       }
     };
@@ -57,45 +64,35 @@ const TraderStatePage = () => {
   }, [location]);
 
   useEffect(() => {
-    // 선택된 역할에 따라 리스트를 필터링합니다.
     let filteredList = statementList.filter((item) => {
-      // "전체" 선택 시 'PREPARING' 상태인 '수급' 항목을 제외합니다.
       const isPreparingRes =
         item.reqORres === 0 && item.statementStatus === "PREPARING";
-
-      if (selectedRole === "전체") {
-        return !isPreparingRes;
-      } else if (selectedRole === "공급") {
-        // '공급' 항목만 포함합니다.
-        return item.reqORres === 1;
-      } else if (selectedRole === "수급") {
-        // '수급' 항목 중 'PREPARING' 상태가 아닌 것만 포함합니다.
-        return item.reqORres === 0 && !isPreparingRes;
-      }
-      // 기본적으로 모든 항목을 포함합니다.
-      return true;
+      return selectedRole === "전체"
+        ? !isPreparingRes
+        : selectedRole === "공급"
+        ? item.reqORres === 1
+        : selectedRole === "수급"
+        ? item.reqORres === 0 && !isPreparingRes
+        : true;
     });
 
-    setFilteredStatementList(filteredList);
-  }, [selectedRole, statementList]);
+    // 정렬 로직
+    filteredList.sort((a, b) =>
+      sortOption === "latest"
+        ? new Date(b.tradeDate).getTime() - new Date(a.tradeDate).getTime()
+        : new Date(a.tradeDate).getTime() - new Date(b.tradeDate).getTime()
+    );
+
+    setSortedStatementList(filteredList);
+  }, [selectedRole, statementList, sortOption]);
 
   useEffect(() => {
     const handleScroll = () => {
-      // 페이지의 스크롤 위치에 따라 버튼의 표시 여부를 결정
-      if (window.scrollY > 100) {
-        setShowScrollButton(true);
-      } else {
-        setShowScrollButton(false);
-      }
+      setShowScrollButton(window.scrollY > 100);
     };
 
-    // 스크롤 이벤트 리스너 추가
     window.addEventListener("scroll", handleScroll);
-
-    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -107,12 +104,11 @@ const TraderStatePage = () => {
 
       <MainPaddingContainer>
         <StyledBody>
-          <TraderStateFilter />
-          {/* 필터링된 목록이 비어 있지 않다면 TraderStateTable 컴포넌트를 렌더링하고, 비어 있다면 메시지를 표시합니다. */}
-          {filteredStatementList.length > 0 ? (
+          <TraderStateFilter onSortChange={setSortOption} />
+          {sortedStatementList.length > 0 ? (
             <TraderStateTable
               selectedRole={selectedRole}
-              statementList={filteredStatementList}
+              statementList={sortedStatementList}
             />
           ) : (
             <StyledDiv>거래명세서가 존재하지 않습니다.</StyledDiv>
@@ -120,7 +116,6 @@ const TraderStatePage = () => {
         </StyledBody>
       </MainPaddingContainer>
 
-      {/* 맨 위로 스크롤하는 버튼 추가 */}
       {showScrollButton && (
         <StyledScrollToTopButton onClick={scrollToTop}>
           <FontAwesomeIcon icon={faUpToLine} />
@@ -128,7 +123,7 @@ const TraderStatePage = () => {
       )}
     </StyledContainer>
   );
-};
+}; 
 
 export default TraderStatePage;
 
