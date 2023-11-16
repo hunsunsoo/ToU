@@ -161,8 +161,6 @@ const EmblaCarousel: React.FC<PropType> = ({
     dragFree: true,
   });
 
-  console.log(thumbnails);
-
   const onThumbClick = useCallback(
     (index: number) => {
       if (!emblaMainApi || !emblaThumbsApi) return;
@@ -204,12 +202,7 @@ const EmblaCarousel: React.FC<PropType> = ({
           const { latitude, longitude } = position.coords;
           setCurrentLocation({ lat: latitude, lng: longitude });
         },
-        (error) => {
-          console.error("Error getting current location:", error);
-        }
       );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
     }
 
     setTimeout(() => {
@@ -219,7 +212,6 @@ const EmblaCarousel: React.FC<PropType> = ({
           Math.abs(currentLocation.lng - thumbnails[3].longitude) > 0.01)
       ) {
         setIsModalOpen(true);
-        console.log("모달상태" + isModalOpen);
       }
     }, 1000);
   // eslint-disable-next-line react-hooks/exhaustive-deps

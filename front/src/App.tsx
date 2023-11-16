@@ -43,7 +43,6 @@ interface ShopperContainerProps {
 
 const RoutesContainer = () => {
   const location = useLocation();
-  console.log(location.pathname);
   return (
     <Routes>
       {/* 소비자 (url/product) */}

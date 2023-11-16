@@ -58,7 +58,6 @@ const TraderSectionPage = () => {
 
   useEffect(() => {
     customAxios.get(`/client/worker/branch/list`).then((res) => {
-      console.log(res.data.data);
       setBranchs(res.data.data.branchList);
     });
   }, [currentCompanySeq]);
@@ -104,7 +103,6 @@ const TraderSectionPage = () => {
         />
       </StyledDiv>
       <StyledMainPaddingContainer>
-        {/* <TraderSectionFilter /> */}
 
         {!selectedBranch && <p>관할 구역을 선택해주세요.</p>}
 

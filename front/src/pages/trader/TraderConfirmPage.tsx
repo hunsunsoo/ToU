@@ -4,15 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck  } from "@fortawesome/sharp-regular-svg-icons";
 import { faSquare } from "@fortawesome/sharp-light-svg-icons";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
-import TraderSubtitle from "../../components/atoms/trader/TraderSubtitle";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import TraderInputTitle from "../../components/organisms/trader/TraderInputTitle";
-import TraderInfoTitle from "../../components/organisms/trader/TraderInfoTitle";
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
-// import TraderItemSearchBox from "../../components/organisms/trader/TraderItemSearchBox";
 import TraderConfirmTable from "../../components/organisms/trader/TraderConfirmTable";
 import TraderConfirmInfoTitle from "../../components/organisms/trader/TraderConfirmInfoTitle";
 import { customAxios } from "../../components/api/customAxios";
@@ -45,7 +42,6 @@ const TraderConfirmPage = () => {
     .get(`/statement/worker/detail/${billId}`)
       .then((res) => {
         const data = res.data.data;
-        console.log(data)
         setStatementData(data);
 
         const formattedData = data.itemList.map((item: any, index: number) => {
@@ -58,9 +54,7 @@ const TraderConfirmPage = () => {
       });
       setStatementItemList(formattedData);
       })
-    .catch((error) => {
-      console.error('해당하는 상품이 없습니다.', error);
-    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
@@ -86,6 +80,7 @@ const TraderConfirmPage = () => {
 
   useEffect(() => {
     checkValidity();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isChecked, isDateChecked, isItemChecked]);
 
 
@@ -107,7 +102,6 @@ const TraderConfirmPage = () => {
     <StyledContainer>
       <StyledHeader>
         <TraderHeader title="거래 명세서 검토" />
-        {/* <TraderSubtitle subtitle="거래 품목 확인" /> */}
       </StyledHeader>
       <StyledBody>
         <MainPaddingContainer>
@@ -205,8 +199,6 @@ const StyledHeader = styled.div`
   top: 0;
 `;
 const StyledBody = styled.div`
-  /* padding-top: 60px; */
-  /* position: fixed; */
 `;
 
 const StyledFooter = styled.div`

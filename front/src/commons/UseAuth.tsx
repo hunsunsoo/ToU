@@ -9,15 +9,9 @@ export function UseAuth() {
   const setUserInfo = useSetRecoilState(UserInfoState);
   const setCompanyInfo = useSetRecoilState(CompanyInfoState);
 
-  // console.log("accessToken: ", accessToken)
-
   useEffect(() => {
-    // console.log("accessToken(UseEffect진입): ", accessToken)
     async function checkAuthentication() {
-      // console.log("accessToken(checkAuthentication): ", accessToken)
       if (!accessToken) {
-        //atk없으면
-        // setIsAuthenticated(false);
         return;
       }
     }
@@ -53,12 +47,8 @@ export function UseAuth() {
         logoImage: res.data.data.company.logoImage,
       }));
 
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 1000);
       return res;
     } catch (error) {
-      console.log(error);
     }
   };
 

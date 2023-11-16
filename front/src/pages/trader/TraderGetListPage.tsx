@@ -17,7 +17,6 @@ const TraderGetListPage = () => {
 
   useEffect(() => {
     customAxios.get("/statement/worker/list/preparing").then((res) => {
-      console.log(res);
       setBills(res.data.data.statementList)
     });
   }, []);

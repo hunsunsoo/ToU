@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
-import TraderSubtitle from "../../components/atoms/trader/TraderSubtitle";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import TraderItemHeader from "../../components/organisms/trader/TraderItemHeader";
 import TraderInputTitle from "../../components/organisms/trader/TraderInputTitle";
@@ -14,7 +13,7 @@ import TraderItemDropdownTitle from "../../components/organisms/trader/TraderIte
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import TraderUnitInputTitle from "../../components/organisms/trader/TraderUnitInputTitle";
 import { customAxios } from "../../components/api/customAxios";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import StepIndicator from "../../components/organisms/trader/TraderStepIndicator";
 
 interface DropdownItem {
@@ -55,7 +54,6 @@ const TraderCreatePage = () => {
 
   const [reqStep, setReqStep] = useState(1);
 
-  const [companyName, setCompanyName] = useState("");
   const [isValid, setIsValid] = useState(false); // 모든 입력값이 유효한지에 대한 상태
 
   // company 목록 조회
@@ -91,8 +89,6 @@ const TraderCreatePage = () => {
     name: stock.stockName,
     date: stock.stockDate,
   }));
-
-  // const [selectedStockDetails, setSelectedStockDetails] = useState<Stock | null>(null);
 
 
   //거래일자
@@ -187,7 +183,6 @@ const TraderCreatePage = () => {
   useEffect(() => {
     // 업체 목록 조회 API
     customAxios("/client/worker/company/list").then((res) => {
-      // console.log(res.data.data.companyList);
       setCompanys(res.data.data.companyList);
     });
   }, []);
@@ -196,7 +191,6 @@ const TraderCreatePage = () => {
     if (selectedCompanySeq) {
       customAxios(`client/worker/branch/list/${selectedCompanySeq}`).then(
         (res) => {
-          // console.log(res.data.data.branchList);
           setBranchs(res.data.data.branchList);
         }
       );
@@ -204,28 +198,10 @@ const TraderCreatePage = () => {
   }, [selectedCompanySeq]);
 
   useEffect(() => {
-    // 토큰 들어오는거 기다리기
-    const awaitToken = async () => {
-      return new Promise((resolve) => {
-        const checkToken = () => {
-          const storedValue = localStorage.getItem("recoil-persist");
-          const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
-          
-          if (accessToken) {
-            resolve(accessToken);
-          } else {
-            setTimeout(checkToken, 1000); // 1초마다 토큰 체크
-          }
-        };
-        checkToken();
-      });
-    };
 
     // 판매용 재고 목록 조회
     customAxios(`stock/worker/list/out`)
       .then((res) => {
-        // console.log(res);
-        console.log(res.data.data.stockList);
         const updatedStockItems = res.data.data.stockList.map((stockItem: Stock) => {
           return {
             ...stockItem,
@@ -261,7 +237,6 @@ const TraderCreatePage = () => {
       }
     })
     .catch((res) => {
-      console.log(res);
       toast.error("서버 에러", {
         duration: 1000,
       });
@@ -280,6 +255,7 @@ const TraderCreatePage = () => {
   
   useEffect(() => {
     checkValidity();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCompany, selectedBranch, selectedDate]);
 
 
@@ -579,13 +555,11 @@ const StyledInfoTitle = styled.div`
 const StyledSpan = styled.span`
   display: inline-flex;
   margin-top: 1rem;
-  /* align-items: right; */
   justify-content: right;
   height: 4vh;
   width: 100%;
   font-size: 20px;
   font-weight: bold;
-  /* border-bottom: 0.8px solid var(--festie-gray-600, #949494); */
 `;
 
 const StyledTraderInputTitle = styled(TraderInputTitle)`

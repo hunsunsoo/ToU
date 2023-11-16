@@ -23,7 +23,6 @@ const ShopperMainPage = () => {
 
   useEffect(() => {
     customAxios.get(`/consumer/fabric/${productSeq}`).then((res) => {
-      console.log(res);
       setThumbnails(res.data.data.distribution);
       setProductName(res.data.data.productName);
     });
