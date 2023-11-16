@@ -465,7 +465,7 @@ const TraderCreatePage = () => {
                   />
                   <TraderUnitInputTitle
                     inputTitle="수량"
-                    value={`${formatPrice(item.stockQuantity)}`}
+                    value={`${(item.stockQuantity)}`}
                     selectedUnit={item.stockUnit}
                     onChange={(e) =>
                       handleInputChange(index, "stockQuantity", e.target.value)
