@@ -30,6 +30,7 @@ import {
   O_STOCKLIST,
 } from "./pages/Pages";
 import { ROUTES } from "./commons/Routes";
+import ShopperHeader from "./components/organisms/shopper/ShopperHeader";
 import { MobileGlobalStyle } from "./commons/style/mobileStyle/MobileGlobalStyle";
 import OfficerHeader from "./components/organisms/officer/OfficerHeader";
 
@@ -42,6 +43,7 @@ interface ShopperContainerProps {
 
 const RoutesContainer = () => {
   const location = useLocation();
+  console.log(location.pathname);
   return (
     <Routes>
       {/* 소비자 (url/product) */}

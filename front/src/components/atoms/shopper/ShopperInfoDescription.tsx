@@ -48,5 +48,5 @@ const RightContainer = styled.div`
 `;
 
 const StyledDescription = styled.span`
-  font-size: 0.6rem;
+  font-size: 0.7rem;
 `;
