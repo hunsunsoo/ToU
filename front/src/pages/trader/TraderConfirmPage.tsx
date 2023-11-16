@@ -95,7 +95,7 @@ const TraderConfirmPage = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         toast.success("거래명세서가 삭제 되었습니다.");
-        navigate(`/m/main`);
+        navigate(`/m`);
       } catch (error) {
         toast.error("삭제에 실패했습니다.");
       }

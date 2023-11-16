@@ -6,52 +6,28 @@ import { customAxios } from '../../api/customAxios';
 
 
 const TraderMainCount = () => {
-  const [count1, setCount1] = useState();
-  const [count2, setCount2] = useState();
-  const [count3, setCount3] = useState();
+  const [count1, setCount1] = useState(0);
+  const [count2, setCount2] = useState(0);
+  const [count3, setCount3] = useState(0);
 
+  console.log(count1);
 
   useEffect(() => {
-    // 토큰 들어오는거 기다리기
-    const awaitToken = async () => {
-      return new Promise((resolve) => {
-        const checkToken = () => {
-          const storedValue = localStorage.getItem("recoil-persist");
-          const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
-          
-          if (accessToken) {
-            resolve(accessToken);
-          } else {
-            setTimeout(checkToken, 1000); // 1초마다 토큰 체크
-          }
-        };
-        checkToken();
+    const storedValue = localStorage.getItem("recoil-persist");
+    const accessToken =
+      storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+
+    if (accessToken) {
+      customAxios.get(`/statement/worker/list/app/count`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((res) => {
+        setCount1(res.data.data.preparingCount);
+        setCount2(res.data.data.watingCount);
+        setCount3(res.data.data.refusalCount);
       });
-    };
-
-    // statementCount 가져오기
-    const awaitCount = async () => {
-      try {
-        const accessToken = await awaitToken();
-        if (!accessToken) {
-          return;
-        }
-
-        const res = await customAxios.get(`/statement/worker/list/app/count`);
-        console.log(res);
-        if (res.status === 200) {
-          setCount1(res.data.data.preparingCount);
-          setCount2(res.data.data.watingCount);
-          setCount3(res.data.data.refusalCount);
-        } else {
-          console.log(res.status);
-        }
-      } catch (error) {
-        console.log(error);
-      }
     }
-    awaitCount();
-  }, []); 
+  }, []);
 
   return (
     <StyledContainer>

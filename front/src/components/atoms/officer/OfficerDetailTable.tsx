@@ -83,7 +83,7 @@ const OfficerDetailTable = () => {
   // 날짜 표기 형식 변환
   const formatDateString = (dateString: string | undefined) => {
     if (!dateString) {
-      return ""; // 또는 원하는 기본값을 반환할 수 있어
+      return "";
     }
     const formattedDate = new Date(dateString);
     return formattedDate.toISOString().replace("T", " ").split(".")[0];
