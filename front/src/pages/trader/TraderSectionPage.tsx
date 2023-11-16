@@ -57,35 +57,55 @@ const TraderSectionPage = () => {
   };
 
   useEffect(() => {
-    customAxios.get(`/client/worker/branch/list`).then((res) => {
-      setBranchs(res.data.data.branchList);
-    });
+    const storedValue = localStorage.getItem("recoil-persist");
+    const accessToken =
+      storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+
+    if (accessToken) {
+      customAxios
+        .get(`/client/worker/branch/list`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then((res) => {
+          setBranchs(res.data.data.branchList);
+        });
+    }
   }, [currentCompanySeq]);
 
   useEffect(() => {
     if (selectedBranchSeq) {
-      customAxios.get(`/statement/worker/list/completion`).then((res) => {
-        const statements: Statement[] = res.data.data.statementList;
+      const storedValue = localStorage.getItem("recoil-persist");
+      const accessToken =
+        storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
 
-        const filteredStatements = statements.filter(
-          (statement) =>
-            statement.reqBranchSeq === selectedBranchSeq ||
-            statement.resBranchSeq === selectedBranchSeq
-        );
+      if (accessToken) {
+        customAxios
+          .get(`/statement/worker/list/completion`, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          })
+          .then((res) => {
+            const statements: Statement[] = res.data.data.statementList;
 
-        setTableData(
-          filteredStatements.map((statement) => ({
-            companyName: res.data.data.companyName,
-            productName: statement.productName,
-            tradeDate: statement.tradeDate,
-            workerName:
-              statement.reqBranchSeq === selectedBranchSeq
-                ? statement.resBranchName
-                : statement.reqBranchName,
-            statementSeq: statement.statementSeq,
-          }))
-        );
-      });
+            const filteredStatements = statements.filter(
+              (statement) =>
+                statement.reqBranchSeq === selectedBranchSeq ||
+                statement.resBranchSeq === selectedBranchSeq
+            );
+
+            setTableData(
+              filteredStatements.map((statement) => ({
+                companyName: res.data.data.companyName,
+                productName: statement.productName,
+                tradeDate: statement.tradeDate,
+                workerName:
+                  statement.reqBranchSeq === selectedBranchSeq
+                    ? statement.resBranchName
+                    : statement.reqBranchName,
+                statementSeq: statement.statementSeq,
+              }))
+            );
+          });
+      }
     }
   }, [selectedBranchSeq]);
 
@@ -103,6 +123,7 @@ const TraderSectionPage = () => {
         />
       </StyledDiv>
       <StyledMainPaddingContainer>
+        {/* <TraderSectionFilter /> */}
 
         {!selectedBranch && <p>관할 구역을 선택해주세요.</p>}
 
