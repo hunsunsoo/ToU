@@ -220,13 +220,16 @@ export default TraderConfirmPage;
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
 `;
+
 const StyledHeader = styled.div`
   width: 100%;
   position: sticky;
   top: 0;
 `;
-const StyledBody = styled.div``;
+const StyledBody = styled.div`
+`;
 
 const StyledFooter = styled.div`
   width: 100%;
