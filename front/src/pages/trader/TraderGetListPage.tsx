@@ -15,11 +15,32 @@ export type BillType = {
 const TraderGetListPage = () => {
   const [bills, setBills] = useState<BillType[]>([]);
 
+  // 데이터를 불러오는 함수
+  const fetchData = async (accessToken: string) => {
+    try {
+      const res = await customAxios.get("/statement/worker/list/preparing", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      setBills(res.data.data.statementList);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  // 토큰을 확인하고 데이터를 불러오는 함수
+  const checkAndFetchData = async () => {
+    const storedValue = localStorage.getItem("recoil-persist");
+    let accessToken =
+      storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+
+    if (accessToken) {
+      await fetchData(accessToken);
+    }
+  };
+
   useEffect(() => {
-    customAxios.get("/statement/worker/list/preparing").then((res) => {
-      console.log(res);
-      setBills(res.data.data.statementList)
-    });
+    checkAndFetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -39,7 +60,7 @@ export default TraderGetListPage;
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #F0F0F0; 
+  background-color: #f0f0f0;
   height: 100vh;
 `;
 

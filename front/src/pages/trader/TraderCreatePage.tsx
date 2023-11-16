@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
-import TraderSubtitle from "../../components/atoms/trader/TraderSubtitle";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
 import TraderItemHeader from "../../components/organisms/trader/TraderItemHeader";
 import TraderInputTitle from "../../components/organisms/trader/TraderInputTitle";
@@ -14,7 +13,7 @@ import TraderItemDropdownTitle from "../../components/organisms/trader/TraderIte
 import TraderBtn from "../../components/atoms/trader/TraderBtn";
 import TraderUnitInputTitle from "../../components/organisms/trader/TraderUnitInputTitle";
 import { customAxios } from "../../components/api/customAxios";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from "react-hot-toast";
 import StepIndicator from "../../components/organisms/trader/TraderStepIndicator";
 
 interface DropdownItem {
@@ -47,15 +46,21 @@ interface Stock {
   stockPrice: number;
   stockTotalPrice: number;
   note?: string;
-  selectedStock?: StockDropdownItem; 
+  selectedStock?: StockDropdownItem;
 }
 
 const TraderCreatePage = () => {
   const navigate = useNavigate();
 
+  const fetchToken = () => {
+    const storedValue = localStorage.getItem("recoil-persist");
+    return storedValue
+      ? JSON.parse(storedValue)?.UserInfoState?.accessToken
+      : null;
+  };
+
   const [reqStep, setReqStep] = useState(1);
 
-  const [companyName, setCompanyName] = useState("");
   const [isValid, setIsValid] = useState(false); // 모든 입력값이 유효한지에 대한 상태
 
   // company 목록 조회
@@ -67,12 +72,12 @@ const TraderCreatePage = () => {
   const [branchs, setBranchs] = useState<Branch[]>([]);
   // 선택 branch 정보
   const [selectedBranchSeq, setSelectedBranchSeq] = useState<number>();
- 
+
   // stock 목록 조회
   const [stocks, setStocks] = useState<Stock[]>([]);
   // 선택 Stock 정보
   const [selectedStockSeq, setSelectedStockSeq] = useState<number>();
-  
+
   //company에 대한 드롭다운 항목
   const companyDropdownItems = companys.map((company) => ({
     seq: company.companySeq,
@@ -92,17 +97,20 @@ const TraderCreatePage = () => {
     date: stock.stockDate,
   }));
 
-  // const [selectedStockDetails, setSelectedStockDetails] = useState<Stock | null>(null);
-
-
   //거래일자
   const [selectedDate, setSelectedDate] = useState<Date | Date[] | null>(
     new Date()
   );
 
-  const [selectedCompany, setSelectedCompany] = useState<DropdownItem | null>(null);
-  const [selectedBranch, setSelectedBranch] = useState<DropdownItem | null>(null);
-  const [selectedStock, setSelectedStock] = useState<StockDropdownItem | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<DropdownItem | null>(
+    null
+  );
+  const [selectedBranch, setSelectedBranch] = useState<DropdownItem | null>(
+    null
+  );
+  const [selectedStock, setSelectedStock] = useState<StockDropdownItem | null>(
+    null
+  );
 
   const [selectedSeqList, setSelectedSeqList] = useState<number[]>([]);
 
@@ -116,11 +124,16 @@ const TraderCreatePage = () => {
     setSelectedBranchSeq(dropdownItem.seq);
   };
 
-  const handleSelectStock = (index: number, dropdownItem: StockDropdownItem) => {
+  const handleSelectStock = (
+    index: number,
+    dropdownItem: StockDropdownItem
+  ) => {
     setSelectedStock(dropdownItem);
     setSelectedStockSeq(dropdownItem.seq);
 
-    const stockDetails = stocks.find(stock => stock.stockSeq === dropdownItem.seq);
+    const stockDetails = stocks.find(
+      (stock) => stock.stockSeq === dropdownItem.seq
+    );
     if (stockDetails) {
       setItems((prevItems) => {
         const updatedItems = [...prevItems];
@@ -131,16 +144,21 @@ const TraderCreatePage = () => {
           selectedStock: dropdownItem,
         };
         return updatedItems;
-      });    
+      });
 
-       // 이전에 선택된 품목이 있었다면, selectedSeqList에서 제거
+      // 이전에 선택된 품목이 있었다면, selectedSeqList에서 제거
       const previousSelectedItem = items[index].selectedStock;
-      if (previousSelectedItem && previousSelectedItem.seq !== dropdownItem.seq) {
-        setSelectedSeqList(prevSeqList => prevSeqList.filter(seq => seq !== previousSelectedItem.seq));
+      if (
+        previousSelectedItem &&
+        previousSelectedItem.seq !== dropdownItem.seq
+      ) {
+        setSelectedSeqList((prevSeqList) =>
+          prevSeqList.filter((seq) => seq !== previousSelectedItem.seq)
+        );
       }
-  
+
       // selectedSeqList에 새로운 선택 항목 추가
-      setSelectedSeqList(prevSeqList => {
+      setSelectedSeqList((prevSeqList) => {
         // 이미 선택된 항목은 다시 추가하지 않음
         if (prevSeqList.includes(dropdownItem.seq)) {
           return prevSeqList;
@@ -153,8 +171,12 @@ const TraderCreatePage = () => {
 
   // 드롭박스 목록에서 이미 선택된 품목을 제외하는 함수
   const getAvailableItems = () => {
-    const selectedStockSeqs = items.map(item => item.selectedStock?.seq).filter(Boolean);
-    return stockDropdownItems.filter(item => !selectedStockSeqs.includes(item.seq));
+    const selectedStockSeqs = items
+      .map((item) => item.selectedStock?.seq)
+      .filter(Boolean);
+    return stockDropdownItems.filter(
+      (item) => !selectedStockSeqs.includes(item.seq)
+    );
   };
 
   const [showAddButton, setShowAddButton] = useState(true);
@@ -170,127 +192,122 @@ const TraderCreatePage = () => {
       stockPrice: 0,
       stockTotalPrice: 0,
       note: "",
-      
     },
   ]);
 
-
-  const nextHandler = (() => {
-    setReqStep(prevReqStep => prevReqStep + 1);
-  })
-
-  const goBackToStep = () => {
-    setReqStep(reqStep-1);
+  const nextHandler = () => {
+    setReqStep((prevReqStep) => prevReqStep + 1);
   };
 
+  const goBackToStep = () => {
+    setReqStep(reqStep - 1);
+  };
 
   useEffect(() => {
-    // 업체 목록 조회 API
-    customAxios("/client/worker/company/list").then((res) => {
-      // console.log(res.data.data.companyList);
-      setCompanys(res.data.data.companyList);
-    });
+    const accessToken = fetchToken();
+    if (accessToken) {
+      customAxios
+        .get("/client/worker/company/list", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then((res) => {
+          setCompanys(res.data.data.companyList);
+        });
+    }
   }, []);
 
   useEffect(() => {
-    if (selectedCompanySeq) {
-      customAxios(`client/worker/branch/list/${selectedCompanySeq}`).then(
-        (res) => {
-          // console.log(res.data.data.branchList);
+    const accessToken = fetchToken();
+    if (accessToken && selectedCompanySeq) {
+      customAxios
+        .get(`client/worker/branch/list/${selectedCompanySeq}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then((res) => {
           setBranchs(res.data.data.branchList);
-        }
-      );
+        });
     }
   }, [selectedCompanySeq]);
 
   useEffect(() => {
-    // 토큰 들어오는거 기다리기
-    const awaitToken = async () => {
-      return new Promise((resolve) => {
-        const checkToken = () => {
-          const storedValue = localStorage.getItem("recoil-persist");
-          const accessToken = storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
-          
-          if (accessToken) {
-            resolve(accessToken);
-          } else {
-            setTimeout(checkToken, 1000); // 1초마다 토큰 체크
-          }
-        };
-        checkToken();
-      });
-    };
-
-    // 판매용 재고 목록 조회
-    customAxios(`stock/worker/list/out`)
-      .then((res) => {
-        // console.log(res);
-        console.log(res.data.data.stockList);
-        const updatedStockItems = res.data.data.stockList.map((stockItem: Stock) => {
-          return {
-            ...stockItem,
-          };
+    const accessToken = fetchToken();
+    if (accessToken) {
+      customAxios
+        .get(`stock/worker/list/out`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then((res) => {
+          const updatedStockItems = res.data.data.stockList.map(
+            (stockItem: Stock) => {
+              return { ...stockItem };
+            }
+          );
+          setStocks(updatedStockItems);
         });
-        setStocks(updatedStockItems);
-      });
-    }, []);
+    }
+  }, []);
 
   const handleStatementCreate = () => {
-    const body = {
-      responseBranch:selectedBranchSeq,
-      tradeDate: selectedDate,
-      items: selectedSeqList,
-    }
-    
-  customAxios.post(`statement/worker`, body)
-    .then((res) => {
-      if(res.status === 200) {
-        toast.success("거래명세서 생성을 성공했습니다.", {
-          duration: 1000,
-        });
-        setTimeout(() => {
-        }, 1000);
-        const statementSeq:string = res.data.data.statementSeq;
-        navigate(`/m/confirm/${statementSeq}`);
-      } else {
-        toast.error("요청이 실패했습니다.", {
-          duration: 1000,
-        });
-        setTimeout(() => {
-        }, 1000);
-      }
-    })
-    .catch((res) => {
-      console.log(res);
-      toast.error("서버 에러", {
-        duration: 1000,
-      });
-      setTimeout(() => {
-      }, 1000);
-    })
-  }
+    const accessToken = fetchToken();
+    if (accessToken) {
+      const body = {
+        responseBranch: selectedBranchSeq,
+        tradeDate: selectedDate,
+        items: selectedSeqList,
+      };
 
+      customAxios
+        .post(`statement/worker`, body, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            toast.success("거래명세서 생성을 성공했습니다.", {
+              duration: 1000,
+            });
+            setTimeout(() => {}, 1000);
+            const statementSeq: string = res.data.data.statementSeq;
+            navigate(`/m/confirm/${statementSeq}`);
+          } else {
+            toast.error("요청이 실패했습니다.", {
+              duration: 1000,
+            });
+            setTimeout(() => {}, 1000);
+          }
+        })
+        .catch((res) => {
+          toast.error("서버 에러", {
+            duration: 1000,
+          });
+          setTimeout(() => {}, 1000);
+        });
+    }
+  };
+  
   const checkValidity = () => {
     const isCompanySelected = selectedCompany !== null;
     const isBranchSelected = selectedBranch !== null;
-    const isDateSelected = selectedDate instanceof Date && !isNaN(selectedDate.valueOf());
-    
+    const isDateSelected =
+      selectedDate instanceof Date && !isNaN(selectedDate.valueOf());
+
     setIsValid(isCompanySelected && isBranchSelected && isDateSelected);
   };
-  
+
   useEffect(() => {
     checkValidity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCompany, selectedBranch, selectedDate]);
-
 
   useEffect(() => {
     // 모든 항목이 유효한지 검사.
-    const allItemsValid = items.every(item => {
+    const allItemsValid = items.every((item) => {
       const isValidStock = item.stockSeq > -1;
-      const isValidQuantity = item.stockQuantity> 0;
+      const isValidQuantity = item.stockQuantity > 0;
       const isValidPrice = item.stockPrice > 0;
       const isValidTotalPrice = item.stockTotalPrice > 0;
-      return isValidStock && isValidQuantity && isValidPrice && isValidTotalPrice;
+      return (
+        isValidStock && isValidQuantity && isValidPrice && isValidTotalPrice
+      );
     });
 
     setShowAddButton(allItemsValid);
@@ -314,7 +331,6 @@ const TraderCreatePage = () => {
       });
     });
   };
- 
 
   const addItem = () => {
     setItems((prevItems) => [
@@ -328,19 +344,20 @@ const TraderCreatePage = () => {
         stockPrice: 0,
         stockTotalPrice: 0,
         note: "",
-        selectedStockName: null, 
+        selectedStockName: null,
       },
     ]);
   };
 
   const removeItem = (index: number) => {
-
     const removedItemSeq = items[index].selectedStock?.seq;
 
     setItems((prevItems) => prevItems.filter((_, i) => i !== index));
 
     if (removedItemSeq != null) {
-      setSelectedSeqList((prevSeqList) => prevSeqList.filter((seq) => seq !== removedItemSeq));
+      setSelectedSeqList((prevSeqList) =>
+        prevSeqList.filter((seq) => seq !== removedItemSeq)
+      );
     }
   };
 
@@ -350,16 +367,15 @@ const TraderCreatePage = () => {
 
   return (
     <>
-       {reqStep === 1 ? (
-          <StyledContainer>
+      {reqStep === 1 ? (
+        <StyledContainer>
           <StyledHeader>
             <TraderHeader title="거래 명세서 생성" />
-            {/* <TraderSubtitle subtitle="거래 업체 등록" /> */}
           </StyledHeader>
-    
+
           <StyledBody>
             <MainPaddingContainer>
-            <StepIndicator steps={3} currentStep={1} />
+              <StepIndicator steps={3} currentStep={1} />
               <TraderInfoTitle infoTitle="인수자 정보 입력" />
               <StyledBodyInfo>
                 <TraderDropdownTitle
@@ -388,26 +404,25 @@ const TraderCreatePage = () => {
             </TraderBtn>
           </StyledFooter>
         </StyledContainer>
-        ) : reqStep === 2 ? (
-          <StyledContainer>
+      ) : reqStep === 2 ? (
+        <StyledContainer>
           <StyledHeader>
-          <TraderItemHeader title="거래 명세서 생성" onBack={goBackToStep} />
-            {/* <TraderSubtitle subtitle="거래 업체 등록" /> */}
+            <TraderItemHeader title="거래 명세서 생성" onBack={goBackToStep} />
           </StyledHeader>
-    
+
           <StyledBody>
             <MainPaddingContainer>
-            <StepIndicator steps={3} currentStep={2} />
+              <StepIndicator steps={3} currentStep={2} />
               <TraderInfoTitle infoTitle="거래 일자 등록" />
               <StyledBodyInfo>
-              <TraderCalendarTitle
-                selectedDate={selectedDate}
-                onDateChange={setSelectedDate}
-              />
+                <TraderCalendarTitle
+                  selectedDate={selectedDate}
+                  onDateChange={setSelectedDate}
+                />
               </StyledBodyInfo>
             </MainPaddingContainer>
           </StyledBody>
-    
+
           <StyledFooter>
             <TraderBtn
               size="Large"
@@ -419,17 +434,17 @@ const TraderCreatePage = () => {
             </TraderBtn>
           </StyledFooter>
         </StyledContainer>
-        ) : reqStep === 3 ? (
-          <StyledItemContainer>
+      ) : reqStep === 3 ? (
+        <StyledItemContainer>
           <StyledItemHeader>
             <TraderItemHeader title="거래 명세서 생성" onBack={goBackToStep} />
           </StyledItemHeader>
           <StyledItemBody>
             <MainPaddingContainer>
-            <StepIndicator steps={3} currentStep={3} />
-            <StyledInfoTitle>
-                    <TraderInfoTitle infoTitle="품목 정보 입력" />
-                  </StyledInfoTitle>
+              <StepIndicator steps={3} currentStep={3} />
+              <StyledInfoTitle>
+                <TraderInfoTitle infoTitle="품목 정보 입력" />
+              </StyledInfoTitle>
               {items.map((item, index) => (
                 <div key={index}>
                   <StyledSpan>
@@ -439,10 +454,13 @@ const TraderCreatePage = () => {
                     inputTitle="품목명"
                     items={getAvailableItems()}
                     selectedItem={item.selectedStock}
-                    onSelect={(dropdownItem) => handleSelectStock(index, dropdownItem)} />
-                 <TraderUnitInputTitle
+                    onSelect={(dropdownItem) =>
+                      handleSelectStock(index, dropdownItem)
+                    }
+                  />
+                  <TraderUnitInputTitle
                     inputTitle="수량"
-                    value={item.stockQuantity.toString() || ''}
+                    value={item.stockQuantity.toString() || ""}
                     selectedUnit={item.stockUnit}
                     onChange={(e) =>
                       handleInputChange(index, "stockQuantity", e.target.value)
@@ -451,7 +469,7 @@ const TraderCreatePage = () => {
                   <TraderInputTitle
                     inputTitle="단가"
                     size="Large"
-                    value={item.stockPrice.toString() || ''}
+                    value={item.stockPrice.toString() || ""}
                     onChange={(e) =>
                       handleInputChange(index, "stockPrice", e.target.value)
                     }
@@ -459,15 +477,19 @@ const TraderCreatePage = () => {
                   <TraderInputTitle
                     inputTitle="금액"
                     size="Large"
-                    value={item.stockTotalPrice.toString() || ''}
+                    value={item.stockTotalPrice.toString() || ""}
                     onChange={(e) =>
-                      handleInputChange(index, "stockTotalPrice", e.target.value)
+                      handleInputChange(
+                        index,
+                        "stockTotalPrice",
+                        e.target.value
+                      )
                     }
                   />
                   <StyledTraderInputTitle
                     inputTitle="비고"
                     size="X-Large"
-                    value={item.note || ''}
+                    value={item.note || ""}
                     onChange={(e) =>
                       handleInputChange(index, "note", e.target.value)
                     }
@@ -485,14 +507,18 @@ const TraderCreatePage = () => {
               ))}
               {showAddButton && (
                 <StyledAddItemButton>
-                  <TraderBtn size="X-Medium" color="Transparent" onClick={addItem}>
+                  <TraderBtn
+                    size="X-Medium"
+                    color="Transparent"
+                    onClick={addItem}
+                  >
                     + 품목 추가
                   </TraderBtn>
                 </StyledAddItemButton>
               )}
             </MainPaddingContainer>
           </StyledItemBody>
-    
+
           <StyledFooter>
             <TraderBtn
               size="Large"
@@ -503,11 +529,8 @@ const TraderCreatePage = () => {
               다음
             </TraderBtn>
           </StyledFooter>
-    
         </StyledItemContainer>
-        ) : null
-      }
-  
+      ) : null}
     </>
   );
 };
@@ -526,8 +549,8 @@ const StyledHeader = styled.div`
 const StyledBody = styled.div``;
 
 const StyledBodyInfo = styled.div`
-  margin: 0 1rem 0 1rem
-  `;
+  margin: 0 1rem 0 1rem;
+`;
 
 // 공통
 const StyledFooter = styled.div`
@@ -535,7 +558,6 @@ const StyledFooter = styled.div`
   position: fixed;
   bottom: 0;
 `;
-
 
 ////  itemPage
 
@@ -579,13 +601,11 @@ const StyledInfoTitle = styled.div`
 const StyledSpan = styled.span`
   display: inline-flex;
   margin-top: 1rem;
-  /* align-items: right; */
   justify-content: right;
   height: 4vh;
   width: 100%;
   font-size: 20px;
   font-weight: bold;
-  /* border-bottom: 0.8px solid var(--festie-gray-600, #949494); */
 `;
 
 const StyledTraderInputTitle = styled(TraderInputTitle)`

@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFingerprint } from "@fortawesome/sharp-light-svg-icons";
 import styled, { keyframes } from "styled-components";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import { UseAuth } from "../../commons/UseAuth";
@@ -26,11 +24,9 @@ const TraderLoginPage = () => {
       if (res && res.status === 200) {
         setTimeout(() => navigate("/m"), 800);
       } else {
-        console.log("로그인 실패");
         setIsLoggingIn(false);
       }
     } catch (error) {
-      console.log("로그인 중 에러 발생:", error);
       setIsLoggingIn(false);
     }
   };
@@ -146,21 +142,6 @@ const OrSeparator = styled.div`
   &::after {
     right: 0;
   }
-`;
-
-const BiometricButton = styled(Button)`
-  background-color: #fff; // 배경색 변경
-  color: #3a89ff; // 텍스트 색상 변경
-  border: 1px solid #3a89ff; // 테두리 추가
-  display: flex; // 버튼 내부 요소를 flexbox로 배치
-  justify-content: center; // 요소들을 가로축 중앙에 정렬
-  align-items: center; // 요소들을 세로축 중앙에 정렬
-`;
-
-// FontAwesome 아이콘 컴포넌트에 스타일을 추가
-const Icon = styled(FontAwesomeIcon)`
-  margin-right: 0.5rem; // 아이콘과 텍스트 사이의 간격
-  color: #3a89ff; // 아이콘 색상 설정
 `;
 
 const StyledMsg = styled.div`

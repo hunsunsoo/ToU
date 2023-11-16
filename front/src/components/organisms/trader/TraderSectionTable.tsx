@@ -56,7 +56,7 @@ const TraderSectionTable: React.FC<TraderSectionTableProps> = ({ data }) => {
                   key={bill.statementSeq}
                   branchName={bill.workerName}
                   productsName={bill.productName}
-                  onClick={() => navigate(`/m/confirm/${bill.statementSeq}`)}
+                  onClick={() => navigate(`/m/sign/${bill.statementSeq}`)}
                 />
               ))}
             </DateSection>

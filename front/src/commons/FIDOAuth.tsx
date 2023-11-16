@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import styled from 'styled-components';
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { UserInfoState, CompanyInfoState } from "../store/State";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -44,6 +45,7 @@ interface FIDOAuthProps {
 
 
 const FIDOAuth: React.FC<FIDOAuthProps> = ({ isWeb }) => {
+  const navigate = useNavigate();
   const LOCALHOST = "http://localhost:8080/api/";
   const SERVER_TOU = "https://k9b310.p.ssafy.io/api/";
 
@@ -100,6 +102,10 @@ const FIDOAuth: React.FC<FIDOAuthProps> = ({ isWeb }) => {
           companyContact: fidoLoginResponse.data.data.company.companyContact,
           logoImage: fidoLoginResponse.data.data.company.logoImage,
         }));
+
+        if(!isWeb){
+          setTimeout(() => navigate("/m"), 800); 
+        }
       } else {
         console.error("Credential is undefined");
       }
