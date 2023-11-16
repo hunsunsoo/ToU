@@ -160,7 +160,9 @@ public class ConsumerService {
                 .productName(assets.get(0).getStockName())
                 .distribution(distribution)
                 .build();
-
+        if(articleSeq == 202 || articleSeq == 208){
+            responseDto.setProductName("노르웨이 고등어(특대)");
+        }
         return ResultTemplate.builder().status(200).data(responseDto).build();
     }
 
