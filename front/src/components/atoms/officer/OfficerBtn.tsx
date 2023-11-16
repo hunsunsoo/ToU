@@ -31,7 +31,7 @@ export default OfficerBtn;
 
 const StyledButtonImg = styled.img<ButtonProps>`
     cursor: pointer;
-    width: 48px;
+    width: 5rem;
 `;
 
 const StyledButtonLarge = styled.div<ButtonProps>`

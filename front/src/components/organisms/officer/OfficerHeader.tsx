@@ -24,12 +24,6 @@ const OfficerHeader: React.FC = () => {
         alt="Logo"
         onClick={() => navigate(ROUTES.OFFICER_MAIN)} // 로고 클릭 시 메인으로 이동
       />
-      {/* <OfficerBtn
-        isImg={true}
-        src="/ToU_White.png"
-        alt="Logo"
-        onClick={logout} // 로고 클릭 시 로그 아웃
-      /> */}
       <div style={{display: "flex"}}>
         <div style={{display: "flex", alignItems: "center"}} onClick={() => window.location.href = "http://k9b310a.p.ssafy.io/"}>
           <Icon icon={faCubes}  size="xl" style={{color: "#ffffff", cursor: "pointer"}} />
