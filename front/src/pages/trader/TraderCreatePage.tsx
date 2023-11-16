@@ -247,14 +247,29 @@ const TraderCreatePage = () => {
     }
   }, []);
 
+  const convertDateToString = (date: Date): string => {
+    return date.toISOString().slice(0, 19);
+  };
+
   const handleStatementCreate = () => {
     const accessToken = fetchToken();
-    if (accessToken) {
+    if (accessToken && selectedDate) {
+      const dateToAdjust = Array.isArray(selectedDate)
+        ? selectedDate[0]
+        : selectedDate;
+
+      // 9시간을 더한 새로운 Date 객체 생성
+      const adjustedDate = new Date(
+        dateToAdjust.getTime() + 18 * 60 * 60 * 1000
+      );
+
       const body = {
         responseBranch: selectedBranchSeq,
-        tradeDate: selectedDate,
+        tradeDate: convertDateToString(adjustedDate),
         items: selectedSeqList,
       };
+
+      console.log(body);
 
       customAxios
         .post(`statement/worker`, body, {
@@ -465,7 +480,7 @@ const TraderCreatePage = () => {
                   />
                   <TraderUnitInputTitle
                     inputTitle="수량"
-                    value={`${(item.stockQuantity)}`}
+                    value={`${item.stockQuantity}`}
                     selectedUnit={item.stockUnit}
                     onChange={(e) =>
                       handleInputChange(index, "stockQuantity", e.target.value)
