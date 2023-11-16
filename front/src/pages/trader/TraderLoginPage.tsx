@@ -28,7 +28,7 @@ const TraderLoginPage = () => {
         toast.success("로그인 성공했습니다.", {
           duration: 1000,
         });
-        setTimeout(() => navigate("/m"), 800);
+        setTimeout(() => navigate("/m"), 0.5);
       } else {
         toast.error("로그인 실패했습니다.", {
           duration: 1000,

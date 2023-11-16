@@ -13,14 +13,9 @@ const TraderConfirmTable: React.FC<TraderConfirmTableProps> = ({ isItemChecked ,
 
   const [tableData, setTableData] = useState(data);
 
-  const handleDelete = (id: number) => {
-    const newData = data.filter(item => item.id !== id);
-    setTableData(newData);
-  };
-
   // 가격 표기 형식 변환
-  const formatPrice = (x: number) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const formatPrice = (number: number) => {
+    return new Intl.NumberFormat("ko-KR").format(number);
   };
 
   return (
@@ -37,8 +32,8 @@ const TraderConfirmTable: React.FC<TraderConfirmTableProps> = ({ isItemChecked ,
           {data.map(item => (
             <tr key={item.id}>
               <td><input type="text" defaultValue={item.category} disabled={true} /></td>
-              <td><input type="number" defaultValue={formatPrice(item.quantity)} disabled={true} /></td>
-              <td><input type="number" defaultValue={formatPrice(item.price)} disabled={true} /></td>
+              <td><input type="text" defaultValue={formatPrice(item.quantity)} disabled={true} /></td>
+              <td><input type="text" defaultValue={formatPrice(item.price)} disabled={true} /></td>
             </tr>
           ))}
         </tbody>

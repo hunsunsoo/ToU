@@ -366,8 +366,8 @@ const TraderCreatePage = () => {
   }, [selectedSeqList]);
 
   // 가격 표기 형식 변환
-  const formatPrice = (x: number) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const formatPrice = (number: number) => {
+    return new Intl.NumberFormat("ko-KR").format(number);
   };
 
   return (
