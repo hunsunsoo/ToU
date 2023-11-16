@@ -14,12 +14,22 @@ import { UserInfoState } from "../../store/State";
 import FIDOSign from "../../commons/FIDOSign";
 
 const TraderSignPage = () => {
+  const [statementData, setStatementData] = useState<StatementData | null>(
+    null
+  );
+  const [status, setStatus] = useState<string>("");
+  const { billId } = useParams<{ billId: string }>();
+  const currentBranchSeq = useRecoilValue(UserInfoState).branchSeq;
+  const navigate = useNavigate();
+
   // 상태 업데이트 함수
-  const fetchStatementData = () => {
-    customAxios.get(`/statement/worker/detail/${billId}`).then((res) => {
+  const fetchStatementData = async (accessToken: string) => {
+    try {
+      const res = await customAxios.get(`/statement/worker/detail/${billId}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
       const data = res.data.data;
       setStatementData(data);
-      // 상태 업데이트 로직
       if (
         data.reqInfo.workerName === null &&
         data.resInfo.workerName === null
@@ -30,22 +40,25 @@ const TraderSignPage = () => {
       } else {
         setStatus("READY");
       }
-    });
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
   };
 
-  const [statementData, setStatementData] = useState<StatementData | null>(
-    null
-  );
-  const [status, setStatus] = useState<string>("");
-  const { billId } = useParams<{ billId: string }>();
-  const currentBranchSeq = useRecoilValue(UserInfoState).branchSeq;
-  const navigate = useNavigate();
+  // 토큰을 확인하고 데이터를 불러오는 함수
+  const checkAndFetchData = async () => {
+    const storedValue = localStorage.getItem("recoil-persist");
+    let accessToken =
+      storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+
+    if (accessToken) {
+      await fetchStatementData(accessToken);
+    }
+  };
 
   useEffect(() => {
-    fetchStatementData();
-    // 의존성 배열에 fetchStatementData를 포함하지 않아야 합니다.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [billId]);
+    checkAndFetchData();
+  }, []);
 
   const renderButtons = () => {
     // "메인으로" 버튼을 렌더링해야 하는 조건을 확인합니다.
@@ -99,29 +112,33 @@ const TraderSignPage = () => {
 
   // 메인으로 이동 핸들러
   const handleMainRedirect = () => {
-    navigate("/m/main");
+    navigate("/m");
   };
 
   const handleCheckRedirect = () => {
     navigate(`/m/signcheck/${billId}`);
   };
 
-
   // 서명 응답 핸들러
   const handleResponseSign = async () => {
     const isAuth = await FIDOSign();
+    const storedValue = localStorage.getItem("recoil-persist");
+    const accessToken =
+      storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
 
-    const requestBody = {
-      statementSeq: statementData?.statementSeq,
-      type: "BUY",
-    };
+    if (isAuth === true && accessToken) {
+      const requestBody = {
+        statementSeq: statementData?.statementSeq,
+        type: "BUY",
+      };
 
-    if (isAuth === true) {
       customAxios
-        .post("/statement/worker/sign", requestBody)
+        .post("/statement/worker/sign", requestBody, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
         .then((response) => {
           toast.success("서명을 완료했습니다.");
-          fetchStatementData();
+          checkAndFetchData();
         })
         .catch((error) => {
           toast.error("서명에 실패했습니다.");
@@ -132,35 +149,51 @@ const TraderSignPage = () => {
   };
 
   // 거절 핸들러
-  const handleRefusal = () => {
-    const requestBody = {
-      statementSeq: statementData?.statementSeq,
-    };
+  const handleRefusal = async () => {
+    const storedValue = localStorage.getItem("recoil-persist");
+    const accessToken =
+      storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
 
-    customAxios
-      .post("/statement/worker/refusal", requestBody)
-      .then((response) => {
-        toast.success("거절 되었습니다.");
-        fetchStatementData();
-      })
-      .catch((error) => {
-        toast.error("거절에 실패했습니다.");
-      });
+    if (accessToken) {
+      const requestBody = {
+        statementSeq: statementData?.statementSeq,
+      };
+
+      customAxios
+        .post("/statement/worker/refusal", requestBody, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then((response) => {
+          toast.success("거절 되었습니다.");
+          checkAndFetchData();
+        })
+        .catch((error) => {
+          toast.error("거절에 실패했습니다.");
+        });
+    }
   };
 
   // 삭제 핸들러
-  const handleDelete = () => {
-    customAxios
-      .delete(`/statement/worker/${billId}`)
-      .then((response) => {
-        toast.success("거래명세서가 삭제 되었습니다.");
-        setTimeout(() => {
-          navigate("/m/state/"); // 2초 후에 페이지 이동
-        }, 2000); // 2000밀리초(2초) 대기
-      })
-      .catch((error) => {
-        toast.error("삭제에 실패했습니다.");
-      });
+  const handleDelete = async () => {
+    const storedValue = localStorage.getItem("recoil-persist");
+    const accessToken =
+      storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+
+    if (accessToken) {
+      customAxios
+        .delete(`/statement/worker/${billId}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then((response) => {
+          toast.success("거래명세서가 삭제 되었습니다.");
+          setTimeout(() => {
+            navigate("/m/state/");
+          }, 2000);
+        })
+        .catch((error) => {
+          toast.error("삭제에 실패했습니다.");
+        });
+    }
   };
 
   if (!statementData) return <Loader />;

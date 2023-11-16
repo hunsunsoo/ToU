@@ -30,7 +30,6 @@ import {
   O_STOCKLIST,
 } from "./pages/Pages";
 import { ROUTES } from "./commons/Routes";
-import ShopperHeader from "./components/organisms/shopper/ShopperHeader";
 import { MobileGlobalStyle } from "./commons/style/mobileStyle/MobileGlobalStyle";
 import OfficerHeader from "./components/organisms/officer/OfficerHeader";
 
