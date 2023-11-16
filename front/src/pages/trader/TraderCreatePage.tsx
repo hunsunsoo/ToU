@@ -330,7 +330,6 @@ const TraderCreatePage = () => {
           <StyledContainer>
           <StyledHeader>
             <TraderHeader title="거래 명세서 생성" />
-            {/* <TraderSubtitle subtitle="거래 업체 등록" /> */}
           </StyledHeader>
     
           <StyledBody>
@@ -368,7 +367,6 @@ const TraderCreatePage = () => {
           <StyledContainer>
           <StyledHeader>
           <TraderItemHeader title="거래 명세서 생성" onBack={goBackToStep} />
-            {/* <TraderSubtitle subtitle="거래 업체 등록" /> */}
           </StyledHeader>
     
           <StyledBody>

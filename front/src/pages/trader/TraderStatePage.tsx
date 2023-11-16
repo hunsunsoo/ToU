@@ -38,27 +38,33 @@ const TraderStatePage = () => {
     });
   };
 
-  useEffect(() => {
-    const checkToken = () => {
-      const storedValue = localStorage.getItem("recoil-persist");
-      const accessToken =
-        storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+  // 데이터를 불러오는 함수
+  const fetchData = async (accessToken: string) => {
+    try {
+      const response = await customAxios.get("/statement/worker/list/app", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      const list = response.data.data.statementList;
+      setStatementList(list);
+      setSortedStatementList(list);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
 
-      if (accessToken) {
-        customAxios
-          .get("/statement/worker/list/app")
-          .then((res) => {
-            const list = res.data.data.statementList;
-            setStatementList(list);
-            setSortedStatementList(list); // 초기에는 정렬되지 않은 상태로 설정
-          })
-          .catch((error) => {
-          });
-      } else {
-        setTimeout(checkToken, 1000);
-      }
-    };
-    checkToken();
+  // 토큰을 확인하고 데이터를 불러오는 함수
+  const checkAndFetchData = async () => {
+    const storedValue = localStorage.getItem("recoil-persist");
+    let accessToken =
+      storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+
+    if (accessToken) {
+      await fetchData(accessToken);
+    }
+  };
+
+  useEffect(() => {
+    checkAndFetchData();
   }, [location]);
 
   useEffect(() => {
