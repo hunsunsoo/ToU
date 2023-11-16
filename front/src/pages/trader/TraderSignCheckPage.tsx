@@ -103,6 +103,8 @@ const TraderSignCheckPage = () => {
       };
 
       try {
+        console.log(requestBody);
+        console.log(accessToken);
         await customAxios.post("/statement/worker/sign", requestBody, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
