@@ -57,7 +57,10 @@ const TraderConfirmPage = () => {
           }
         );
         const data = res.data.data;
-        setStatementData(data);
+        setStatementData({
+          ...data,
+          tradeDate: data.tradeDate.split("T")[0], // 'T'를 기준으로 문자열을 분할하고 첫 번째 부분(날짜) 사용
+        });
 
         const formattedData = data.itemList.map(
           (item: StatementItem, index: number) => {
@@ -228,8 +231,7 @@ const StyledHeader = styled.div`
   position: sticky;
   top: 0;
 `;
-const StyledBody = styled.div`
-`;
+const StyledBody = styled.div``;
 
 const StyledFooter = styled.div`
   width: 100%;
