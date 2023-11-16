@@ -29,6 +29,7 @@ const TraderMainPage = () => {
         </StyledAni2>
         <TraderMainPageBtn />
       </MainPaddingContainer>
+      {/* <StyledFooter>Copyright © To.U All Rights Reserved.</StyledFooter> */}
     </StyledContainer>
   );
 };
@@ -42,6 +43,11 @@ const StyledContainer = styled.div`
   height: 100vh;
   
 `;
+
+// const StyledFooter = styled.div`
+//   text-align: center;
+//   color: #ccc;
+// `;
 
 const StyledLogout = styled.div`
   padding-top: 1rem;
