@@ -365,6 +365,11 @@ const TraderCreatePage = () => {
     console.log("selectedStockSeqs:", selectedSeqList);
   }, [selectedSeqList]);
 
+  // 가격 표기 형식 변환
+  const formatPrice = (x: number) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   return (
     <>
       {reqStep === 1 ? (
@@ -460,7 +465,7 @@ const TraderCreatePage = () => {
                   />
                   <TraderUnitInputTitle
                     inputTitle="수량"
-                    value={item.stockQuantity.toString() || ""}
+                    value={formatPrice(item.stockQuantity)}
                     selectedUnit={item.stockUnit}
                     onChange={(e) =>
                       handleInputChange(index, "stockQuantity", e.target.value)
@@ -469,7 +474,7 @@ const TraderCreatePage = () => {
                   <TraderInputTitle
                     inputTitle="단가"
                     size="Large"
-                    value={item.stockPrice.toString() || ""}
+                    value={formatPrice(item.stockPrice)}
                     onChange={(e) =>
                       handleInputChange(index, "stockPrice", e.target.value)
                     }
@@ -477,7 +482,7 @@ const TraderCreatePage = () => {
                   <TraderInputTitle
                     inputTitle="금액"
                     size="Large"
-                    value={item.stockTotalPrice.toString() || ""}
+                    value={formatPrice(item.stockTotalPrice)}
                     onChange={(e) =>
                       handleInputChange(
                         index,

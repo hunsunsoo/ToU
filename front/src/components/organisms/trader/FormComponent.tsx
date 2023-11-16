@@ -38,7 +38,21 @@ const FormComponent: React.FC<FormComponentProps> = ({
     signatureStatusMessage = "서명이 완료된 거래명세서입니다.";
   }
 
-  console.log(statementData);
+  // 날짜 표기 형식 변환
+  const formatDateString = (dateString: string | undefined) => {
+    if (!dateString) {
+      return "";
+    }
+  
+    const formattedDate = new Date(dateString);
+    const year = formattedDate.getFullYear();
+    const month = (formattedDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = formattedDate.getDate().toString().padStart(2, "0");
+    const hours = formattedDate.getHours().toString().padStart(2, "0");
+    const minutes = formattedDate.getMinutes().toString().padStart(2, "0");
+  
+    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+  };
 
   return (
     <Styles>
@@ -51,7 +65,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
 
       <StyledDate>
         <div>4020-1214-{statementData.statementSeq}</div>
-        <div>{statementData.tradeDate}</div>
+        <div>{formatDateString(statementData.tradeDate)}</div>
       </StyledDate>
       <Line />
       <Table>
