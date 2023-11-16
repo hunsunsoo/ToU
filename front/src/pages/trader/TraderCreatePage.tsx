@@ -555,7 +555,7 @@ const StyledBodyInfo = styled.div`
 // 공통
 const StyledFooter = styled.div`
   width: 100%;
-  position: fixed;
+  position: sticky;
   bottom: 0;
 `;
 
