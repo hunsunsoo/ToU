@@ -72,9 +72,11 @@ const TraderStateTable: React.FC<TraderStateTableProps> = ({
               <StyledStatus status={item.statementStatus}>
                 {getStatusKorean(item.statementStatus)}
               </StyledStatus>
-              <td>{`${item.branchName}\n${item.productName}\n${formatDate(
-                item.tradeDate
-              )}`}</td>
+              <td>{`${
+                item.branchName.length > 11
+                  ? item.branchName.substring(0, 11) + "..."
+                  : item.branchName
+              }\n${item.productName}\n${formatDate(item.tradeDate)}`}</td>
             </StyledRow>
           ))}
         </tbody>

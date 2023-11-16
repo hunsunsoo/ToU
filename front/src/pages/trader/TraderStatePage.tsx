@@ -32,12 +32,12 @@ const TraderStatePage = () => {
 
   useEffect(() => {
     // 토큰 들어오는거 기다리기
-    // const checkToken = () => {
-    //   const storedValue = localStorage.getItem("recoil-persist");
-    //   const accessToken =
-    //     storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+    const checkToken = () => {
+      const storedValue = localStorage.getItem("recoil-persist");
+      const accessToken =
+        storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
 
-    //   if (accessToken) {
+      if (accessToken) {
     customAxios
       .get("/statement/worker/list/app")
       .then((res) => {
@@ -49,11 +49,11 @@ const TraderStatePage = () => {
       .catch((error) => {
         console.error("Error fetching data: ", error);
       });
-    // } else {
-    //     setTimeout(checkToken, 1000);
-    //   }
-    // };
-    // checkToken();
+    } else {
+        setTimeout(checkToken, 1000);
+      }
+    };
+    checkToken();
   }, [location]);
 
   useEffect(() => {
