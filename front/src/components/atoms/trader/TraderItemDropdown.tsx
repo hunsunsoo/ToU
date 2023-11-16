@@ -27,8 +27,13 @@ const TraderItemDropdown: React.FC<TraderItemDropdownProps> = ({
       return "";
     }
     const formattedDate = new Date(dateString);
-    return formattedDate.toISOString().replace("T", " ").split(".")[0];
+    const isoString = formattedDate.toISOString();
+    const datePart = isoString.split("T")[0]; // '2023-11-02'
+    const timePart = isoString.split("T")[1]; // '14:30:00.000Z'
+    const hourMinute = timePart.split(":").slice(0, 2).join(":"); // '14:30'
+    return `${datePart} ${hourMinute}`; // '2023-11-02 14:30'
   };
+  
 
   return (
     <DropdownContainer>
@@ -47,7 +52,7 @@ const TraderItemDropdown: React.FC<TraderItemDropdownProps> = ({
               }}
             >
               <ItemName>{item.name}</ItemName>
-              <ItemDate>{formatDateString(item.date.toLocaleString("ko-KR"))}</ItemDate>
+              <ItemDate>{formatDateString(item.date.toLocaleString("ko-KR"))} 입고</ItemDate>
             </DropdownListItem>
           ))}
         </DropdownList>

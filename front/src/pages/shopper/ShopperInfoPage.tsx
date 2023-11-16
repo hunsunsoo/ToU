@@ -21,6 +21,7 @@ const ShopperInfoPage = () => {
         <ShopperBtn
           src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Information.png"
           alt="Information"
+          onClick={() => navigate(-1)}
         />
       </HeaderContainer>
       <StyledMainPaddingContainer>

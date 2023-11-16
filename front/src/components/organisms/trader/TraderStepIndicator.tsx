@@ -46,17 +46,6 @@ const Step = styled.div<{ active: boolean }>`
   align-items: center;
   justify-content: center;
   margin: 0 8px;
-
-  &:not(:last-child)::after {
-    content: '';
-    width: 20px;
-    height: 2px;
-    background-color: grey;
-    position: absolute;
-    left: calc(100% + 8px);
-    top: 50%;
-    transform: translateY(-50%);
-  }
 `;
 
 const StepNumber = styled.span<{ active: boolean }>`
