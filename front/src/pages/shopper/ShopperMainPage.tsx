@@ -63,7 +63,7 @@ const ShopperMainPage = () => {
           <SlideToggleSlider
             className="slider"
             viewEarth={viewEarth}
-            src="/ToggleMap.png"
+            src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/World%20Map.png"
           ></SlideToggleSlider>
         </SlideToggleLabel>
         <ShopperBtn
