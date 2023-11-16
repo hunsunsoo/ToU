@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 public class StockResponseDto {
 
     private Long stockSeq;
-    private LocalDateTime stockDate;
+    private String stockDate;
     private Double stockQuantity;
     private String stockUnit;
     private String stockName;
@@ -27,7 +28,8 @@ public class StockResponseDto {
         StockResponseDto response = new StockResponseDto();
 
         response.stockSeq = stock.getStockSeq();
-        response.stockDate = stock.getStockDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        response.stockDate = stock.getStockDate().format(formatter);
         response.stockQuantity = stock.getStockQuantity();
         response.stockUnit = stock.getStockUnit();
         response.stockName = stock.getStockName();
