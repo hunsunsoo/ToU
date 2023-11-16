@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck  } from "@fortawesome/sharp-regular-svg-icons";
+import { faCheck } from "@fortawesome/sharp-regular-svg-icons";
 import { faSquare } from "@fortawesome/sharp-light-svg-icons";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import TraderHeader from "../../components/organisms/trader/TraderHeader";
@@ -14,6 +14,13 @@ import TraderConfirmTable from "../../components/organisms/trader/TraderConfirmT
 import TraderConfirmInfoTitle from "../../components/organisms/trader/TraderConfirmInfoTitle";
 import { customAxios } from "../../components/api/customAxios";
 import { StatementData } from "./../../types/TraderTypes";
+
+// 명세서 아이템의 타입 정의
+interface StatementItem {
+  stockName: string;
+  stockQuantity: number;
+  stockPrice: number;
+}
 
 const TraderConfirmPage = () => {
   const navigate = useNavigate();
@@ -36,39 +43,72 @@ const TraderConfirmPage = () => {
 
   const [statementItemList, setStatementItemList] = useState([]);
 
+  const fetchStatementData = async () => {
+    const storedValue = localStorage.getItem("recoil-persist");
+    const accessToken =
+      storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
 
-  useEffect(() => {
-    customAxios
-    .get(`/statement/worker/detail/${billId}`)
-      .then((res) => {
+    if (accessToken) {
+      try {
+        const res = await customAxios.get(
+          `/statement/worker/detail/${billId}`,
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
         const data = res.data.data;
         setStatementData(data);
 
-        const formattedData = data.itemList.map((item: any, index: number) => {
-          return {
-            id: index,
-            category: item.stockName,
-            quantity: item.stockQuantity,
-            price: item.stockPrice
-          };
-      });
-      setStatementItemList(formattedData);
-      })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+        const formattedData = data.itemList.map(
+          (item: StatementItem, index: number) => {
+            return {
+              id: index,
+              category: item.stockName,
+              quantity: item.stockQuantity,
+              price: item.stockPrice,
+            };
+          }
+        );
+        setStatementItemList(formattedData);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    }
+  };
 
+  useEffect(() => {
+    fetchStatementData();
+  }, [billId]);
+
+  // 삭제 핸들러
+  const handleDelete = async () => {
+    const storedValue = localStorage.getItem("recoil-persist");
+    const accessToken =
+      storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+
+    if (accessToken) {
+      try {
+        await customAxios.delete(`/statement/worker/${billId}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        toast.success("거래명세서가 삭제 되었습니다.");
+        navigate(`/m/main`);
+      } catch (error) {
+        toast.error("삭제에 실패했습니다.");
+      }
+    }
+  };
 
   const handleIconClick = () => {
     setIsChecked(!isChecked);
     setIcon(isChecked ? faSquare : faCheck);
   };
 
-  
   const handleDateIconClick = () => {
     setIsDateChecked(!isDateChecked);
     setDateIcon(isDateChecked ? faSquare : faCheck);
   };
-  
+
   const handleItemIconClick = () => {
     setIsItemChecked(!isItemChecked);
     setTableIcon(isItemChecked ? faSquare : faCheck);
@@ -80,23 +120,8 @@ const TraderConfirmPage = () => {
 
   useEffect(() => {
     checkValidity();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isChecked, isDateChecked, isItemChecked]);
-
-
-      // 삭제 핸들러
-  const handleDelete = () => {
-    customAxios
-      .delete(`/statement/worker/${billId}`)
-      .then((response) => {
-        toast.success("거래명세서가 삭제 되었습니다.");
-      })
-      .catch((error) => {
-        toast.error("삭제에 실패했습니다.");
-      });
-      navigate(`/m/main`);
-  };
-
 
   return (
     <StyledContainer>
@@ -131,19 +156,19 @@ const TraderConfirmPage = () => {
             onChange={(e) => setSection(e.target.value)}
             disabled={isChecked}
           />
-           <StyledInfoTitle>
+          <StyledInfoTitle>
             <TraderConfirmInfoTitle infoTitle="거래 정보" />
             <StyledSpan>
               거래 일자를 확인하세요.
-                <FontAwesomeIcon
-                  icon={dateIcon}
-                  size="2xl"
-                  style={{ color: "#000000" }}
-                  onClick={handleDateIconClick}
-                />
-              </StyledSpan>
-           </StyledInfoTitle>
-           <TraderInputTitle
+              <FontAwesomeIcon
+                icon={dateIcon}
+                size="2xl"
+                style={{ color: "#000000" }}
+                onClick={handleDateIconClick}
+              />
+            </StyledSpan>
+          </StyledInfoTitle>
+          <TraderInputTitle
             inputTitle="거래 일자"
             size="Large"
             value={statementData?.tradeDate}
@@ -158,19 +183,22 @@ const TraderConfirmPage = () => {
                 icon={tableIcon}
                 size="2xl"
                 style={{ color: "#000000" }}
-                onClick= {handleItemIconClick}
+                onClick={handleItemIconClick}
               />
             </StyledSpan>
           </StyledInfoTitle>
           {/* <TraderItemSearchBox/> */}
           <StyledTable>
-            <TraderConfirmTable isItemChecked={isItemChecked} data={statementItemList}/>
+            <TraderConfirmTable
+              isItemChecked={isItemChecked}
+              data={statementItemList}
+            />
           </StyledTable>
         </MainPaddingContainer>
       </StyledBody>
       <StyledFooter>
         <TraderBtn size="LargeL1" color="Grey" onClick={handleDelete}>
-            삭제
+          삭제
         </TraderBtn>
         <TraderBtn
           size="LargeR2"
@@ -198,8 +226,7 @@ const StyledHeader = styled.div`
   position: sticky;
   top: 0;
 `;
-const StyledBody = styled.div`
-`;
+const StyledBody = styled.div``;
 
 const StyledFooter = styled.div`
   width: 100%;
@@ -226,4 +253,4 @@ const StyledSpan = styled.span`
 
 const StyledTable = styled.div`
   margin-top: 1rem;
-`
+`;
