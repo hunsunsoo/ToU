@@ -646,4 +646,19 @@ public class StatementService {
         return ResultTemplate.builder().status(200).data("삭제 완료").build();
     }
 
+    public ResultTemplate<?> getStatementCountForApp(UserDetails worker) {
+        Long workerSeq = Long.parseLong(worker.getUsername());
+        Worker myWorker = workerRepository.findById(workerSeq)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.WORKER_NOT_FOUND));
+
+        Branch myBranch = myWorker.getBranch();
+
+        StatementCountForAppDto response =  StatementCountForAppDto.builder()
+                .preparingCount(statementRepository.countPreparingStatements(myBranch.getBranchSeq()))
+                .watingCount(statementRepository.countWaitingStatements(myBranch.getBranchSeq()))
+                .refusalCount(statementRepository.countRefusalStatements(myBranch.getBranchSeq()))
+                .build();
+
+        return ResultTemplate.builder().status(200).data(response).build();
+    }
 }

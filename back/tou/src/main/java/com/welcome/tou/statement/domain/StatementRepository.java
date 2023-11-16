@@ -51,4 +51,20 @@ public interface StatementRepository extends JpaRepository<Statement, Long> {
             + "or s.resBranch.branchSeq = :branchSeq ) "
             + "and s.statementStatus != 'DELETE'")
     List<Statement> findStatementsForSchedule(@Param("branchSeq") Long branchSeq);
+
+    @Query("SELECT count(s) FROM Statement s "
+            + "WHERE s.reqBranch.branchSeq = :branchSeq "
+            + "and s.statementStatus = 'PREPARING'")
+    Long countPreparingStatements(@Param("branchSeq") Long branchSeq);
+
+    @Query("SELECT count(s) FROM Statement s "
+            + "WHERE s.reqBranch.branchSeq = :branchSeq "
+            + "and s.statementStatus = 'WAITING'")
+    Long countWaitingStatements(@Param("branchSeq") Long branchSeq);
+
+    @Query("SELECT count(s) FROM Statement s "
+            + "WHERE s.reqBranch.branchSeq = :branchSeq "
+            + "and s.statementStatus = 'REFUSAL'")
+    Long countRefusalStatements(@Param("branchSeq") Long branchSeq);
+
 }
