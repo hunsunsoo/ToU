@@ -10,6 +10,7 @@ import "./App.css";
 import {
   S_INFO,
   S_MAIN,
+  NotFound,
   T_CONFIRM,
   T_CREATE,
   T_GETLIST,
@@ -54,6 +55,7 @@ const RoutesContainer = () => {
             <Routes>
               <Route path={ROUTES.SHOPPER_MAIN} element={<S_MAIN />} />
               <Route path={ROUTES.SHOPPER_INFO} element={<S_INFO />} />
+              <Route path={ROUTES.NotFound} element={<NotFound/>}/>
             </Routes>
           </ShopperContainer>
         }

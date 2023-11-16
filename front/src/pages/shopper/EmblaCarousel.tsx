@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from 'react-router';
 import useEmblaCarousel, { EmblaOptionsType } from "embla-carousel-react";
 import { Thumb } from "./EmblaCarouselThumbsButton";
 import imageByIndex from "./imageByIndex";
@@ -7,6 +8,7 @@ import Modal from "./EmblaModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/sharp-light-svg-icons";
 import BranchLocationComponent from "./BranchLocationDiv";
+import NotFound from "./NotFound";
 
 type PropType = {
   slides: number[];

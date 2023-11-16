@@ -3,6 +3,7 @@ export const ROUTES = {
   SHOPPER_URL: "/product/*",
   SHOPPER_MAIN: "/:productSeq",
   SHOPPER_INFO: "/info",
+  NotFound: "/notfound",
 
   // Trader
   TRADER_URL: "/m/*",

@@ -23,11 +23,19 @@ const ShopperMainPage = () => {
 
   useEffect(() => {
     customAxios.get(`/consumer/fabric/${productSeq}`).then((res) => {
+      // console.log(res);
+      if (!res.data.data || !res.data.data.distribution) {
+        // If thumbnails are undefined, navigate to the notfound page
+        navigate(`/product/notfound`);
+        return;
+      }
       setThumbnails(res.data.data.distribution);
       setProductName(res.data.data.productName);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log(thumbnails);
 
   // 토글버튼
   const [viewEarth, setViewEarth] = useState(false);
