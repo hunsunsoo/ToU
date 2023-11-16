@@ -29,7 +29,7 @@ const TraderMainPage = () => {
         </StyledAni2>
         <TraderMainPageBtn />
       </MainPaddingContainer>
-      <StyledFooter>Contact : 어쩌구 저쩌구</StyledFooter>
+      {/* <StyledFooter>Copyright © To.U All Rights Reserved.</StyledFooter> */}
     </StyledContainer>
   );
 };
@@ -44,10 +44,10 @@ const StyledContainer = styled.div`
   
 `;
 
-const StyledFooter = styled.div`
-  text-align: center;
-  color: #ccc;
-`;
+// const StyledFooter = styled.div`
+//   text-align: center;
+//   color: #ccc;
+// `;
 
 const StyledLogout = styled.div`
   padding-top: 1rem;
