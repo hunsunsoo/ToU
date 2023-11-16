@@ -11,7 +11,7 @@ const TraderMainPage = () => {
 
   const logout = () => {
     localStorage.removeItem("recoil-persist");
-    navigate('/m/login');
+    navigate('/m');
     window.location.reload();
   };
 

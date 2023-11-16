@@ -27,7 +27,7 @@ const TraderHeader = (props: TraderHeaderProps) => {
         <AiOutlineHome
           size="30"
           onClick={() => {
-            navigate("/m/main");
+            navigate("/m");
           }}
         />
       </HomeIcon>

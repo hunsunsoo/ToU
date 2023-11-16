@@ -1,7 +1,12 @@
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { TraderStateTableProps } from "../../../types/TraderTypes";
+
+interface StyledStatusProps {
+  status: string;
+}
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -27,12 +32,14 @@ const TraderStateTable: React.FC<TraderStateTableProps> = ({
   selectedRole,
   statementList,
 }) => {
+  const navigate = useNavigate();
+
   // 클릭 핸들러 함수
   const handleClick = (status: string, statementSeq: number) => {
     if (status === "REFUSAL") {
       toast.error("거절된 문서입니다.");
     } else {
-      window.location.href = `http://localhost:3000/m/sign/${statementSeq}`;
+      navigate(`/m/sign/${statementSeq}`); // Use navigate instead of window.location.href
     }
   };
 
@@ -95,10 +102,6 @@ const StyledTable = styled.table`
     border-bottom: 2px solid black;
   }
 `;
-
-interface StyledStatusProps {
-  status: string;
-}
 
 const StyledStatus = styled.td<StyledStatusProps>`
   font-weight: bold;

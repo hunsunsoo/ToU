@@ -13,7 +13,6 @@ import { customAxios } from "../../components/api/customAxios";
 
 const TraderStatePage = () => {
   const location = useLocation();
-  // const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState("전체");
   const [statementList, setStatementList] = useState<
     TraderStateTableProps["statementList"]
@@ -33,28 +32,28 @@ const TraderStatePage = () => {
 
   useEffect(() => {
     // 토큰 들어오는거 기다리기
-    const checkToken = () => {
-      const storedValue = localStorage.getItem("recoil-persist");
-      const accessToken =
-        storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
+    // const checkToken = () => {
+    //   const storedValue = localStorage.getItem("recoil-persist");
+    //   const accessToken =
+    //     storedValue && JSON.parse(storedValue)?.UserInfoState?.accessToken;
 
-      if (accessToken) {
-        customAxios
-          .get("/statement/worker/list/app")
-          .then((res) => {
-            const list = res.data.data.statementList;
-            console.log(res.data.data.statementList);
-            setStatementList(list);
-            setFilteredStatementList(list);
-          })
-          .catch((error) => {
-            console.error("Error fetching data: ", error);
-          });
-      } else {
-        setTimeout(checkToken, 1000);
-      }
-    };
-    checkToken();
+    //   if (accessToken) {
+    customAxios
+      .get("/statement/worker/list/app")
+      .then((res) => {
+        const list = res.data.data.statementList;
+        console.log(list);
+        setStatementList(list);
+        setFilteredStatementList(list);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+    // } else {
+    //     setTimeout(checkToken, 1000);
+    //   }
+    // };
+    // checkToken();
   }, [location]);
 
   useEffect(() => {
