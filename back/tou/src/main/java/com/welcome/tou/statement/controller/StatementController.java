@@ -94,4 +94,9 @@ public class StatementController {
                                              @AuthenticationPrincipal UserDetails worker) {
         return statementService.deleteStatement(statementSeq, worker);
     }
+
+    @GetMapping("/worker/list/app/count")
+    public ResultTemplate<?> getStatementCountForApp(@AuthenticationPrincipal UserDetails worker){
+        return statementService.getStatementCountForApp(worker);
+    }
  }
