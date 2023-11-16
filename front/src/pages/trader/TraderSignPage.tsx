@@ -141,6 +141,7 @@ const TraderSignPage = () => {
         .then((response) => {
           toast.success("서명을 완료했습니다.");
           checkAndFetchData();
+          console.log(response);
         })
         .catch((error) => {
           toast.error("서명에 실패했습니다.");
