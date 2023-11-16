@@ -38,7 +38,7 @@ const OfficerHeader: React.FC = () => {
             alt="Logo"
           />
         </div>
-        <Icon icon={faArrowRightFromBracket} size="xl" style={{color: "#ffffff", cursor: "pointer"}} />
+        <Icon icon={faArrowRightFromBracket} size="xl" style={{color: "#ffffff", cursor: "pointer"}} onClick={logout}/>
       </div>
     </HeaderContainer>
   );

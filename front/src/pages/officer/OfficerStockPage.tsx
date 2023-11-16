@@ -312,8 +312,8 @@ const StyledP = styled.div`
 
 const BtnDiv = styled.div`
   display: flex;
-  margin-left: 60%;
-  gap: 50px
+  margin-left: 80.7%;
+  gap: 30px
 `
 
 const StyledTable = styled.table`

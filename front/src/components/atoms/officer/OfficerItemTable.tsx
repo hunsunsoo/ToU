@@ -84,6 +84,7 @@ const OfficerItemTable: React.FC<OfficerItemTableProps> = ({ onSelectedSeqListCh
           };
         });
         setStockItems(updatedStockItems);
+        console.log(stockItems);
       })
     }, []);
 
