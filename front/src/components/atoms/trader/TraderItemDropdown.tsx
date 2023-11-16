@@ -21,6 +21,15 @@ const TraderItemDropdown: React.FC<TraderItemDropdownProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  // 날짜 표기 형식 변환
+  const formatDateString = (dateString: string | undefined) => {
+    if (!dateString) {
+      return "";
+    }
+    const formattedDate = new Date(dateString);
+    return formattedDate.toISOString().replace("T", " ").split(".")[0];
+  };
+
   return (
     <DropdownContainer>
       <DropdownButton onClick={() => setIsOpen(!isOpen)}>
@@ -38,7 +47,7 @@ const TraderItemDropdown: React.FC<TraderItemDropdownProps> = ({
               }}
             >
               <ItemName>{item.name}</ItemName>
-              <ItemDate>{item.date.toLocaleString("ko-KR")}</ItemDate>
+              <ItemDate>{formatDateString(item.date.toLocaleString("ko-KR"))}</ItemDate>
             </DropdownListItem>
           ))}
         </DropdownList>

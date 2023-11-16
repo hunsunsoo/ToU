@@ -4,6 +4,7 @@ import styled, { keyframes } from "styled-components";
 import { MainPaddingContainer } from "../../commons/style/mobileStyle/MobileLayoutStyle";
 import { UseAuth } from "../../commons/UseAuth";
 import FIDOAuth from "../../commons/FIDOAuth";
+import toast, { Toaster } from 'react-hot-toast';
 
 const TraderLoginPage = () => {
   const navigate = useNavigate();
@@ -20,12 +21,23 @@ const TraderLoginPage = () => {
     try {
       const res = await login(id, password);
 
+
+
       // API 호출 후 응답의 status가 200이면 페이지를 이동합니다.
       if (res && res.status === 200) {
+        toast.success("로그인 성공했습니다.", {
+          duration: 1000,
+        });
         setTimeout(() => navigate("/m"), 800);
       } else {
+        toast.error("로그인 실패했습니다.", {
+          duration: 1000,
+        });
+        setTimeout(() => {
+        }, 800);
         setIsLoggingIn(false);
       }
+
     } catch (error) {
       setIsLoggingIn(false);
     }
@@ -33,6 +45,7 @@ const TraderLoginPage = () => {
 
   return (
     <StyledMainPaddingContainer>
+      <div><Toaster /></div>
       <StyledMsg as={isLoggingIn ? StyledAniLogin2 : undefined}>Welcome !</StyledMsg>
       <LoginDiv as={isLoggingIn ? StyledAniLogin : undefined}>
         <StyledDiv>
