@@ -1,6 +1,7 @@
 // Shopper (App1)
 export { default as S_MAIN } from './shopper/ShopperMainPage';
 export { default as S_INFO } from './shopper/ShopperInfoPage';
+export { default as NotFound } from './shopper/NotFound';
 
 // Trader (App2)
 export { default as T_LANDING } from './trader/TraderLandingPage';
