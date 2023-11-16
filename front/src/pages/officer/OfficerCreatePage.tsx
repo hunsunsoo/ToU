@@ -132,9 +132,12 @@ const OfficerCreatePage = () => {
       items: selectedSeqList,
     }
     
+    console.log(body);
+    
     customAxios.post(`statement/worker`, body)
       .then((res) => {
-        if(res.status === 200) {
+        console.log(res);
+        if(res.data.status === 200) {
           toast.success("거래명세서 생성을 성공했습니다.", {
             duration: 1000,
           });
