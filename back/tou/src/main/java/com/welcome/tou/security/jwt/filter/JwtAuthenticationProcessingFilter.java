@@ -24,7 +24,11 @@ import java.util.Optional;
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK_URL = "/api/client/login";
+    private static final String NO_CHECK_URL_LOGIN = "/api/client/login";
+    private static final String NO_CHECK_URL_PASS_LOGIN = "/api/client/pass-login";
+    private static final String NO_CHECK_URL_CONSUMER = "/api/consumer";
+    private static final String NO_CHECK_URL_WEBAUTHN_ATTESTATION = "/webauthn/attestation/options";
+    private static final String NO_CHECK_URL_WEBAUTHN_ASSERTION = "/webauthn/assertion/options";
 
     private final JwtService jwtService;
     private final WorkerRepository workerRepository;
@@ -35,7 +39,28 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         // 로그인 요청에 대해서는 다음 필터 호출
-        if (request.getRequestURI().equals(NO_CHECK_URL)) {
+        if (request.getRequestURI().equals(NO_CHECK_URL_LOGIN)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (request.getRequestURI().equals(NO_CHECK_URL_PASS_LOGIN)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // 소비자 요청
+        if (request.getRequestURI().contains(NO_CHECK_URL_CONSUMER)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (request.getRequestURI().contains(NO_CHECK_URL_WEBAUTHN_ASSERTION)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (request.getRequestURI().contains(NO_CHECK_URL_WEBAUTHN_ATTESTATION)) {
             filterChain.doFilter(request, response);
             return;
         }

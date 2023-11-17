@@ -1,0 +1,88 @@
+pipeline {
+    agent any
+
+    environment {
+        CONTAINER_NAME = "tou-back"
+        IMAGE_NAME = "tou"
+    }
+    stages {
+        stage('Build') {
+            steps {
+                dir('back/tou') {
+                    sh 'chmod +x gradlew'
+                    sh './gradlew clean build'
+                }
+            }
+            post {
+                success {
+                    echo 'gradle build success'
+                }
+                failure {
+                    echo 'gradle build failed'
+                }
+            }
+        }
+
+        stage('Docker Delete') {
+            steps {
+                script {
+                    try{
+                        sh 'echo "Docker Delete Start"'
+                        // 컨테이너 존재 시 삭제
+                        sh "docker stop ${CONTAINER_NAME}"
+                        sh "docker rm -f ${CONTAINER_NAME}"
+                    }catch (Exception e){
+                        echo "Docker container ${CONTAINER_NAME} does not exist. skip"
+                    }
+                    try{
+                        // 이미지 존재 시 삭제
+                        sh "docker image rm ${IMAGE_NAME}"
+                    }catch (Exception e){
+                        echo "Docker image ${IMAGE_NAME} does not exist. skip"
+                    }
+                }
+            }
+            post {
+                success {
+                    sh 'echo "Docker delete Success"'
+                }
+                failure {
+                    sh 'echo "Docker delete Fail"'
+                }
+            }
+        }
+
+        stage('Dockerizing'){
+            steps{
+                sh 'echo " Image Bulid Start"'
+                // 도커 이미지를 기반으로 컨테이너 빌드
+                dir('back/tou') {
+                    sh 'docker build -t ${IMAGE_NAME} .'
+                }
+            }
+            post {
+                success {
+                    sh 'echo "Bulid Docker Image Success"'
+                }
+                failure {
+                    sh 'echo "Bulid Docker Image Fail"'
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script{
+                    sh 'docker run --name ${CONTAINER_NAME} -d -p 8080:8080 ${IMAGE_NAME}'
+                }
+            }
+            post {
+                success {
+                    echo 'Deploy success'
+                }
+                failure {
+                    echo 'Deploy failed'
+                }
+            }
+        }
+    }
+}

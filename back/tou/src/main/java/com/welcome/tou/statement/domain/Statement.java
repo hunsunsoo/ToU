@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -49,20 +50,54 @@ public class Statement {
     @Column(name = "block_seq")
     private String blockSeq;
 
-    // 신청일시
-    @Column(name = "req_date", nullable = false)
-    private LocalDateTime reqDate;
+    // 생성일시
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
 
-    // 거래일시
-    @Column(name = "trade_date")
+    // 거래예정일시
+    @Column(name = "trade_date", nullable = false)
     private LocalDateTime tradeDate;
+
+    // 신청일시
+    @Column(name = "req_date")
+    private LocalDateTime reqDate;
 
     // 응답일시
     @Column(name = "res_date")
     private LocalDateTime resDate;
 
+    //품목 목록
+    @OneToMany(mappedBy = "statement", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Item> items;
+
 
     public enum StatementStatus {
         PREPARING, WAITING, COMPLETION, REFUSAL, DELETE
+    }
+
+    public static Statement createStatement(Branch reqBranch, Branch resBranch, StatementStatus status, LocalDateTime tradeDate) {
+        Statement statement = new Statement();
+        statement.reqBranch = reqBranch;
+        statement.resBranch = resBranch;
+        statement.statementStatus = status;
+        statement.createdDate = LocalDateTime.now();
+        statement.tradeDate = tradeDate;
+        return statement;
+    }
+
+    public void updateStatementSignFromReq(Worker reqWorker) {
+        this.reqWorker = reqWorker;
+        this.statementStatus = StatementStatus.WAITING;
+        this.reqDate = LocalDateTime.now();
+    }
+
+    public void updateStatementSignFromRes(Worker resWorker) {
+        this.resWorker = resWorker;
+        this.statementStatus = StatementStatus.COMPLETION;
+        this.resDate = LocalDateTime.now();
+    }
+
+    public void updateStatementStatus(StatementStatus statementStatus) {
+        this.statementStatus = statementStatus;
     }
 }
