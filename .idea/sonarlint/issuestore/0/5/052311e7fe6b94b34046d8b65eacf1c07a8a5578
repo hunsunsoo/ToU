@@ -1,0 +1,8 @@
+
+c
+java:S1192)"HDefine a constant instead of duplicating this literal "appUser" 5 times.(ÓÀİ—úÿÿÿÿ
+S	java:S106*"9Replace this use of System.out or System.err by a logger.(¥Š¤Ìøÿÿÿÿ
+N	java:S1060"9Replace this use of System.out or System.err by a logger.(Ïªå
+A
+java:S1168<"+Return an empty collection instead of null.(¥¹ï
+N	java:S106h"9Replace this use of System.out or System.err by a logger.(¯¤’æ
