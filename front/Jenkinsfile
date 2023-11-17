@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+     tools {nodejs "node"}
+
+     environment {
+        DOCKER = 'sudo docker'
+        TIME_ZONE = 'Asia/Seoul'
+        TAG = "docker-react:${env.BUILD_ID}"
+    }
+
+
+stages {
+    stage('prepare') {
+        steps {
+            dir('front'){
+                sh 'npm install'
+            }
+        }
+    }
+    stage('build') {
+        steps {
+            dir('front'){
+                sh 'CI=false npm run build'
+                sh '''
+                echo 'Docker image build'
+                docker build --no-cache -t $TAG .
+                '''
+            }
+        }
+    }
+    stage('Deploy') {
+            steps {
+                dir('front'){
+                    script {
+                        try {
+                            sh 'docker stop TouFront'
+                            sh 'docker rm TouFront'
+                        } catch (Exception e) {
+                            echo "Failed to stop or remove Docker container, proceeding anyway"
+                        }
+                    }
+                    sh '''
+                    echo 'Deploy'
+                    docker run -d -p 3000:3000 -v /etc/localtime:/etc/localtime:ro -e TZ=Asia/Seoul --name TouFront $TAG
+                    '''
+                }
+            }
+        }
+}
+}
