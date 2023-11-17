@@ -1,0 +1,63 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.17'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.ssafy'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '11'
+}
+
+ext {
+	// 메인 클래스의 경로를 설정합니다.
+	javaMainClass = "com.ssafy.tou.TouApplication"
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'com.google.guava:guava:29.0-jre'
+	implementation 'com.github.bxforce:hyperledger-fabric-spring-boot-starter:1.0.1-RELEASE'
+	runtimeOnly 'io.netty:netty-tcnative-boringssl-static:2.0.43.Final'
+
+	//추가
+//	compileOnly 'io.grpc:grpc-api:1.59.0'
+//	runtimeOnly 'io.grpc:grpc-netty-shaded:1.59.0'
+//	implementation 'com.google.code.gson:gson:2.10.1'
+	//추가 끝
+
+
+}
+
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+
+// 의존성을 빌드한 후 앱을 실행하는 작업(task)을 정의합니다.
+task runApp(type: Exec) {
+	dependsOn build // 빌드 작업에 의존합니다.
+	group = "Execution"
+	description = "Run the main class with ExecTask"
+	// Java 명령어를 사용하여 메인 클래스를 실행합니다. 클래스패스는 소스 셋의 런타임 클래스패스로 설정됩니다.
+	commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), javaMainClass
+}
