@@ -25,6 +25,11 @@ public class Stock {
     @JoinColumn(name = "branch_seq")
     private Branch branch;
 
+    //입고업체 관할구역 참조키
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "from_branch_seq")
+    private Branch fromBranch;
+
     // 재고명
     @Column(name = "stock_name", length = 50, nullable = false)
     private String stockName;
@@ -70,6 +75,7 @@ public class Stock {
 
     public static Stock createStock(
                                     Branch branch,
+                                    Branch fromBranch,
                                     String stockName,
                                     String stockCode,
                                     Double stockQuantity,
@@ -80,6 +86,7 @@ public class Stock {
                                     UseStatus useStatus) {
         Stock stock = new Stock();
         stock.branch = branch;
+        stock.fromBranch = fromBranch;
         stock.stockName = stockName;
         stock.stockCode = stockCode;
         stock.stockQuantity = stockQuantity;
@@ -90,5 +97,9 @@ public class Stock {
         stock.useStatus = useStatus;
         return stock;
 
+    }
+
+    public void updateUseStatus(UseStatus useStatus) {
+        this.useStatus = useStatus;
     }
 }
