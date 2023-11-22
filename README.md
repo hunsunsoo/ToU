@@ -133,13 +133,13 @@
 
 ### 5️⃣ ERD
 
-![ERD](etc/img/ERD.png)
+![ERD](ect/img/ERD.png)
 
 ---
 
 ### 6️⃣ API 명세
 
-![API명세](etc/img/API명세서.png)
+![API명세](ect/img/API명세서.png)
 
 ---
 
