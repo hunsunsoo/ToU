@@ -144,7 +144,7 @@
 ### 7️⃣ 서비스 화면
 
 
-<h3>소비자화면</h3>
+<h4>소비자화면</h4>
 
 <img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/9b94503b-2b78-4566-95e1-63b997dcc278" height="400px" width="200px"/>
 
@@ -152,8 +152,7 @@
     - 수산물의 생산, 가공, 패키징, 판매 단계의 유통 과정을 조회 할 수 있습니다.
 </details>
 
-<br/>
-<h3>모바일 화면</h3>
+<h4>모바일 화면</h4>
 
 <img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/fdd7de23-f232-4efd-b751-8c6f7359a183" height="400px" width="200px"/>
 
