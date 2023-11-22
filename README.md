@@ -61,49 +61,73 @@
 
 ### 4️⃣ 기술 스택
 
-- Back-End
+<div align=left>
+<table>
+    <tr>
+        <td><b>Back-end</b></td>
+        <td><img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Java&logoColor=white"/>
+<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat-square&logo=Spring Boot&logoColor=white"/>
+<img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat-square&logo=Spring Security&logoColor=white"/>
+<img src="https://img.shields.io/badge/JPA-59666C?style=flat-square&logo=Hibernate&logoColor=white"/>
+<br>
+<img src="https://img.shields.io/badge/fidoalliance-FFBF3B?style=flat-square&logo=fidoalliance&logoColor=white"/>
+<img src="https://img.shields.io/badge/webauthn-3423A6?style=flat-square&logo=webauthn&logoColor=white"/>
+<br>
+<img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=MySQL&logoColor=white"/>
+<img src="https://img.shields.io/badge/Redis-3.0.5-DC382D?style=flat-square&logo=Redis&logoColor=white"/>
 
-  - Java
-  - Spring Boot
-  - Spring JPA
-  - Fido2 WebAuthn
-  - Spring Security
-  - JWT
+</td>
+    </tr>
+    <tr>
+    <td><b>Front-end</b></td>
+    <td>
+<img src="https://img.shields.io/badge/Npm-6.14.18-CB3837?style=flat-square&logo=Npm&logoColor=white"/>
+<img src="https://img.shields.io/badge/Node-18.16.1-339933?style=flat-square&logo=Node.js&logoColor=white"/>
+<img src="https://img.shields.io/badge/JSON-000000?style=flat-square&logo=json&logoColor=white"/>
+<img src="https://img.shields.io/badge/axios-5A29E4?style=flat-square&logo=axios&logoColor=white"/>
+<br>
+<img src="https://img.shields.io/badge/React-18.2.0-61DAFB?style=flat-square&logo=React&logoColor=white"/>
+<img src="https://img.shields.io/badge/Recoil-0.7.7-3578E5?style=flat-square&logo=recoil&logoColor=white"/>
+<img src="https://img.shields.io/badge/pwa-5A0FC8?style=flat-square&logo=pwa&logoColor=white"/>
+<img src="https://img.shields.io/badge/TypeScript-F7DF1E?style=flat-square&logo=typescript&logoColor=black"/>
+<br>
 
-- Front-End
-  - React
-  - TypeScript
-  - Node.js
-  - Axios
-  - PWA
-  -
-- BlockChain
+<img src="https://img.shields.io/badge/styledcomponents-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/>
 
-  - Hyperledger Fabric
-  - Docker
-  - Java
-  - Spring Boot
-
-- Infra
-
-  - Docker
-  - Ngnix
-  - Jenkins
-
-- DB
-
-  - MySQL
-  - Redis
-
-- Team Collaboration Tool
-  - Gitlab
-  - Jira
-  - Notion
-  - Figma
-  - Mattermost
-  - Webex
-
----
+</td>
+    </tr>
+    <tr>
+    <td><b>BlockChain</b></td>
+    <td>
+<img src="https://img.shields.io/badge/hyperledger-2F3134?style=flat-square&logo=hyperledger&logoColor=white"/>
+<img src="https://img.shields.io/badge/docker-2496ED?style=flat-square&logo=docker&logoColor=white"/>
+<br>
+<img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Java&logoColor=white"/>
+<img src="https://img.shields.io/badge/springboot-6DB33F?style=flat-square&logo=springboot&logoColor=white"/>
+    </td>
+    </tr>
+    <tr>
+    <td><b>Infra</b></td>
+    <td>
+<img src="https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazon aws&logoColor=white"/>
+<img src="https://img.shields.io/badge/Docker-4479A1?style=flat-square&logo=Docker&logoColor=white"/>
+<br>
+<img src="https://img.shields.io/badge/NGINX-1.18.0(Ubuntu)-009639?style=flat-square&logo=NGINX&logoColor=white"/>
+<img src="https://img.shields.io/badge/Jenkins-2.332.1-D24939?style=flat-square&logo=Jenkins&logoColor=white"/>
+</td>
+    <tr>
+    <td><b>Tools</b></td>
+    <td>
+    <img src="https://img.shields.io/badge/Notion-333333?style=flat-square&logo=Notion&logoColor=white"/>
+    <img src="https://img.shields.io/badge/GitLab-FCA121?style=flat-square&logo=GitLab&logoColor=white"/>
+<img src="https://img.shields.io/badge/JIRA-0052CC?style=flat-square&logo=JIRA Software&logoColor=white"/>
+<br>
+<img src="https://img.shields.io/badge/figma-F24E1E?style=flat-square&logo=figma&logoColor=white"/>
+<img src="https://img.shields.io/badge/mattermost-0058CC?style=flat-square&logo=mattermost&logoColor=white"/>
+    </td>
+    </tr>
+</table>
+</div>
 
 ### 5️⃣ ERD
 
@@ -119,12 +143,389 @@
 
 ### 7️⃣ 서비스 화면
 
-- 메인<br>
 
-<br>
+<h4>소비자화면</h4>
 
-- <br>
+<img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/fe87ba26-e480-4ebf-a95c-0097e2af7fcf" height="400px" width="200px"/>
 
-<br>
+- <b>수산물 유통 조회</b><br/>
+    - 수산물의 생산, 가공, 패키징, 판매 단계의 유통 과정을 조회 할 수 있습니다.
+</details>
 
-- <br>
+<h4>모바일 화면</h4>
+
+<img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/fdd7de23-f232-4efd-b751-8c6f7359a183" height="400px" width="200px"/>
+
+- <b>생체인증 로그인</b><br/>
+    - 아이디와 비밀번호를 입력하는 대신 등록한 생체인증으로 로그인 할 수 있습니다.
+
+<br/>
+
+<table>
+    <tr>
+        <td> <img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/fb8ab3f8-98fb-458a-be85-197410bca064" height="400px" width="200px"/> </td>
+        <td> <img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/9c408b4a-4678-4c77-95a8-6d3b5c4f8020" height="400px" width="200px"> </td>
+        <td> <img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/1eea3716-1464-439c-8195-e0dccfe28436" height="400px" width="200px"> </td>
+    </tr>
+</table>
+
+- <b>거래명세서 생성</b><br/>
+    - 거래명세서를 생성하고, 생체인증을 통해 서명할 수 있습니다.
+
+<br/>
+
+<img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/946ef8a4-1eca-40f5-bcdd-756ccf904693" height="400px" width="200px"/>
+
+- <b>거래명세서 내역조회</b><br/>
+    - 거래가 완료된 거래명세서의 내역을 조회 할 수 있습니다.
+
+<br/>
+
+<h4>웹 화면</h4>
+
+<table>
+    <tr>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/7a48824b-91af-42ac-ace1-dcb747840fa7" height="280px" width="500px"/>
+        </td>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/428a7357-0a6d-41b7-bedd-eab0a44185da" height="280px" width="500px"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            - <b>생체인증 로그인</b><br/>
+            FIDO2 기술을 활용한 생체인증 로그인 기능입니다.<br/>
+            지문, faceID, touchID 등을 사용할 수 있습니다.
+        </td>
+        <td>
+            - <b>passkey 생성</b><br/>
+            로그인, 거래에 대한 서명을 위해 활용가능한 생체인증 passkey를 등록하는 화면입니다.
+        </td>
+    </tr>
+</table>
+</br>
+<table>
+    <tr>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/1858f52a-829c-442e-bea9-dca97d079fe9" height="280px" width="500px"/>
+        </td>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/d1abbb22-2536-4f87-b160-4f57829b3a04" height="280px" width="500px"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            - <b>웹 대시보드</b><br/>
+            지점의 거래, 재고 현황, 스케쥴 등을 파악하는 메인 대시보드 입니다.
+        </td>
+        <td>
+            - <b>거래 명세서 생성</b><br/>
+            다른 업체와 거래를 위한 명세서를 생성합니다.<br/>
+            가지고 있는 재고를 등록하고 판매합니다.
+        </td>
+    </tr>
+</table>
+</br>
+<table>
+    <tr>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/065b4201-bbbf-49f2-86f6-ade37af3ec40" height="280px" width="500px"/>
+        </td>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/51cb3f4e-f255-4bca-83f8-3a74c810b7b5" height="280px" width="500px"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            - <b>거래명세서 목록조회</b><br/>
+            각 정렬 기준에 맞는 거래명세서의 목록을 가져옵니다.
+        </td>
+        <td>
+            - <b>거래명세서 상세조회</b><br/>
+            생성한 거래명세서를 상세조회하여 검토합니다.<br/>
+            pdf 파일로 변환할 수 있습니다.
+        </td>
+    </tr>
+</table>
+</br>
+
+<h4>블록체인 웹 대시보드</h4>
+
+<table>
+    <tr>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/bec5b1a9-0398-433d-9dcc-0f8c47c36f2f" height="280px" width="500px"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            - <b>하이퍼렛저 대시보드</b><br/>
+        </td>
+    </tr>
+</table>
+</br>
+
+
+
+### 8️⃣ 프로젝트 폴더 구조
+
+## BackEnd
+
+```
+📦back
+ ┗ 📂tou
+ ┃ ┣ 📂gradle
+ ┃ ┃ ┗ 📂wrapper
+ ┃ ┣ 📂src
+ ┃ ┃ ┣ 📂main
+ ┃ ┃ ┃ ┣ 📂generated
+ ┃ ┃ ┃ ┃ ┗ 📂com
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂welcome
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂tou
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂client
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂domain
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂statement
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂domain
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂stock
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂domain
+ ┃ ┃ ┃ ┣ 📂java
+ ┃ ┃ ┃ ┃ ┗ 📂com
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂welcome
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂tou
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂client
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂response
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂common
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂exception
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂utils
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂config
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂consumer
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂security
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂config
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂jwt
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂filter
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂statement
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂response
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂stock
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂response
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂webauthn
+ ┃ ┃ ┃ ┗ 📂resources
+ ┃ ┃ ┗ 📂test
+ ┃ ┃ ┃ ┗ 📂java
+ ┃ ┃ ┃ ┃ ┗ 📂com
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂welcome
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂tou
+```
+
+## FrontEnd
+
+```
+📦front
+ ┣ 📂public
+ ┃ ┣ 📂companyLogo
+ ┣ 📂src
+ ┃ ┣ 📂apis
+ ┃ ┣ 📂assets
+ ┃ ┃ ┣ 📂icons
+ ┃ ┣ 📂commons
+ ┃ ┃ ┣ 📂style
+ ┃ ┃ ┃ ┣ 📂calendarStyle
+ ┃ ┃ ┃ ┣ 📂mobileStyle
+ ┃ ┃ ┃ ┗ 📂traderStyle
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📂api
+ ┃ ┃ ┣ 📂atoms
+ ┃ ┃ ┃ ┣ 📂officer
+ ┃ ┃ ┃ ┣ 📂shopper
+ ┃ ┃ ┃ ┗ 📂trader
+ ┃ ┃ ┣ 📂molecules
+ ┃ ┃ ┃ ┗ 📂trader
+ ┃ ┃ ┗ 📂organisms
+ ┃ ┃ ┃ ┣ 📂officer
+ ┃ ┃ ┃ ┣ 📂shopper
+ ┃ ┃ ┃ ┗ 📂trader
+ ┃ ┣ 📂pages
+ ┃ ┃ ┣ 📂officer
+ ┃ ┃ ┣ 📂shopper
+ ┃ ┃ ┃ ┣ 📂css
+ ┃ ┃ ┃ ┣ 📂images
+ ┃ ┃ ┣ 📂trader
+ ┃ ┣ 📂store
+ ┃ ┣ 📂types
+```
+
+## BlockChain
+```
+📦fabric-samples
+ ┣ 📂asset-transfer-basic
+ ┃ ┣ 📂application-gateway-java-tou
+ ┃ ┃ ┣ 📂gradle
+ ┃ ┃ ┃ ┗ 📂wrapper
+ ┃ ┃ ┣ 📂src
+ ┃ ┃ ┃ ┗ 📂main
+ ┃ ┃ ┃ ┃ ┗ 📂java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂com
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂ssafy
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂tou
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂common
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂utils
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂configuration
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂requestDto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂service
+ ┃ ┣ 📂chaincode-java-tou
+ ┃ ┃ ┣ 📂docker
+ ┃ ┃ ┣ 📂gradle
+ ┃ ┃ ┃ ┗ 📂wrapper
+ ┃ ┃ ┣ 📂src
+ ┃ ┃ ┃ ┣ 📂main
+ ┃ ┃ ┃ ┃ ┗ 📂java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂org
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂hyperledger
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂fabric
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂samples
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂assettransfer
+ ┃ ┃ ┃ ┗ 📂test
+ ┃ ┃ ┃ ┃ ┗ 📂java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂org
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂hyperledger
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂fabric
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂samples
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂assettransfer
+ ┣ 📂test-network-tou
+ ┃ ┣ 📂addOrg3
+ ┃ ┃ ┣ 📂compose
+ ┃ ┃ ┃ ┣ 📂docker
+ ┃ ┃ ┃ ┃ ┣ 📂peercfg
+ ┃ ┃ ┃ ┣ 📂podman
+ ┃ ┃ ┃ ┃ ┣ 📂peercfg
+ ┃ ┃ ┣ 📂fabric-ca
+ ┃ ┃ ┃ ┣ 📂org3
+ ┃ ┣ 📂compose
+ ┃ ┃ ┣ 📂docker
+ ┃ ┃ ┃ ┣ 📂peercfg
+ ┃ ┃ ┣ 📂podman
+ ┃ ┃ ┃ ┣ 📂peercfg
+ ┃ ┣ 📂configtx
+ ┃ ┣ 📂explorer
+ ┃ ┃ ┣ 📂connection-profile
+ ┃ ┃ ┣ 📂organizations
+ ┃ ┃ ┃ ┣ 📂cryptogen
+ ┃ ┃ ┃ ┣ 📂fabric-ca
+ ┃ ┃ ┃ ┃ ┣ 📂ordererOrg
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂keystore
+ ┃ ┃ ┃ ┃ ┣ 📂org1
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂keystore
+ ┃ ┃ ┃ ┃ ┣ 📂org2
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂keystore
+ ┃ ┃ ┃ ┣ 📂ordererOrganizations
+ ┃ ┃ ┃ ┃ ┗ 📂example.com
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂cacerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂tlscacerts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂orderers
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂orderer.example.com
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂cacerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂tlscacerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂tls
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂tlscacerts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂tlsca
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂users
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂Admin@example.com
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂cacerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┣ 📂peerOrganizations
+ ┃ ┃ ┃ ┃ ┣ 📂org1.example.com
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂ca
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂cacerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂tlscacerts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂peers
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂peer0.org1.example.com
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂cacerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂tls
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂tlscacerts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂tlsca
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂users
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂Admin@org1.example.com
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂cacerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂User1@org1.example.com
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂cacerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┃ ┗ 📂org2.example.com
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂ca
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂cacerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂tlscacerts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂peers
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂peer0.org2.example.com
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂cacerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂tls
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂tlscacerts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂tlsca
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂users
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂Admin@org2.example.com
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂cacerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂User1@org2.example.com
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂msp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂cacerts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂keystore
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂signcerts
+ ┃ ┣ 📂organizations
+ ┃ ┃ ┣ 📂cryptogen
+ ┃ ┃ ┣ 📂fabric-ca
+ ┃ ┣ 📂scripts
+ ┃ ┃ ┣ 📂org3-scripts
+```
