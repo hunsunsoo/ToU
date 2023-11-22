@@ -181,6 +181,93 @@
 
 <br/>
 
+<h4>웹 화면</h4>
+
+<table>
+    <tr>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/7a48824b-91af-42ac-ace1-dcb747840fa7" height="280px" width="500px"/>
+        </td>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/428a7357-0a6d-41b7-bedd-eab0a44185da" height="280px" width="500px"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            - <b>생체인증 로그인</b><br/>
+            FIDO2 기술을 활용한 생체인증 로그인 기능입니다.<br/>
+            지문, faceID, touchID 등을 사용할 수 있습니다.
+        </td>
+        <td>
+            - <b>passkey 생성</b><br/>
+            로그인, 거래에 대한 서명을 위해 활용가능한 생체인증 passkey를 등록하는 화면입니다.
+        </td>
+    </tr>
+</table>
+</br>
+<table>
+    <tr>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/1858f52a-829c-442e-bea9-dca97d079fe9" height="280px" width="500px"/>
+        </td>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/d1abbb22-2536-4f87-b160-4f57829b3a04" height="280px" width="500px"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            - <b>웹 대시보드</b><br/>
+            지점의 거래, 재고 현황, 스케쥴 등을 파악하는 메인 대시보드 입니다.
+        </td>
+        <td>
+            - <b>거래 명세서 생성</b><br/>
+            다른 업체와 거래를 위한 명세서를 생성합니다.<br/>
+            가지고 있는 재고를 등록하고 판매합니다.
+        </td>
+    </tr>
+</table>
+</br>
+<table>
+    <tr>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/065b4201-bbbf-49f2-86f6-ade37af3ec40" height="280px" width="500px"/>
+        </td>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/51cb3f4e-f255-4bca-83f8-3a74c810b7b5" height="280px" width="500px"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            - <b>거래명세서 목록조회</b><br/>
+            각 정렬 기준에 맞는 거래명세서의 목록을 가져옵니다.
+        </td>
+        <td>
+            - <b>거래명세서 상세조회</b><br/>
+            생성한 거래명세서를 상세조회하여 검토합니다.<br/>
+            pdf 파일로 변환할 수 있습니다.
+        </td>
+    </tr>
+</table>
+</br>
+
+<h4>블록체인 웹 대시보드</h4>
+
+<table>
+    <tr>
+        <td>
+            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/bec5b1a9-0398-433d-9dcc-0f8c47c36f2f" height="280px" width="500px"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            - <b>하이퍼렛저 대시보드</b><br/>
+        </td>
+    </tr>
+</table>
+</br>
+
+
+
 ### 8️⃣ 프로젝트 폴더 구조
 
 ## BackEnd
