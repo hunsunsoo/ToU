@@ -74,7 +74,7 @@
 <img src="https://img.shields.io/badge/webauthn-3423A6?style=flat-square&logo=webauthn&logoColor=white"/>
 <br>
 <img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=MySQL&logoColor=white"/>
-<img src="https://img.shields.io/badge/Redis-3.0.5-DC382D?style=flat-square&logo=Redis&logoColor=white"/>
+<img src="https://img.shields.io/badge/JSON-000000?style=flat-square&logo=json&logoColor=white"/>
 
 </td>
     </tr>
@@ -99,11 +99,13 @@
     <tr>
     <td><b>BlockChain</b></td>
     <td>
+<img src="https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazon aws&logoColor=white"/>
 <img src="https://img.shields.io/badge/hyperledger-2F3134?style=flat-square&logo=hyperledger&logoColor=white"/>
 <img src="https://img.shields.io/badge/docker-2496ED?style=flat-square&logo=docker&logoColor=white"/>
 <br>
 <img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Java&logoColor=white"/>
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=flat-square&logo=springboot&logoColor=white"/>
+<img src="https://img.shields.io/badge/NGINX-1.18.0(Ubuntu)-009639?style=flat-square&logo=NGINX&logoColor=white"/>
     </td>
     </tr>
     <tr>
@@ -143,13 +145,11 @@
 
 ### 7️⃣ 서비스 화면
 
-
 <h4>소비자화면</h4>
 
 <img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/fe87ba26-e480-4ebf-a95c-0097e2af7fcf" height="400px" width="200px"/>
 
-- <b>수산물 유통 조회</b><br/>
-    - 수산물의 생산, 가공, 패키징, 판매 단계의 유통 과정을 조회 할 수 있습니다.
+- <b>수산물 유통 조회</b><br/> - 수산물의 생산, 가공, 패키징, 판매 단계의 유통 과정을 조회 할 수 있습니다.
 </details>
 
 <h4>모바일 화면</h4>
@@ -157,7 +157,7 @@
 <img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/fdd7de23-f232-4efd-b751-8c6f7359a183" height="400px" width="200px"/>
 
 - <b>생체인증 로그인</b><br/>
-    - 아이디와 비밀번호를 입력하는 대신 등록한 생체인증으로 로그인 할 수 있습니다.
+  - 아이디와 비밀번호를 입력하는 대신 등록한 생체인증으로 로그인 할 수 있습니다.
 
 <br/>
 
@@ -170,14 +170,14 @@
 </table>
 
 - <b>거래명세서 생성</b><br/>
-    - 거래명세서를 생성하고, 생체인증을 통해 서명할 수 있습니다.
+  - 거래명세서를 생성하고, 생체인증을 통해 서명할 수 있습니다.
 
 <br/>
 
 <img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/946ef8a4-1eca-40f5-bcdd-756ccf904693" height="400px" width="200px"/>
 
 - <b>거래명세서 내역조회</b><br/>
-    - 거래가 완료된 거래명세서의 내역을 조회 할 수 있습니다.
+  - 거래가 완료된 거래명세서의 내역을 조회 할 수 있습니다.
 
 <br/>
 
@@ -265,8 +265,6 @@
     </tr>
 </table>
 </br>
-
-
 
 ### 8️⃣ 프로젝트 폴더 구조
 
@@ -372,6 +370,7 @@
 ```
 
 ## BlockChain
+
 ```
 📦fabric-samples
  ┣ 📂asset-transfer-basic
