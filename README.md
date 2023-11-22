@@ -146,7 +146,7 @@
 
 <h4>소비자화면</h4>
 
-<img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/9b94503b-2b78-4566-95e1-63b997dcc278" height="400px" width="200px"/>
+<img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/fe87ba26-e480-4ebf-a95c-0097e2af7fcf" height="400px" width="200px"/>
 
 - <b>수산물 유통 조회</b><br/>
     - 수산물의 생산, 가공, 패키징, 판매 단계의 유통 과정을 조회 할 수 있습니다.
