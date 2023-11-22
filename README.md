@@ -143,15 +143,44 @@
 
 ### 7️⃣ 서비스 화면
 
-- 메인<br>
 
-<br>
+<h3>소비자화면</h3>
 
-- <br>
+<img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/9b94503b-2b78-4566-95e1-63b997dcc278" height="400px" width="200px"/>
 
-<br>
+- <b>수산물 유통 조회</b><br/>
+    - 수산물의 생산, 가공, 패키징, 판매 단계의 유통 과정을 조회 할 수 있습니다.
+</details>
 
-- <br>
+<br/>
+<h3>모바일 화면</h3>
+
+<img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/fdd7de23-f232-4efd-b751-8c6f7359a183" height="400px" width="200px"/>
+
+- <b>생체인증 로그인</b><br/>
+    - 아이디와 비밀번호를 입력하는 대신 등록한 생체인증으로 로그인 할 수 있습니다.
+
+<br/>
+
+<table>
+    <tr>
+        <td> <img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/fb8ab3f8-98fb-458a-be85-197410bca064" height="400px" width="200px"/> </td>
+        <td> <img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/9c408b4a-4678-4c77-95a8-6d3b5c4f8020" height="400px" width="200px"> </td>
+        <td> <img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/1eea3716-1464-439c-8195-e0dccfe28436" height="400px" width="200px"> </td>
+    </tr>
+</table>
+
+- <b>거래명세서 생성</b><br/>
+    - 거래명세서를 생성하고, 생체인증을 통해 서명할 수 있습니다.
+
+<br/>
+
+<img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/946ef8a4-1eca-40f5-bcdd-756ccf904693" height="400px" width="200px"/>
+
+- <b>거래명세서 내역조회</b><br/>
+    - 거래가 완료된 거래명세서의 내역을 조회 할 수 있습니다.
+
+<br/>
 
 ### 8️⃣ 프로젝트 폴더 구조
 
