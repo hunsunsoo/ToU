@@ -255,12 +255,13 @@
 <table>
     <tr>
         <td>
-            <img src="https://github.com/DongIkkk/gitexercise2/assets/110454344/bec5b1a9-0398-433d-9dcc-0f8c47c36f2f" height="280px" width="500px"/>
+            <img src="https://github.com/DongHyun-Klm/Algorithm/assets/120110806/bbe92d08-2cab-4646-82ee-c2ef5c8d5878" height="280px" width="500px"/>
         </td>
     </tr>
     <tr>
         <td>
             - <b>하이퍼렛저 대시보드</b><br/>
+            Hyperledger Explorer를 통해 fabric 네트워크 상태와 트랜잭션을 조회할 수 있습니다.
         </td>
     </tr>
 </table>
